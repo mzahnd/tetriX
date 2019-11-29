@@ -22,7 +22,7 @@
  * @brief   Functions used to generate a bag of random pieces.
  * 
  * @details Generates an array (called "bag of pieces") of size NUM_PIECES 
- * (defined in @header board.h) with random pieces following the set of rules
+ * (defined in header board.h) with random pieces following the set of rules
  * taken from tetris.wiki webpage:
  *  - No more than 4 S or Z pieces togheter.
  *  - No more than 12 pieces between two different I pieces.
@@ -60,6 +60,6 @@ init_random_generator (void);
 
 // Generates a NUM_PIECES size bag with a pseudo-random list of pieces.
 void
-random_generator (char * rnd_bag);
+random_generator (char * rnd_bag, int size);
 
 #endif /* RANDOM_GENERATOR_H */

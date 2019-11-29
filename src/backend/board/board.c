@@ -34,20 +34,31 @@
 // === Libraries and header files ===
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
-#include "../stats/stats_mgmt.h"
+
+#include "random_generator.h"
+
+#include "pieces/piece_actions.h"
 
 // This file
 #include "board.h"
 
 /// @privatesection
 // === Constants and Macro definitions ===
-
+// Board Height for the matrix. The additional 2 rows are hidden to the user
+#define MBOARD_H     BOARD_H + 2 
+// Board Width for the matrix.
+#define MBOARD_W     BOARD_W
 
 // === Enumerations, structures and typedefs ===
 
 // === Global variables ===
-char rnd_bag[NUM_PIECES];
+char cgame[MBOARD_H][MBOARD_W];
+
+piece_t piece;
+
+stats_t stats;
 
 // === Function prototypes for private functions with file level scope ===
 
@@ -55,33 +66,106 @@ char rnd_bag[NUM_PIECES];
 
 // === Static variables and constant variables with file level scope ===
 
-
 // === Global function definitions ===
 /// @publicsection
 
+void *
+board (void)
+{
+    int pos;
+    char bag[NUM_PIECES], tmp_bag[NUM_PIECES];
 
+    board_init(bag, NUM_PIECES);
+
+    while ( 1 )
+    {
+        //
+
+        // Empty bag? New set of pieces
+
+
+        // Change stats
+
+    }
+}
+
+const stats_t *
+ask_stats (void)
+{
+    return &stats;
+}
+
+const char *
+ask_board (void)
+{
+    return &cgame[2][0];
+}
 
 /// @privatesection
 // === Local function definitions ===
 
 static char
-board_init (stats_t * stats)
+board_init (char * bag, int size)
 {
-    stats -> score.actual = 0;
-    stats -> next = '\0';
-    stats -> pieces.I = 0;
-    stats -> pieces.J = 0;
-    stats -> pieces.L = 0;
-    stats -> pieces.O = 0;
-    stats -> pieces.S = 0;
-    stats -> pieces.T = 0;
-    stats -> pieces.Z = 0;
+    if ( !init_random_generator() )
+    {
+        return 1;
+    }
+
+    // Generate first set of pieces
+    random_generator(bag, size);
+
+    piece.type = PIECE_NONE;
+
+    stats.score.actual = 0;
+    stats.next = PIECE_NONE;
+    stats.pieces.I = 0;
+    stats.pieces.J = 0;
+    stats.pieces.L = 0;
+    stats.pieces.O = 0;
+    stats.pieces.S = 0;
+    stats.pieces.T = 0;
+    stats.pieces.Z = 0;
+
+    stats.status = 0;
 
     /// FIXME
-    stats -> score.top = 1000;
-    stats -> level = 0;
-    stats -> lines = 0;
+    stats.score.top = 1000;
+    stats.level = 0;
+    stats.lines = 0;
 
     return 0;
+}
+
+static int
+update_board (char * bag, int position)
+{
+    if ( piece.type == PIECE_NONE )
+    {
+        piece_init(bag, position);
+    }
+
+    if ( piece.rotation.status == true )
+    {
+        piece.rotate();
+    }
+
+    if ( piece.drop == true )
+    {
+        piece.coord.old.b1[0] = INACTIVE_COORD;
+        piece.update_board();
+
+        // FIXME Add some timer here (FPG dependent)
+
+        piece.drop = false;
+    }
+
+    if ( piece.shift != NONE )
+    {
+        piece.shift();
+    }
+
+    piece.update_board();
+
 }
 

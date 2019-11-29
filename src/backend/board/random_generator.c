@@ -97,11 +97,17 @@ init_random_generator (void)
  * the first time.
  */
 void
-random_generator (char * rnd_bag)
+random_generator (char * rnd_bag, int size)
 {
     int i, piece;
 
     char old_bag[NUM_PIECES];
+
+    if ( size <> NUM_PIECES )
+    {
+        fputs("Error on bag size for random_generator()", stderr);
+        return;
+    }
 
     // Copy the last used bag.
     for ( i = 0; i < NUM_PIECES; i++ )

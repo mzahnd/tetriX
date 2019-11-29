@@ -36,6 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/src/backend/board/board.o \
+	${OBJECTDIR}/src/backend/board/pieces/piece_actions.o \
 	${OBJECTDIR}/src/backend/board/random_generator.o \
 	${OBJECTDIR}/src/backend/rw/rw_ops.o \
 	${OBJECTDIR}/src/backend/stats/stats_mgmt.o \
@@ -80,6 +81,11 @@ ${OBJECTDIR}/src/backend/board/board.o: src/backend/board/board.c
 	${MKDIR} -p ${OBJECTDIR}/src/backend/board
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/backend/board/board.o src/backend/board/board.c
+
+${OBJECTDIR}/src/backend/board/pieces/piece_actions.o: src/backend/board/pieces/piece_actions.c
+	${MKDIR} -p ${OBJECTDIR}/src/backend/board/pieces
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/backend/board/pieces/piece_actions.o src/backend/board/pieces/piece_actions.c
 
 ${OBJECTDIR}/src/backend/board/random_generator.o: src/backend/board/random_generator.c
 	${MKDIR} -p ${OBJECTDIR}/src/backend/board
@@ -130,6 +136,19 @@ ${OBJECTDIR}/src/backend/board/board_nomain.o: ${OBJECTDIR}/src/backend/board/bo
 	    $(COMPILE.c) -O2 -std=c11 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/backend/board/board_nomain.o src/backend/board/board.c;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/backend/board/board.o ${OBJECTDIR}/src/backend/board/board_nomain.o;\
+	fi
+
+${OBJECTDIR}/src/backend/board/pieces/piece_actions_nomain.o: ${OBJECTDIR}/src/backend/board/pieces/piece_actions.o src/backend/board/pieces/piece_actions.c 
+	${MKDIR} -p ${OBJECTDIR}/src/backend/board/pieces
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/backend/board/pieces/piece_actions.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.c) -O2 -std=c11 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/backend/board/pieces/piece_actions_nomain.o src/backend/board/pieces/piece_actions.c;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/backend/board/pieces/piece_actions.o ${OBJECTDIR}/src/backend/board/pieces/piece_actions_nomain.o;\
 	fi
 
 ${OBJECTDIR}/src/backend/board/random_generator_nomain.o: ${OBJECTDIR}/src/backend/board/random_generator.o src/backend/board/random_generator.c 

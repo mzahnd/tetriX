@@ -36,40 +36,60 @@
 
 // === Libraries and header files ===
 
+#    include "../stats/stats_mgmt.h"
+
 // === Constants and Macro definitions ===
 /// @def NUM_PIECES
 /// @brief How many pieces are in the game
-#define NUM_PIECES 7
+#    define NUM_PIECES 7
+
+#    define PIECE_NONE  '\0'
 
 /// @def PIECE_I
 /// @brief Piece I definition used to fill a bag.
-#define PIECE_I     'I'
+#    define PIECE_I     'I'
 
 /// @def PIECE_J
 /// @brief Piece J definition used to fill a bag.
-#define PIECE_J     'J'
+#    define PIECE_J     'J'
 
 /// @def PIECE_L
 /// @brief Piece L definition used to fill a bag.
-#define PIECE_L     'L'
+#    define PIECE_L     'L'
 
 /// @def PIECE_O
 /// @brief Piece O definition used to fill a bag.
-#define PIECE_O     'O'
+#    define PIECE_O     'O'
 
 /// @def PIECE_S
 /// @brief Piece S definition used to fill a bag.
-#define PIECE_S     'S'
+#    define PIECE_S     'S'
 
 /// @def PIECE_T
 /// @brief Piece T definition used to fill a bag.
-#define PIECE_T     'T'
+#    define PIECE_T     'T'
 
 /// @def PIECE_Z
 /// @brief Piece Z definition used to fill a bag.
-#define PIECE_Z     'Z'
+#    define PIECE_Z     'Z'
+
+/// @def BOARD_HEIGHT
+/// @brief Board Height
+#    define BOARD_HEIGHT    20
+
+/// @def BOARD_WIDTH
+/// @brief Board Width
+#    define BOARD_WIDTH     10
+
+#    define INACTIVE_COORD  -1
 
 // === Enumerations, structures and typedefs ===
+enum board_cell
+{
+    MOVING = -1,
+    CLEAR = 0,
+    FIXED
+};
 
 // === Global variables ===
 
@@ -77,4 +97,9 @@
 
 // === Global function definitions ===
 
+const stats_t *
+ask_stats (void);
+
+const char *
+ask_board (void);
 #endif /* BOARD_H */

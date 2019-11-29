@@ -232,7 +232,7 @@ test1 ()
     count_oth = 0;
     count_i = count_j = count_l = count_o = count_s = count_t = count_z = 0;
 
-    random_generator(rnd_bag);
+    random_generator(rnd_bag, NUM_PIECES);
 
     for ( i = 0; i < NUM_PIECES; i++ )
     {
@@ -296,7 +296,7 @@ test2 ()
         old_bag[i] = rnd_bag[i];
     }
 
-    random_generator(rnd_bag);
+    random_generator(rnd_bag, NUM_PIECES);
 
     puts("\nold_bag: ");
     print_arr(old_bag);

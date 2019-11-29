@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['num_5fpieces_3',['NUM_PIECES',['../board_8h.html#ac233b85833d4e82cb395766265eb287d',1,'board.h']]]
+  ['j_4',['J',['../structstats__t_1_1_p_i_e_c_e_s___s_t_r_c.html#a2e3a72e3f174e07b3af5029c4ee1ce88',1,'stats_t::PIECES_STRC']]]
 ];
