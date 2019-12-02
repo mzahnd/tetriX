@@ -92,6 +92,10 @@ init_random_generator (void)
  *  - No more than 12 pieces between two different I pieces.
  * 
  * @param rnd_bag Array of size NUM_PIECES
+ * @param size Size of rnd_bag array. Used to verify if it's actually 
+ * NUM_PIECES
+ * 
+ * @return Nothing
  * 
  * @note init_random_generator() must be called before using this function for
  * the first time.
@@ -103,7 +107,7 @@ random_generator (char * rnd_bag, int size)
 
     char old_bag[NUM_PIECES];
 
-    if ( size <> NUM_PIECES )
+    if ( size != NUM_PIECES )
     {
         fputs("Error on bag size for random_generator()", stderr);
         return;

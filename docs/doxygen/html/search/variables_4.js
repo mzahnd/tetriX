@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['next_45',['next',['../structstats__t.html#a5f3a37439f808c546ba27a25350b64ed',1,'stats_t']]]
+  ['fixed_94',['fixed',['../struct_g_a_m_e_b_o_a_r_d.html#a86fa2f139eca59a8888c0b8ecee7078c',1,'GAMEBOARD']]],
+  ['fpg_95',['FPG',['../struct_g_a_m_e_b_o_a_r_d.html#ad3d2b58bbc1ae90cd04357f9ecaed7e3',1,'GAMEBOARD']]]
 ];

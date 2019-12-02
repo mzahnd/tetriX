@@ -43,6 +43,8 @@
 /// @brief How many pieces are in the game
 #    define NUM_PIECES 7
 
+/// @def PIECE_NONE
+/// @brief Definition to set a PIECE structure as not initialized or cleared.
 #    define PIECE_NONE  '\0'
 
 /// @def PIECE_I
@@ -81,15 +83,87 @@
 /// @brief Board Width
 #    define BOARD_WIDTH     10
 
-#    define INACTIVE_COORD  -1
-
 // === Enumerations, structures and typedefs ===
+
+/**
+ * @brief Board cell definitions
+ */
 enum board_cell
 {
-    MOVING = -1,
-    CLEAR = 0,
-    FIXED
+    /// The cell has a block that is part of a moving piece
+    CELL_MOVING = -1,
+    /// The cell is clear
+    CELL_CLEAR = 0,
+    /// The cell has a fixed piece
+    CELL_FIXED
 };
+
+/**
+ * @brief Coordinates definitions
+ */
+enum coords
+{
+    /// X Coordinate
+    COORD_X,
+    /// Y Coordinate
+    COORD_Y,
+    /// Number of coordinates
+    COORD_NUM
+};
+
+/**
+ * @brief Current game's board object.
+ * 
+ * This structure gives access to different board actions to display it on the
+ * front end of the program.
+ * 
+ * @warning board_init() must be called before using this structure.
+ */
+typedef struct GAMEBOARD
+{
+    /// Destroy current board. All structure information is deleted.
+    void (* destroy) (void);
+
+    /// Get board information
+
+    struct
+    {
+        /// How fast is the board being updated in Frames Per Grid
+        int (* FPG) (void);
+        /// Get coordinate (0,0) of the board (top-left)
+        int * (* board) (void);
+    } ask;
+
+    /// Clear a specific part of the board
+
+    struct
+    {
+        /// Clear all filled lines. Intended to be called after an animation
+        void (* line) (void);
+    } clear;
+
+    /// Manage the current piece
+
+    struct
+    {
+        /// Clear pieces that are...
+
+        struct
+        {
+            /// Clear pieces that are moving (should be only one)
+            void (* moving) (void);
+        } clear;
+
+        struct
+        {
+            /// Set the piece's coordinates as CELL_MOVING
+            void (* moving) (void);
+            /// Set the piece's coordinates as CELL_FIXED
+            void (* fixed) (void);
+        } set;
+    } piece;
+
+} board_t;
 
 // === Global variables ===
 
@@ -97,9 +171,8 @@ enum board_cell
 
 // === Global function definitions ===
 
-const stats_t *
-ask_stats (void);
+// Initialize a GAMEBOARD structure
+void
+board_init (void * gameBoardStruct);
 
-const char *
-ask_board (void);
 #endif /* BOARD_H */

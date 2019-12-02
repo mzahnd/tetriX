@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['main_20page_20title_8',['MAIN PAGE TITLE',['../index.html',1,'']]]
+  ['gameboard_25',['GAMEBOARD',['../struct_g_a_m_e_b_o_a_r_d.html',1,'']]]
 ];

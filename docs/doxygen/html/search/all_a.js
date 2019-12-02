@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['s_23',['S',['../structstats__t_1_1_p_i_e_c_e_s___s_t_r_c.html#a0c493647d06bff498c43169001af7497',1,'stats_t::PIECES_STRC']]],
-  ['score_5fstrc_24',['SCORE_STRC',['../structstats__t_1_1_s_c_o_r_e___s_t_r_c.html',1,'stats_t']]],
-  ['stats_5fmgmt_2eh_25',['stats_mgmt.h',['../stats__mgmt_8h.html',1,'']]],
-  ['stats_5ft_26',['stats_t',['../structstats__t.html',1,'']]]
+  ['next_36',['next',['../structstats__t.html#a5f3a37439f808c546ba27a25350b64ed',1,'stats_t']]],
+  ['none_37',['NONE',['../piece__actions_8h.html#aeb17937ca06d418b5bc07c95e02c5a54ac157bdf0b85a40d2619cbc8bc1ae5fe2',1,'piece_actions.h']]],
+  ['num_5fpieces_38',['NUM_PIECES',['../board_8h.html#ac233b85833d4e82cb395766265eb287d',1,'board.h']]]
 ];

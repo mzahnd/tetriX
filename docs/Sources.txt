@@ -1,0 +1,7 @@
+https://tetris.wiki/Tetris_Guideline
+https://tetris.wiki/Nintendo_Rotation_System
+https://tetris.wiki/Random_Generator
+https://tetris.wiki/Tetris_(NES,_Nintendo)
+https://www.playemulator.com/nes-online/classic-tetris/
+
+https://stackoverflow.com/questions/351733/how-would-one-write-object-oriented-code-in-c

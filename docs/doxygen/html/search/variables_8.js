@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['z_50',['Z',['../structstats__t_1_1_p_i_e_c_e_s___s_t_r_c.html#a8e547e942fb5a765f2f81a5c9decce93',1,'stats_t::PIECES_STRC']]]
+  ['moving_102',['moving',['../struct_g_a_m_e_b_o_a_r_d.html#adc6ebe5d6fa62f1667e39f03114bad98',1,'GAMEBOARD']]]
 ];

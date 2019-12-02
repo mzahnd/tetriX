@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['next_9',['next',['../structstats__t.html#a5f3a37439f808c546ba27a25350b64ed',1,'stats_t']]],
-  ['num_5fpieces_10',['NUM_PIECES',['../board_8h.html#ac233b85833d4e82cb395766265eb287d',1,'board.h']]]
+  ['i_26',['I',['../structstats__t_1_1_p_i_e_c_e_s___s_t_r_c.html#aa7146dbb3117598b7205f0f7b71d6f9a',1,'stats_t::PIECES_STRC']]],
+  ['init_5frandom_5fgenerator_27',['init_random_generator',['../random__generator_8h.html#acb1c945f587d4b5e5c4a496fe8796e7e',1,'random_generator.c']]]
 ];

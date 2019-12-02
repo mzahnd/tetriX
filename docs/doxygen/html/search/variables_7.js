@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['t_48',['T',['../structstats__t_1_1_p_i_e_c_e_s___s_t_r_c.html#abd63ef90d8db1b8afcc570c1f669fa56',1,'stats_t::PIECES_STRC']]],
-  ['top_49',['top',['../structstats__t_1_1_s_c_o_r_e___s_t_r_c.html#a3fdd42ea34070a54e696b3adc28c4be3',1,'stats_t::SCORE_STRC']]]
+  ['l_98',['L',['../structstats__t_1_1_p_i_e_c_e_s___s_t_r_c.html#a00f543e4037bf6b8a92d4cadf81bedcc',1,'stats_t::PIECES_STRC']]],
+  ['level_99',['level',['../structstats__t.html#a9082f945c1d289684d0bcd51ee08e11e',1,'stats_t']]],
+  ['line_100',['line',['../struct_g_a_m_e_b_o_a_r_d.html#a9dba6b702359dac08fd7dec25917d261',1,'GAMEBOARD']]],
+  ['lines_101',['lines',['../structstats__t.html#af98fb56d5a3cbd814e7d9499ea8af845',1,'stats_t']]]
 ];

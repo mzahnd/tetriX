@@ -68,7 +68,11 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a>  </div>
+<a href="#nested-classes">Data Structures</a> &#124;
+<a href="#define-members">Macros</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">board.h File Reference</div>  </div>
 </div><!--header-->
@@ -76,15 +80,25 @@ $(function() {
 
 <p>;  
 <a href="#details">More...</a></p>
-
+<div class="textblock"><code>#include &quot;<a class="el" href="stats__mgmt_8h_source.html">../stats/stats_mgmt.h</a>&quot;</code><br />
+</div>
 <p><a href="board_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_g_a_m_e_b_o_a_r_d.html">GAMEBOARD</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current game's board object.  <a href="struct_g_a_m_e_b_o_a_r_d.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:ac233b85833d4e82cb395766265eb287d"><td class="memItemLeft" align="right" valign="top"><a id="ac233b85833d4e82cb395766265eb287d"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#ac233b85833d4e82cb395766265eb287d">NUM_PIECES</a>&#160;&#160;&#160;7</td></tr>
 <tr class="memdesc:ac233b85833d4e82cb395766265eb287d"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many pieces are in the game. <br /></td></tr>
 <tr class="separator:ac233b85833d4e82cb395766265eb287d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee5c4677b574cb15e229a858e2eaaac9"><td class="memItemLeft" align="right" valign="top"><a id="aee5c4677b574cb15e229a858e2eaaac9"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>PIECE_NONE</b>&#160;&#160;&#160;'\0'</td></tr>
+<tr class="separator:aee5c4677b574cb15e229a858e2eaaac9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91f2021e61458e0777dab6373eedd60b"><td class="memItemLeft" align="right" valign="top"><a id="a91f2021e61458e0777dab6373eedd60b"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#a91f2021e61458e0777dab6373eedd60b">PIECE_I</a>&#160;&#160;&#160;'I'</td></tr>
 <tr class="memdesc:a91f2021e61458e0777dab6373eedd60b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Piece I definition used to fill a bag. <br /></td></tr>
@@ -113,6 +127,44 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#aee707398916fd4752f85e771787c023c">PIECE_Z</a>&#160;&#160;&#160;'Z'</td></tr>
 <tr class="memdesc:aee707398916fd4752f85e771787c023c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Piece Z definition used to fill a bag. <br /></td></tr>
 <tr class="separator:aee707398916fd4752f85e771787c023c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94ed08e31d2f3a38d35f0cb89c762f04"><td class="memItemLeft" align="right" valign="top"><a id="a94ed08e31d2f3a38d35f0cb89c762f04"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#a94ed08e31d2f3a38d35f0cb89c762f04">BOARD_HEIGHT</a>&#160;&#160;&#160;20</td></tr>
+<tr class="memdesc:a94ed08e31d2f3a38d35f0cb89c762f04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Board Height. <br /></td></tr>
+<tr class="separator:a94ed08e31d2f3a38d35f0cb89c762f04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cd139e8d1f7ae83f54c8d477313d8ea"><td class="memItemLeft" align="right" valign="top"><a id="a1cd139e8d1f7ae83f54c8d477313d8ea"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#a1cd139e8d1f7ae83f54c8d477313d8ea">BOARD_WIDTH</a>&#160;&#160;&#160;10</td></tr>
+<tr class="memdesc:a1cd139e8d1f7ae83f54c8d477313d8ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Board Width. <br /></td></tr>
+<tr class="separator:a1cd139e8d1f7ae83f54c8d477313d8ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fac373d164a6d7d396055442fd5e20e"><td class="memItemLeft" align="right" valign="top"><a id="a4fac373d164a6d7d396055442fd5e20e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>INACTIVE_COORD</b>&#160;&#160;&#160;-1</td></tr>
+<tr class="separator:a4fac373d164a6d7d396055442fd5e20e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:aea9f99b90c751f90ae6dd2f35d49bb4e"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_g_a_m_e_b_o_a_r_d.html">GAMEBOARD</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#aea9f99b90c751f90ae6dd2f35d49bb4e">board_t</a></td></tr>
+<tr class="memdesc:aea9f99b90c751f90ae6dd2f35d49bb4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current game's board object.  <a href="board_8h.html#aea9f99b90c751f90ae6dd2f35d49bb4e">More...</a><br /></td></tr>
+<tr class="separator:aea9f99b90c751f90ae6dd2f35d49bb4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a08c0d40577c76f7c726d2bf932b42c07"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07">board_cell</a> { <a class="el" href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07ad73b275c7238a36a34f9ae1cb1c5804e">CELL_MOVING</a> = -1, 
+<a class="el" href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07a0b9a98181effaaf40d469af30f93f2d1">CELL_CLEAR</a> = 0, 
+<a class="el" href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07a3bd82f23682309cea008dfdb69f1feb1">CELL_FIXED</a>
+ }</td></tr>
+<tr class="memdesc:a08c0d40577c76f7c726d2bf932b42c07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Board cell definitions.  <a href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07">More...</a><br /></td></tr>
+<tr class="separator:a08c0d40577c76f7c726d2bf932b42c07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf44f03c6ae7b279f60019d07e59891c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891c">coords</a> { <a class="el" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891ca90b0030b76559a27bf6099278d48d001">COORD_X</a>, 
+<a class="el" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891ca63ebf6d854e134f261b0f03b54fac644">COORD_Y</a>, 
+<a class="el" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891ca5a6527e7417dc323385004a43565feec">COORD_NUM</a>
+ }</td></tr>
+<tr class="memdesc:adf44f03c6ae7b279f60019d07e59891c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Coordinates definitions.  <a href="board_8h.html#adf44f03c6ae7b279f60019d07e59891c">More...</a><br /></td></tr>
+<tr class="separator:adf44f03c6ae7b279f60019d07e59891c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a11fc500f2e7dfea6e7540ca1f8b2193c"><td class="memItemLeft" align="right" valign="top"><a id="a11fc500f2e7dfea6e7540ca1f8b2193c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>board_init</b> (void *gameBoardStruct)</td></tr>
+<tr class="separator:a11fc500f2e7dfea6e7540ca1f8b2193c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>; </p>
@@ -122,7 +174,75 @@ Macros</h2></td></tr>
 Martín E. Zahnd <a href="#" onclick="location.href='mai'+'lto:'+'mza'+'hn'+'d@i'+'tb'+'a.e'+'du'+'.ar'; return false;">mzahn<span style="display: none;">.nosp@m.</span>d@it<span style="display: none;">.nosp@m.</span>ba.ed<span style="display: none;">.nosp@m.</span>u.ar</a></dd></dl>
 <dl class="section date"><dt>Date</dt><dd>27/11/2019, 23:02</dd></dl>
 <dl class="section copyright"><dt>Copyright</dt><dd>GNU General Public License v3 </dd></dl>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Typedef Documentation</h2>
+<a id="aea9f99b90c751f90ae6dd2f35d49bb4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea9f99b90c751f90ae6dd2f35d49bb4e">&#9670;&nbsp;</a></span>board_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct <a class="el" href="struct_g_a_m_e_b_o_a_r_d.html">GAMEBOARD</a>  <a class="el" href="board_8h.html#aea9f99b90c751f90ae6dd2f35d49bb4e">board_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Current game's board object. </p>
+<p>This structure gives access to different board actions to display it on the front end of the program.</p>
+<dl class="section warning"><dt>Warning</dt><dd>board_init() must be called before using this structure. </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a08c0d40577c76f7c726d2bf932b42c07"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08c0d40577c76f7c726d2bf932b42c07">&#9670;&nbsp;</a></span>board_cell</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07">board_cell</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Board cell definitions. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a08c0d40577c76f7c726d2bf932b42c07ad73b275c7238a36a34f9ae1cb1c5804e"></a>CELL_MOVING&#160;</td><td class="fielddoc"><p>The cell has a block that is part of a moving piece. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a08c0d40577c76f7c726d2bf932b42c07a0b9a98181effaaf40d469af30f93f2d1"></a>CELL_CLEAR&#160;</td><td class="fielddoc"><p>The cell is clear. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a08c0d40577c76f7c726d2bf932b42c07a3bd82f23682309cea008dfdb69f1feb1"></a>CELL_FIXED&#160;</td><td class="fielddoc"><p>The cell has a fixed piece. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="adf44f03c6ae7b279f60019d07e59891c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf44f03c6ae7b279f60019d07e59891c">&#9670;&nbsp;</a></span>coords</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891c">coords</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Coordinates definitions. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="adf44f03c6ae7b279f60019d07e59891ca90b0030b76559a27bf6099278d48d001"></a>COORD_X&#160;</td><td class="fielddoc"><p>X Coordinate. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="adf44f03c6ae7b279f60019d07e59891ca63ebf6d854e134f261b0f03b54fac644"></a>COORD_Y&#160;</td><td class="fielddoc"><p>Y Coordinate. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="adf44f03c6ae7b279f60019d07e59891ca5a6527e7417dc323385004a43565feec"></a>COORD_NUM&#160;</td><td class="fielddoc"><p>Number of coordinates. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

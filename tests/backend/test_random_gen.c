@@ -298,11 +298,11 @@ test2 ()
 
     random_generator(rnd_bag, NUM_PIECES);
 
-    puts("\nold_bag: ");
+    /*puts("\nold_bag: ");
     print_arr(old_bag);
 
     puts("rnd_bag: ");
-    print_arr(rnd_bag);
+    print_arr(rnd_bag);*/
 
     for ( i = 0; i < NUM_PIECES; i++ )
     {

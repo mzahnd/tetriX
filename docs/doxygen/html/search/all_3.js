@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['j_4',['J',['../structstats__t_1_1_p_i_e_c_e_s___s_t_r_c.html#a2e3a72e3f174e07b3af5029c4ee1ce88',1,'stats_t::PIECES_STRC']]]
+  ['destroy_21',['destroy',['../struct_g_a_m_e_b_o_a_r_d.html#a2601a17a3e2edc404d8eab8e8b6d40c6',1,'GAMEBOARD']]],
+  ['drop_22',['drop',['../struct_p_i_e_c_e.html#a56da9169fe581b834e971dee4997ecfd',1,'PIECE']]]
 ];
