@@ -47,7 +47,7 @@
 /// @privatesection
 // === Constants and Macro definitions ===
 // Board Height for the matrix. The additional 3 rows are hidden to the user
-#define MBOARD_H     BOARD_HEIGHT + 3 
+#define MBOARD_H     BOARD_HEIGHT + 3
 // Board Width for the matrix.
 #define MBOARD_W     BOARD_WIDTH
 
@@ -217,37 +217,37 @@ askBoard (void)
 static int
 updateBoard (char * bag, int position)
 {
-    // Piece not initialized
-    if ( piece.type == PIECE_NONE )
-    {
-        piece_init(&piece, bag, position);
-    }
+    /*  // Piece not initialized
+      if ( piece.type == PIECE_NONE )
+      {
+          piece_init(&piece, bag, position);
+      }
 
-    // User asked to rotate the piece
-    if ( piece.rotation.status == true )
-    {
-        piece.rotate(gboard, MBOARD_H);
-    }
+      // User asked to rotate the piece
+      if ( piece.rotation.status == true )
+      {
+          piece.rotate(gboard, MBOARD_H);
+      }
 
-    // User asked soft drop
-    if ( piece.drop == true )
-    {
-        // Update the piece in the board
-        piece.update(bStruct, gboard, MBOARD_H);
+      // User asked soft drop
+      if ( piece.drop == true )
+      {
+          // Update the piece in the board
+          piece.update(bStruct, gboard, MBOARD_H);
 
-        // FIXME Add some timer here (FPG dependent)
+          // FIXME Add some timer here (FPG dependent)
 
-        piece.drop = false;
-    }
-
+          piece.drop = false;
+      }
+     */
     // User asked to shift the piece (either left or right)
     /*if ( piece.shift != NONE )
     {
         piece.shift(gboard, BOARD_HEIGHT);
     }*/
-
-    // Update the piece in the board
-    piece.update(bStruct, gboard, MBOARD_H);
+    /*
+        // Update the piece in the board
+        piece.update(bStruct, gboard, MBOARD_H);*/
 
     return 0;
 }
@@ -286,17 +286,17 @@ clearMoving (void)
 static void
 setMoving (void)
 {
-    gboard[ piece.coord.b1[COORD_Y] ][ \
-                        piece.coord.b1[COORD_X] ] = CELL_MOVING;
+    gboard[ piece.get.coordinates[0][COORD_Y] ][ \
+                        piece.get.coordinates[0][COORD_X] ] = CELL_MOVING;
 
-    gboard[ piece.coord.b2[COORD_Y] ][ \
-                        piece.coord.b2[COORD_X] ] = CELL_MOVING;
+    gboard[ piece.get.coordinates[1][COORD_Y] ][ \
+                        piece.get.coordinates[1][COORD_X] ] = CELL_MOVING;
 
-    gboard[ piece.coord.b3[COORD_Y] ][ \
-                        piece.coord.b3[COORD_X] ] = CELL_MOVING;
+    gboard[ piece.get.coordinates[2][COORD_Y] ][ \
+                        piece.get.coordinates[2][COORD_X] ] = CELL_MOVING;
 
-    gboard[ piece.coord.b4[COORD_Y] ][ \
-                        piece.coord.b4[COORD_X] ] = CELL_MOVING;
+    gboard[ piece.get.coordinates[3][COORD_Y] ][ \
+                        piece.get.coordinates[3][COORD_X] ] = CELL_MOVING;
 }
 
 /**
@@ -309,15 +309,15 @@ setMoving (void)
 static void
 setFixed (void)
 {
-    gboard[ piece.coord.b1[COORD_Y] ][ \
-                        piece.coord.b1[COORD_X] ] = CELL_FIXED;
+    gboard[ piece.get.coordinates[0][COORD_Y] ][ \
+                        piece.get.coordinates[0][COORD_X] ] = CELL_FIXED;
 
-    gboard[ piece.coord.b2[COORD_Y] ][ \
-                        piece.coord.b2[COORD_X] ] = CELL_FIXED;
+    gboard[ piece.get.coordinates[1][COORD_Y] ][ \
+                        piece.get.coordinates[1][COORD_X] ] = CELL_FIXED;
 
-    gboard[ piece.coord.b3[COORD_Y] ][ \
-                        piece.coord.b3[COORD_X] ] = CELL_FIXED;
+    gboard[ piece.get.coordinates[2][COORD_Y] ][ \
+                        piece.get.coordinates[2][COORD_X] ] = CELL_FIXED;
 
-    gboard[ piece.coord.b4[COORD_Y] ][ \
-                        piece.coord.b4[COORD_X] ] = CELL_FIXED;
+    gboard[ piece.get.coordinates[3][COORD_Y] ][ \
+                        piece.get.coordinates[3][COORD_X] ] = CELL_FIXED;
 }

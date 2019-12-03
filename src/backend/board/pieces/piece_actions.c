@@ -41,14 +41,27 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+// For BOARD_WIDTH definition in this header and PIECE_X in the .c file
+#include "../board.h"
+
 // This file
 #include "piece_actions.h"
 
 /// @privatesection
 // === Constants and Macro definitions ===
 
+/**
+ * @def CELL(r,c)
+ * @brief Returns the information in the row (r) and column (c) of the board
+ */
+#define CELL(r,c) ( *( (currentPiece.board.r0c0) + \
+                    ( ((r) * currentPiece.board.width) + (c) ) ) )
+
 // === Enumerations, structures and typedefs ===
 
+/**
+ * @brief Actions the piece can perform
+ */
 enum actions
 {
     SHIFTL_PIECE = 0,
@@ -57,72 +70,119 @@ enum actions
     DROP_PIECE
 };
 
+/**
+ * @brief A name for each block in the piece
+ */
+enum block
+{
+    b1 = 0,
+    b2,
+    b3,
+    b4
+};
+
+/**
+ * @brief Used to indicate a function that it must add (+) or substract (-)
+ */
 enum plusminus
 {
     PLUS = 0,
     MINUS
 };
 
+/**
+ * @brief Private variables of a piece object.
+ * 
+ * This structure let's the piece's related functions modify it. Contains the
+ * needed parameters to shift it, drop it and rotate it, as well as the board
+ * where the given piece exists.
+ * 
+ * @note When setting a value to @verbatim true @endverbatim or 
+ * @verbatim false @endverbatim make sure to be using stdbool.h
+ * 
+ * @note Public PIECE structure is located in piece_actions.h
+ */
+typedef struct PRIVATE_PIECE
+{
+    /// Public structure of this piece
+    piece_t * public;
+
+    /// Board structure where this piece exists
+    board_t * pieceBoard;
+
+    /// Type of piece. Set using definitions in board.h file.
+    char type;
+
+    /// Piece's board information
+
+    struct
+    {
+        /// Top left corner of the board. In a 2D array, it will be board[0][0]
+        const int * r0c0;
+        /// Board height
+        int height;
+        /// Board width
+        int width;
+    } board;
+
+    /// Board coordinates of the piece. Use coords enum in board.h
+    int coord[4][COORD_NUM];
+
+    /// LEFT or RIGHT: perform shifting ; NONE: don't perform any shifting
+    int shifting;
+
+    /// Rotation status (true or false) and which is the piece's position
+
+    struct
+    {
+        /// True: user asked for piece rotation ; False: don't rotate the piece
+        int status;
+        /// Piece position (from 1 to 4). Do not manually edit this variable
+        int position;
+    } rotation;
+
+} piece_private_t;
+
 // === Global variables ===
 
 // === Function prototypes for private functions with file level scope ===
 // Initialize piece's type and coordinates in the PIECE structure
 static int
-init (const char * bag, const int position);
+init (const char piece);
 
-// Perform piece rotation
+// Shift the piece in the desired direction
 static void
-rotate (int board [][BOARD_WIDTH], const int boardHeight);
+shift (int direction);
 
-// Rotate an I piece
+// Perform a soft drop
 static void
-rotate_I (int board [][BOARD_WIDTH], const int boardHeight);
+softDrop (void);
 
-// Rotate a J piece
+// Updates the piece in the board (called from public PIECE)
 static void
-rotate_J (int board [][BOARD_WIDTH], const int boardHeight);
-
-// Rotate a L piece
-static void
-rotate_L (int board [][BOARD_WIDTH], const int boardHeight);
-
-// Rotate a S piece
-static void
-rotate_S (int board [][BOARD_WIDTH], const int boardHeight);
-
-// Rotate a T piece
-static void
-rotate_T (int board [][BOARD_WIDTH], const int boardHeight);
-
-// Rotate a Z piece
-static void
-rotate_Z (int board [][BOARD_WIDTH], const int boardHeight);
-
-// Updates piece coordinates with the ones passed as argument
-static void
-update_coordinates (int c1[COORD_NUM], int c2[COORD_NUM], int c3[COORD_NUM], int c4[COORD_NUM]);
-
-// Update piece position in PIECE structure
-static void
-update_rotation (void);
-
-// Updates the piece position or status in the board
-static void
-updatePiece (struct GAMEBOARD * boardStr,
-             int board[][BOARD_WIDTH], int boardHeight);
-
-// Given an action from enum actions, verify if it can be performed.
-static int
-verifyFixedPieces (int board[][BOARD_WIDTH], int boardHeight,
-                   const int action);
+update (void);
 
 // Increment or decrement by 1 the piece's coordinates on the given axis
 static void
-updatePCoordinates (int coord, int pm);
+moveOneCell (int coord, int pm);
+
+// Updates the piece position or status (moving to fixed) in the board
+static void
+updatePiece (void);
+
+// Update coordinates in PIECE structure
+static void
+updatePublicCoordinates (void);
+
+// Given an action using actions enum, verify if it can be performed.
+static int
+verifyFixedPieces (const int action);
+
 // === ROM Constant variables with file level scope ===
 
 // === Static variables and constant variables with file level scope ===
-static piece_t * currentPiece = NULL;
+/// Piece to be working with
+static piece_private_t currentPiece;
 
 // === Global function definitions ===
 /// @publicsection
@@ -134,46 +194,73 @@ static piece_t * currentPiece = NULL;
  * with the piece in the given @p position of the @p bag.
  * 
  * @param pstruct PIECE structure to initialize.
- * @param bag Bag with set of random pieces generated using random_generator().
- * @param position Piece's position in the bag.
+ * @param boardStr GAMEBOARD structure of the board with the piece
+ * @param board Top left corner of the board with the piece (in a 2D array it
+ * will be equivalent to board[0][0])
+ * @param boardHeight Board Height
+ * @param boardWidth Board Width
+ * @param piece Piece to initialize
+ * 
  * @return Success: 0
  * @return Fail: Non 0
  */
 int
-piece_init (struct PIECE * pstruct,
-            const char * bag, const int position)
+piece_init (struct PIECE * pstruct, struct GAMEBOARD * boardStr,
+            int * board, int boardHeight, int boardWidth,
+            const char piece)
 {
-    int exitStatus = 0;
+    int exitStatus = -1;
 
     // Check that no pointer is NULL
     if ( pstruct == NULL )
     {
         fputs("PIECE struct returned NULL.", stderr);
-        exitStatus = -1;
     }
 
-    else if ( bag == NULL )
+    else if ( boardStr == NULL )
     {
-        fputs("BAG returned NULL.", stderr);
-        exitStatus = -1;
+        fputs("GAMEBOARD struct returned NULL", stderr);
+    }
+
+    else if ( board == NULL )
+    {
+        fputs("BOARD returned NULL", stderr);
+    }
+
+        // Check that board dimensions aren't 0 or negative
+    else if ( boardHeight < 1 || boardWidth < 1 )
+    {
+        fputs("Invalid boardHeigth or boardWidth", stderr);
     }
 
         // If no NULL pointer is given, initialize the piece
     else
     {
         // Save the pointer to PIECE in a variable to avoid asking it again
-        currentPiece = pstruct;
+        currentPiece.public = pstruct;
+
+        // Save the pointer to GAMEBOARD in a variable to avoid asking it again
+        currentPiece.pieceBoard = boardStr;
+
+        // Save the top left position of the board and its size
+        currentPiece.board.r0c0 = board;
+        currentPiece.board.height = boardHeight;
+        currentPiece.board.width = boardWidth;
 
         // Set function pointers
-        // Update piece in the board
-        pstruct -> update = &updatePiece;
         // Rotate piece
-        pstruct -> rotate = &rotate;
+        //currentPiece.public -> rotate = &rotate;
+        // Shift piece
+        currentPiece.public -> shift = &shift;
+        currentPiece.public -> softDrop = &softDrop;
+        // Update piece in the board
+        currentPiece.public -> update = &update;
 
         // Initialize the piece in the given position of the bag
-        if ( init(bag, position) )
+        if ( !init(piece) )
         {
-            exitStatus = -1;
+            exitStatus = 0;
+            updatePublicCoordinates();
         }
     }
 
@@ -198,22 +285,19 @@ piece_init (struct PIECE * pstruct,
  * @return Fail: Non 0
  */
 static int
-init (const char * bag, const int position)
+init (const char piece)
 {
     int exitStatus = 0;
 
     // No rotation
-    currentPiece -> rotation.status = false;
-    currentPiece -> rotation.position = 1;
-
-    // No soft drop
-    currentPiece -> drop = false;
+    currentPiece.rotation.status = false;
+    currentPiece.rotation.position = 1;
 
     // No shifting
-    currentPiece -> shifting = NONE;
+    currentPiece.shifting = NONE;
 
     // Coordinates
-    switch ( bag[position] )
+    switch ( piece )
     {
             /*
              *     ---------------------
@@ -227,19 +311,20 @@ init (const char * bag, const int position)
              *     ---------------------
              */
         case PIECE_I:
-            currentPiece -> type = PIECE_I;
+            currentPiece.public -> type = PIECE_I;
+            currentPiece.type = PIECE_I;
 
             // X coordinates
-            currentPiece -> coord.b1[COORD_X] = BOARD_WIDTH / 2 - 2;
-            currentPiece -> coord.b2[COORD_X] = BOARD_WIDTH / 2 - 1;
-            currentPiece -> coord.b3[COORD_X] = BOARD_WIDTH / 2;
-            currentPiece -> coord.b4[COORD_X] = BOARD_WIDTH / 2 + 1;
+            currentPiece.coord[b1][COORD_X] = currentPiece.board.width / 2 - 2;
+            currentPiece.coord[b2][COORD_X] = currentPiece.board.width / 2 - 1;
+            currentPiece.coord[b3][COORD_X] = currentPiece.board.width / 2;
+            currentPiece.coord[b4][COORD_X] = currentPiece.board.width / 2 + 1;
 
             // Y coordinates
-            currentPiece -> coord.b1[COORD_Y] = 1;
-            currentPiece -> coord.b2[COORD_Y] = 1;
-            currentPiece -> coord.b3[COORD_Y] = 1;
-            currentPiece -> coord.b4[COORD_Y] = 1;
+            currentPiece.coord[b1][COORD_Y] = 1;
+            currentPiece.coord[b2][COORD_Y] = 1;
+            currentPiece.coord[b3][COORD_Y] = 1;
+            currentPiece.coord[b4][COORD_Y] = 1;
 
             break;
 
@@ -255,19 +340,20 @@ init (const char * bag, const int position)
              *     ---------------------
              */
         case PIECE_J:
-            currentPiece -> type = PIECE_J;
+            currentPiece.public -> type = PIECE_J;
+            currentPiece.type = PIECE_J;
 
             // X coordinates
-            currentPiece -> coord.b1[COORD_X] = BOARD_WIDTH / 2 - 2;
-            currentPiece -> coord.b2[COORD_X] = BOARD_WIDTH / 2 - 1;
-            currentPiece -> coord.b3[COORD_X] = BOARD_WIDTH / 2;
-            currentPiece -> coord.b4[COORD_X] = BOARD_WIDTH / 2;
+            currentPiece.coord[b1][COORD_X] = currentPiece.board.width / 2 - 2;
+            currentPiece.coord[b2][COORD_X] = currentPiece.board.width / 2 - 1;
+            currentPiece.coord[b3][COORD_X] = currentPiece.board.width / 2;
+            currentPiece.coord[b4][COORD_X] = currentPiece.board.width / 2;
 
             // Y coordinates
-            currentPiece -> coord.b1[COORD_Y] = 0;
-            currentPiece -> coord.b2[COORD_Y] = 0;
-            currentPiece -> coord.b3[COORD_Y] = 0;
-            currentPiece -> coord.b4[COORD_Y] = 1;
+            currentPiece.coord[b1][COORD_Y] = 0;
+            currentPiece.coord[b2][COORD_Y] = 0;
+            currentPiece.coord[b3][COORD_Y] = 0;
+            currentPiece.coord[b4][COORD_Y] = 1;
             break;
 
             /*
@@ -282,19 +368,20 @@ init (const char * bag, const int position)
              *     ---------------------
              */
         case PIECE_L:
-            currentPiece -> type = PIECE_L;
+            currentPiece.public -> type = PIECE_L;
+            currentPiece.type = PIECE_L;
 
             // X coordinates
-            currentPiece -> coord.b1[COORD_X] = BOARD_WIDTH / 2 - 2;
-            currentPiece -> coord.b2[COORD_X] = BOARD_WIDTH / 2 - 1;
-            currentPiece -> coord.b3[COORD_X] = BOARD_WIDTH / 2;
-            currentPiece -> coord.b4[COORD_X] = BOARD_WIDTH / 2 - 2;
+            currentPiece.coord[b1][COORD_X] = currentPiece.board.width / 2 - 2;
+            currentPiece.coord[b2][COORD_X] = currentPiece.board.width / 2 - 1;
+            currentPiece.coord[b3][COORD_X] = currentPiece.board.width / 2;
+            currentPiece.coord[b4][COORD_X] = currentPiece.board.width / 2 - 2;
 
             // Y coordinates
-            currentPiece -> coord.b1[COORD_Y] = 0;
-            currentPiece -> coord.b2[COORD_Y] = 0;
-            currentPiece -> coord.b3[COORD_Y] = 0;
-            currentPiece -> coord.b4[COORD_Y] = 1;
+            currentPiece.coord[b1][COORD_Y] = 0;
+            currentPiece.coord[b2][COORD_Y] = 0;
+            currentPiece.coord[b3][COORD_Y] = 0;
+            currentPiece.coord[b4][COORD_Y] = 1;
             break;
 
             /*
@@ -309,19 +396,20 @@ init (const char * bag, const int position)
              *     ---------------------
              */
         case PIECE_O:
-            currentPiece -> type = PIECE_O;
+            currentPiece.public -> type = PIECE_O;
+            currentPiece.type = PIECE_O;
 
             // X coordinates
-            currentPiece -> coord.b1[COORD_X] = BOARD_WIDTH / 2 - 1;
-            currentPiece -> coord.b2[COORD_X] = BOARD_WIDTH / 2;
-            currentPiece -> coord.b3[COORD_X] = BOARD_WIDTH / 2 - 1;
-            currentPiece -> coord.b4[COORD_X] = BOARD_WIDTH / 2;
+            currentPiece.coord[b1][COORD_X] = currentPiece.board.width / 2 - 1;
+            currentPiece.coord[b2][COORD_X] = currentPiece.board.width / 2;
+            currentPiece.coord[b3][COORD_X] = currentPiece.board.width / 2 - 1;
+            currentPiece.coord[b4][COORD_X] = currentPiece.board.width / 2;
 
             // Y coordinates
-            currentPiece -> coord.b1[COORD_Y] = 0;
-            currentPiece -> coord.b2[COORD_Y] = 0;
-            currentPiece -> coord.b3[COORD_Y] = 1;
-            currentPiece -> coord.b4[COORD_Y] = 1;
+            currentPiece.coord[b1][COORD_Y] = 0;
+            currentPiece.coord[b2][COORD_Y] = 0;
+            currentPiece.coord[b3][COORD_Y] = 1;
+            currentPiece.coord[b4][COORD_Y] = 1;
             break;
 
             /*
@@ -336,19 +424,20 @@ init (const char * bag, const int position)
              *     ---------------------
              */
         case PIECE_S:
-            currentPiece -> type = PIECE_S;
+            currentPiece.public -> type = PIECE_S;
+            currentPiece.type = PIECE_S;
 
             // X coordinates
-            currentPiece -> coord.b1[COORD_X] = BOARD_WIDTH / 2 - 1;
-            currentPiece -> coord.b2[COORD_X] = BOARD_WIDTH / 2;
-            currentPiece -> coord.b3[COORD_X] = BOARD_WIDTH / 2 - 2;
-            currentPiece -> coord.b4[COORD_X] = BOARD_WIDTH / 2 - 1;
+            currentPiece.coord[b1][COORD_X] = currentPiece.board.width / 2 - 1;
+            currentPiece.coord[b2][COORD_X] = currentPiece.board.width / 2;
+            currentPiece.coord[b3][COORD_X] = currentPiece.board.width / 2 - 2;
+            currentPiece.coord[b4][COORD_X] = currentPiece.board.width / 2 - 1;
 
             // Y coordinates
-            currentPiece -> coord.b1[COORD_Y] = 0;
-            currentPiece -> coord.b2[COORD_Y] = 0;
-            currentPiece -> coord.b3[COORD_Y] = 1;
-            currentPiece -> coord.b4[COORD_Y] = 1;
+            currentPiece.coord[b1][COORD_Y] = 0;
+            currentPiece.coord[b2][COORD_Y] = 0;
+            currentPiece.coord[b3][COORD_Y] = 1;
+            currentPiece.coord[b4][COORD_Y] = 1;
             break;
 
             /*
@@ -363,19 +452,20 @@ init (const char * bag, const int position)
              *     ---------------------
              */
         case PIECE_T:
-            currentPiece -> type = PIECE_T;
+            currentPiece.public -> type = PIECE_T;
+            currentPiece.type = PIECE_T;
 
             // X coordinates
-            currentPiece -> coord.b1[COORD_X] = BOARD_WIDTH / 2 - 2;
-            currentPiece -> coord.b2[COORD_X] = BOARD_WIDTH / 2 - 1;
-            currentPiece -> coord.b3[COORD_X] = BOARD_WIDTH / 2;
-            currentPiece -> coord.b4[COORD_X] = BOARD_WIDTH / 2 - 1;
+            currentPiece.coord[b1][COORD_X] = currentPiece.board.width / 2 - 2;
+            currentPiece.coord[b2][COORD_X] = currentPiece.board.width / 2 - 1;
+            currentPiece.coord[b3][COORD_X] = currentPiece.board.width / 2;
+            currentPiece.coord[b4][COORD_X] = currentPiece.board.width / 2 - 1;
 
             // Y coordinates
-            currentPiece -> coord.b1[COORD_Y] = 0;
-            currentPiece -> coord.b2[COORD_Y] = 0;
-            currentPiece -> coord.b3[COORD_Y] = 0;
-            currentPiece -> coord.b4[COORD_Y] = 1;
+            currentPiece.coord[b1][COORD_Y] = 0;
+            currentPiece.coord[b2][COORD_Y] = 0;
+            currentPiece.coord[b3][COORD_Y] = 0;
+            currentPiece.coord[b4][COORD_Y] = 1;
             break;
 
             /*
@@ -390,19 +480,20 @@ init (const char * bag, const int position)
              *     ---------------------
              */
         case PIECE_Z:
-            currentPiece -> type = PIECE_Z;
+            currentPiece.public -> type = PIECE_Z;
+            currentPiece.type = PIECE_Z;
 
             // X coordinates
-            currentPiece -> coord.b1[COORD_X] = BOARD_WIDTH / 2 - 2;
-            currentPiece -> coord.b2[COORD_X] = BOARD_WIDTH / 2 - 1;
-            currentPiece -> coord.b3[COORD_X] = BOARD_WIDTH / 2 - 1;
-            currentPiece -> coord.b4[COORD_X] = BOARD_WIDTH / 2;
+            currentPiece.coord[b1][COORD_X] = currentPiece.board.width / 2 - 2;
+            currentPiece.coord[b2][COORD_X] = currentPiece.board.width / 2 - 1;
+            currentPiece.coord[b3][COORD_X] = currentPiece.board.width / 2 - 1;
+            currentPiece.coord[b4][COORD_X] = currentPiece.board.width / 2;
 
             // Y coordinates
-            currentPiece -> coord.b1[COORD_Y] = 0;
-            currentPiece -> coord.b2[COORD_Y] = 0;
-            currentPiece -> coord.b3[COORD_Y] = 1;
-            currentPiece -> coord.b4[COORD_Y] = 1;
+            currentPiece.coord[b1][COORD_Y] = 0;
+            currentPiece.coord[b2][COORD_Y] = 0;
+            currentPiece.coord[b3][COORD_Y] = 1;
+            currentPiece.coord[b4][COORD_Y] = 1;
             break;
 
             // Bad piece
@@ -415,1015 +506,95 @@ init (const char * bag, const int position)
 }
 
 /**
- * @brief Perform piece rotation
+ * @brief Shift the piece in the desired direction
  * 
- *  rotation.status must be also set to true
+ * @param direction Direction to shift the piece (LEFT or RIGHT, according to
+ * shiftingTypes enum).
  * 
- * @param board Board where the piece must be updated
- * @param boardHeight Board height.
- */
-static void
-rotate (int board [][BOARD_WIDTH], const int boardHeight)
-{
-    // Verify if board points to NULL for some reason
-    if ( board == NULL )
-    {
-        fputs("Bad board matrix.", stderr);
-        return;
-    }
-
-    // Rotate piece according to it's type
-    switch ( currentPiece -> type )
-    {
-        case PIECE_I:
-            rotate_I(board, boardHeight);
-            break;
-
-        case PIECE_J:
-            rotate_J(board, boardHeight);
-            break;
-
-        case PIECE_L:
-            rotate_L(board, boardHeight);
-            break;
-
-        case PIECE_O:
-            // Nothing to rotate
-            update_rotation();
-            break;
-
-        case PIECE_S:
-            rotate_S(board, boardHeight);
-            break;
-
-        case PIECE_T:
-            rotate_T(board, boardHeight);
-            break;
-
-        case PIECE_Z:
-            rotate_Z(board, boardHeight);
-            break;
-
-            // Although it should never happen, an error message is printed if
-            // a bad piece is written in piece type.
-        default:
-            fputs("Bad PIECE type for rotation.", stderr);
-            break;
-    }
-}
-
-/**
- * @brief Rotate an I piece
- * 
- * @param board Board where the piece must be updated
- * @param boardHeight Board height.
- */
-static void
-rotate_I (int board [][BOARD_WIDTH], const int boardHeight)
-{
-    int new_b1[COORD_NUM], new_b2[COORD_NUM];
-    int new_b3[COORD_NUM], new_b4[COORD_NUM];
-
-    switch ( currentPiece -> rotation.position )
-    {
-            /*
-             * ---------------------        ---------------------
-             * |    |    |    |    |        |    |    | b1 |    |
-             * ---------------------        ---------------------
-             * |    |    |    |    |        |    |    | b2 |    |
-             * ---------------------  --->  ---------------------
-             * | b1 | b2 | b3 | b4 |        |    |    | b3 |    |
-             * ---------------------        --------------------- 
-             * |    |    |    |    |        |    |    | b4 |    |
-             * ---------------------        ---------------------
-             */
-        case 1:
-        case 3:
-            // Possible new coordinates
-            new_b1[COORD_X] = currentPiece -> coord.b1[COORD_X] + 2;
-            new_b1[COORD_Y] = currentPiece -> coord.b1[COORD_Y] - 2;
-
-            new_b2[COORD_X] = currentPiece -> coord.b2[COORD_X] + 1;
-            new_b2[COORD_Y] = currentPiece -> coord.b2[COORD_Y] - 1;
-
-            new_b3[COORD_X] = currentPiece -> coord.b3[COORD_X];
-            new_b3[COORD_Y] = currentPiece -> coord.b3[COORD_Y];
-
-            new_b4[COORD_X] = currentPiece -> coord.b4[COORD_X] - 1;
-            new_b4[COORD_Y] = currentPiece -> coord.b4[COORD_Y] + 1;
-
-            // Verify if can be rotated
-            /*
-             * Piece musn't "fall out" of the board and no other piece should 
-             * be fixed on it's new position.
-             * Block b3 is not checked as it keeps the same position and will
-             * always be a CELL_MOVING coordinate 
-             */
-            if ( new_b4[COORD_Y] < boardHeight &&
-                 board[ new_b1[COORD_X] ][ new_b1[COORD_Y] ] == CELL_CLEAR &&
-                 board[ new_b2[COORD_X] ][ new_b2[COORD_Y] ] == CELL_CLEAR &&
-                 board[ new_b4[COORD_X] ][ new_b4[COORD_Y] ] == CELL_CLEAR )
-            {
-                // If it can be rotated, do it
-                update_coordinates(new_b1, new_b2, new_b3, new_b4);
-                update_rotation();
-            }
-            break;
-
-            /*
-             * ---------------------        ---------------------
-             * |    |    | b1 |    |        |    |    |    |    |
-             * ---------------------        ---------------------
-             * |    |    | b2 |    |        |    |    |    |    |
-             * ---------------------  --->  ---------------------
-             * |    |    | b3 |    |        | b1 | b2 | b3 | b4 |
-             * ---------------------        ---------------------
-             * |    |    | b4 |    |        |    |    |    |    |
-             * ---------------------        ---------------------
-             */
-        case 2:
-        case 4:
-            // Possible new coordinates
-            new_b1[COORD_X] = currentPiece -> coord.b1[COORD_X] - 2;
-            new_b1[COORD_Y] = currentPiece -> coord.b1[COORD_Y] + 2;
-
-            new_b2[COORD_X] = currentPiece -> coord.b2[COORD_X] - 1;
-            new_b2[COORD_Y] = currentPiece -> coord.b2[COORD_Y] + 1;
-
-            new_b3[COORD_X] = currentPiece -> coord.b3[COORD_X];
-            new_b3[COORD_Y] = currentPiece -> coord.b3[COORD_Y];
-
-            new_b4[COORD_X] = currentPiece -> coord.b4[COORD_X] + 1;
-            new_b4[COORD_Y] = currentPiece -> coord.b4[COORD_Y] - 1;
-
-            // Verify if can be rotated
-            /*
-             * Piece musn't "fall out" of the board and no other piece should 
-             * be fixed on it's new position.
-             * Block b3 is not checked as it keeps the same position and will
-             * always be a CELL_MOVING coordinate 
-             */
-            if ( new_b1[COORD_X] >= 0 && new_b4[COORD_X] < BOARD_WIDTH &&
-                 board[ new_b1[COORD_X] ][ new_b1[COORD_Y] ] == CELL_CLEAR &&
-                 board[ new_b2[COORD_X] ][ new_b2[COORD_Y] ] == CELL_CLEAR &&
-                 board[ new_b4[COORD_X] ][ new_b4[COORD_Y] ] == CELL_CLEAR )
-            {
-                // If it can be rotated, do it
-                update_coordinates(new_b1, new_b2, new_b3, new_b4);
-                update_rotation();
-            }
-
-            break;
-
-            // If a bad rotation position is set, reset it to avoid another 
-            // error
-        default:
-            update_rotation();
-            break;
-    }
-}
-
-/**
- * @brief Rotate a J piece
- * 
- * @param board Board where the piece must be updated
- * @param boardHeight Board height.
- */
-static void
-rotate_J (int board [][BOARD_WIDTH], const int boardHeight)
-{
-    int new_b1[COORD_NUM], new_b2[COORD_NUM];
-    int new_b3[COORD_NUM], new_b4[COORD_NUM];
-
-    switch ( currentPiece -> rotation.position )
-    {
-            /*
-             * ---------------------        ---------------------
-             * |    |    |    |    |        |    |    |    |    |
-             * ---------------------        ---------------------
-             * |    |    |    |    |        |    | b1 |    |    |
-             * ---------------------  --->  ---------------------
-             * | b1 | b2 | b3 |    |        |    | b2 |    |    |
-             * ---------------------        --------------------- 
-             * |    |    | b4 |    |        | b4 | b3 |    |    |
-             * ---------------------        ---------------------
-             */
-        case 1:
-            // Possible new coordinates
-            new_b1[COORD_X] = currentPiece -> coord.b1[COORD_X] + 1;
-            new_b1[COORD_Y] = currentPiece -> coord.b1[COORD_Y] - 1;
-
-            new_b2[COORD_X] = currentPiece -> coord.b2[COORD_X];
-            new_b2[COORD_Y] = currentPiece -> coord.b2[COORD_Y];
-
-            new_b3[COORD_X] = currentPiece -> coord.b3[COORD_X] - 1;
-            new_b3[COORD_Y] = currentPiece -> coord.b3[COORD_Y] - 1;
-
-            new_b4[COORD_X] = currentPiece -> coord.b4[COORD_X] - 2;
-            new_b4[COORD_Y] = currentPiece -> coord.b4[COORD_Y];
-
-            // Verify if can be rotated
-            /*
-             * Piece musn't "fall out" of the board and no other piece should 
-             * be fixed on it's new position.
-             * Block b2 is not checked as it keeps the same position and will
-             * always be a CELL_MOVING coordinate 
-             */
-            if ( board[ new_b1[COORD_X] ][ new_b1[COORD_Y] ] == CELL_CLEAR &&
-                 board[ new_b3[COORD_X] ][ new_b3[COORD_Y] ] == CELL_CLEAR &&
-                 board[ new_b4[COORD_X] ][ new_b4[COORD_Y] ] == CELL_CLEAR )
-            {
-                // If it can be rotated, do it
-                update_coordinates(new_b1, new_b2, new_b3, new_b4);
-                update_rotation();
-            }
-            break;
-
-            /*
-             * ---------------------        ---------------------
-             * |    |    |    |    |        |    |    |    |    |
-             * ---------------------        ---------------------
-             * |    | b1 |    |    |        | b4 |    |    |    |
-             * ---------------------  --->  ---------------------
-             * |    | b2 |    |    |        | b3 | b2 | b1 |    |
-             * ---------------------        --------------------- 
-             * | b4 | b3 |    |    |        |    |    |    |    |
-             * ---------------------        ---------------------
-             */
-        case 2:
-            // Possible new coordinates
-            new_b1[COORD_X] = currentPiece -> coord.b1[COORD_X] + 1;
-            new_b1[COORD_Y] = currentPiece -> coord.b1[COORD_Y] + 1;
-
-            new_b2[COORD_X] = currentPiece -> coord.b2[COORD_X];
-            new_b2[COORD_Y] = currentPiece -> coord.b2[COORD_Y];
-
-            new_b3[COORD_X] = currentPiece -> coord.b3[COORD_X] - 1;
-            new_b3[COORD_Y] = currentPiece -> coord.b3[COORD_Y] - 1;
-
-            new_b4[COORD_X] = currentPiece -> coord.b4[COORD_X] - 2;
-            new_b4[COORD_Y] = currentPiece -> coord.b4[COORD_Y];
-
-            // Verify if can be rotated
-            /*
-             * Piece musn't "fall out" of the board and no other piece should 
-             * be fixed on it's new position.
-             * Block b2 is not checked as it keeps the same position and will
-             * always be a CELL_MOVING coordinate 
-             */
-            if ( new_b1[COORD_X] < BOARD_WIDTH &&
-                 board[ new_b1[COORD_X] ][ new_b1[COORD_Y] ] == CELL_CLEAR &&
-                 board[ new_b3[COORD_X] ][ new_b3[COORD_Y] ] == CELL_CLEAR &&
-                 board[ new_b4[COORD_X] ][ new_b4[COORD_Y] ] == CELL_CLEAR )
-            {
-                // If it can be rotated, do it
-                update_coordinates(new_b1, new_b2, new_b3, new_b4);
-                update_rotation();
-            }
-
-            break;
-
-            /*
-             * ---------------------        ---------------------
-             * |    |    |    |    |        |    |    |    |    |
-             * ---------------------        ---------------------
-             * | b4 |    |    |    |        |    | b3 | b4 |    |
-             * ---------------------  --->  ---------------------
-             * | b3 | b2 | b1 |    |        |    | b2 |    |    |
-             * ---------------------        --------------------- 
-             * |    |    |    |    |        |    | b1 |    |    |
-             * ---------------------        ---------------------
-             */
-        case 3:
-            // Possible new coordinates
-            new_b1[COORD_X] = currentPiece -> coord.b1[COORD_X] - 1;
-            new_b1[COORD_Y] = currentPiece -> coord.b1[COORD_Y] + 1;
-
-            new_b2[COORD_X] = currentPiece -> coord.b2[COORD_X];
-            new_b2[COORD_Y] = currentPiece -> coord.b2[COORD_Y];
-
-            new_b3[COORD_X] = currentPiece -> coord.b3[COORD_X] + 1;
-            new_b3[COORD_Y] = currentPiece -> coord.b3[COORD_Y] - 1;
-
-            new_b4[COORD_X] = currentPiece -> coord.b4[COORD_X] + 2;
-            new_b4[COORD_Y] = currentPiece -> coord.b4[COORD_Y];
-
-            // Verify if can be rotated
-            /*
-             * Piece musn't "fall out" of the board and no other piece should 
-             * be fixed on it's new position.
-             * Block b2 is not checked as it keeps the same position and will
-             * always be a CELL_MOVING coordinate 
-             */
-            if ( new_b1[COORD_X] < boardHeight &&
-                 board[ new_b1[COORD_X] ][ new_b1[COORD_Y] ] == CELL_CLEAR &&
-                 board[ new_b3[COORD_X] ][ new_b3[COORD_Y] ] == CELL_CLEAR &&
-                 board[ new_b4[COORD_X] ][ new_b4[COORD_Y] ] == CELL_CLEAR )
-            {
-                // If it can be rotated, do it
-                update_coordinates(new_b1, new_b2, new_b3, new_b4);
-                update_rotation();
-            }
-
-            break;
-
-
-            /*
-             * ---------------------        ---------------------
-             * |    |    |    |    |        |    |    |    |    |
-             * ---------------------        ---------------------
-             * |    | b3 | b4 |    |        |    |    |    |    |
-             * ---------------------  --->  ---------------------
-             * |    | b2 |    |    |        | b1 | b2 | b3 |    |
-             * ---------------------        --------------------- 
-             * |    | b1 |    |    |        |    |    | b4 |    |
-             * ---------------------        ---------------------
-             */
-        case 4:
-            // Possible new coordinates
-            new_b1[COORD_X] = currentPiece -> coord.b1[COORD_X] - 1;
-            new_b1[COORD_Y] = currentPiece -> coord.b1[COORD_Y] - 1;
-
-            new_b2[COORD_X] = currentPiece -> coord.b2[COORD_X];
-            new_b2[COORD_Y] = currentPiece -> coord.b2[COORD_Y];
-
-            new_b3[COORD_X] = currentPiece -> coord.b3[COORD_X] + 1;
-            new_b3[COORD_Y] = currentPiece -> coord.b3[COORD_Y] + 1;
-
-            new_b4[COORD_X] = currentPiece -> coord.b4[COORD_X];
-            new_b4[COORD_Y] = currentPiece -> coord.b4[COORD_Y] + 2;
-
-            // Verify if can be rotated
-            /*
-             * Piece musn't "fall out" of the board and no other piece should 
-             * be fixed on it's new position.
-             * Block b2 is not checked as it keeps the same position and will
-             * always be a CELL_MOVING coordinate 
-             */
-            if ( new_b1[COORD_X] >= 0 &&
-                 board[ new_b1[COORD_X] ][ new_b1[COORD_Y] ] == CELL_CLEAR &&
-                 board[ new_b3[COORD_X] ][ new_b3[COORD_Y] ] == CELL_CLEAR &&
-                 board[ new_b4[COORD_X] ][ new_b4[COORD_Y] ] == CELL_CLEAR )
-            {
-                // If it can be rotated, do it
-                update_coordinates(new_b1, new_b2, new_b3, new_b4);
-                update_rotation();
-            }
-
-            break;
-
-            // If a bad rotation position is set, reset it to avoid another 
-            // error
-        default:
-            update_rotation();
-            break;
-    }
-}
-
-/**
- * @brief Rotate a L piece
- * 
- * @param board Board where the piece must be updated
- * @param boardHeight Board height.
- */
-static void
-rotate_L (int board [][BOARD_WIDTH], const int boardHeight)
-{
-    int new_b1[COORD_NUM], new_b2[COORD_NUM], new_b3[COORD_NUM], new_b4[COORD_NUM];
-
-    switch ( currentPiece -> rotation.position )
-    {
-            /*
-             * ---------------------        ---------------------
-             * |    |    |    |    |        |    |    |    |    |
-             * ---------------------        ---------------------
-             * |    |    |    |    |        | b4 | b1 |    |    |
-             * ---------------------  --->  ---------------------
-             * | b1 | b2 | b3 |    |        |    | b2 |    |    |
-             * ---------------------        --------------------- 
-             * | b4 |    |    |    |        |    | b3 |    |    |
-             * ---------------------        ---------------------
-             */
-        case 1:
-            // Possible new coordinates
-            new_b1[COORD_X] = currentPiece -> coord.b1[COORD_X] + 1;
-            new_b1[COORD_Y] = currentPiece -> coord.b1[COORD_Y] - 1;
-
-            new_b2[COORD_X] = currentPiece -> coord.b2[COORD_X];
-            new_b2[COORD_Y] = currentPiece -> coord.b2[COORD_Y];
-
-            new_b3[COORD_X] = currentPiece -> coord.b3[COORD_X] - 1;
-            new_b3[COORD_Y] = currentPiece -> coord.b3[COORD_Y] + 1;
-
-            new_b4[COORD_X] = currentPiece -> coord.b4[COORD_X];
-            new_b4[COORD_Y] = currentPiece -> coord.b4[COORD_Y] - 2;
-
-
-            // Verify if can be rotated
-            /*
-             * Piece musn't "fall out" of the board and no other piece should 
-             * be fixed on it's new position.
-             * Block b2 is not checked as it keeps the same position and will
-             * always be a CELL_MOVING coordinate 
-             */
-            if ( board[ new_b1[COORD_X] ][ new_b1[COORD_Y] ] == CELL_CLEAR &&
-                 board[ new_b3[COORD_X] ][ new_b3[COORD_Y] ] == CELL_CLEAR &&
-                 board[ new_b4[COORD_X] ][ new_b4[COORD_Y] ] == CELL_CLEAR )
-            {
-                // If it can be rotated, do it
-                update_coordinates(new_b1, new_b2, new_b3, new_b4);
-                update_rotation();
-            }
-            break;
-
-            /*
-             * ---------------------        ---------------------
-             * |    |    |    |    |        |    |    |    |    |
-             * ---------------------        ---------------------
-             * | b4 | b1 |    |    |        |    |    | b4 |    |
-             * ---------------------  --->  ---------------------
-             * |    | b2 |    |    |        | b3 | b2 | b1 |    |
-             * ---------------------        --------------------- 
-             * |    | b3 |    |    |        |    |    |    |    |
-             * ---------------------        ---------------------
-             */
-        case 2:
-            // Possible new coordinates
-            new_b1[COORD_X] = currentPiece -> coord.b1[COORD_X] + 1;
-            new_b1[COORD_Y] = currentPiece -> coord.b1[COORD_Y] + 1;
-
-            new_b2[COORD_X] = currentPiece -> coord.b2[COORD_X];
-            new_b2[COORD_Y] = currentPiece -> coord.b2[COORD_Y];
-
-            new_b3[COORD_X] = currentPiece -> coord.b3[COORD_X] - 1;
-            new_b3[COORD_Y] = currentPiece -> coord.b3[COORD_Y] - 1;
-
-            new_b4[COORD_X] = currentPiece -> coord.b4[COORD_X] + 2;
-            new_b4[COORD_Y] = currentPiece -> coord.b4[COORD_Y];
-
-            // Verify if can be rotated
-            /*
-             * Piece musn't "fall out" of the board and no other piece should 
-             * be fixed on it's new position.
-             * Block b2 is not checked as it keeps the same position and will
-             * always be a CELL_MOVING coordinate 
-             */
-            if ( new_b1[COORD_X] < BOARD_WIDTH &&
-                 board[ new_b1[COORD_X] ][ new_b1[COORD_Y] ] == CELL_CLEAR &&
-                 board[ new_b3[COORD_X] ][ new_b3[COORD_Y] ] == CELL_CLEAR &&
-                 board[ new_b4[COORD_X] ][ new_b4[COORD_Y] ] == CELL_CLEAR )
-            {
-                // If it can be rotated, do it
-                update_coordinates(new_b1, new_b2, new_b3, new_b4);
-                update_rotation();
-            }
-
-            break;
-
-            /*
-             * ---------------------        ---------------------
-             * |    |    |    |    |        |    |    |    |    |
-             * ---------------------        ---------------------
-             * |    |    | b4 |    |        |    | b3 |    |    |
-             * ---------------------  --->  ---------------------
-             * | b3 | b2 | b1 |    |        |    | b2 |    |    |
-             * ---------------------        --------------------- 
-             * |    |    |    |    |        |    | b1 | b4 |    |
-             * ---------------------        ---------------------
-             */
-        case 3:
-            // Possible new coordinates
-            new_b1[COORD_X] = currentPiece -> coord.b1[COORD_X] - 1;
-            new_b1[COORD_Y] = currentPiece -> coord.b1[COORD_Y] + 1;
-
-            new_b2[COORD_X] = currentPiece -> coord.b2[COORD_X];
-            new_b2[COORD_Y] = currentPiece -> coord.b2[COORD_Y];
-
-            new_b3[COORD_X] = currentPiece -> coord.b3[COORD_X] + 1;
-            new_b3[COORD_Y] = currentPiece -> coord.b3[COORD_Y] - 1;
-
-            new_b4[COORD_X] = currentPiece -> coord.b4[COORD_X];
-            new_b4[COORD_Y] = currentPiece -> coord.b4[COORD_Y] + 2;
-
-            // Verify if can be rotated
-            /*
-             * Piece musn't "fall out" of the board and no other piece should 
-             * be fixed on it's new position.
-             * Block b2 is not checked as it keeps the same position and will
-             * always be a CELL_MOVING coordinate 
-             */
-            if ( new_b1[COORD_X] < boardHeight &&
-                 board[ new_b1[COORD_X] ][ new_b1[COORD_Y] ] == CELL_CLEAR &&
-                 board[ new_b3[COORD_X] ][ new_b3[COORD_Y] ] == CELL_CLEAR &&
-                 board[ new_b4[COORD_X] ][ new_b4[COORD_Y] ] == CELL_CLEAR )
-            {
-                // If it can be rotated, do it
-                update_coordinates(new_b1, new_b2, new_b3, new_b4);
-                update_rotation();
-            }
-
-            break;
-
-
-            /*
-             * ---------------------        ---------------------
-             * |    |    |    |    |        |    |    |    |    |
-             * ---------------------        ---------------------
-             * |    | b3 |    |    |        |    |    |    |    |
-             * ---------------------  --->  ---------------------
-             * |    | b2 |    |    |        | b1 | b2 | b3 |    |
-             * ---------------------        --------------------- 
-             * |    | b1 | b4 |    |        | b4 |    |    |    |
-             * ---------------------        ---------------------
-             */
-        case 4:
-            // Possible new coordinates
-            new_b1[COORD_X] = currentPiece -> coord.b1[COORD_X] - 1;
-            new_b1[COORD_Y] = currentPiece -> coord.b1[COORD_Y] - 1;
-
-            new_b2[COORD_X] = currentPiece -> coord.b2[COORD_X];
-            new_b2[COORD_Y] = currentPiece -> coord.b2[COORD_Y];
-
-            new_b3[COORD_X] = currentPiece -> coord.b3[COORD_X] + 1;
-            new_b3[COORD_Y] = currentPiece -> coord.b3[COORD_Y] + 1;
-
-            new_b4[COORD_X] = currentPiece -> coord.b4[COORD_X] - 2;
-            new_b4[COORD_Y] = currentPiece -> coord.b4[COORD_Y];
-
-            // Verify if can be rotated
-            /*
-             * Piece musn't "fall out" of the board and no other piece should 
-             * be fixed on it's new position.
-             * Block b2 is not checked as it keeps the same position and will
-             * always be a CELL_MOVING coordinate 
-             */
-            if ( new_b1[COORD_X] >= 0 &&
-                 board[ new_b1[COORD_X] ][ new_b1[COORD_Y] ] == CELL_CLEAR &&
-                 board[ new_b3[COORD_X] ][ new_b3[COORD_Y] ] == CELL_CLEAR &&
-                 board[ new_b4[COORD_X] ][ new_b4[COORD_Y] ] == CELL_CLEAR )
-            {
-                // If it can be rotated, do it
-                update_coordinates(new_b1, new_b2, new_b3, new_b4);
-                update_rotation();
-            }
-
-            break;
-
-            // If a bad rotation position is set, reset it to avoid another 
-            // error
-        default:
-            update_rotation();
-            break;
-    }
-}
-
-/**
- * @brief Rotate a S piece
- * 
- * @param board Board where the piece must be updated
- * @param boardHeight Board height.
- */
-static void
-rotate_S (int board [][BOARD_WIDTH], const int boardHeight)
-{
-    int new_b1[COORD_NUM], new_b2[COORD_NUM], new_b3[COORD_NUM], new_b4[COORD_NUM];
-
-    switch ( currentPiece -> rotation.position )
-    {
-            /*
-             * ---------------------        ---------------------
-             * |    |    |    |    |        |    |    |    |    |
-             * ---------------------        ---------------------
-             * |    |    |    |    |        | b3 |    |    |    |
-             * ---------------------  --->  ---------------------
-             * |    | b1 | b2 |    |        | b4 | b1 |    |    |
-             * ---------------------        --------------------- 
-             * | b3 | b4 |    |    |        |    | b2 |    |    |
-             * ---------------------        ---------------------
-             */
-        case 1:
-        case 3:
-            // Possible new coordinates
-            new_b1[COORD_X] = currentPiece -> coord.b1[COORD_X];
-            new_b1[COORD_Y] = currentPiece -> coord.b1[COORD_Y];
-
-            new_b2[COORD_X] = currentPiece -> coord.b2[COORD_X] - 1;
-            new_b2[COORD_Y] = currentPiece -> coord.b2[COORD_Y] + 1;
-
-            new_b3[COORD_X] = currentPiece -> coord.b3[COORD_X];
-            new_b3[COORD_Y] = currentPiece -> coord.b3[COORD_Y] - 2;
-
-            new_b4[COORD_X] = currentPiece -> coord.b4[COORD_X] - 1;
-            new_b4[COORD_Y] = currentPiece -> coord.b4[COORD_Y] - 1;
-
-            // Verify if can be rotated
-            /*
-             * Block b1 and b2 are not checked as they keep the same position 
-             * and will always be a CELL_MOVING coordinate 
-             */
-            if ( board[ new_b3[COORD_X] ][ new_b3[COORD_Y] ] == CELL_CLEAR &&
-                 board[ new_b4[COORD_X] ][ new_b4[COORD_Y] ] == CELL_CLEAR )
-            {
-                // If it can be rotated, do it
-                update_coordinates(new_b1, new_b2, new_b3, new_b4);
-                update_rotation();
-            }
-            break;
-
-            /*
-             * ---------------------        ---------------------
-             * |    |    |    |    |        |    |    |    |    |
-             * ---------------------        ---------------------
-             * | b3 |    |    |    |        |    |    |    |    |
-             * ---------------------  --->  ---------------------
-             * | b4 | b1 |    |    |        |    | b1 | b2 |    |
-             * ---------------------        --------------------- 
-             * |    | b2 |    |    |        | b3 | b4 |    |    |
-             * ---------------------        ---------------------
-             */
-        case 2:
-        case 4:
-            // Possible new coordinates
-            new_b1[COORD_X] = currentPiece -> coord.b1[COORD_X];
-            new_b1[COORD_Y] = currentPiece -> coord.b1[COORD_Y];
-
-            new_b2[COORD_X] = currentPiece -> coord.b2[COORD_X] + 1;
-            new_b2[COORD_Y] = currentPiece -> coord.b2[COORD_Y] - 1;
-
-            new_b3[COORD_X] = currentPiece -> coord.b3[COORD_X];
-            new_b3[COORD_Y] = currentPiece -> coord.b3[COORD_Y] + 2;
-
-            new_b4[COORD_X] = currentPiece -> coord.b4[COORD_X] + 1;
-            new_b4[COORD_Y] = currentPiece -> coord.b4[COORD_Y] + 1;
-
-            // Verify if can be rotated
-            /*
-             * Piece musn't "fall out" of the board and no other piece should 
-             * be fixed on it's new position.
-             * Block b1 and b4 are not checked as they keep the same position 
-             * and will always be a CELL_MOVING coordinate 
-             */
-            if ( new_b2[COORD_X] < BOARD_WIDTH &&
-                 board[ new_b2[COORD_X] ][ new_b2[COORD_Y] ] == CELL_CLEAR &&
-                 board[ new_b3[COORD_X] ][ new_b3[COORD_Y] ] == CELL_CLEAR )
-            {
-                // If it can be rotated, do it
-                update_coordinates(new_b1, new_b2, new_b3, new_b4);
-                update_rotation();
-            }
-
-            break;
-
-            // If a bad rotation position is set, reset it to avoid another 
-            // error
-        default:
-            update_rotation();
-            break;
-    }
-}
-
-/**
- * @brief Rotate a T piece
- * 
- * @param board Board where the piece must be updated
- * @param boardHeight Board height.
- */
-static void
-rotate_T (int board [][BOARD_WIDTH], const int boardHeight)
-{
-    int new_b1[COORD_NUM], new_b2[COORD_NUM], new_b3[COORD_NUM], new_b4[COORD_NUM];
-
-    switch ( currentPiece -> rotation.position )
-    {
-            /*
-             * ---------------------        ---------------------
-             * |    |    |    |    |        |    |    |    |    |
-             * ---------------------        ---------------------
-             * |    |    |    |    |        |    | b1 |    |    |
-             * ---------------------  --->  ---------------------
-             * | b1 | b2 | b3 |    |        | b4 | b2 |    |    |
-             * ---------------------        --------------------- 
-             * |    | b4 |    |    |        |    | b3 |    |    |
-             * ---------------------        ---------------------
-             */
-        case 1:
-            // Possible new coordinates
-            new_b1[COORD_X] = currentPiece -> coord.b1[COORD_X] + 1;
-            new_b1[COORD_Y] = currentPiece -> coord.b1[COORD_Y] - 1;
-
-            new_b2[COORD_X] = currentPiece -> coord.b2[COORD_X];
-            new_b2[COORD_Y] = currentPiece -> coord.b2[COORD_Y];
-
-            new_b3[COORD_X] = currentPiece -> coord.b3[COORD_X] - 1;
-            new_b3[COORD_Y] = currentPiece -> coord.b3[COORD_Y] + 1;
-
-            new_b4[COORD_X] = currentPiece -> coord.b4[COORD_X] - 1;
-            new_b4[COORD_Y] = currentPiece -> coord.b4[COORD_Y] - 1;
-
-            // Verify if can be rotated
-            /*
-             * Block b1 is the only checked as the rest keep the same position
-             * and will always be a CELL_MOVING coordinate 
-             */
-            if ( board[ new_b1[COORD_X] ][ new_b1[COORD_Y] ] == CELL_CLEAR )
-            {
-                // If it can be rotated, do it
-                update_coordinates(new_b1, new_b2, new_b3, new_b4);
-                update_rotation();
-            }
-            break;
-
-            /*
-             * ---------------------        ---------------------
-             * |    |    |    |    |        |    |    |    |    |
-             * ---------------------        ---------------------
-             * |    | b1 |    |    |        |    | b4 |    |    |
-             * ---------------------  --->  ---------------------
-             * | b4 | b2 |    |    |        | b3 | b2 | b1 |    |
-             * ---------------------        --------------------- 
-             * |    | b3 |    |    |        |    |    |    |    |
-             * ---------------------        ---------------------
-             */
-        case 2:
-            // Possible new coordinates
-            new_b1[COORD_X] = currentPiece -> coord.b1[COORD_X] + 1;
-            new_b1[COORD_Y] = currentPiece -> coord.b1[COORD_Y] + 1;
-
-            new_b2[COORD_X] = currentPiece -> coord.b2[COORD_X];
-            new_b2[COORD_Y] = currentPiece -> coord.b2[COORD_Y];
-
-            new_b3[COORD_X] = currentPiece -> coord.b3[COORD_X] - 1;
-            new_b3[COORD_Y] = currentPiece -> coord.b3[COORD_Y] - 1;
-
-            new_b4[COORD_X] = currentPiece -> coord.b4[COORD_X] + 1;
-            new_b4[COORD_Y] = currentPiece -> coord.b4[COORD_Y] - 1;
-
-            // Verify if can be rotated
-            /*
-             * Piece musn't "fall out" of the board and no other piece should 
-             * be fixed on it's new position.
-             * Block b1 is the only checked as the rest keep the same position
-             * and will always be a CELL_MOVING coordinate 
-             */
-            if ( new_b1[COORD_X] < BOARD_WIDTH &&
-                 board[ new_b1[COORD_X] ][ new_b1[COORD_Y] ] == CELL_CLEAR )
-            {
-                // If it can be rotated, do it
-                update_coordinates(new_b1, new_b2, new_b3, new_b4);
-                update_rotation();
-            }
-
-            break;
-
-            /*
-             * ---------------------        ---------------------
-             * |    |    |    |    |        |    |    |    |    |
-             * ---------------------        ---------------------
-             * |    | b4 |    |    |        |    | b3 |    |    |
-             * ---------------------  --->  ---------------------
-             * | b3 | b2 | b1 |    |        |    | b2 | b4 |    |
-             * ---------------------        --------------------- 
-             * |    |    |    |    |        |    | b1 |    |    |
-             * ---------------------        ---------------------
-             */
-        case 3:
-            // Possible new coordinates
-            new_b1[COORD_X] = currentPiece -> coord.b1[COORD_X] - 1;
-            new_b1[COORD_Y] = currentPiece -> coord.b1[COORD_Y] + 1;
-
-            new_b2[COORD_X] = currentPiece -> coord.b2[COORD_X];
-            new_b2[COORD_Y] = currentPiece -> coord.b2[COORD_Y];
-
-            new_b3[COORD_X] = currentPiece -> coord.b3[COORD_X] + 1;
-            new_b3[COORD_Y] = currentPiece -> coord.b3[COORD_Y] - 1;
-
-            new_b4[COORD_X] = currentPiece -> coord.b4[COORD_X] + 1;
-            new_b4[COORD_Y] = currentPiece -> coord.b4[COORD_Y] + 1;
-
-            // Verify if can be rotated
-            /*
-             * Piece musn't "fall out" of the board and no other piece should 
-             * be fixed on it's new position.
-             * Block b1 is the only checked as the rest keep the same position
-             * and will always be a CELL_MOVING coordinate 
-             */
-            if ( new_b1[COORD_X] < boardHeight &&
-                 board[ new_b1[COORD_X] ][ new_b1[COORD_Y] ] == CELL_CLEAR )
-            {
-                // If it can be rotated, do it
-                update_coordinates(new_b1, new_b2, new_b3, new_b4);
-                update_rotation();
-            }
-
-            break;
-
-
-            /*
-             * ---------------------        ---------------------
-             * |    |    |    |    |        |    |    |    |    |
-             * ---------------------        ---------------------
-             * |    | b3 |    |    |        |    |    |    |    |
-             * ---------------------  --->  ---------------------
-             * |    | b2 | b4 |    |        | b1 | b2 | b3 |    |
-             * ---------------------        --------------------- 
-             * |    | b1 |    |    |        |    | b4 |    |    |
-             * ---------------------        ---------------------
-             */
-        case 4:
-            // Possible new coordinates
-            new_b1[COORD_X] = currentPiece -> coord.b1[COORD_X] - 1;
-            new_b1[COORD_Y] = currentPiece -> coord.b1[COORD_Y] - 1;
-
-            new_b2[COORD_X] = currentPiece -> coord.b2[COORD_X];
-            new_b2[COORD_Y] = currentPiece -> coord.b2[COORD_Y];
-
-            new_b3[COORD_X] = currentPiece -> coord.b3[COORD_X] + 1;
-            new_b3[COORD_Y] = currentPiece -> coord.b3[COORD_Y] + 1;
-
-            new_b4[COORD_X] = currentPiece -> coord.b4[COORD_X] - 1;
-            new_b4[COORD_Y] = currentPiece -> coord.b4[COORD_Y] + 1;
-
-            // Verify if can be rotated
-            /*
-             * Piece musn't "fall out" of the board and no other piece should 
-             * be fixed on it's new position.
-             * Block b1 is the only checked as the rest keep the same position
-             * and will always be a CELL_MOVING coordinate 
-             */
-            if ( new_b1[COORD_X] >= 0 &&
-                 board[ new_b1[COORD_X] ][ new_b1[COORD_Y] ] == CELL_CLEAR )
-            {
-                // If it can be rotated, do it
-                update_coordinates(new_b1, new_b2, new_b3, new_b4);
-                update_rotation();
-            }
-
-            break;
-
-            // If a bad rotation position is set, reset it to avoid another 
-            // error
-        default:
-            update_rotation();
-            break;
-    }
-}
-
-/**
- * @brief Rotate a Z piece
- * 
- * @param board Board where the piece must be updated
- * @param boardHeight Board height.
- */
-static void
-rotate_Z (int board [][BOARD_WIDTH], const int boardHeight)
-{
-    int new_b1[COORD_NUM], new_b2[COORD_NUM], new_b3[COORD_NUM], new_b4[COORD_NUM];
-
-    switch ( currentPiece -> rotation.position )
-    {
-            /*
-             * ---------------------        ---------------------
-             * |    |    |    |    |        |    |    |    |    |
-             * ---------------------        ---------------------
-             * |    |    |    |    |        |    |    | b1 |    |
-             * ---------------------  --->  ---------------------
-             * | b1 | b2 |    |    |        |    | b3 | b2 |    |
-             * ---------------------        --------------------- 
-             * |    | b3 | b4 |    |        |    | b4 |    |    |
-             * ---------------------        ---------------------
-             */
-        case 1:
-        case 3:
-            // Possible new coordinates
-            new_b1[COORD_X] = currentPiece -> coord.b1[COORD_X] + 2;
-            new_b1[COORD_Y] = currentPiece -> coord.b1[COORD_Y] - 1;
-
-            new_b2[COORD_X] = currentPiece -> coord.b2[COORD_X] + 1;
-            new_b2[COORD_Y] = currentPiece -> coord.b2[COORD_Y];
-
-            new_b3[COORD_X] = currentPiece -> coord.b3[COORD_X];
-            new_b3[COORD_Y] = currentPiece -> coord.b3[COORD_Y] - 1;
-
-            new_b4[COORD_X] = currentPiece -> coord.b4[COORD_X] - 1;
-            new_b4[COORD_Y] = currentPiece -> coord.b4[COORD_Y];
-
-            // Verify if can be rotated
-            /*
-             * Block b3 and b4 are not checked as they keep the same position 
-             * and will always be a CELL_MOVING coordinate 
-             */
-            if ( board[ new_b1[COORD_X] ][ new_b1[COORD_Y] ] == CELL_CLEAR &&
-                 board[ new_b2[COORD_X] ][ new_b2[COORD_Y] ] == CELL_CLEAR )
-            {
-                // If it can be rotated, do it
-                update_coordinates(new_b1, new_b2, new_b3, new_b4);
-                update_rotation();
-            }
-            break;
-
-            /*
-             * ---------------------        ---------------------
-             * |    |    |    |    |        |    |    |    |    |
-             * ---------------------        ---------------------
-             * |    |    | b1 |    |        |    |    |    |    |
-             * ---------------------  --->  ---------------------
-             * |    | b3 | b2 |    |        | b1 | b2 |    |    |
-             * ---------------------        --------------------- 
-             * |    | b4 |    |    |        |    | b3 | b4 |    |
-             * ---------------------        ---------------------
-             */
-        case 2:
-        case 4:
-            // Possible new coordinates
-            new_b1[COORD_X] = currentPiece -> coord.b1[COORD_X] - 2;
-            new_b1[COORD_Y] = currentPiece -> coord.b1[COORD_Y] + 1;
-
-            new_b2[COORD_X] = currentPiece -> coord.b2[COORD_X] - 1;
-            new_b2[COORD_Y] = currentPiece -> coord.b2[COORD_Y];
-
-            new_b3[COORD_X] = currentPiece -> coord.b3[COORD_X];
-            new_b3[COORD_Y] = currentPiece -> coord.b3[COORD_Y] + 1;
-
-            new_b4[COORD_X] = currentPiece -> coord.b4[COORD_X] + 1;
-            new_b4[COORD_Y] = currentPiece -> coord.b4[COORD_Y];
-
-            // Verify if can be rotated
-            /*
-             * Piece musn't "fall out" of the board and no other piece should 
-             * be fixed on it's new position.
-             * Block b2 and b3 are not checked as they keep the same position 
-             * and will always be a CELL_MOVING coordinate 
-             */
-            if ( new_b1[COORD_X] >= 0 &&
-                 board[ new_b1[COORD_X] ][ new_b1[COORD_Y] ] == CELL_CLEAR &&
-                 board[ new_b4[COORD_X] ][ new_b4[COORD_Y] ] == CELL_CLEAR )
-            {
-                // If it can be rotated, do it
-                update_coordinates(new_b1, new_b2, new_b3, new_b4);
-                update_rotation();
-            }
-
-            break;
-
-            // If a bad rotation position is set, reset it to avoid another 
-            // error
-        default:
-            update_rotation();
-            break;
-    }
-}
-
-/**
- * @brief Updates piece coordinates with the ones passed as argument
- * 
- * @param c1 Array of size COORD_NUM with new COORD_X and COORD_Y coordinates
- * @param c2 Array of size COORD_NUM with new COORD_X and COORD_Y coordinates
- * @param c3 Array of size COORD_NUM with new COORD_X and COORD_Y coordinates
- * @param c4 Array of size COORD_NUM with new COORD_X and COORD_Y coordinates
  * @return Nothing
  */
 static void
-update_coordinates (int c1[COORD_NUM], int c2[COORD_NUM],
-                    int c3[COORD_NUM], int c4[COORD_NUM])
+shift (int direction)
 {
-    // X coordinates
-    currentPiece -> coord.b1[COORD_X] = c1[COORD_X];
-    currentPiece -> coord.b2[COORD_X] = c2[COORD_X];
-    currentPiece -> coord.b3[COORD_X] = c3[COORD_X];
-    currentPiece -> coord.b4[COORD_X] = c4[COORD_X];
+    if ( direction == LEFT || direction == RIGHT )
+    {
+        // Shift the piece in the desired direction
+        currentPiece.shifting = direction;
+        updatePiece();
+    }
 
-    // Y coordinates
-    currentPiece -> coord.b1[COORD_Y] = c1[COORD_Y];
-    currentPiece -> coord.b2[COORD_Y] = c2[COORD_Y];
-    currentPiece -> coord.b3[COORD_Y] = c3[COORD_Y];
-    currentPiece -> coord.b4[COORD_Y] = c4[COORD_Y];
+    // Restore shifting to NONE
+    currentPiece.shifting = NONE;
+
+    // Update public coordinates
+    updatePublicCoordinates();
 }
 
 /**
- * @brief Update piece position in PIECE structure
+ * @brief Perform a soft drop
+ * 
+ * Drops the piece one row so, when called from a function which updates the
+ * board constantly, it seems like a double drop at the same time.
  * 
  * @param None
+ * 
  * @return Nothing
  */
 static void
-update_rotation (void)
+softDrop (void)
 {
-    if ( currentPiece -> rotation.position < 4 )
-    {
-        currentPiece -> rotation.position += 1;
-    }
+    // Drop once
+    updatePiece();
 
-    else
-    {
-        currentPiece -> rotation.position = 1;
-    }
-
-    // FIXME
-    currentPiece -> rotation.status = false;
+    // Update public coordinates
+    updatePublicCoordinates();
 }
 
 /**
- * @brief Updates the piece position or status in the board
+ * @brief Updates the piece in the board (called from public PIECE)
+ * 
+ * @param None
+ * 
+ * @return Nothing
+ */
+static void
+update (void)
+{
+    updatePiece();
+}
+
+/**
+ * @brief Increment or decrement by 1 the piece's coordinates on the given axis
+ *  
+ * @param coord COORD_X for X axis or COORD_Y for Y axis
+ * @param pm PLUS to increment or MINUS to decrement
+ * 
+ * @return Nothing
+ */
+static void
+moveOneCell (int coord, int pm)
+{
+    // +1 in coord axis
+    if ( pm == PLUS )
+    {
+        (currentPiece.coord[b1][coord]) += 1;
+        (currentPiece.coord[b2][coord]) += 1;
+        (currentPiece.coord[b3][coord]) += 1;
+        (currentPiece.coord[b4][coord]) += 1;
+    }
+
+        // -1 in coord axis
+    else if ( pm == MINUS )
+    {
+        (currentPiece.coord[b1][coord]) -= 1;
+        (currentPiece.coord[b2][coord]) -= 1;
+        (currentPiece.coord[b3][coord]) -= 1;
+        (currentPiece.coord[b4][coord]) -= 1;
+    }
+}
+
+/**
+ * @brief Updates the piece position or status (moving to fixed) in the board
  * 
  * If called with piece.shifting set to NONE and piece.rotation.status to 
  * false, the piece is just dropped one grid cell or fixed if another piece or
@@ -1445,92 +616,96 @@ update_rotation (void)
  * next one can be initialized
  */
 static void
-updatePiece (struct GAMEBOARD * boardStr,
-             int board[][BOARD_WIDTH], int boardHeight)
+updatePiece (void)
 {
     int perform = -1;
 
     // Piece doesn't have to be rotated or shifted
-    if ( currentPiece -> shifting == NONE &&
-         currentPiece -> rotation.status == false )
+    if ( currentPiece.shifting == NONE &&
+         currentPiece.rotation.status == false )
     {
         // Can dropping be performed? (0 if true, 1 if false, -1 if error)
-        perform = verifyFixedPieces(board, boardHeight, DROP_PIECE);
+        perform = verifyFixedPieces(DROP_PIECE);
 
         // If true, update the piece's coordinates
         if ( !perform )
         {
             // Moved +1 on Y axis
-            updatePCoordinates(COORD_Y, PLUS);
+            moveOneCell(COORD_Y, PLUS);
         }
     }
 
         // Piece should be shifted left
-    else if ( currentPiece -> shifting == LEFT )
+    else if ( currentPiece.shifting == LEFT )
     {
         // Can shifting be performed? (0 if true, 1 if false, -1 if error)
-        perform = verifyFixedPieces(board, boardHeight, SHIFTL_PIECE);
+        perform = verifyFixedPieces(SHIFTL_PIECE);
 
         // If true, update the piece's coordinates
         if ( !perform )
         {
             // Moved -1 on X axis
-            updatePCoordinates(COORD_X, MINUS);
+            moveOneCell(COORD_X, MINUS);
         }
 
     }
 
         // Piece should be shifted to the right
-    else if ( currentPiece -> shifting == RIGHT )
+    else if ( currentPiece.shifting == RIGHT )
     {
         // Can shifting be performed? (0 if true, 1 if false, -1 if error)
-        perform = verifyFixedPieces(board, boardHeight, SHIFTR_PIECE);
+        perform = verifyFixedPieces(SHIFTR_PIECE);
 
         // If true, update the piece's coordinates
         if ( !perform )
         {
             // Moved +1 on X axis
-            updatePCoordinates(COORD_X, PLUS);
+            moveOneCell(COORD_X, PLUS);
         }
     }
 
         // Piece was be rotated (in the structure) and board must be updated
-    else if ( currentPiece -> rotation.status == true )
+    else if ( currentPiece.rotation.status == true )
     {
         // Can rotation be performed? Always yes (0) as it's been checked on
         // piece_actions.c
         perform = 0;
     }
 
+    // Update public coordinates so pieceBoard functions work
+    // properly
+    updatePublicCoordinates();
+
     switch ( perform )
     {
         case -1:
-            fputs("Invalid parameter verify_fixed_pieces()", stderr);
+            fputs("Invalid parameter passed to verifyFixedPieces()", stderr);
             break;
 
             // Piece can be rotated, shifted or dropped and no other piece or
             // border is on its way
         case 0:
             // Clear cells with moving blocks
-            boardStr -> piece.clear.moving();
+            currentPiece.pieceBoard -> piece.clear.moving();
 
             // Set new cells with moving blocks
-            boardStr -> piece.set.moving();
+            currentPiece.pieceBoard -> piece.set.moving();
             break;
 
             // Piece can't be shifted or dropped as there's another
             // one (or a border) on its way
         case 1:
-            // When shifting the piece it isn't possible, it should not be 
+            // When shifting the piece isn't possible, it should not be 
             // blocked as no dropping occurs at the same time
-            if ( currentPiece -> shifting == NONE )
+            if ( currentPiece.shifting == NONE )
             {
                 // Clear cells with moving blocks
-                boardStr -> piece.clear.moving();
-                boardStr -> piece.set.fixed();
+                currentPiece.pieceBoard -> piece.clear.moving();
+                currentPiece.pieceBoard -> piece.set.fixed();
 
                 // Clear piece as it's been fixed
-                currentPiece -> type = PIECE_NONE;
+                currentPiece.public -> type = PIECE_NONE;
+                currentPiece.type = PIECE_NONE;
             }
             break;
 
@@ -1540,7 +715,41 @@ updatePiece (struct GAMEBOARD * boardStr,
 }
 
 /**
- * @brief Given an action from enum actions, verify if it can be performed.
+ * @brief Update coordinates in PIECE structure
+ * 
+ * Uses the private coordinates (those in PRIVATE_PIECE structure) to update
+ * the public ones.
+ * 
+ * @param None
+ * 
+ * @return Nothing
+ */
+static void
+updatePublicCoordinates (void)
+{
+    currentPiece.public -> get.coordinates[b1][COORD_X] = \
+            currentPiece.coord[b1][COORD_X];
+    currentPiece.public -> get.coordinates[b1][COORD_Y] = \
+            currentPiece.coord[b1][COORD_Y];
+
+    currentPiece.public -> get.coordinates[b2][COORD_X] = \
+            currentPiece.coord[b2][COORD_X];
+    currentPiece.public -> get.coordinates[b2][COORD_Y] = \
+            currentPiece.coord[b2][COORD_Y];
+
+    currentPiece.public -> get.coordinates[b3][COORD_X] = \
+            currentPiece.coord[b3][COORD_X];
+    currentPiece.public -> get.coordinates[b3][COORD_Y] = \
+            currentPiece.coord[b3][COORD_Y];
+
+    currentPiece.public -> get.coordinates[b4][COORD_X] = \
+            currentPiece.coord[b4][COORD_X];
+    currentPiece.public -> get.coordinates[b4][COORD_Y] = \
+            currentPiece.coord[b4][COORD_Y];
+}
+
+/**
+ * @brief Given an action using actions enum, verify if it can be performed.
  * 
  * If a shifting action is given, borders and other fixed pieces are checked;
  * when a dropping action is passed, verify the bottom border and other fixed
@@ -1552,22 +761,22 @@ updatePiece (struct GAMEBOARD * boardStr,
  * @return 1 if action cannot be performed
  */
 static int
-verifyFixedPieces (int board[][BOARD_WIDTH], int boardHeight, const int action)
+verifyFixedPieces (const int action)
 {
     // Unless proven otherwise, action cannot be performed
     int ans = 1;
 
     // To make this code more readable, the piece's coordinates are copied in
     // shorter named variables
-    int b1_x = currentPiece -> coord.b1[COORD_X];
-    int b2_x = currentPiece -> coord.b2[COORD_X];
-    int b3_x = currentPiece -> coord.b3[COORD_X];
-    int b4_x = currentPiece -> coord.b4[COORD_X];
+    int b1_x = currentPiece.coord[b1][COORD_X];
+    int b2_x = currentPiece.coord[b2][COORD_X];
+    int b3_x = currentPiece.coord[b3][COORD_X];
+    int b4_x = currentPiece.coord[b4][COORD_X];
 
-    int b1_y = currentPiece -> coord.b1[COORD_Y];
-    int b2_y = currentPiece -> coord.b2[COORD_Y];
-    int b3_y = currentPiece -> coord.b3[COORD_Y];
-    int b4_y = currentPiece -> coord.b4[COORD_Y];
+    int b1_y = currentPiece.coord[b1][COORD_Y];
+    int b2_y = currentPiece.coord[b2][COORD_Y];
+    int b3_y = currentPiece.coord[b3][COORD_Y];
+    int b4_y = currentPiece.coord[b4][COORD_Y];
 
     switch ( action )
     {
@@ -1575,15 +784,15 @@ verifyFixedPieces (int board[][BOARD_WIDTH], int boardHeight, const int action)
         case SHIFTL_PIECE:
             // There musn't be a fixed piece at the left nor shall the piece 
             // be at the leftmost border.
-            if ( board[b1_y][b1_x - 1] != CELL_FIXED &&
-                 board[b2_y][b2_x - 1] != CELL_FIXED &&
-                 board[b3_y][b3_x - 1] != CELL_FIXED &&
-                 board[b4_y][b4_x - 1] != CELL_FIXED &&
+            if ( CELL(b1_y, b1_x - 1) != CELL_FIXED &&
+                 CELL(b2_y, b2_x - 1) != CELL_FIXED &&
+                 CELL(b3_y, b3_x - 1) != CELL_FIXED &&
+                 CELL(b4_y, b4_x - 1) != CELL_FIXED &&
 
-                 b1_x - 1 > 0 &&
-                 b2_x - 1 > 0 &&
-                 b3_x - 1 > 0 &&
-                 b4_x - 1 > 0 )
+                 b1_x - 1 >= 0 &&
+                 b2_x - 1 >= 0 &&
+                 b3_x - 1 >= 0 &&
+                 b4_x - 1 >= 0 )
 
             {
                 ans = 0;
@@ -1594,15 +803,15 @@ verifyFixedPieces (int board[][BOARD_WIDTH], int boardHeight, const int action)
         case SHIFTR_PIECE:
             // There musn't be a fixed piece at the right nor shall the piece
             // be at the rightmost border.
-            if ( board[b1_y][b1_x + 1] != CELL_FIXED &&
-                 board[b2_y][b2_x + 1] != CELL_FIXED &&
-                 board[b3_y][b3_x + 1] != CELL_FIXED &&
-                 board[b4_y][b4_x + 1] != CELL_FIXED &&
+            if ( CELL(b1_y, b1_x + 1) != CELL_FIXED &&
+                 CELL(b2_y, b2_x + 1) != CELL_FIXED &&
+                 CELL(b3_y, b3_x + 1) != CELL_FIXED &&
+                 CELL(b4_y, b4_x + 1) != CELL_FIXED &&
 
-                 b1_x + 1 < BOARD_WIDTH &&
-                 b2_x + 1 < BOARD_WIDTH &&
-                 b3_x + 1 < BOARD_WIDTH &&
-                 b4_x + 1 < BOARD_WIDTH )
+                 b1_x + 1 < currentPiece.board.width &&
+                 b2_x + 1 < currentPiece.board.width &&
+                 b3_x + 1 < currentPiece.board.width &&
+                 b4_x + 1 < currentPiece.board.width )
 
             {
                 ans = 0;
@@ -1613,15 +822,15 @@ verifyFixedPieces (int board[][BOARD_WIDTH], int boardHeight, const int action)
         case DROP_PIECE:
             // There musn't be a fixed piece under the current piece nor 
             // shall the piece be at the bottom of the board.
-            if ( board[b1_y + 1][b1_x] != CELL_FIXED &&
-                 board[b2_y + 1][b2_x] != CELL_FIXED &&
-                 board[b3_y + 1][b3_x] != CELL_FIXED &&
-                 board[b4_y + 1][b4_x] != CELL_FIXED &&
+            if ( CELL(b1_y + 1, b1_x) != CELL_FIXED &&
+                 CELL(b2_y + 1, b2_x) != CELL_FIXED &&
+                 CELL(b3_y + 1, b3_x) != CELL_FIXED &&
+                 CELL(b4_y + 1, b4_x) != CELL_FIXED &&
 
-                 b1_y + 1 < boardHeight &&
-                 b2_y + 1 < boardHeight &&
-                 b3_y + 1 < boardHeight &&
-                 b4_y + 1 < boardHeight )
+                 b1_y + 1 < currentPiece.board.height &&
+                 b2_y + 1 < currentPiece.board.height &&
+                 b3_y + 1 < currentPiece.board.height &&
+                 b4_y + 1 < currentPiece.board.height )
 
             {
                 ans = 0;
@@ -1639,34 +848,4 @@ verifyFixedPieces (int board[][BOARD_WIDTH], int boardHeight, const int action)
     }
 
     return ans;
-}
-
-/**
- * @brief Increment or decrement by 1 the piece's coordinates on the given axis
- *  
- * @param coord COORD_X for X axis or COORD_Y for Y axis
- * @param pm PLUS to increment or MINUS to decrement
- * 
- * @return Nothing
- */
-static void
-updatePCoordinates (int coord, int pm)
-{
-    // +1 in coord axis
-    if ( pm == PLUS )
-    {
-        (currentPiece -> coord.b1[coord]) += 1;
-        (currentPiece -> coord.b2[coord]) += 1;
-        (currentPiece -> coord.b3[coord]) += 1;
-        (currentPiece -> coord.b4[coord]) += 1;
-    }
-
-        // -1 in coord axis
-    else if ( pm == MINUS )
-    {
-        (currentPiece -> coord.b1[coord]) -= 1;
-        (currentPiece -> coord.b2[coord]) -= 1;
-        (currentPiece -> coord.b3[coord]) -= 1;
-        (currentPiece -> coord.b4[coord]) -= 1;
-    }
 }

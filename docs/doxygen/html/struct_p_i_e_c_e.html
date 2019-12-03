@@ -77,97 +77,115 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a093deccec3d4e6b80fa324717990220d"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_p_i_e_c_e.html#a093deccec3d4e6b80fa324717990220d">rotate</a> )(int board[][<a class="el" href="board_8h.html#a1cd139e8d1f7ae83f54c8d477313d8ea">BOARD_WIDTH</a>], const int boardHeight)</td></tr>
-<tr class="memdesc:a093deccec3d4e6b80fa324717990220d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform piece rotation.  <a href="struct_p_i_e_c_e.html#a093deccec3d4e6b80fa324717990220d">More...</a><br /></td></tr>
-<tr class="separator:a093deccec3d4e6b80fa324717990220d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5523961ebcdb36441909e8507994fecc"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_p_i_e_c_e.html#a5523961ebcdb36441909e8507994fecc">update</a> )(struct <a class="el" href="struct_g_a_m_e_b_o_a_r_d.html">GAMEBOARD</a> *boardStr, int board[][<a class="el" href="board_8h.html#a1cd139e8d1f7ae83f54c8d477313d8ea">BOARD_WIDTH</a>], const int boardHeight)</td></tr>
-<tr class="memdesc:a5523961ebcdb36441909e8507994fecc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the board with this piece's information.  <a href="struct_p_i_e_c_e.html#a5523961ebcdb36441909e8507994fecc">More...</a><br /></td></tr>
-<tr class="separator:a5523961ebcdb36441909e8507994fecc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff17911edc8208aa8ddb1c7c52c78389"><td class="memItemLeft" align="right" valign="top"><a id="aff17911edc8208aa8ddb1c7c52c78389"></a>
 char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_p_i_e_c_e.html#aff17911edc8208aa8ddb1c7c52c78389">type</a></td></tr>
 <tr class="memdesc:aff17911edc8208aa8ddb1c7c52c78389"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of piece. Set using definitions in <a class="el" href="board_8h.html" title=";">board.h</a> file. <br /></td></tr>
 <tr class="separator:aff17911edc8208aa8ddb1c7c52c78389"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56da9169fe581b834e971dee4997ecfd"><td class="memItemLeft" align="right" valign="top"><a id="a56da9169fe581b834e971dee4997ecfd"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_p_i_e_c_e.html#a56da9169fe581b834e971dee4997ecfd">drop</a></td></tr>
-<tr class="memdesc:a56da9169fe581b834e971dee4997ecfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">True: perform soft drop ; False: no soft drop. <br /></td></tr>
-<tr class="separator:a56da9169fe581b834e971dee4997ecfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c1a52d857790e0c599ef433376ac824"><td class="memItemLeft" align="right" valign="top"><a id="a2c1a52d857790e0c599ef433376ac824"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_p_i_e_c_e.html#a2c1a52d857790e0c599ef433376ac824">shifting</a></td></tr>
-<tr class="memdesc:a2c1a52d857790e0c599ef433376ac824"><td class="mdescLeft">&#160;</td><td class="mdescRight">LEFT or RIGHT: perform shifting ; NONE: don't perform any shifting. <br /></td></tr>
-<tr class="separator:a2c1a52d857790e0c599ef433376ac824"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad2bcc389e148db2886e2272f80c6107"><td class="memItemLeft" ><a id="aad2bcc389e148db2886e2272f80c6107"></a>
+<tr class="memitem:a380086f1ac53346359c3605b8b40c278"><td class="memItemLeft" ><a id="a380086f1ac53346359c3605b8b40c278"></a>
 struct {</td></tr>
-<tr class="memitem:a6e27f49150e9a14580fb313cc2777e00"><td class="memItemLeft" >
-&#160;&#160;&#160;int&#160;&#160;&#160;<a class="el" href="struct_p_i_e_c_e.html#a6e27f49150e9a14580fb313cc2777e00">status</a></td></tr>
-<tr class="memdesc:a6e27f49150e9a14580fb313cc2777e00"><td class="mdescLeft">&#160;</td><td class="mdescRight">True: user asked for piece rotation ; False: don't rotate the piece. <br /></td></tr>
-<tr class="separator:a6e27f49150e9a14580fb313cc2777e00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a401e942526aac47cef94f478182486e7"><td class="memItemLeft" >
-&#160;&#160;&#160;int&#160;&#160;&#160;<a class="el" href="struct_p_i_e_c_e.html#a401e942526aac47cef94f478182486e7">position</a></td></tr>
-<tr class="memdesc:a401e942526aac47cef94f478182486e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Piece position (from 1 to 4). Do not manually edit this variable. <br /></td></tr>
-<tr class="separator:a401e942526aac47cef94f478182486e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad2bcc389e148db2886e2272f80c6107"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_p_i_e_c_e.html#aad2bcc389e148db2886e2272f80c6107">rotation</a></td></tr>
-<tr class="memdesc:aad2bcc389e148db2886e2272f80c6107"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rotation status (true or false) and which is the piece's position. <br /></td></tr>
-<tr class="separator:aad2bcc389e148db2886e2272f80c6107"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a290b49b4b5209c36b6df00b212cf2b54"><td class="memItemLeft" ><a id="a290b49b4b5209c36b6df00b212cf2b54"></a>
-struct {</td></tr>
-<tr class="memitem:a31db6de8f89f6622b23836ede808225d"><td class="memItemLeft" >
-&#160;&#160;&#160;int&#160;&#160;&#160;<a class="el" href="struct_p_i_e_c_e.html#a31db6de8f89f6622b23836ede808225d">b1</a> [<a class="el" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891ca5a6527e7417dc323385004a43565feec">COORD_NUM</a>]</td></tr>
-<tr class="memdesc:a31db6de8f89f6622b23836ede808225d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Piece's block 1. <br /></td></tr>
-<tr class="separator:a31db6de8f89f6622b23836ede808225d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebe8ebfa1098b6e3e37b4914b6ed8dcc"><td class="memItemLeft" >
-&#160;&#160;&#160;int&#160;&#160;&#160;<a class="el" href="struct_p_i_e_c_e.html#aebe8ebfa1098b6e3e37b4914b6ed8dcc">b2</a> [<a class="el" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891ca5a6527e7417dc323385004a43565feec">COORD_NUM</a>]</td></tr>
-<tr class="memdesc:aebe8ebfa1098b6e3e37b4914b6ed8dcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Piece's block 2. <br /></td></tr>
-<tr class="separator:aebe8ebfa1098b6e3e37b4914b6ed8dcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5113b20770badf764ec6a377fa27ab8"><td class="memItemLeft" >
-&#160;&#160;&#160;int&#160;&#160;&#160;<a class="el" href="struct_p_i_e_c_e.html#ac5113b20770badf764ec6a377fa27ab8">b3</a> [<a class="el" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891ca5a6527e7417dc323385004a43565feec">COORD_NUM</a>]</td></tr>
-<tr class="memdesc:ac5113b20770badf764ec6a377fa27ab8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Piece's block 3. <br /></td></tr>
-<tr class="separator:ac5113b20770badf764ec6a377fa27ab8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb57e3ee8901427b225885c9d6d5ca8d"><td class="memItemLeft" >
-&#160;&#160;&#160;int&#160;&#160;&#160;<a class="el" href="struct_p_i_e_c_e.html#abb57e3ee8901427b225885c9d6d5ca8d">b4</a> [<a class="el" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891ca5a6527e7417dc323385004a43565feec">COORD_NUM</a>]</td></tr>
-<tr class="memdesc:abb57e3ee8901427b225885c9d6d5ca8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Piece's block 4. <br /></td></tr>
-<tr class="separator:abb57e3ee8901427b225885c9d6d5ca8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a290b49b4b5209c36b6df00b212cf2b54"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_p_i_e_c_e.html#a290b49b4b5209c36b6df00b212cf2b54">coord</a></td></tr>
-<tr class="memdesc:a290b49b4b5209c36b6df00b212cf2b54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Board coordinates of the piece. Use coords enum in <a class="el" href="board_8h.html" title=";">board.h</a>. <br /></td></tr>
-<tr class="separator:a290b49b4b5209c36b6df00b212cf2b54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a609d3617db82472188de365cb2f51ec2"><td class="memItemLeft" >
+&#160;&#160;&#160;int&#160;&#160;&#160;<a class="el" href="struct_p_i_e_c_e.html#a609d3617db82472188de365cb2f51ec2">coordinates</a> [4][<a class="el" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891ca5a6527e7417dc323385004a43565feec">COORD_NUM</a>]</td></tr>
+<tr class="memdesc:a609d3617db82472188de365cb2f51ec2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Board coordinates of the piece. To access, use coords enum in <a class="el" href="board_8h.html" title=";">board.h</a> <br  />
+ <br /></td></tr>
+<tr class="separator:a609d3617db82472188de365cb2f51ec2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a380086f1ac53346359c3605b8b40c278"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_p_i_e_c_e.html#a380086f1ac53346359c3605b8b40c278">get</a></td></tr>
+<tr class="memdesc:a380086f1ac53346359c3605b8b40c278"><td class="mdescLeft">&#160;</td><td class="mdescRight">Board coordinates of the piece. To access, use coords enum in <a class="el" href="board_8h.html" title=";">board.h</a>. <br /></td></tr>
+<tr class="separator:a380086f1ac53346359c3605b8b40c278"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fe644d9a0eaa0c52738e8d6292222ad"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_p_i_e_c_e.html#a0fe644d9a0eaa0c52738e8d6292222ad">rotate</a> )(void)</td></tr>
+<tr class="memdesc:a0fe644d9a0eaa0c52738e8d6292222ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform piece rotation.  <a href="struct_p_i_e_c_e.html#a0fe644d9a0eaa0c52738e8d6292222ad">More...</a><br /></td></tr>
+<tr class="separator:a0fe644d9a0eaa0c52738e8d6292222ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaba3c820f8f695d7e79c75ddc4f5ab51"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_p_i_e_c_e.html#aaba3c820f8f695d7e79c75ddc4f5ab51">shift</a> )(int direction)</td></tr>
+<tr class="memdesc:aaba3c820f8f695d7e79c75ddc4f5ab51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shift piece in the given direction.  <a href="struct_p_i_e_c_e.html#aaba3c820f8f695d7e79c75ddc4f5ab51">More...</a><br /></td></tr>
+<tr class="separator:aaba3c820f8f695d7e79c75ddc4f5ab51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acec6ad5c0cbf6b5187c313b14fed68ef"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_p_i_e_c_e.html#acec6ad5c0cbf6b5187c313b14fed68ef">softDrop</a> )(void)</td></tr>
+<tr class="memdesc:acec6ad5c0cbf6b5187c313b14fed68ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a soft drop.  <a href="struct_p_i_e_c_e.html#acec6ad5c0cbf6b5187c313b14fed68ef">More...</a><br /></td></tr>
+<tr class="separator:acec6ad5c0cbf6b5187c313b14fed68ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74222636e9a0ad2bcbcd3bed90fa0e88"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_p_i_e_c_e.html#a74222636e9a0ad2bcbcd3bed90fa0e88">update</a> )(void)</td></tr>
+<tr class="memdesc:a74222636e9a0ad2bcbcd3bed90fa0e88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the board with this piece's information.  <a href="struct_p_i_e_c_e.html#a74222636e9a0ad2bcbcd3bed90fa0e88">More...</a><br /></td></tr>
+<tr class="separator:a74222636e9a0ad2bcbcd3bed90fa0e88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Piece object. </p>
 <p>Contains a piece's type, actions it has to perform, and it's current position in the board.</p>
-<dl class="section note"><dt>Note</dt><dd>When setting a value to<pre class="fragment">true </pre> or <pre class="fragment">false </pre> use stdbool.h</dd></dl>
-<dl class="section warning"><dt>Warning</dt><dd>Function <a class="el" href="piece__actions_8h.html#a9c477b7ecfd37c630bb449413ee8205a" title="Piece initialization.">piece_init()</a> must be called before using this object </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Function <a class="el" href="piece__actions_8h.html#ade0668f86af8e09355b2430542096d0e" title="Piece initialization.">piece_init()</a> must be called before using this object </dd></dl>
 </div><h2 class="groupheader">Field Documentation</h2>
-<a id="a093deccec3d4e6b80fa324717990220d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a093deccec3d4e6b80fa324717990220d">&#9670;&nbsp;</a></span>rotate</h2>
+<a id="a0fe644d9a0eaa0c52738e8d6292222ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fe644d9a0eaa0c52738e8d6292222ad">&#9670;&nbsp;</a></span>rotate</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void(*  rotate) (int board[][<a class="el" href="board_8h.html#a1cd139e8d1f7ae83f54c8d477313d8ea">BOARD_WIDTH</a>], const int boardHeight)</td>
+          <td class="memname">void(*  rotate) (void)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Perform piece rotation. </p>
-<p>rotation.status must be also set to true</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">board</td><td>Board where the piece must be updated </td></tr>
-    <tr><td class="paramname">boardHeight</td><td>Board height. </td></tr>
+    <tr><td class="paramname">None</td><td></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>Nothing </dd></dl>
 
 </div>
 </div>
-<a id="a5523961ebcdb36441909e8507994fecc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5523961ebcdb36441909e8507994fecc">&#9670;&nbsp;</a></span>update</h2>
+<a id="aaba3c820f8f695d7e79c75ddc4f5ab51"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaba3c820f8f695d7e79c75ddc4f5ab51">&#9670;&nbsp;</a></span>shift</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void(*  update) (struct <a class="el" href="struct_g_a_m_e_b_o_a_r_d.html">GAMEBOARD</a> *boardStr, int board[][<a class="el" href="board_8h.html#a1cd139e8d1f7ae83f54c8d477313d8ea">BOARD_WIDTH</a>], const int boardHeight)</td>
+          <td class="memname">void(*  shift) (int direction)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Shift piece in the given direction. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">direction</td><td>Direction to shift the piece. Use shiftingTypes enum.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Nothing </dd></dl>
+
+</div>
+</div>
+<a id="acec6ad5c0cbf6b5187c313b14fed68ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acec6ad5c0cbf6b5187c313b14fed68ef">&#9670;&nbsp;</a></span>softDrop</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void(*  softDrop) (void)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Perform a soft drop. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">None</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Nothing </dd></dl>
+
+</div>
+</div>
+<a id="a74222636e9a0ad2bcbcd3bed90fa0e88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74222636e9a0ad2bcbcd3bed90fa0e88">&#9670;&nbsp;</a></span>update</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void(*  update) (void)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -175,12 +193,11 @@ struct {</td></tr>
 <p>Update the board with this piece's information. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">boardStr</td><td>board_t structure with board's information </td></tr>
-    <tr><td class="paramname">board</td><td>Board where the piece must be updated </td></tr>
-    <tr><td class="paramname">boardHeight</td><td>Board height. </td></tr>
+    <tr><td class="paramname">None</td><td></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>Nothing </dd></dl>
 
 </div>
 </div>

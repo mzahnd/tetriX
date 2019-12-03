@@ -73,6 +73,10 @@ void test2 (void);
 // Test each piece gravity.
 void test3 (void);
 
+void test4 (void);
+
+void test5 (void);
+
 // === Function prototypes for private functions with file level scope ===
 // Clears the board and initializes only one piece.
 static int conf_onePiece (void);
@@ -86,15 +90,23 @@ static void
 check_onePieceMoving (int b1[COORD_NUM], int b2[COORD_NUM],
                       int b3[COORD_NUM], int b4[COORD_NUM]);
 
+// Check if there is only a fixed piece on the given coordinates
+static void
+check_onePieceFixed (int b1[COORD_NUM], int b2[COORD_NUM],
+                     int b3[COORD_NUM], int b4[COORD_NUM]);
+
 // Check if gravity works on one piece. 
 static void
 check_Gravity (int b1[COORD_NUM], int b2[COORD_NUM],
                int b3[COORD_NUM], int b4[COORD_NUM]);
 
-// Check if there is only a fixed piece on the given coordinates
 static void
-check_onePieceFixed (int b1[COORD_NUM], int b2[COORD_NUM],
-                     int b3[COORD_NUM], int b4[COORD_NUM]);
+check_Shift (int b1[COORD_NUM], int b2[COORD_NUM],
+             int b3[COORD_NUM], int b4[COORD_NUM]);
+
+static void
+check_Rotation (int b1[COORD_NUM], int b2[COORD_NUM],
+                int b3[COORD_NUM], int b4[COORD_NUM]);
 
 // Initialize and test a single I piece on the board.
 static void
@@ -199,7 +211,9 @@ main ()
     /* Add the tests to the suite */
     if ( (NULL == CU_add_test(pSuite, "test1: CELL definitions", test1)) ||
          (NULL == CU_add_test(pSuite, "test2: Initializing a piece", test2)) ||
-         (NULL == CU_add_test(pSuite, "test3: Gravity", test3)) )
+         (NULL == CU_add_test(pSuite, "test3: Gravity", test3)) ||
+         (NULL == CU_add_test(pSuite, "test4: Shifting", test4)) ||
+         (NULL == CU_add_test(pSuite, "test5: Rotating", test5)) )
     {
         CU_cleanup_registry();
         return CU_get_error();
@@ -312,8 +326,8 @@ test2 ()
 /**
  * @brief Test each piece gravity.
  * 
- * The piece is made appear like in test2() and is "left" to free fall, testing
- * on every board update if the whole piece is where it's supposed to.
+ * The piece is made appear like in test2() and is "left alone" to free fall,
+ * testing on every board update if the whole piece is where it's supposed to.
  * 
  * @param None
  * 
@@ -344,6 +358,47 @@ test3 (void)
     onlyPiece_Z(&check_Gravity);
 }
 
+/**
+ * @brief Test each piece shifting
+ * 
+ * The piece appears at the top of the board and is shifted a little before 
+ * letting it drop until it reaches the bottom. On each drop is again shifted
+ * and every time it's tested to be where is supposed to in the board. 
+ * 
+ * @param None
+ * 
+ * @return Nothing
+ */
+void
+test4 (void)
+{
+    /// PIECE_I
+    onlyPiece_I(&check_Shift);
+
+    // PIECE_J
+    onlyPiece_J(&check_Shift);
+
+    // PIECE_L
+    onlyPiece_L(&check_Shift);
+
+    // PIECE_O
+    onlyPiece_O(&check_Shift);
+
+    // PIECE_S
+    onlyPiece_S(&check_Shift);
+
+    // PIECE_T
+    onlyPiece_T(&check_Shift);
+
+    // PIECE_Z
+    onlyPiece_Z(&check_Shift);
+}
+
+void
+test5 (void) {
+    //onlyPiece_I(&check_Rotation);
+}
+
 // === Local function definitions ===
 
 /**
@@ -361,12 +416,14 @@ conf_onePiece (void)
 {
     clearBoard();
 
-    if ( piece_init(&testPiece, bag, position) )
+    if ( piece_init(&testPiece, &bStru,
+                    &gboard[0][0], H_BOARD, W_BOARD,
+                    bag[position]) )
     {
         return -1;
     }
 
-    testPiece.update(&bStru, gboard, H_BOARD);
+    testPiece.update();
     return 0;
 }
 
@@ -408,6 +465,8 @@ static void
 printBoard (void)
 {
     int i, j;
+
+    putchar('\n');
 
     for ( i = 0; i < H_BOARD; i++ )
     {
@@ -467,43 +526,6 @@ check_onePieceMoving (int b1[COORD_NUM], int b2[COORD_NUM],
 }
 
 /**
- * @brief Check if gravity works on one piece. 
- * 
- * It's passed as a pointer to function test3
- * 
- * @param b1 Coordinates of block b1
- * @param b2 Coordinates of block b2
- * @param b3 Coordinates of block b3
- * @param b4 Coordinates of block b4
- * @return Nothing
- */
-static void
-check_Gravity (int b1[COORD_NUM], int b2[COORD_NUM],
-               int b3[COORD_NUM], int b4[COORD_NUM])
-{
-    int i;
-
-    for ( i = 3; i <= H_BOARD; i++ )
-    {
-        testPiece.update(&bStru, gboard, H_BOARD);
-
-        if ( i == H_BOARD )
-        {
-            check_onePieceFixed(b1, b2, b3, b4);
-        }
-        else
-        {
-            (b1[COORD_Y]) += 1;
-            (b2[COORD_Y]) += 1;
-            (b3[COORD_Y]) += 1;
-            (b4[COORD_Y]) += 1;
-
-            check_onePieceMoving(b1, b2, b3, b4);
-        }
-    }
-}
-
-/**
  * @brief Check if there is only a fixed piece on the given coordinates
  * 
  * Function check_Gravity() depends on this one
@@ -537,6 +559,185 @@ check_onePieceFixed (int b1[COORD_NUM], int b2[COORD_NUM],
                 CU_ASSERT_EQUAL(gboard[i][j], CELL_CLEAR);
             }
         }
+    }
+}
+
+/**
+ * @brief Check if gravity works on one piece. 
+ * 
+ * It's passed as a pointer to function test3
+ * 
+ * @param b1 Coordinates of block b1
+ * @param b2 Coordinates of block b2
+ * @param b3 Coordinates of block b3
+ * @param b4 Coordinates of block b4
+ * @return Nothing
+ */
+static void
+check_Gravity (int b1[COORD_NUM], int b2[COORD_NUM],
+               int b3[COORD_NUM], int b4[COORD_NUM])
+{
+    int i;
+
+    for ( i = 3; i <= H_BOARD; i++ )
+    {
+        testPiece.update();
+
+        if ( i == H_BOARD )
+        {
+            check_onePieceFixed(b1, b2, b3, b4);
+        }
+        else
+        {
+            (b1[COORD_Y]) += 1;
+            (b2[COORD_Y]) += 1;
+            (b3[COORD_Y]) += 1;
+            (b4[COORD_Y]) += 1;
+
+            check_onePieceMoving(b1, b2, b3, b4);
+        }
+    }
+}
+
+/**
+ * @brief
+ * 
+ * @param b1 Coordinates of block b1
+ * @param b2 Coordinates of block b2
+ * @param b3 Coordinates of block b3
+ * @param b4 Coordinates of block b4
+ * @return Nothing
+ */
+static void
+check_Shift (int b1[COORD_NUM], int b2[COORD_NUM],
+             int b3[COORD_NUM], int b4[COORD_NUM])
+{
+    int i, limit_r, limit_l;
+
+    // Depending on the piece, this should be displaced no more than 3 or 4 
+    // blocks to the right and 6, 7 or 8 blocks to the left
+    switch ( testPiece.type )
+    {
+        case PIECE_I:
+            limit_r = W_BOARD / 2 - 2;
+            limit_l = W_BOARD - 4;
+            break;
+
+        case PIECE_J:
+        case PIECE_L:
+        case PIECE_S:
+        case PIECE_T:
+        case PIECE_Z:
+            limit_r = W_BOARD / 2 - 1;
+            limit_l = W_BOARD - 3;
+            break;
+
+        case PIECE_O:
+            limit_r = W_BOARD / 2 - 1;
+            limit_l = W_BOARD - 2;
+            break;
+
+        default:
+            break;
+    }
+
+    // Displace the piece fully to the right
+    for ( i = 0; i < limit_r; i++ )
+    {
+        testPiece.shift(RIGHT);
+
+        (b1[COORD_X]) += 1;
+        (b2[COORD_X]) += 1;
+        (b3[COORD_X]) += 1;
+        (b4[COORD_X]) += 1;
+
+        check_onePieceMoving(b1, b2, b3, b4);
+    }
+
+    // It must keep itself in the same position
+    for ( i = 0; i < 10; i++ )
+    {
+        testPiece.shift(RIGHT);
+        check_onePieceMoving(b1, b2, b3, b4);
+    }
+
+    // Drop it once
+    testPiece.update();
+
+    // And check if it's where it's supposed to
+    (b1[COORD_Y]) += 1;
+    (b2[COORD_Y]) += 1;
+    (b3[COORD_Y]) += 1;
+    (b4[COORD_Y]) += 1;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Displace the piece fully to the left
+    for ( i = limit_l; i > 0; i-- )
+    {
+        testPiece.shift(LEFT);
+
+        (b1[COORD_X]) -= 1;
+        (b2[COORD_X]) -= 1;
+        (b3[COORD_X]) -= 1;
+        (b4[COORD_X]) -= 1;
+
+        check_onePieceMoving(b1, b2, b3, b4);
+    }
+
+    // It must keep itself in the same position
+    for ( i = 0; i < 10; i++ )
+    {
+        testPiece.shift(LEFT);
+        check_onePieceMoving(b1, b2, b3, b4);
+    }
+
+    // Drop it once
+    testPiece.update();
+
+    // And check if it's where it's supposed to
+    (b1[COORD_Y]) += 1;
+    (b2[COORD_Y]) += 1;
+    (b3[COORD_Y]) += 1;
+    (b4[COORD_Y]) += 1;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+}
+
+/**
+ * @brief
+ * 
+ * @param b1 Coordinates of block b1
+ * @param b2 Coordinates of block b2
+ * @param b3 Coordinates of block b3
+ * @param b4 Coordinates of block b4
+ * @return Nothing
+ */
+static void
+check_Rotation (int b1[COORD_NUM], int b2[COORD_NUM],
+                int b3[COORD_NUM], int b4[COORD_NUM])
+{
+    switch ( testPiece.type )
+    {
+        case PIECE_I:
+            printBoard();
+            testPiece.rotate();
+
+            (b1[COORD_X]) += 2;
+            (b2[COORD_X]) += 1;
+            (b4[COORD_X]) -= 1;
+
+            (b1[COORD_Y]) -= 2;
+            (b2[COORD_Y]) -= 1;
+            (b4[COORD_Y]) += 1;
+
+            check_onePieceMoving(b1, b2, b3, b4);
+            printBoard();
+            break;
+
+
+        default:
+            break;
     }
 }
 
@@ -892,6 +1093,7 @@ onlyPiece_Z (void (*test2Perform)(int b1[COORD_NUM], int b2[COORD_NUM],
     (*test2Perform)(b1, b2, b3, b4);
 }
 
+
 // === Copied from board.c ===
 
 /**
@@ -923,8 +1125,6 @@ clearMoving (void)
 /**
  * @brief Set the piece's coordinates as CELL_MOVING on the board
  *  
- * Extracted as it is from board.c
- * 
  * @param None
  * 
  * @return Nothing
@@ -932,24 +1132,22 @@ clearMoving (void)
 static void
 setMoving (void)
 {
-    gboard[ testPiece.coord.b1[COORD_Y] ][ \
-                        testPiece.coord.b1[COORD_X] ] = CELL_MOVING;
+    gboard[ testPiece.get.coordinates[0][COORD_Y] ][ \
+                        testPiece.get.coordinates[0][COORD_X] ] = CELL_MOVING;
 
-    gboard[ testPiece.coord.b2[COORD_Y] ][ \
-                        testPiece.coord.b2[COORD_X] ] = CELL_MOVING;
+    gboard[ testPiece.get.coordinates[1][COORD_Y] ][ \
+                        testPiece.get.coordinates[1][COORD_X] ] = CELL_MOVING;
 
-    gboard[ testPiece.coord.b3[COORD_Y] ][ \
-                        testPiece.coord.b3[COORD_X] ] = CELL_MOVING;
+    gboard[ testPiece.get.coordinates[2][COORD_Y] ][ \
+                        testPiece.get.coordinates[2][COORD_X] ] = CELL_MOVING;
 
-    gboard[ testPiece.coord.b4[COORD_Y] ][ \
-                        testPiece.coord.b4[COORD_X] ] = CELL_MOVING;
+    gboard[ testPiece.get.coordinates[3][COORD_Y] ][ \
+                        testPiece.get.coordinates[3][COORD_X] ] = CELL_MOVING;
 }
 
 /**
  * @brief Set the piece's coordinates as CELL_FIXED on the board
- *
- * Extracted as it is from board.c
- *
+ *  
  * @param None
  * 
  * @return Nothing
@@ -957,15 +1155,16 @@ setMoving (void)
 static void
 setFixed (void)
 {
-    gboard[ testPiece.coord.b1[COORD_Y] ][ \
-                        testPiece.coord.b1[COORD_X] ] = CELL_FIXED;
+    gboard[ testPiece.get.coordinates[0][COORD_Y] ][ \
+                        testPiece.get.coordinates[0][COORD_X] ] = CELL_FIXED;
 
-    gboard[ testPiece.coord.b2[COORD_Y] ][ \
-                        testPiece.coord.b2[COORD_X] ] = CELL_FIXED;
+    gboard[ testPiece.get.coordinates[1][COORD_Y] ][ \
+                        testPiece.get.coordinates[1][COORD_X] ] = CELL_FIXED;
 
-    gboard[ testPiece.coord.b3[COORD_Y] ][ \
-                        testPiece.coord.b3[COORD_X] ] = CELL_FIXED;
+    gboard[ testPiece.get.coordinates[2][COORD_Y] ][ \
+                        testPiece.get.coordinates[2][COORD_X] ] = CELL_FIXED;
 
-    gboard[ testPiece.coord.b4[COORD_Y] ][ \
-                        testPiece.coord.b4[COORD_X] ] = CELL_FIXED;
+    gboard[ testPiece.get.coordinates[3][COORD_Y] ][ \
+                        testPiece.get.coordinates[3][COORD_X] ] = CELL_FIXED;
 }
+

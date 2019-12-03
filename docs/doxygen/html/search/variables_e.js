@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['t_112',['T',['../structstats__t_1_1_p_i_e_c_e_s___s_t_r_c.html#abd63ef90d8db1b8afcc570c1f669fa56',1,'stats_t::PIECES_STRC']]],
-  ['top_113',['top',['../structstats__t_1_1_s_c_o_r_e___s_t_r_c.html#a3fdd42ea34070a54e696b3adc28c4be3',1,'stats_t::SCORE_STRC']]],
-  ['type_114',['type',['../struct_p_i_e_c_e.html#aff17911edc8208aa8ddb1c7c52c78389',1,'PIECE']]]
+  ['s_101',['S',['../structstats__t_1_1_p_i_e_c_e_s___s_t_r_c.html#a0c493647d06bff498c43169001af7497',1,'stats_t::PIECES_STRC']]],
+  ['shift_102',['shift',['../struct_p_i_e_c_e.html#aaba3c820f8f695d7e79c75ddc4f5ab51',1,'PIECE']]],
+  ['softdrop_103',['softDrop',['../struct_p_i_e_c_e.html#acec6ad5c0cbf6b5187c313b14fed68ef',1,'PIECE']]],
+  ['status_104',['status',['../structstats__t.html#a6e27f49150e9a14580fb313cc2777e00',1,'stats_t']]]
 ];

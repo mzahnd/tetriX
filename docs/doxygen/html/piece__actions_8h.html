@@ -79,8 +79,7 @@ $(function() {
 
 <p>Manage a piece actions like rotation, shifting and dropping.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="board_8h_source.html">../board.h</a>&quot;</code><br />
-</div>
+
 <p><a href="piece__actions_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
@@ -106,14 +105,14 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a9c477b7ecfd37c630bb449413ee8205a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="piece__actions_8h.html#a9c477b7ecfd37c630bb449413ee8205a">piece_init</a> (struct <a class="el" href="struct_p_i_e_c_e.html">PIECE</a> *pstruct, const char *bag, const int position)</td></tr>
-<tr class="memdesc:a9c477b7ecfd37c630bb449413ee8205a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Piece initialization.  <a href="piece__actions_8h.html#a9c477b7ecfd37c630bb449413ee8205a">More...</a><br /></td></tr>
-<tr class="separator:a9c477b7ecfd37c630bb449413ee8205a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade0668f86af8e09355b2430542096d0e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="piece__actions_8h.html#ade0668f86af8e09355b2430542096d0e">piece_init</a> (struct <a class="el" href="struct_p_i_e_c_e.html">PIECE</a> *pstruct, struct <a class="el" href="struct_g_a_m_e_b_o_a_r_d.html">GAMEBOARD</a> *boardStr, int *board, int boardHeight, int boardWidth, const char piece)</td></tr>
+<tr class="memdesc:ade0668f86af8e09355b2430542096d0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Piece initialization.  <a href="piece__actions_8h.html#ade0668f86af8e09355b2430542096d0e">More...</a><br /></td></tr>
+<tr class="separator:ade0668f86af8e09355b2430542096d0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Manage a piece actions like rotation, shifting and dropping. </p>
 <p>Using <a class="el" href="struct_p_i_e_c_e.html" title="Piece object.">PIECE</a> structure a given piece can be rotated, shifted and droped using soft drop. Also it's coordinates can be retrived for "real time" representation of it in the board.</p>
-<dl class="section note"><dt>Note</dt><dd><a class="el" href="piece__actions_8h.html#a9c477b7ecfd37c630bb449413ee8205a" title="Piece initialization.">piece_init()</a> <b>must</b> be called before accessing the structure. If not done so, the structure behaviour is undefined.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd><a class="el" href="piece__actions_8h.html#ade0668f86af8e09355b2430542096d0e" title="Piece initialization.">piece_init()</a> <b>must</b> be called before accessing the structure. If not done so, the structure behaviour is undefined.</dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Gino Minnucci <a href="#" onclick="location.href='mai'+'lto:'+'gmi'+'nn'+'ucc'+'i@'+'itb'+'a.'+'edu'+'.a'+'r'; return false;">gminn<span style="display: none;">.nosp@m.</span>ucci<span style="display: none;">.nosp@m.</span>@itba<span style="display: none;">.nosp@m.</span>.edu<span style="display: none;">.nosp@m.</span>.ar</a> </dd>
 <dd>
 Martín E. Zahnd <a href="#" onclick="location.href='mai'+'lto:'+'mza'+'hn'+'d@i'+'tb'+'a.e'+'du'+'.ar'; return false;">mzahn<span style="display: none;">.nosp@m.</span>d@it<span style="display: none;">.nosp@m.</span>ba.ed<span style="display: none;">.nosp@m.</span>u.ar</a></dd></dl>
@@ -134,8 +133,7 @@ Martín E. Zahnd <a href="#" onclick="location.href='mai'+'lto:'+'mza'+'hn'+'d@i
 
 <p>Piece object. </p>
 <p>Contains a piece's type, actions it has to perform, and it's current position in the board.</p>
-<dl class="section note"><dt>Note</dt><dd>When setting a value to<pre class="fragment">true </pre> or <pre class="fragment">false </pre> use stdbool.h</dd></dl>
-<dl class="section warning"><dt>Warning</dt><dd>Function <a class="el" href="piece__actions_8h.html#a9c477b7ecfd37c630bb449413ee8205a" title="Piece initialization.">piece_init()</a> must be called before using this object </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Function <a class="el" href="piece__actions_8h.html#ade0668f86af8e09355b2430542096d0e" title="Piece initialization.">piece_init()</a> must be called before using this object </dd></dl>
 
 </div>
 </div>
@@ -166,8 +164,8 @@ Martín E. Zahnd <a href="#" onclick="location.href='mai'+'lto:'+'mza'+'hn'+'d@i
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a9c477b7ecfd37c630bb449413ee8205a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9c477b7ecfd37c630bb449413ee8205a">&#9670;&nbsp;</a></span>piece_init()</h2>
+<a id="ade0668f86af8e09355b2430542096d0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade0668f86af8e09355b2430542096d0e">&#9670;&nbsp;</a></span>piece_init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -181,14 +179,32 @@ Martín E. Zahnd <a href="#" onclick="location.href='mai'+'lto:'+'mza'+'hn'+'d@i
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>bag</em>, </td>
+          <td class="paramtype">struct <a class="el" href="struct_g_a_m_e_b_o_a_r_d.html">GAMEBOARD</a> *&#160;</td>
+          <td class="paramname"><em>boardStr</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const int&#160;</td>
-          <td class="paramname"><em>position</em>&#160;</td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>board</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>boardHeight</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>boardWidth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>piece</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -203,8 +219,11 @@ Martín E. Zahnd <a href="#" onclick="location.href='mai'+'lto:'+'mza'+'hn'+'d@i
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pstruct</td><td><a class="el" href="struct_p_i_e_c_e.html" title="Piece object.">PIECE</a> structure to initialize. </td></tr>
-    <tr><td class="paramname">bag</td><td>Bag with set of random pieces generated using <a class="el" href="random__generator_8h.html#a0133154647eee16f58c90943e69af044" title="Generates a NUM_PIECES size bag with a pseudo-random list of pieces.">random_generator()</a>. </td></tr>
-    <tr><td class="paramname">position</td><td>Piece's position in the bag. </td></tr>
+    <tr><td class="paramname">boardStr</td><td><a class="el" href="struct_g_a_m_e_b_o_a_r_d.html" title="Current game&#39;s board object.">GAMEBOARD</a> structure of the board with the piece </td></tr>
+    <tr><td class="paramname">board</td><td>Top left corner of the board with the piece (in a 2D array it will be equivalent to board[0][0]) </td></tr>
+    <tr><td class="paramname">boardHeight</td><td>Board Height </td></tr>
+    <tr><td class="paramname">boardWidth</td><td>Board Width </td></tr>
+    <tr><td class="paramname">piece</td><td>Piece to initialize</td></tr>
   </table>
   </dd>
 </dl>
