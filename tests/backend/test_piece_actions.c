@@ -37,7 +37,7 @@
 #include <stdlib.h>
 #include <CUnit/Basic.h>
 
-// For PIECE_X, NUM_PIECES, board_cell, coords and board_t
+// For TETROMINO_X, NUM_PIECES, board_cell, coords and board_t
 #include "../../src/backend/board/board.h"
 
 // Functions to test
@@ -78,7 +78,7 @@ void test4 (void);
 void test5 (void);
 
 // === Function prototypes for private functions with file level scope ===
-// Clears the board and initializes only one piece.
+// Clears the board and initializes only one testPiece.
 static int conf_onePiece (void);
 // Set all the cells in the board to CELL_CLEAR.
 static void clearBoard (void);
@@ -95,7 +95,7 @@ static void
 check_onePieceFixed (int b1[COORD_NUM], int b2[COORD_NUM],
                      int b3[COORD_NUM], int b4[COORD_NUM]);
 
-// Check if gravity works on one piece. 
+// Check if gravity works on one testPiece. 
 static void
 check_Gravity (int b1[COORD_NUM], int b2[COORD_NUM],
                int b3[COORD_NUM], int b4[COORD_NUM]);
@@ -154,7 +154,7 @@ clearMoving (void);
 
 // Set the piece's coordinates as CELL_FIXED on the board
 static void
-setFixed (void);
+setFixed (int cellType);
 
 // Set the piece's coordinates as CELL_MOVING on the board
 static void
@@ -173,7 +173,7 @@ static int gboard[H_BOARD][W_BOARD];
 static piece_t testPiece;
 
 // Bag with pieces
-static char bag[NUM_PIECES];
+static char bag[TETROMINOS];
 // Position of each piece in the bag
 static int position;
 
@@ -246,13 +246,13 @@ init_suite (void)
     bStru.piece.set.fixed = &setFixed;
 
     // Create a bag with all pieces, in order
-    bag[0] = PIECE_I;
-    bag[1] = PIECE_J;
-    bag[2] = PIECE_L;
-    bag[3] = PIECE_O;
-    bag[4] = PIECE_S;
-    bag[5] = PIECE_T;
-    bag[6] = PIECE_Z;
+    bag[0] = TETROMINO_I;
+    bag[1] = TETROMINO_J;
+    bag[2] = TETROMINO_L;
+    bag[3] = TETROMINO_O;
+    bag[4] = TETROMINO_S;
+    bag[5] = TETROMINO_T;
+    bag[6] = TETROMINO_Z;
 
     // Clear board
     clearBoard();
@@ -287,8 +287,48 @@ test1 ()
     // This three must be different in order to be able to difference cells on 
     // the board
     CU_ASSERT_NOT_EQUAL_FATAL(CELL_MOVING, CELL_CLEAR);
-    CU_ASSERT_NOT_EQUAL_FATAL(CELL_MOVING, CELL_FIXED);
-    CU_ASSERT_NOT_EQUAL_FATAL(CELL_FIXED, CELL_CLEAR);
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_MOVING, CELL_I);
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_MOVING, CELL_J);
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_MOVING, CELL_L);
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_MOVING, CELL_O);
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_MOVING, CELL_S);
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_MOVING, CELL_T);
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_MOVING, CELL_Z);
+
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_CLEAR, CELL_I);
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_CLEAR, CELL_J);
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_CLEAR, CELL_L);
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_CLEAR, CELL_O);
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_CLEAR, CELL_S);
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_CLEAR, CELL_T);
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_CLEAR, CELL_Z);
+
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_I, CELL_J);
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_I, CELL_L);
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_I, CELL_O);
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_I, CELL_S);
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_I, CELL_T);
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_I, CELL_Z);
+
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_J, CELL_L);
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_J, CELL_O);
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_J, CELL_S);
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_J, CELL_T);
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_J, CELL_Z);
+
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_L, CELL_O);
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_L, CELL_S);
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_L, CELL_T);
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_L, CELL_Z);
+
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_O, CELL_S);
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_O, CELL_T);
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_O, CELL_Z);
+
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_S, CELL_T);
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_S, CELL_Z);
+
+    CU_ASSERT_NOT_EQUAL_FATAL(CELL_T, CELL_Z);
 }
 
 /**
@@ -301,25 +341,25 @@ test1 ()
 void
 test2 ()
 {
-    // PIECE_I
+    // TETROMINO_I
     onlyPiece_I(&check_onePieceMoving);
 
-    // PIECE_J
+    // TETROMINO_J
     onlyPiece_J(&check_onePieceMoving);
 
-    // PIECE_L
+    // TETROMINO_L
     onlyPiece_L(&check_onePieceMoving);
 
-    // PIECE_O
+    // TETROMINO_O
     onlyPiece_O(&check_onePieceMoving);
 
-    // PIECE_S
+    // TETROMINO_S
     onlyPiece_S(&check_onePieceMoving);
 
-    // PIECE_T
+    // TETROMINO_T
     onlyPiece_T(&check_onePieceMoving);
 
-    // PIECE_Z
+    // TETROMINO_Z
     onlyPiece_Z(&check_onePieceMoving);
 }
 
@@ -336,25 +376,25 @@ test2 ()
 void
 test3 (void)
 {
-    // PIECE_I
+    // TETROMINO_I
     onlyPiece_I(&check_Gravity);
 
-    // PIECE_J
+    // TETROMINO_J
     onlyPiece_J(&check_Gravity);
 
-    // PIECE_L
+    // TETROMINO_L
     onlyPiece_L(&check_Gravity);
 
-    // PIECE_O
+    // TETROMINO_O
     onlyPiece_O(&check_Gravity);
 
-    // PIECE_S
+    // TETROMINO_S
     onlyPiece_S(&check_Gravity);
 
-    // PIECE_T
+    // TETROMINO_T
     onlyPiece_T(&check_Gravity);
 
-    // PIECE_Z
+    // TETROMINO_Z
     onlyPiece_Z(&check_Gravity);
 }
 
@@ -372,37 +412,38 @@ test3 (void)
 void
 test4 (void)
 {
-    /// PIECE_I
+    // TETROMINO_I
     onlyPiece_I(&check_Shift);
 
-    // PIECE_J
+    // TETROMINO_J
     onlyPiece_J(&check_Shift);
 
-    // PIECE_L
+    // TETROMINO_L
     onlyPiece_L(&check_Shift);
 
-    // PIECE_O
+    // TETROMINO_O
     onlyPiece_O(&check_Shift);
 
-    // PIECE_S
+    // TETROMINO_S
     onlyPiece_S(&check_Shift);
 
-    // PIECE_T
+    // TETROMINO_T
     onlyPiece_T(&check_Shift);
 
-    // PIECE_Z
+    // TETROMINO_Z
     onlyPiece_Z(&check_Shift);
 }
 
 void
-test5 (void) {
-    //onlyPiece_I(&check_Rotation);
+test5 (void)
+{
+    onlyPiece_I(&check_Rotation);
 }
 
 // === Local function definitions ===
 
 /**
- * @brief Clears the board and initializes only one piece.
+ * @brief Clears the board and initializes only one testPiece.
  * 
  * This function is meant to be called before performing a test with just one
  * piece on the board.
@@ -424,6 +465,9 @@ conf_onePiece (void)
     }
 
     testPiece.update();
+    clearMoving();
+    setMoving();
+
     return 0;
 }
 
@@ -505,6 +549,11 @@ check_onePieceMoving (int b1[COORD_NUM], int b2[COORD_NUM],
 {
     int i, j;
 
+    clearMoving();
+    setMoving();
+    printBoard();
+
+
     for ( i = 0; i < H_BOARD; i++ )
     {
         for ( j = 0; j < W_BOARD; j++ )
@@ -542,6 +591,9 @@ check_onePieceFixed (int b1[COORD_NUM], int b2[COORD_NUM],
 {
     int i, j;
 
+    clearMoving();
+
+
     for ( i = 0; i < H_BOARD; i++ )
     {
         for ( j = 0; j < W_BOARD; j++ )
@@ -551,7 +603,37 @@ check_onePieceFixed (int b1[COORD_NUM], int b2[COORD_NUM],
                  (i == b3[COORD_Y] && j == b3[COORD_X]) ||
                  (i == b4[COORD_Y] && j == b4[COORD_X]) )
             {
-                CU_ASSERT_EQUAL(gboard[i][j], CELL_FIXED);
+                switch ( testPiece.type )
+                {
+                    case TETROMINO_I:
+                        CU_ASSERT_EQUAL(gboard[i][j], CELL_I);
+                        break;
+
+                    case TETROMINO_J:
+                        CU_ASSERT_EQUAL(gboard[i][j], CELL_J);
+                        break;
+
+                    case TETROMINO_L:
+                        CU_ASSERT_EQUAL(gboard[i][j], CELL_L);
+                        break;
+
+                    case TETROMINO_O:
+                        CU_ASSERT_EQUAL(gboard[i][j], CELL_O);
+                        break;
+
+                    case TETROMINO_S:
+                        CU_ASSERT_EQUAL(gboard[i][j], CELL_S);
+                        break;
+
+                    case TETROMINO_T:
+                        CU_ASSERT_EQUAL(gboard[i][j], CELL_T);
+                        break;
+
+                    case TETROMINO_Z:
+                        CU_ASSERT_EQUAL(gboard[i][j], CELL_Z);
+                        break;
+                }
+
             }
 
             else
@@ -563,7 +645,7 @@ check_onePieceFixed (int b1[COORD_NUM], int b2[COORD_NUM],
 }
 
 /**
- * @brief Check if gravity works on one piece. 
+ * @brief Check if gravity works on one testPiece. 
  * 
  * It's passed as a pointer to function test3
  * 
@@ -579,14 +661,30 @@ check_Gravity (int b1[COORD_NUM], int b2[COORD_NUM],
 {
     int i;
 
-    for ( i = 3; i <= H_BOARD; i++ )
+    for ( i = 3; i < H_BOARD; i++ )
     {
         testPiece.update();
 
-        if ( i == H_BOARD )
+        if ( i == H_BOARD - 1 && testPiece.type != TETROMINO_I )
         {
+
             check_onePieceFixed(b1, b2, b3, b4);
         }
+
+        else if ( i == H_BOARD - 1 && testPiece.type == TETROMINO_I )
+        {
+            (b1[COORD_Y]) += 1;
+            (b2[COORD_Y]) += 1;
+            (b3[COORD_Y]) += 1;
+            (b4[COORD_Y]) += 1;
+
+            check_onePieceMoving(b1, b2, b3, b4);
+
+            testPiece.update();
+
+            check_onePieceFixed(b1, b2, b3, b4);
+        }
+
         else
         {
             (b1[COORD_Y]) += 1;
@@ -618,24 +716,27 @@ check_Shift (int b1[COORD_NUM], int b2[COORD_NUM],
     // blocks to the right and 6, 7 or 8 blocks to the left
     switch ( testPiece.type )
     {
-        case PIECE_I:
+        case TETROMINO_I:
             limit_r = W_BOARD / 2 - 2;
             limit_l = W_BOARD - 4;
             break;
 
-        case PIECE_J:
-        case PIECE_L:
-        case PIECE_S:
-        case PIECE_T:
-        case PIECE_Z:
+        case TETROMINO_J:
+        case TETROMINO_L:
+        case TETROMINO_S:
+        case TETROMINO_T:
             limit_r = W_BOARD / 2 - 1;
             limit_l = W_BOARD - 3;
             break;
 
-        case PIECE_O:
+        case TETROMINO_O:
             limit_r = W_BOARD / 2 - 1;
             limit_l = W_BOARD - 2;
             break;
+
+        case TETROMINO_Z:
+            limit_r = W_BOARD / 2 - 2;
+            limit_l = W_BOARD - 3;
 
         default:
             break;
@@ -719,9 +820,9 @@ check_Rotation (int b1[COORD_NUM], int b2[COORD_NUM],
 {
     switch ( testPiece.type )
     {
-        case PIECE_I:
+        case TETROMINO_I:
             printBoard();
-            testPiece.rotate();
+            testPiece.rotate(RIGHT);
 
             (b1[COORD_X]) += 2;
             (b2[COORD_X]) += 1;
@@ -760,7 +861,7 @@ onlyPiece_I (void (*test2Perform)(int b1[COORD_NUM], int b2[COORD_NUM],
     int b1[COORD_NUM], b2[COORD_NUM];
     int b3[COORD_NUM], b4[COORD_NUM];
 
-    // PIECE_I
+    // TETROMINO_I
     position = 0;
     conf_onePiece();
 
@@ -818,11 +919,11 @@ onlyPiece_J (void (*test2Perform)(int b1[COORD_NUM], int b2[COORD_NUM],
     /*
      *       3    4    5    6
      *     ---------------------
-     *  1  | b1 | b2 | b3 |    |
+     *  1  |    |    |    |    |
      *     ---------------------
-     *  2  |    |    | b4 |    |
+     *  2  | b1 |    |    |    |
      *     ---------------------
-     *  3  |    |    |    |    |
+     *  3  | b2 | b3 | b4 |    |
      *     ---------------------
      *  4  |    |    |    |    |
      *     ---------------------
@@ -830,14 +931,14 @@ onlyPiece_J (void (*test2Perform)(int b1[COORD_NUM], int b2[COORD_NUM],
 
     // Coordinates
     b1[COORD_X] = 3;
-    b2[COORD_X] = 4;
-    b3[COORD_X] = 5;
+    b2[COORD_X] = 3;
+    b3[COORD_X] = 4;
     b4[COORD_X] = 5;
 
-    b1[COORD_Y] = 1;
-    b2[COORD_Y] = 1;
-    b3[COORD_Y] = 1;
-    b4[COORD_Y] = 2;
+    b1[COORD_Y] = 2;
+    b2[COORD_Y] = 3;
+    b3[COORD_Y] = 3;
+    b4[COORD_Y] = 3;
 
     // Perform test
     (*test2Perform)(b1, b2, b3, b4);
@@ -868,26 +969,26 @@ onlyPiece_L (void (*test2Perform)(int b1[COORD_NUM], int b2[COORD_NUM],
     /*
      *       3    4    5    6
      *     ---------------------
-     *  1  | b1 | b2 | b3 |    |
+     *  1  |    |    |    |    |
      *     ---------------------
-     *  2  | b4 |    |    |    |
+     *  2  |    |    | b1 |    |
      *     ---------------------
-     *  3  |    |    |    |    |
+     *  3  | b4 | b3 | b2 |    |
      *     ---------------------
      *  4  |    |    |    |    |
      *     ---------------------
      */
 
     // Coordinates
-    b1[COORD_X] = 3;
-    b2[COORD_X] = 4;
-    b3[COORD_X] = 5;
+    b1[COORD_X] = 5;
+    b2[COORD_X] = 5;
+    b3[COORD_X] = 4;
     b4[COORD_X] = 3;
 
-    b1[COORD_Y] = 1;
-    b2[COORD_Y] = 1;
-    b3[COORD_Y] = 1;
-    b4[COORD_Y] = 2;
+    b1[COORD_Y] = 2;
+    b2[COORD_Y] = 3;
+    b3[COORD_Y] = 3;
+    b4[COORD_Y] = 3;
 
     // Perform test
     (*test2Perform)(b1, b2, b3, b4);
@@ -918,9 +1019,9 @@ onlyPiece_O (void (*test2Perform)(int b1[COORD_NUM], int b2[COORD_NUM],
     /*
      *       3    4    5    6
      *     ---------------------
-     *  1  |    | b1 | b2 |    |
+     *  1  | b1 | b2 |    |    |
      *     ---------------------
-     *  2  |    | b3 | b4 |    |
+     *  2  | b3 | b4 |    |    |
      *     ---------------------
      *  3  |    |    |    |    |
      *     ---------------------
@@ -934,10 +1035,10 @@ onlyPiece_O (void (*test2Perform)(int b1[COORD_NUM], int b2[COORD_NUM],
     b3[COORD_X] = 4;
     b4[COORD_X] = 5;
 
-    b1[COORD_Y] = 1;
-    b2[COORD_Y] = 1;
-    b3[COORD_Y] = 2;
-    b4[COORD_Y] = 2;
+    b1[COORD_Y] = 2;
+    b2[COORD_Y] = 2;
+    b3[COORD_Y] = 3;
+    b4[COORD_Y] = 3;
 
     // Perform test
     (*test2Perform)(b1, b2, b3, b4);
@@ -984,10 +1085,10 @@ onlyPiece_S (void (*test2Perform)(int b1[COORD_NUM], int b2[COORD_NUM],
     b3[COORD_X] = 3;
     b4[COORD_X] = 4;
 
-    b1[COORD_Y] = 1;
-    b2[COORD_Y] = 1;
-    b3[COORD_Y] = 2;
-    b4[COORD_Y] = 2;
+    b1[COORD_Y] = 2;
+    b2[COORD_Y] = 2;
+    b3[COORD_Y] = 3;
+    b4[COORD_Y] = 3;
 
     // Perform test
     (*test2Perform)(b1, b2, b3, b4);
@@ -1018,9 +1119,9 @@ onlyPiece_T (void (*test2Perform)(int b1[COORD_NUM], int b2[COORD_NUM],
     /*
      *       3    4    5    6
      *     ---------------------
-     *  1  | b1 | b2 | b3 |    |
+     *  1  |    | b1 |    |    |
      *     ---------------------
-     *  2  |    | b4 |    |    |
+     *  2  | b2 | b3 | b4 |    |
      *     ---------------------
      *  3  |    |    |    |    |
      *     ---------------------
@@ -1029,15 +1130,15 @@ onlyPiece_T (void (*test2Perform)(int b1[COORD_NUM], int b2[COORD_NUM],
      */
 
     // Coordinates
-    b1[COORD_X] = 3;
-    b2[COORD_X] = 4;
-    b3[COORD_X] = 5;
-    b4[COORD_X] = 4;
+    b1[COORD_X] = 4;
+    b2[COORD_X] = 3;
+    b3[COORD_X] = 4;
+    b4[COORD_X] = 5;
 
-    b1[COORD_Y] = 1;
-    b2[COORD_Y] = 1;
-    b3[COORD_Y] = 1;
-    b4[COORD_Y] = 2;
+    b1[COORD_Y] = 2;
+    b2[COORD_Y] = 3;
+    b3[COORD_Y] = 3;
+    b4[COORD_Y] = 3;
 
     // Perform test
     (*test2Perform)(b1, b2, b3, b4);
@@ -1068,9 +1169,9 @@ onlyPiece_Z (void (*test2Perform)(int b1[COORD_NUM], int b2[COORD_NUM],
     /*
      *       3    4    5    6
      *     ---------------------
-     *  1  | b1 | b2 |    |    |
+     *  1  |    | b1 | b2 |    |
      *     ---------------------
-     *  2  |    | b3 | b4 |    |
+     *  2  |    |    | b3 | b4 |
      *     ---------------------
      *  3  |    |    |    |    |
      *     ---------------------
@@ -1079,15 +1180,15 @@ onlyPiece_Z (void (*test2Perform)(int b1[COORD_NUM], int b2[COORD_NUM],
      */
 
     // Coordinates
-    b1[COORD_X] = 3;
-    b2[COORD_X] = 4;
-    b3[COORD_X] = 4;
-    b4[COORD_X] = 5;
+    b1[COORD_X] = 4;
+    b2[COORD_X] = 5;
+    b3[COORD_X] = 5;
+    b4[COORD_X] = 6;
 
-    b1[COORD_Y] = 1;
-    b2[COORD_Y] = 1;
-    b3[COORD_Y] = 2;
-    b4[COORD_Y] = 2;
+    b1[COORD_Y] = 2;
+    b2[COORD_Y] = 2;
+    b3[COORD_Y] = 3;
+    b4[COORD_Y] = 3;
 
     // Perform test
     (*test2Perform)(b1, b2, b3, b4);
@@ -1098,11 +1199,9 @@ onlyPiece_Z (void (*test2Perform)(int b1[COORD_NUM], int b2[COORD_NUM],
 
 /**
  * @brief Clear all cells with moving pieces on the board
- * 
- * Extracted as it is from board.c
  *  
  * @param None
- *
+ * 
  * @return Nothing
  */
 static void
@@ -1132,17 +1231,17 @@ clearMoving (void)
 static void
 setMoving (void)
 {
-    gboard[ testPiece.get.coordinates[0][COORD_Y] ][ \
-                        testPiece.get.coordinates[0][COORD_X] ] = CELL_MOVING;
+    gboard[ testPiece.get.coordinates[b1][COORD_Y] ][ \
+                        testPiece.get.coordinates[b1][COORD_X] ] = CELL_MOVING;
 
-    gboard[ testPiece.get.coordinates[1][COORD_Y] ][ \
-                        testPiece.get.coordinates[1][COORD_X] ] = CELL_MOVING;
+    gboard[ testPiece.get.coordinates[b2][COORD_Y] ][ \
+                        testPiece.get.coordinates[b2][COORD_X] ] = CELL_MOVING;
 
-    gboard[ testPiece.get.coordinates[2][COORD_Y] ][ \
-                        testPiece.get.coordinates[2][COORD_X] ] = CELL_MOVING;
+    gboard[ testPiece.get.coordinates[b3][COORD_Y] ][ \
+                        testPiece.get.coordinates[b3][COORD_X] ] = CELL_MOVING;
 
-    gboard[ testPiece.get.coordinates[3][COORD_Y] ][ \
-                        testPiece.get.coordinates[3][COORD_X] ] = CELL_MOVING;
+    gboard[ testPiece.get.coordinates[b4][COORD_Y] ][ \
+                        testPiece.get.coordinates[b4][COORD_X] ] = CELL_MOVING;
 }
 
 /**
@@ -1153,18 +1252,25 @@ setMoving (void)
  * @return Nothing
  */
 static void
-setFixed (void)
+setFixed (int cellType)
 {
-    gboard[ testPiece.get.coordinates[0][COORD_Y] ][ \
-                        testPiece.get.coordinates[0][COORD_X] ] = CELL_FIXED;
+    if ( cellType >= CELL_I )
+    {
+        gboard[ testPiece.get.coordinates[b1][COORD_Y] ][ \
+                        testPiece.get.coordinates[b1][COORD_X] ] = cellType;
 
-    gboard[ testPiece.get.coordinates[1][COORD_Y] ][ \
-                        testPiece.get.coordinates[1][COORD_X] ] = CELL_FIXED;
+        gboard[ testPiece.get.coordinates[b2][COORD_Y] ][ \
+                        testPiece.get.coordinates[b2][COORD_X] ] = cellType;
 
-    gboard[ testPiece.get.coordinates[2][COORD_Y] ][ \
-                        testPiece.get.coordinates[2][COORD_X] ] = CELL_FIXED;
+        gboard[ testPiece.get.coordinates[b3][COORD_Y] ][ \
+                        testPiece.get.coordinates[b3][COORD_X] ] = cellType;
 
-    gboard[ testPiece.get.coordinates[3][COORD_Y] ][ \
-                        testPiece.get.coordinates[3][COORD_X] ] = CELL_FIXED;
+        gboard[ testPiece.get.coordinates[b4][COORD_Y] ][ \
+                        testPiece.get.coordinates[b4][COORD_X] ] = cellType;
+    }
+
+    else
+    {
+        fputs("Invalid cellType for setFixed()", stderr);
+    }
 }
-

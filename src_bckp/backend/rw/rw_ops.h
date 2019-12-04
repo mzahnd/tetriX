@@ -17,32 +17,24 @@
 
 /**
  * 
- * @file    random_generator.h
+ * @file    rw_ops.h
  * 
- * @brief   Functions used to generate a bag of random pieces.
+ * @brief   ;
  * 
- * @details Generates an array (called "bag of pieces") of size NUM_PIECES 
- * (defined in header board.h) with random pieces following the set of rules
- * taken from tetris.wiki webpage:
- *  - No more than 4 S or Z pieces togheter.
- *  - No more than 12 pieces between two different I pieces.
+ * @details ; 
  *
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
  * 
- * @date    28/11/2019, 10:58
+ * @date    27/11/2019, 22:31
  * 
- * @see https://tetris.wiki/Random_Generator
- *  
  * @copyright GNU General Public License v3
  */
 
-#ifndef RANDOM_GENERATOR_H
-#    define RANDOM_GENERATOR_H
+#ifndef RW_OPS_H
+#    define RW_OPS_H
 
 // === Libraries and header files ===
-// For NUM_PIECES and PIECE_X definitions
-#include "board.h"
 
 // === Constants and Macro definitions ===
 
@@ -54,12 +46,4 @@
 
 // === Global function definitions ===
 
-// Initialize random generator
-int
-init_random_generator (void);
-
-// Generates a NUM_PIECES size bag with a pseudo-random list of pieces.
-void
-random_generator (int * rnd_bag, int size);
-
-#endif /* RANDOM_GENERATOR_H */
+#endif /* RW_OPS_H */

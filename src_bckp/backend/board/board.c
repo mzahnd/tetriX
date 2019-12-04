@@ -61,7 +61,7 @@ static int *
 askBoard (void);
 
 static int
-init (int * bag, int size);
+init (char * bag, int size);
 
 // Clear all cells with moving pieces on the board
 static void
@@ -69,7 +69,7 @@ clearMoving (void);
 
 // Set the piece's coordinates as CELL_FIXED on the board
 static void
-setFixed (int cellType);
+setFixed (void);
 
 // Set the piece's coordinates as CELL_MOVING on the board
 static void
@@ -77,7 +77,7 @@ setMoving (void);
 
 // Updates the board accoding the moving piece actions.
 static int
-updateBoard (int * bag, int position);
+updateBoard (char * bag, int position);
 
 // === ROM Constant variables with file level scope ===
 
@@ -106,7 +106,7 @@ void
 board_init (void * gameBoardStruct)
 {
     //int pos;
-    int bag[TETROMINOS]; //, tmp_bag[NUM_PIECES];
+    char bag[NUM_PIECES]; //, tmp_bag[NUM_PIECES];
 
     if ( gameBoardStruct == NULL )
     {
@@ -119,7 +119,7 @@ board_init (void * gameBoardStruct)
         bStruct = (board_t *) gameBoardStruct;
     }
 
-    init(bag, TETROMINOS);
+    init(bag, NUM_PIECES);
 
     /*while ( 1 )
     {
@@ -153,7 +153,7 @@ board_init (void * gameBoardStruct)
  */
 
 static int
-init (int * bag, int size)
+init (char * bag, int size)
 {
     if ( init_random_generator() )
     {
@@ -164,7 +164,7 @@ init (int * bag, int size)
     random_generator(bag, size);
 
     // Piece to PIECE_NONE
-    piece.type = TETROMINO_NONE;
+    piece.type = PIECE_NONE;
 
     //bStruct -> destroy = ;
     //bStruct -> ask.FPG =;
@@ -215,7 +215,7 @@ askBoard (void)
  * @return 
  */
 static int
-updateBoard (int * bag, int position)
+updateBoard (char * bag, int position)
 {
     /*  // Piece not initialized
       if ( piece.type == PIECE_NONE )
@@ -286,17 +286,17 @@ clearMoving (void)
 static void
 setMoving (void)
 {
-    gboard[ piece.get.coordinates[b1][COORD_Y] ][ \
-                        piece.get.coordinates[b1][COORD_X] ] = CELL_MOVING;
+    gboard[ piece.get.coordinates[0][COORD_Y] ][ \
+                        piece.get.coordinates[0][COORD_X] ] = CELL_MOVING;
 
-    gboard[ piece.get.coordinates[b2][COORD_Y] ][ \
-                        piece.get.coordinates[b2][COORD_X] ] = CELL_MOVING;
+    gboard[ piece.get.coordinates[1][COORD_Y] ][ \
+                        piece.get.coordinates[1][COORD_X] ] = CELL_MOVING;
 
-    gboard[ piece.get.coordinates[b3][COORD_Y] ][ \
-                        piece.get.coordinates[b3][COORD_X] ] = CELL_MOVING;
+    gboard[ piece.get.coordinates[2][COORD_Y] ][ \
+                        piece.get.coordinates[2][COORD_X] ] = CELL_MOVING;
 
-    gboard[ piece.get.coordinates[b4][COORD_Y] ][ \
-                        piece.get.coordinates[b4][COORD_X] ] = CELL_MOVING;
+    gboard[ piece.get.coordinates[3][COORD_Y] ][ \
+                        piece.get.coordinates[3][COORD_X] ] = CELL_MOVING;
 }
 
 /**
@@ -307,25 +307,17 @@ setMoving (void)
  * @return Nothing
  */
 static void
-setFixed (int cellType)
+setFixed (void)
 {
-    if ( cellType >= CELL_I )
-    {
-        gboard[ piece.get.coordinates[b1][COORD_Y] ][ \
-                        piece.get.coordinates[b1][COORD_X] ] = cellType;
+    gboard[ piece.get.coordinates[0][COORD_Y] ][ \
+                        piece.get.coordinates[0][COORD_X] ] = CELL_FIXED;
 
-        gboard[ piece.get.coordinates[b2][COORD_Y] ][ \
-                        piece.get.coordinates[b2][COORD_X] ] = cellType;
+    gboard[ piece.get.coordinates[1][COORD_Y] ][ \
+                        piece.get.coordinates[1][COORD_X] ] = CELL_FIXED;
 
-        gboard[ piece.get.coordinates[b3][COORD_Y] ][ \
-                        piece.get.coordinates[b3][COORD_X] ] = cellType;
+    gboard[ piece.get.coordinates[2][COORD_Y] ][ \
+                        piece.get.coordinates[2][COORD_X] ] = CELL_FIXED;
 
-        gboard[ piece.get.coordinates[b4][COORD_Y] ][ \
-                        piece.get.coordinates[b4][COORD_X] ] = cellType;
-    }
-
-    else
-    {
-        fputs("Invalid cellType for setFixed()", stderr);
-    }
+    gboard[ piece.get.coordinates[3][COORD_Y] ][ \
+                        piece.get.coordinates[3][COORD_X] ] = CELL_FIXED;
 }

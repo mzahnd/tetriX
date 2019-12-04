@@ -4,4 +4,6 @@ https://tetris.wiki/Random_Generator
 https://tetris.wiki/Tetris_(NES,_Nintendo)
 https://www.playemulator.com/nes-online/classic-tetris/
 
+Some ideas / pieces of code where inspired from
 https://stackoverflow.com/questions/351733/how-would-one-write-object-oriented-code-in-c
+https://www.dyclassroom.com/c/c-pointers-and-two-dimensional-array

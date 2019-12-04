@@ -15,51 +15,45 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-/**
+/******************************************************************************
  * 
- * @file    random_generator.h
+ * @file    stats_mgmt.c
  * 
- * @brief   Functions used to generate a bag of random pieces.
+ * @brief   ;
  * 
- * @details Generates an array (called "bag of pieces") of size NUM_PIECES 
- * (defined in header board.h) with random pieces following the set of rules
- * taken from tetris.wiki webpage:
- *  - No more than 4 S or Z pieces togheter.
- *  - No more than 12 pieces between two different I pieces.
+ * @details ; 
  *
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
  * 
- * @date    28/11/2019, 10:58
+ * @date    27/11/2019, 22:35
  * 
- * @see https://tetris.wiki/Random_Generator
- *  
  * @copyright GNU General Public License v3
- */
-
-#ifndef RANDOM_GENERATOR_H
-#    define RANDOM_GENERATOR_H
+ *****************************************************************************/
 
 // === Libraries and header files ===
-// For NUM_PIECES and PIECE_X definitions
-#include "board.h"
+#include <stdio.h>
+#include <stdlib.h>
 
+// This file
+#include "stats_mgmt.h"
+
+/// @privatesection
 // === Constants and Macro definitions ===
 
 // === Enumerations, structures and typedefs ===
 
 // === Global variables ===
 
-// === ROM Constant variables ===
+// === Function prototypes for private functions with file level scope ===
+
+// === ROM Constant variables with file level scope ===
+
+// === Static variables and constant variables with file level scope ===
 
 // === Global function definitions ===
+/// @publicsection
 
-// Initialize random generator
-int
-init_random_generator (void);
 
-// Generates a NUM_PIECES size bag with a pseudo-random list of pieces.
-void
-random_generator (int * rnd_bag, int size);
-
-#endif /* RANDOM_GENERATOR_H */
+/// @privatesection
+// === Local function definitions ===

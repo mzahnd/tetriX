@@ -36,7 +36,45 @@
 
 // === Libraries and header files ===
 
+#    include "../stats/stats_mgmt.h"
+
 // === Constants and Macro definitions ===
+/// @def NUM_PIECES
+/// @brief How many pieces are in the game
+#    define NUM_PIECES 7
+
+/// @def PIECE_NONE
+/// @brief Definition to set a PIECE structure as not initialized or cleared.
+#    define PIECE_NONE  '\0'
+
+/// @def PIECE_I
+/// @brief Piece I definition used to fill a bag.
+#    define PIECE_I     'I'
+
+/// @def PIECE_J
+/// @brief Piece J definition used to fill a bag.
+#    define PIECE_J     'J'
+
+/// @def PIECE_L
+/// @brief Piece L definition used to fill a bag.
+#    define PIECE_L     'L'
+
+/// @def PIECE_O
+/// @brief Piece O definition used to fill a bag.
+#    define PIECE_O     'O'
+
+/// @def PIECE_S
+/// @brief Piece S definition used to fill a bag.
+#    define PIECE_S     'S'
+
+/// @def PIECE_T
+/// @brief Piece T definition used to fill a bag.
+#    define PIECE_T     'T'
+
+/// @def PIECE_Z
+/// @brief Piece Z definition used to fill a bag.
+#    define PIECE_Z     'Z'
+
 /// @def BOARD_HEIGHT
 /// @brief Board Height
 #    define BOARD_HEIGHT    20
@@ -45,31 +83,7 @@
 /// @brief Board Width
 #    define BOARD_WIDTH     10
 
-#    define ORIENTATION     4
-
 // === Enumerations, structures and typedefs ===
-
-enum block
-{
-    b1 = 0,
-    b2,
-    b3,
-    b4,
-    BLOCKS
-};
-
-enum pieces
-{
-    TETROMINO_NONE = -1,
-    TETROMINO_I = 0,
-    TETROMINO_J,
-    TETROMINO_L,
-    TETROMINO_O,
-    TETROMINO_S,
-    TETROMINO_T,
-    TETROMINO_Z,
-    TETROMINOS
-};
 
 /**
  * @brief Board cell definitions
@@ -81,13 +95,7 @@ enum board_cell
     /// The cell is clear
     CELL_CLEAR = 0,
     /// The cell has a fixed piece
-    CELL_I,
-    CELL_J,
-    CELL_L,
-    CELL_O,
-    CELL_S,
-    CELL_T,
-    CELL_Z,
+    CELL_FIXED
 };
 
 /**
@@ -151,7 +159,7 @@ typedef struct GAMEBOARD
             /// Set the piece's coordinates as CELL_MOVING
             void (* moving) (void);
             /// Set the piece's coordinates as CELL_FIXED
-            void (* fixed) (int cellType);
+            void (* fixed) (void);
         } set;
     } piece;
 

@@ -57,9 +57,6 @@
  * \n Some ideas / pieces of code inspiration were taken from \n
  * https://stackoverflow.com/questions/351733/how-would-one-write-object-oriented-code-in-c \n
  * https://www.dyclassroom.com/c/c-pointers-and-two-dimensional-array \n
- * The idea of using an array to hold the pieces coordinates and orientations
- * was taken from: (lines 205-217)\n
- * https://github.com/dkorolev/bash-tetris/blob/master/tetris.sh \n
  * 
  * @author Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author Martín E. Zahnd                                <mzahnd@itba.edu.ar>

@@ -60,6 +60,6 @@ init_random_generator (void);
 
 // Generates a NUM_PIECES size bag with a pseudo-random list of pieces.
 void
-random_generator (int * rnd_bag, int size);
+random_generator (char * rnd_bag, int size);
 
 #endif /* RANDOM_GENERATOR_H */

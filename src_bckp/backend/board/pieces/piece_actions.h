@@ -73,14 +73,14 @@ enum shiftingTypes
 typedef struct PIECE
 {
     /// Type of piece. Set using definitions in board.h file.
-    int type;
+    char type;
 
     /// Board coordinates of the piece. To access, use coords enum in board.h 
 
     struct
     {
         /// Board coordinates of the piece. To access, use coords enum in board.h    
-        int coordinates[BLOCKS][COORD_NUM];
+        int coordinates[4][COORD_NUM];
 
     } get;
 
@@ -88,11 +88,11 @@ typedef struct PIECE
     /**
      * @brief Perform piece rotation
      * 
-     * @param direction Direction to rotate the piece. Use shiftingTypes enum.
+     * @param None
      * 
      * @return Nothing
      */
-    void (* rotate) (int direction);
+    void (* rotate) (void);
 
     /**
      * @brief Shift piece in the given direction

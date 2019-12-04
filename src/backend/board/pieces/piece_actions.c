@@ -60,28 +60,6 @@
 // === Enumerations, structures and typedefs ===
 
 /**
- * @brief Actions the piece can perform
- */
-enum actions
-{
-    SHIFTL_PIECE = 0,
-    SHIFTR_PIECE,
-    ROTATE_PIECE,
-    DROP_PIECE
-};
-
-/**
- * @brief A name for each block in the piece
- */
-enum block
-{
-    b1 = 0,
-    b2,
-    b3,
-    b4
-};
-
-/**
  * @brief Used to indicate a function that it must add (+) or substract (-)
  */
 enum plusminus
@@ -107,16 +85,12 @@ typedef struct PRIVATE_PIECE
     /// Public structure of this piece
     piece_t * public;
 
-    /// Board structure where this piece exists
-    board_t * pieceBoard;
-
-    /// Type of piece. Set using definitions in board.h file.
-    char type;
-
     /// Piece's board information
 
     struct
     {
+        /// Board structure where this piece exists
+        board_t * pBoard;
         /// Top left corner of the board. In a 2D array, it will be board[0][0]
         const int * r0c0;
         /// Board height
@@ -125,21 +99,17 @@ typedef struct PRIVATE_PIECE
         int width;
     } board;
 
+    /// Type of piece. Set using definitions in board.h file.
+    int type;
+
     /// Board coordinates of the piece. Use coords enum in board.h
-    int coord[4][COORD_NUM];
+    int move[COORD_NUM];
 
     /// LEFT or RIGHT: perform shifting ; NONE: don't perform any shifting
     int shifting;
 
     /// Rotation status (true or false) and which is the piece's position
-
-    struct
-    {
-        /// True: user asked for piece rotation ; False: don't rotate the piece
-        int status;
-        /// Piece position (from 1 to 4). Do not manually edit this variable
-        int position;
-    } rotation;
+    int orientation;
 
 } piece_private_t;
 
@@ -150,6 +120,18 @@ typedef struct PRIVATE_PIECE
 static int
 init (const char piece);
 
+// Increment or decrement by 1 the piece's coordinates on the given axis
+static void
+moveOneCell (int coord, int pm);
+
+// Updates the piece in the board (called from public PIECE)
+static void
+normalDrop (void);
+
+// Rotate the piece in the desired direction
+static void
+rotate (int direction);
+
 // Shift the piece in the desired direction
 static void
 shift (int direction);
@@ -158,27 +140,220 @@ shift (int direction);
 static void
 softDrop (void);
 
-// Updates the piece in the board (called from public PIECE)
+// @brief Update piece orientation
 static void
-update (void);
-
-// Increment or decrement by 1 the piece's coordinates on the given axis
-static void
-moveOneCell (int coord, int pm);
-
-// Updates the piece position or status (moving to fixed) in the board
-static void
-updatePiece (void);
+updateOrientation (int pm);
 
 // Update coordinates in PIECE structure
 static void
 updatePublicCoordinates (void);
 
-// Given an action using actions enum, verify if it can be performed.
+// Given a piece a new position, check if it can be keeped there or not.
 static int
-verifyFixedPieces (const int action);
+verifyFixedPieces (void);
 
 // === ROM Constant variables with file level scope ===
+/// Array with each piece coordinates and orientations.
+/// @note A much readable code can be readed from "Tetrominos_Table.txt" file,
+/// inside docs folder
+const int pieceArr[TETROMINOS][ORIENTATION][BLOCKS][COORD_NUM] = {
+
+                                                                  // TETROMINO I
+    {
+        {
+            {0, 1},
+            {1, 1},
+            {2, 1},
+            {3, 1}
+        },
+        {
+            {2, 0},
+            {2, 1},
+            {2, 2},
+            {2, 3}
+        },
+        {
+            {0, 2},
+            {1, 2},
+            {2, 2},
+            {3, 2}
+        },
+        {
+            {1, 0},
+            {1, 1},
+            {1, 2},
+            {1, 3}
+        }
+    },
+
+                                                                  // TETROMINO J
+    {
+        {
+            {0, 1},
+            {0, 2},
+            {1, 2},
+            {2, 2}
+        },
+        {
+            {1, 0},
+            {0, 0},
+            {0, 1},
+            {0, 2}
+        },
+        {
+            {2, 1},
+            {2, 0},
+            {1, 0},
+            {0, 0}
+        },
+        {
+            {1, 2},
+            {2, 2},
+            {2, 1},
+            {2, 0}
+        }
+    },
+
+                                                                  // TETROMINO L
+    {
+        {
+            {2, 1},
+            {2, 2},
+            {1, 2},
+            {0, 2}
+        },
+        {
+            {1, 2},
+            {0, 2},
+            {0, 1},
+            {0, 0}
+        },
+        {
+            {0, 1},
+            {0, 0},
+            {1, 0},
+            {2, 0}
+        },
+        {
+            {1, 0},
+            {2, 0},
+            {2, 1},
+            {2, 2}
+        }
+    },
+
+                                                                  // TETROMINO O
+    {
+        {
+            {0, 0},
+            {1, 0},
+            {0, 1},
+            {1, 1}
+        },
+        {
+            {0, 0},
+            {1, 0},
+            {0, 1},
+            {1, 1}
+        },
+        {
+            {0, 0},
+            {1, 0},
+            {0, 1},
+            {1, 1}
+        },
+        {
+            {0, 0},
+            {1, 0},
+            {0, 1},
+            {1, 1}
+        }
+    },
+
+                                                                  // TETROMINO S
+    {
+        {
+            {1, 0},
+            {2, 0},
+            {0, 1},
+            {1, 1}
+        },
+        {
+            {2, 1},
+            {2, 2},
+            {1, 0},
+            {1, 1}
+        },
+        {
+            {1, 0},
+            {2, 0},
+            {0, 1},
+            {1, 1}
+        },
+        {
+            {2, 1},
+            {2, 2},
+            {1, 0},
+            {1, 1}
+        }
+    },
+
+                                                                  // TETROMINO T
+    {
+        {
+            {1, 0},
+            {0, 1},
+            {1, 1},
+            {2, 1}
+        },
+        {
+            {2, 1},
+            {1, 0},
+            {1, 1},
+            {1, 2}
+        },
+        {
+            {1, 2},
+            {0, 1},
+            {1, 1},
+            {2, 1}
+        },
+        {
+            {0, 1},
+            {1, 0},
+            {1, 1},
+            {1, 2}
+        }
+    },
+
+                                                                  // TETROMINO Z
+    {
+        {
+            {0, 0},
+            {1, 0},
+            {1, 1},
+            {2, 1}
+        },
+        {
+            {2, 0},
+            {2, 1},
+            {1, 1},
+            {1, 2}
+        },
+        {
+            {0, 0},
+            {1, 0},
+            {1, 1},
+            {2, 1}
+        },
+        {
+            {2, 0},
+            {2, 1},
+            {1, 1},
+            {1, 2}
+        }
+    }
+};
 
 // === Static variables and constant variables with file level scope ===
 /// Piece to be working with
@@ -191,7 +366,7 @@ static piece_private_t currentPiece;
  * @brief Piece initialization
  * 
  * Call this function before using PIECE structure. Initializes the structure
- * with the piece in the given @p position of the @p bag.
+ * with the given piece.
  * 
  * @param pstruct PIECE structure to initialize.
  * @param boardStr GAMEBOARD structure of the board with the piece
@@ -240,7 +415,7 @@ piece_init (struct PIECE * pstruct, struct GAMEBOARD * boardStr,
         currentPiece.public = pstruct;
 
         // Save the pointer to GAMEBOARD in a variable to avoid asking it again
-        currentPiece.pieceBoard = boardStr;
+        currentPiece.board.pBoard = boardStr;
 
         // Save the top left position of the board and its size
         currentPiece.board.r0c0 = board;
@@ -249,12 +424,13 @@ piece_init (struct PIECE * pstruct, struct GAMEBOARD * boardStr,
 
         // Set function pointers
         // Rotate piece
-        //currentPiece.public -> rotate = &rotate;
+        currentPiece.public -> rotate = &rotate;
         // Shift piece
         currentPiece.public -> shift = &shift;
+        // Soft drop
         currentPiece.public -> softDrop = &softDrop;
-        // Update piece in the board
-        currentPiece.public -> update = &update;
+        // Normal drop
+        currentPiece.public -> update = &normalDrop;
 
         // Initialize the piece in the given position of the bag
         if ( !init(piece) )
@@ -290,8 +466,7 @@ init (const char piece)
     int exitStatus = 0;
 
     // No rotation
-    currentPiece.rotation.status = false;
-    currentPiece.rotation.position = 1;
+    currentPiece.orientation = 0;
 
     // No shifting
     currentPiece.shifting = NONE;
@@ -299,6 +474,7 @@ init (const char piece)
     // Coordinates
     switch ( piece )
     {
+        case TETROMINO_I:
             /*
              *     ---------------------
              *  0  |    |    |    |    |
@@ -310,108 +486,86 @@ init (const char piece)
              *  3  |    |    |    |    |
              *     ---------------------
              */
-        case PIECE_I:
-            currentPiece.public -> type = PIECE_I;
-            currentPiece.type = PIECE_I;
+            currentPiece.public -> type = TETROMINO_I;
+            currentPiece.type = TETROMINO_I;
 
             // X coordinates
-            currentPiece.coord[b1][COORD_X] = currentPiece.board.width / 2 - 2;
-            currentPiece.coord[b2][COORD_X] = currentPiece.board.width / 2 - 1;
-            currentPiece.coord[b3][COORD_X] = currentPiece.board.width / 2;
-            currentPiece.coord[b4][COORD_X] = currentPiece.board.width / 2 + 1;
+            currentPiece.move[COORD_X] = currentPiece.board.width / 2 - 2;
 
             // Y coordinates
-            currentPiece.coord[b1][COORD_Y] = 1;
-            currentPiece.coord[b2][COORD_Y] = 1;
-            currentPiece.coord[b3][COORD_Y] = 1;
-            currentPiece.coord[b4][COORD_Y] = 1;
+            currentPiece.move[COORD_Y] = 0;
 
             break;
 
+        case TETROMINO_J:
             /*
              *     ---------------------
-             *  0  | b1 | b2 | b3 |    |
+             *  0  |    |    |    |    |
              *     ---------------------
-             *  1  |    |    | b4 |    |
+             *  1  | b1 |    |    |    |
+             *     ---------------------
+             *  2  | b2 | b3 | b4 |    |
+             *     ---------------------
+             *  3  |    |    |    |    |
+             *     ---------------------
+             */
+            currentPiece.public -> type = TETROMINO_J;
+            currentPiece.type = TETROMINO_J;
+
+            // X coordinates
+            currentPiece.move[COORD_X] = currentPiece.board.width / 2 - 2;
+
+            // Y coordinates
+            currentPiece.move[COORD_Y] = 0;
+
+            break;
+
+        case TETROMINO_L:
+            /*
+             *     ---------------------
+             *  0  |    |    |    |    |
+             *     ---------------------
+             *  1  |    |    | b1 |    |
+             *     ---------------------
+             *  2  | b4 | b3 | b2 |    |
+             *     ---------------------
+             *  3  |    |    |    |    |
+             *     ---------------------
+             */
+            currentPiece.public -> type = TETROMINO_L;
+            currentPiece.type = TETROMINO_L;
+
+            // X coordinates
+            currentPiece.move[COORD_X] = currentPiece.board.width / 2 - 2;
+
+            // Y coordinates
+            currentPiece.move[COORD_Y] = 0;
+            break;
+
+
+        case TETROMINO_O:
+            /*
+             *     ---------------------
+             *  0  | b1 | b2 |    |    |
+             *     ---------------------
+             *  1  | b3 | b4 |    |    |
              *     ---------------------
              *  2  |    |    |    |    |
              *     ---------------------
              *  3  |    |    |    |    |
              *     ---------------------
              */
-        case PIECE_J:
-            currentPiece.public -> type = PIECE_J;
-            currentPiece.type = PIECE_J;
+            currentPiece.public -> type = TETROMINO_O;
+            currentPiece.type = TETROMINO_O;
 
             // X coordinates
-            currentPiece.coord[b1][COORD_X] = currentPiece.board.width / 2 - 2;
-            currentPiece.coord[b2][COORD_X] = currentPiece.board.width / 2 - 1;
-            currentPiece.coord[b3][COORD_X] = currentPiece.board.width / 2;
-            currentPiece.coord[b4][COORD_X] = currentPiece.board.width / 2;
+            currentPiece.move[COORD_X] = currentPiece.board.width / 2 - 1;
 
             // Y coordinates
-            currentPiece.coord[b1][COORD_Y] = 0;
-            currentPiece.coord[b2][COORD_Y] = 0;
-            currentPiece.coord[b3][COORD_Y] = 0;
-            currentPiece.coord[b4][COORD_Y] = 1;
+            currentPiece.move[COORD_Y] = 1;
             break;
 
-            /*
-             *     ---------------------
-             *  0  | b1 | b2 | b3 |    |
-             *     ---------------------
-             *  1  | b4 |    |    |    |
-             *     ---------------------
-             *  2  |    |    |    |    |
-             *     ---------------------
-             *  3  |    |    |    |    |
-             *     ---------------------
-             */
-        case PIECE_L:
-            currentPiece.public -> type = PIECE_L;
-            currentPiece.type = PIECE_L;
-
-            // X coordinates
-            currentPiece.coord[b1][COORD_X] = currentPiece.board.width / 2 - 2;
-            currentPiece.coord[b2][COORD_X] = currentPiece.board.width / 2 - 1;
-            currentPiece.coord[b3][COORD_X] = currentPiece.board.width / 2;
-            currentPiece.coord[b4][COORD_X] = currentPiece.board.width / 2 - 2;
-
-            // Y coordinates
-            currentPiece.coord[b1][COORD_Y] = 0;
-            currentPiece.coord[b2][COORD_Y] = 0;
-            currentPiece.coord[b3][COORD_Y] = 0;
-            currentPiece.coord[b4][COORD_Y] = 1;
-            break;
-
-            /*
-             *     ---------------------
-             *  0  |    | b1 | b2 |    |
-             *     ---------------------
-             *  1  |    | b3 | b4 |    |
-             *     ---------------------
-             *  2  |    |    |    |    |
-             *     ---------------------
-             *  3  |    |    |    |    |
-             *     ---------------------
-             */
-        case PIECE_O:
-            currentPiece.public -> type = PIECE_O;
-            currentPiece.type = PIECE_O;
-
-            // X coordinates
-            currentPiece.coord[b1][COORD_X] = currentPiece.board.width / 2 - 1;
-            currentPiece.coord[b2][COORD_X] = currentPiece.board.width / 2;
-            currentPiece.coord[b3][COORD_X] = currentPiece.board.width / 2 - 1;
-            currentPiece.coord[b4][COORD_X] = currentPiece.board.width / 2;
-
-            // Y coordinates
-            currentPiece.coord[b1][COORD_Y] = 0;
-            currentPiece.coord[b2][COORD_Y] = 0;
-            currentPiece.coord[b3][COORD_Y] = 1;
-            currentPiece.coord[b4][COORD_Y] = 1;
-            break;
-
+        case TETROMINO_S:
             /*
              *     ---------------------
              *  0  |    | b1 | b2 |    |
@@ -423,51 +577,39 @@ init (const char piece)
              *  3  |    |    |    |    |
              *     ---------------------
              */
-        case PIECE_S:
-            currentPiece.public -> type = PIECE_S;
-            currentPiece.type = PIECE_S;
+            currentPiece.public -> type = TETROMINO_S;
+            currentPiece.type = TETROMINO_S;
 
             // X coordinates
-            currentPiece.coord[b1][COORD_X] = currentPiece.board.width / 2 - 1;
-            currentPiece.coord[b2][COORD_X] = currentPiece.board.width / 2;
-            currentPiece.coord[b3][COORD_X] = currentPiece.board.width / 2 - 2;
-            currentPiece.coord[b4][COORD_X] = currentPiece.board.width / 2 - 1;
+            currentPiece.move[COORD_X] = currentPiece.board.width / 2 - 2;
 
             // Y coordinates
-            currentPiece.coord[b1][COORD_Y] = 0;
-            currentPiece.coord[b2][COORD_Y] = 0;
-            currentPiece.coord[b3][COORD_Y] = 1;
-            currentPiece.coord[b4][COORD_Y] = 1;
+            currentPiece.move[COORD_Y] = 1;
             break;
 
+        case TETROMINO_T:
             /*
              *     ---------------------
-             *  0  | b1 | b2 | b3 |    |
+             *  0  |    | b1 |    |    |
              *     ---------------------
-             *  1  |    | b4 |    |    |
+             *  1  | b2 | b3 | b4 |    |
              *     ---------------------
              *  2  |    |    |    |    |
              *     ---------------------
              *  3  |    |    |    |    |
              *     ---------------------
              */
-        case PIECE_T:
-            currentPiece.public -> type = PIECE_T;
-            currentPiece.type = PIECE_T;
+            currentPiece.public -> type = TETROMINO_T;
+            currentPiece.type = TETROMINO_T;
 
             // X coordinates
-            currentPiece.coord[b1][COORD_X] = currentPiece.board.width / 2 - 2;
-            currentPiece.coord[b2][COORD_X] = currentPiece.board.width / 2 - 1;
-            currentPiece.coord[b3][COORD_X] = currentPiece.board.width / 2;
-            currentPiece.coord[b4][COORD_X] = currentPiece.board.width / 2 - 1;
+            currentPiece.move[COORD_X] = currentPiece.board.width / 2 - 2;
 
             // Y coordinates
-            currentPiece.coord[b1][COORD_Y] = 0;
-            currentPiece.coord[b2][COORD_Y] = 0;
-            currentPiece.coord[b3][COORD_Y] = 0;
-            currentPiece.coord[b4][COORD_Y] = 1;
+            currentPiece.move[COORD_Y] = 1;
             break;
 
+        case TETROMINO_Z:
             /*
              *     ---------------------
              *  0  | b1 | b2 |    |    |
@@ -479,21 +621,14 @@ init (const char piece)
              *  3  |    |    |    |    |
              *     ---------------------
              */
-        case PIECE_Z:
-            currentPiece.public -> type = PIECE_Z;
-            currentPiece.type = PIECE_Z;
+            currentPiece.public -> type = TETROMINO_Z;
+            currentPiece.type = TETROMINO_Z;
 
             // X coordinates
-            currentPiece.coord[b1][COORD_X] = currentPiece.board.width / 2 - 2;
-            currentPiece.coord[b2][COORD_X] = currentPiece.board.width / 2 - 1;
-            currentPiece.coord[b3][COORD_X] = currentPiece.board.width / 2 - 1;
-            currentPiece.coord[b4][COORD_X] = currentPiece.board.width / 2;
+            currentPiece.move[COORD_X] = currentPiece.board.width / 2 - 1;
 
             // Y coordinates
-            currentPiece.coord[b1][COORD_Y] = 0;
-            currentPiece.coord[b2][COORD_Y] = 0;
-            currentPiece.coord[b3][COORD_Y] = 1;
-            currentPiece.coord[b4][COORD_Y] = 1;
+            currentPiece.move[COORD_Y] = 1;
             break;
 
             // Bad piece
@@ -503,6 +638,153 @@ init (const char piece)
     }
 
     return exitStatus;
+}
+
+/**
+ * @brief Increment or decrement by 1 the piece's coordinates on the given axis
+ *  
+ * @param coord COORD_X for X axis or COORD_Y for Y axis
+ * @param pm PLUS to increment or MINUS to decrement
+ * 
+ * @return Nothing
+ */
+static void
+moveOneCell (int coord, int pm)
+{
+    // +1 in coord axis
+    if ( pm == PLUS )
+    {
+        (currentPiece.move[coord])++;
+    }
+
+        // -1 in coord axis
+    else if ( pm == MINUS )
+    {
+        (currentPiece.move[coord])--;
+    }
+}
+
+/**
+ * @brief Updates the piece in the board (called from public PIECE)
+ * 
+ * @param None
+ * 
+ * @return Nothing
+ */
+static void
+normalDrop (void)
+{
+    int cellType = CELL_MOVING;
+
+    // Drop the piece one position
+    moveOneCell(COORD_Y, PLUS);
+
+    // Check if no other already fixed piece is on this one's path
+    if ( verifyFixedPieces() > 0 )
+    {
+        // Another piece is blocking this one
+        // Restore the previous position
+        moveOneCell(COORD_Y, MINUS);
+
+        // Update public coordinates to avoid an error when updating the board
+        updatePublicCoordinates();
+
+        // Clear the piece as moving from the board
+        currentPiece.board.pBoard -> piece.clear.moving();
+
+        // And fix it according to its type
+        switch ( currentPiece.type )
+        {
+            case TETROMINO_I:
+                cellType = CELL_I;
+                break;
+
+            case TETROMINO_J:
+                cellType = CELL_J;
+                break;
+
+            case TETROMINO_L:
+                cellType = CELL_L;
+                break;
+
+            case TETROMINO_O:
+                cellType = CELL_O;
+                break;
+
+            case TETROMINO_S:
+                cellType = CELL_S;
+                break;
+
+            case TETROMINO_T:
+                cellType = CELL_T;
+                break;
+
+            case TETROMINO_Z:
+                cellType = CELL_Z;
+                break;
+
+            default:
+                cellType = CELL_MOVING;
+                break;
+        }
+
+        currentPiece.board.pBoard -> piece.set.fixed(cellType);
+
+        currentPiece.public -> type = TETROMINO_NONE;
+        currentPiece.type = TETROMINO_NONE;
+    }
+
+    else
+    {
+        // No other piece is blocking this one, so update the public coords
+        updatePublicCoordinates();
+    }
+}
+
+/**
+ * @brief Rotate the piece in the desired direction
+ * 
+ * Rotating the piece to the left equals to decrementing its orientations once,
+ * rotating it to the right, it's the opposite.
+ * 
+ * @param direction Direction in which the piece should be rotated 
+ * (LEFT or RIGHT)
+ * 
+ * @return Nothing
+ */
+static void
+rotate (int direction)
+{
+    switch ( direction )
+    {
+        case LEFT:
+            // Decrement orientation once
+            updateOrientation(MINUS);
+
+            // If conflicts occur with another piece, revert changes
+            if ( verifyFixedPieces() )
+            {
+                updateOrientation(PLUS);
+            }
+            break;
+
+        case RIGHT:
+            // Increment orientation once
+            updateOrientation(PLUS);
+
+            // If conflicts occur with another piece, revert changes
+            if ( verifyFixedPieces() )
+            {
+                updateOrientation(MINUS);
+            }
+            break;
+
+        default:
+            break;
+    }
+
+    // Update public coordinates
+    updatePublicCoordinates();
 }
 
 /**
@@ -516,15 +798,44 @@ init (const char piece)
 static void
 shift (int direction)
 {
-    if ( direction == LEFT || direction == RIGHT )
+    switch ( direction )
     {
-        // Shift the piece in the desired direction
-        currentPiece.shifting = direction;
-        updatePiece();
-    }
+        case LEFT:
+#ifdef DEBUG
+            printf("Coords pre: %d, %d,\n",
+                   currentPiece.move[COORD_X], currentPiece.move[COORD_Y]);
+#endif
 
-    // Restore shifting to NONE
-    currentPiece.shifting = NONE;
+            moveOneCell(COORD_X, MINUS);
+
+#ifdef DEBUG
+            printf("Coords post: %d, %d,\n",
+                   currentPiece.move[COORD_X], currentPiece.move[COORD_Y]);
+#endif
+
+            if ( verifyFixedPieces() )
+            {
+                moveOneCell(COORD_X, PLUS);
+#ifdef DEBUG
+                printf("Coords reverted: %d, %d,\n",
+                       currentPiece.move[COORD_X], currentPiece.move[COORD_Y]);
+#endif
+            }
+
+            break;
+
+        case RIGHT:
+            moveOneCell(COORD_X, PLUS);
+            if ( verifyFixedPieces() )
+            {
+                moveOneCell(COORD_X, MINUS);
+            }
+
+            break;
+
+        default:
+            break;
+    }
 
     // Update public coordinates
     updatePublicCoordinates();
@@ -544,168 +855,45 @@ static void
 softDrop (void)
 {
     // Drop once
-    updatePiece();
-
-    // Update public coordinates
-    updatePublicCoordinates();
+    normalDrop();
 }
 
 /**
- * @brief Updates the piece in the board (called from public PIECE)
+ * @brief Update piece orientation
  * 
- * @param None
+ * @param pm PLUS or MINUS. Change the piece orientation to the next or
+ * previous one in the array
  * 
  * @return Nothing
  */
 static void
-update (void)
+updateOrientation (int pm)
 {
-    updatePiece();
-}
-
-/**
- * @brief Increment or decrement by 1 the piece's coordinates on the given axis
- *  
- * @param coord COORD_X for X axis or COORD_Y for Y axis
- * @param pm PLUS to increment or MINUS to decrement
- * 
- * @return Nothing
- */
-static void
-moveOneCell (int coord, int pm)
-{
-    // +1 in coord axis
-    if ( pm == PLUS )
+    switch ( pm )
     {
-        (currentPiece.coord[b1][coord]) += 1;
-        (currentPiece.coord[b2][coord]) += 1;
-        (currentPiece.coord[b3][coord]) += 1;
-        (currentPiece.coord[b4][coord]) += 1;
-    }
-
-        // -1 in coord axis
-    else if ( pm == MINUS )
-    {
-        (currentPiece.coord[b1][coord]) -= 1;
-        (currentPiece.coord[b2][coord]) -= 1;
-        (currentPiece.coord[b3][coord]) -= 1;
-        (currentPiece.coord[b4][coord]) -= 1;
-    }
-}
-
-/**
- * @brief Updates the piece position or status (moving to fixed) in the board
- * 
- * If called with piece.shifting set to NONE and piece.rotation.status to 
- * false, the piece is just dropped one grid cell or fixed if another piece or
- * the bottom of the board is found at the bottom.
- * 
- * When called with a shifting, it's moved one position to
- * the right or the left if no other pieces (or boarders) are found.
- * 
- * Finally, if called with rotation status set to true, the same logic than
- * trying to drop the piece one position is carried, although, no falling 
- * occurs. This is because the rotation logic is performed in function on
- * piece_actions.c file, as every piece must be rotated differently.
- * 
- * @param None
- * 
- * @return Nothing
- * 
- * @note When a piece is fixed, it's piece.type is set to PIECE_NONE so the 
- * next one can be initialized
- */
-static void
-updatePiece (void)
-{
-    int perform = -1;
-
-    // Piece doesn't have to be rotated or shifted
-    if ( currentPiece.shifting == NONE &&
-         currentPiece.rotation.status == false )
-    {
-        // Can dropping be performed? (0 if true, 1 if false, -1 if error)
-        perform = verifyFixedPieces(DROP_PIECE);
-
-        // If true, update the piece's coordinates
-        if ( !perform )
-        {
-            // Moved +1 on Y axis
-            moveOneCell(COORD_Y, PLUS);
-        }
-    }
-
-        // Piece should be shifted left
-    else if ( currentPiece.shifting == LEFT )
-    {
-        // Can shifting be performed? (0 if true, 1 if false, -1 if error)
-        perform = verifyFixedPieces(SHIFTL_PIECE);
-
-        // If true, update the piece's coordinates
-        if ( !perform )
-        {
-            // Moved -1 on X axis
-            moveOneCell(COORD_X, MINUS);
-        }
-
-    }
-
-        // Piece should be shifted to the right
-    else if ( currentPiece.shifting == RIGHT )
-    {
-        // Can shifting be performed? (0 if true, 1 if false, -1 if error)
-        perform = verifyFixedPieces(SHIFTR_PIECE);
-
-        // If true, update the piece's coordinates
-        if ( !perform )
-        {
-            // Moved +1 on X axis
-            moveOneCell(COORD_X, PLUS);
-        }
-    }
-
-        // Piece was be rotated (in the structure) and board must be updated
-    else if ( currentPiece.rotation.status == true )
-    {
-        // Can rotation be performed? Always yes (0) as it's been checked on
-        // piece_actions.c
-        perform = 0;
-    }
-
-    // Update public coordinates so pieceBoard functions work
-    // properly
-    updatePublicCoordinates();
-
-    switch ( perform )
-    {
-        case -1:
-            fputs("Invalid parameter passed to verifyFixedPieces()", stderr);
-            break;
-
-            // Piece can be rotated, shifted or dropped and no other piece or
-            // border is on its way
-        case 0:
-            // Clear cells with moving blocks
-            currentPiece.pieceBoard -> piece.clear.moving();
-
-            // Set new cells with moving blocks
-            currentPiece.pieceBoard -> piece.set.moving();
-            break;
-
-            // Piece can't be shifted or dropped as there's another
-            // one (or a border) on its way
-        case 1:
-            // When shifting the piece isn't possible, it should not be 
-            // blocked as no dropping occurs at the same time
-            if ( currentPiece.shifting == NONE )
+            // Previous
+        case MINUS:
+            // If the first one is reached, go back to the last
+            if ( currentPiece.orientation == 0 )
             {
-                // Clear cells with moving blocks
-                currentPiece.pieceBoard -> piece.clear.moving();
-                currentPiece.pieceBoard -> piece.set.fixed();
+                currentPiece.orientation = ORIENTATION - 1;
+            }
+            else
+            {
+                currentPiece.orientation--;
+            }
+            break;
 
-                // Clear piece as it's been fixed
-                currentPiece.public -> type = PIECE_NONE;
-                currentPiece.type = PIECE_NONE;
+            // Next
+        case PLUS:
+            // If the last one is reached, go back to the first
+            if ( currentPiece.orientation == ORIENTATION - 1 )
+            {
+                currentPiece.orientation = 0;
+            }
+            else
+            {
+                currentPiece.orientation++;
             }
             break;
 
@@ -717,8 +905,8 @@ updatePiece (void)
 /**
  * @brief Update coordinates in PIECE structure
  * 
- * Uses the private coordinates (those in PRIVATE_PIECE structure) to update
- * the public ones.
+ * Uses the private coordinates, which are gathered adding movements to the
+ * origin position of the piece, to update the public ones.
  * 
  * @param None
  * 
@@ -727,125 +915,94 @@ updatePiece (void)
 static void
 updatePublicCoordinates (void)
 {
+    // Block b1
+    // X
     currentPiece.public -> get.coordinates[b1][COORD_X] = \
-            currentPiece.coord[b1][COORD_X];
+                pieceArr[currentPiece.type][currentPiece.orientation]\
+                [b1][COORD_X] + currentPiece.move[COORD_X];
+    // Y
     currentPiece.public -> get.coordinates[b1][COORD_Y] = \
-            currentPiece.coord[b1][COORD_Y];
+                pieceArr[currentPiece.type][currentPiece.orientation]\
+                [b1][COORD_Y] + currentPiece.move[COORD_Y];
 
+    // Block b2
+    // X
     currentPiece.public -> get.coordinates[b2][COORD_X] = \
-            currentPiece.coord[b2][COORD_X];
+                pieceArr[currentPiece.type][currentPiece.orientation]\
+                [b2][COORD_X] + currentPiece.move[COORD_X];
+    // Y
     currentPiece.public -> get.coordinates[b2][COORD_Y] = \
-            currentPiece.coord[b2][COORD_Y];
+                pieceArr[currentPiece.type][currentPiece.orientation]\
+                [b2][COORD_Y] + currentPiece.move[COORD_Y];
 
+    // Block b3
+    // X
     currentPiece.public -> get.coordinates[b3][COORD_X] = \
-            currentPiece.coord[b3][COORD_X];
+                pieceArr[currentPiece.type][currentPiece.orientation]\
+                [b3][COORD_X] + currentPiece.move[COORD_X];
+    // Y
     currentPiece.public -> get.coordinates[b3][COORD_Y] = \
-            currentPiece.coord[b3][COORD_Y];
+               pieceArr[currentPiece.type][currentPiece.orientation]\
+                [b3][COORD_Y] + currentPiece.move[COORD_Y];
 
+    // Block b4
+    // X
     currentPiece.public -> get.coordinates[b4][COORD_X] = \
-            currentPiece.coord[b4][COORD_X];
+                pieceArr[currentPiece.type][currentPiece.orientation]\
+                [b4][COORD_X] + currentPiece.move[COORD_X];
+    // Y
     currentPiece.public -> get.coordinates[b4][COORD_Y] = \
-            currentPiece.coord[b4][COORD_Y];
+                pieceArr[currentPiece.type][currentPiece.orientation]\
+                [b4][COORD_Y] + currentPiece.move[COORD_Y];
 }
 
 /**
- * @brief Given an action using actions enum, verify if it can be performed.
+ * @brief Given a piece a new position, check if it can be keeped there or not.
  * 
- * If a shifting action is given, borders and other fixed pieces are checked;
- * when a dropping action is passed, verify the bottom border and other fixed
- * pieces as well. 
+ * Verify if no superposition is made after performing an action with a piece,
+ * like rotating, shifting or dropping.
  * 
- * @param action Action from enum actions
- * @return -1 if an invalid action was passed
- * @return 0 if action can be performed
- * @return 1 if action cannot be performed
+ * @return Error: -1
+ * @return Success: 0
+ * @return Fail: 1
  */
 static int
-verifyFixedPieces (const int action)
+verifyFixedPieces (void)
 {
-    // Unless proven otherwise, action cannot be performed
-    int ans = 1;
+    //
+    int i;
+    int count = 0, ans = -1;
+    int x, y;
 
-    // To make this code more readable, the piece's coordinates are copied in
-    // shorter named variables
-    int b1_x = currentPiece.coord[b1][COORD_X];
-    int b2_x = currentPiece.coord[b2][COORD_X];
-    int b3_x = currentPiece.coord[b3][COORD_X];
-    int b4_x = currentPiece.coord[b4][COORD_X];
-
-    int b1_y = currentPiece.coord[b1][COORD_Y];
-    int b2_y = currentPiece.coord[b2][COORD_Y];
-    int b3_y = currentPiece.coord[b3][COORD_Y];
-    int b4_y = currentPiece.coord[b4][COORD_Y];
-
-    switch ( action )
+    for ( i = 0; i < BLOCKS; i++ )
     {
-            // Shift piece to the left
-        case SHIFTL_PIECE:
-            // There musn't be a fixed piece at the left nor shall the piece 
-            // be at the leftmost border.
-            if ( CELL(b1_y, b1_x - 1) != CELL_FIXED &&
-                 CELL(b2_y, b2_x - 1) != CELL_FIXED &&
-                 CELL(b3_y, b3_x - 1) != CELL_FIXED &&
-                 CELL(b4_y, b4_x - 1) != CELL_FIXED &&
+        // X coordinate of the block given by i counter plus how many times it
+        // was moved in this axis
+        x = pieceArr[currentPiece.type][currentPiece.orientation][ \
+                i][COORD_X] + currentPiece.move[COORD_X];
 
-                 b1_x - 1 >= 0 &&
-                 b2_x - 1 >= 0 &&
-                 b3_x - 1 >= 0 &&
-                 b4_x - 1 >= 0 )
+        // Y coordinate of the block given by i counter plus how many times it
+        // was moved in this axis
+        y = pieceArr[currentPiece.type][currentPiece.orientation][ \
+                i][COORD_Y] + currentPiece.move[COORD_Y];
 
-            {
-                ans = 0;
-            }
-            break;
-
-            // Shift piece to the left
-        case SHIFTR_PIECE:
-            // There musn't be a fixed piece at the right nor shall the piece
-            // be at the rightmost border.
-            if ( CELL(b1_y, b1_x + 1) != CELL_FIXED &&
-                 CELL(b2_y, b2_x + 1) != CELL_FIXED &&
-                 CELL(b3_y, b3_x + 1) != CELL_FIXED &&
-                 CELL(b4_y, b4_x + 1) != CELL_FIXED &&
-
-                 b1_x + 1 < currentPiece.board.width &&
-                 b2_x + 1 < currentPiece.board.width &&
-                 b3_x + 1 < currentPiece.board.width &&
-                 b4_x + 1 < currentPiece.board.width )
-
-            {
-                ans = 0;
-            }
-            break;
-
-            // Drop the piece one position
-        case DROP_PIECE:
-            // There musn't be a fixed piece under the current piece nor 
-            // shall the piece be at the bottom of the board.
-            if ( CELL(b1_y + 1, b1_x) != CELL_FIXED &&
-                 CELL(b2_y + 1, b2_x) != CELL_FIXED &&
-                 CELL(b3_y + 1, b3_x) != CELL_FIXED &&
-                 CELL(b4_y + 1, b4_x) != CELL_FIXED &&
-
-                 b1_y + 1 < currentPiece.board.height &&
-                 b2_y + 1 < currentPiece.board.height &&
-                 b3_y + 1 < currentPiece.board.height &&
-                 b4_y + 1 < currentPiece.board.height )
-
-            {
-                ans = 0;
-            }
-            break;
-
-            // Rotation is checked in functions on piece_actions.c file
-        case ROTATE_PIECE:
-            break;
-
-            // Invalid parameter is given
-        default:
-            ans = -1;
-            break;
+        // Does it get out of the board?
+        if ( (x < currentPiece.board.width) &&
+             (y < currentPiece.board.height) &&
+             x >= 0 && y >= 0 )
+        {
+            // If not, does the desired board cell have a fixed block?
+            // count++ if no fixed block is found
+            (CELL(x, y) <= CELL_CLEAR) ? (count++) : (count = -1);
+        }
+        else
+        {
+            count = -1;
+        }
     }
+
+    // When all blocks of the TETROMINO have it's path clear, return 0
+    (count == BLOCKS) ? (ans = 0) : (ans = 1);
 
     return ans;
 }

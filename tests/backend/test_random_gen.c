@@ -50,7 +50,7 @@
 
 // === Global variables ===
 int num_i;
-char rnd_bag[NUM_PIECES];
+int rnd_bag[TETROMINOS];
 
 // === Function prototypes for private functions with file level scope ===
 int init_suite (void);
@@ -60,7 +60,7 @@ void test1 (void);
 void test2 (void);
 
 static void
-print_arr (char arr[NUM_PIECES]);
+print_arr (char arr[TETROMINOS]);
 
 // === ROM Constant variables with file level scope ===
 
@@ -232,39 +232,39 @@ test1 ()
     count_oth = 0;
     count_i = count_j = count_l = count_o = count_s = count_t = count_z = 0;
 
-    random_generator(rnd_bag, NUM_PIECES);
+    random_generator(rnd_bag, TETROMINOS);
 
-    for ( i = 0; i < NUM_PIECES; i++ )
+    for ( i = 0; i < TETROMINOS; i++ )
     {
-        CU_ASSERT(rnd_bag[i]);
+        CU_ASSERT(rnd_bag[i] + 1);
 
         switch ( rnd_bag[i] )
         {
-            case PIECE_I:
+            case TETROMINO_I:
                 count_i++;
                 break;
 
-            case PIECE_J:
+            case TETROMINO_J:
                 count_j++;
                 break;
 
-            case PIECE_L:
+            case TETROMINO_L:
                 count_l++;
                 break;
 
-            case PIECE_O:
+            case TETROMINO_O:
                 count_o++;
                 break;
 
-            case PIECE_S:
+            case TETROMINO_S:
                 count_s++;
                 break;
 
-            case PIECE_T:
+            case TETROMINO_T:
                 count_t++;
                 break;
 
-            case PIECE_Z:
+            case TETROMINO_Z:
                 count_z++;
                 break;
 
@@ -289,14 +289,14 @@ test2 ()
     int i;
     int count_sz = 0;
 
-    char old_bag[NUM_PIECES];
+    char old_bag[TETROMINOS];
 
-    for ( i = 0; i < NUM_PIECES; i++ )
+    for ( i = 0; i < TETROMINOS; i++ )
     {
         old_bag[i] = rnd_bag[i];
     }
 
-    random_generator(rnd_bag, NUM_PIECES);
+    random_generator(rnd_bag, TETROMINOS);
 
     /*puts("\nold_bag: ");
     print_arr(old_bag);
@@ -304,9 +304,9 @@ test2 ()
     puts("rnd_bag: ");
     print_arr(rnd_bag);*/
 
-    for ( i = 0; i < NUM_PIECES; i++ )
+    for ( i = 0; i < TETROMINOS; i++ )
     {
-        if ( old_bag[i] == PIECE_S || old_bag[i] == PIECE_Z )
+        if ( old_bag[i] == TETROMINO_S || old_bag[i] == TETROMINO_Z )
         {
             count_sz++;
         }
@@ -316,7 +316,7 @@ test2 ()
             count_sz = 0;
         }
 
-        if ( old_bag[i] == PIECE_I )
+        if ( old_bag[i] == TETROMINO_I )
         {
             num_i = 0;
         }
@@ -326,9 +326,9 @@ test2 ()
         }
     }
 
-    for ( i = 0; i < NUM_PIECES; i++ )
+    for ( i = 0; i < TETROMINOS; i++ )
     {
-        if ( rnd_bag[i] == PIECE_S || rnd_bag[i] == PIECE_Z )
+        if ( rnd_bag[i] == TETROMINO_S || rnd_bag[i] == TETROMINO_Z )
         {
             count_sz++;
         }
@@ -338,7 +338,7 @@ test2 ()
             count_sz = 0;
         }
 
-        if ( rnd_bag[i] == PIECE_I )
+        if ( rnd_bag[i] == TETROMINO_I )
         {
             num_i = 0;
         }
@@ -363,11 +363,11 @@ test2 ()
 // === Local function definitions ===
 
 static void
-print_arr (char arr[NUM_PIECES])
+print_arr (char arr[TETROMINOS])
 {
     int i;
 
-    for ( i = 0; i < NUM_PIECES; i++ )
+    for ( i = 0; i < TETROMINOS; i++ )
     {
         printf("%c ", arr[i]);
     }

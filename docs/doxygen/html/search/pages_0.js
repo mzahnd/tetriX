@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['main_20page_20title_135',['MAIN PAGE TITLE',['../index.html',1,'']]]
+  ['tetrics_20documentation_135',['tetriCs documentation',['../index.html',1,'']]]
 ];

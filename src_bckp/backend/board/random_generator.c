@@ -21,7 +21,7 @@
  * 
  * @brief   Functions used to generate a bag of random pieces.
  * 
- * @details Generates an array (called "bag of pieces") of size TETROMINOS 
+ * @details Generates an array (called "bag of pieces") of size NUM_PIECES 
  * (defined in @header board.h) with random pieces following the set of rules
  * taken from tetris.wiki webpage:
  *  - No more than 4 S or Z pieces togheter.
@@ -60,7 +60,7 @@
 
 // Verify if random_generator() rules are being accomplished 
 static char
-chk_rnd (int * rnd_bag, int pos, int * old_bag);
+chk_rnd (char * rnd_bag, int pos, char * old_bag);
 
 // === ROM Constant variables with file level scope ===
 
@@ -85,15 +85,15 @@ init_random_generator (void)
 }
 
 /**
- * @brief Generates a TETROMINOS size bag with a pseudo-random list of pieces.
+ * @brief Generates a NUM_PIECES size bag with a pseudo-random list of pieces.
  * 
  * Bags are filled with random pieces with the following rules:
  *  - No more than 4 S or Z pieces togheter.
  *  - No more than 12 pieces between two different I pieces.
  * 
- * @param rnd_bag Array of size TETROMINOS
+ * @param rnd_bag Array of size NUM_PIECES
  * @param size Size of rnd_bag array. Used to verify if it's actually 
- * TETROMINOS
+ * NUM_PIECES
  * 
  * @return Nothing
  * 
@@ -101,51 +101,51 @@ init_random_generator (void)
  * the first time.
  */
 void
-random_generator (int * rnd_bag, int size)
+random_generator (char * rnd_bag, int size)
 {
     int i, piece;
 
-    int old_bag[TETROMINOS];
+    char old_bag[NUM_PIECES];
 
-    if ( size != TETROMINOS )
+    if ( size != NUM_PIECES )
     {
         fputs("Error on bag size for random_generator()", stderr);
         return;
     }
 
     // Copy the last used bag.
-    for ( i = 0; i < TETROMINOS; i++ )
+    for ( i = 0; i < NUM_PIECES; i++ )
     {
         old_bag[i] = rnd_bag[i];
     }
 
     // Generate pieces to fill the bag
     i = 0;
-    while ( i < TETROMINOS )
+    while ( i < NUM_PIECES )
     {
-        piece = rand() % TETROMINOS;
+        piece = rand() % NUM_PIECES + 1;
         switch ( piece )
         {
-            case 0:
-                rnd_bag[i] = TETROMINO_I;
-                break;
             case 1:
-                rnd_bag[i] = TETROMINO_J;
+                rnd_bag[i] = PIECE_I;
                 break;
             case 2:
-                rnd_bag[i] = TETROMINO_L;
+                rnd_bag[i] = PIECE_J;
                 break;
             case 3:
-                rnd_bag[i] = TETROMINO_O;
+                rnd_bag[i] = PIECE_L;
                 break;
             case 4:
-                rnd_bag[i] = TETROMINO_S;
+                rnd_bag[i] = PIECE_O;
                 break;
             case 5:
-                rnd_bag[i] = TETROMINO_T;
+                rnd_bag[i] = PIECE_S;
                 break;
             case 6:
-                rnd_bag[i] = TETROMINO_Z;
+                rnd_bag[i] = PIECE_T;
+                break;
+            case 7:
+                rnd_bag[i] = PIECE_Z;
                 break;
 
             default:
@@ -170,14 +170,14 @@ random_generator (int * rnd_bag, int size)
  * two nearest I pieces, then, compares this values with the generator rules
  * and returns 0 if both are being accomplished.
  * 
- * @param rnd_bag Array of size TETROMINOS with the bag being generated.
+ * @param rnd_bag Array of size NUM_PIECES with the bag being generated.
  * @param pos Position in rnd_bag array with the piece to check.
- * @param old_bag Array of size TETROMINOS with the old bag with random pieces.
+ * @param old_bag Array of size NUM_PIECES with the old bag with random pieces.
  * @return Success: 0 (All rules are being accomplished)
  * @return Fail: Non 0 (At least one of the rules is not accomplished)
  */
 static char
-chk_rnd (int * rnd_bag, int pos, int * old_bag)
+chk_rnd (char * rnd_bag, int pos, char * old_bag)
 {
     // Return
     int ans = 0;
@@ -189,10 +189,10 @@ chk_rnd (int * rnd_bag, int pos, int * old_bag)
     // Count S and Z pieces in the old bag and the number of pieces between
     // the last I and the end of the bag.
     i = 0;
-    while ( i < TETROMINOS )
+    while ( i < NUM_PIECES )
     {
         // If an S or Z is found, increment counter
-        if ( old_bag[i] == TETROMINO_S || old_bag[i] == TETROMINO_Z )
+        if ( old_bag[i] == PIECE_S || old_bag[i] == PIECE_Z )
         {
             count_sz++;
         }
@@ -204,7 +204,7 @@ chk_rnd (int * rnd_bag, int pos, int * old_bag)
         }
 
         // If an I is found, (re)start counting 
-        if ( old_bag[i] == TETROMINO_I )
+        if ( old_bag[i] == PIECE_I )
         {
             pieces_since_i = 0;
         }
@@ -223,7 +223,7 @@ chk_rnd (int * rnd_bag, int pos, int * old_bag)
     while ( i < pos )
     {
         // If an S or Z is found, increment counter
-        if ( rnd_bag[i] == TETROMINO_S || rnd_bag[i] == TETROMINO_Z )
+        if ( rnd_bag[i] == PIECE_S || rnd_bag[i] == PIECE_Z )
         {
             count_sz++;
         }
@@ -235,7 +235,7 @@ chk_rnd (int * rnd_bag, int pos, int * old_bag)
         }
 
         // If an I is found, (re)start counting 
-        if ( rnd_bag[i] == TETROMINO_I )
+        if ( rnd_bag[i] == PIECE_I )
         {
             pieces_since_i = 0;
         }
@@ -253,13 +253,13 @@ chk_rnd (int * rnd_bag, int pos, int * old_bag)
     // piece to follow the generator rule.
     if ( pieces_since_i >= MAX_I )
     {
-        rnd_bag[pos] = TETROMINO_I;
+        rnd_bag[pos] = PIECE_I;
         pieces_since_i = 0;
     }
 
         // If an extra S or Z has been generated, ask for another
     else if ( count_sz >= MAX_SZ &&
-              (rnd_bag[pos] == TETROMINO_S || rnd_bag[pos] == TETROMINO_Z) )
+              (rnd_bag[pos] == PIECE_S || rnd_bag[pos] == PIECE_Z) )
     {
         ans = 1;
     }
