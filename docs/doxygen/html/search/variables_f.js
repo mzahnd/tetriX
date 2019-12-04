@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['t_105',['T',['../structstats__t_1_1_p_i_e_c_e_s___s_t_r_c.html#abd63ef90d8db1b8afcc570c1f669fa56',1,'stats_t::PIECES_STRC']]],
-  ['top_106',['top',['../structstats__t_1_1_s_c_o_r_e___s_t_r_c.html#a3fdd42ea34070a54e696b3adc28c4be3',1,'stats_t::SCORE_STRC']]],
-  ['type_107',['type',['../struct_p_i_e_c_e.html#aff17911edc8208aa8ddb1c7c52c78389',1,'PIECE']]]
+  ['t_97',['T',['../structstats__t_1_1_p_i_e_c_e_s___s_t_r_c.html#abd63ef90d8db1b8afcc570c1f669fa56',1,'stats_t::PIECES_STRC']]],
+  ['top_98',['top',['../structstats__t_1_1_s_c_o_r_e___s_t_r_c.html#a3fdd42ea34070a54e696b3adc28c4be3',1,'stats_t::SCORE_STRC']]],
+  ['type_99',['type',['../struct_p_i_e_c_e.html#ac765329451135abec74c45e1897abf26',1,'PIECE']]]
 ];
