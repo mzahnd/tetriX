@@ -61,6 +61,7 @@
 // === Global variables ===
 
 // === Function prototypes with global level scope ===
+
 // Initializes this test suite
 int init_suite (void);
 // Cleans suite before exiting
@@ -72,9 +73,9 @@ void test1 (void);
 void test2 (void);
 // Test each piece gravity.
 void test3 (void);
-
+// Test each piece shifting
 void test4 (void);
-
+// Test each piece rotation
 void test5 (void);
 
 // === Function prototypes for private functions with file level scope ===
@@ -95,18 +96,15 @@ static void
 check_onePieceFixed (int b1[COORD_NUM], int b2[COORD_NUM],
                      int b3[COORD_NUM], int b4[COORD_NUM]);
 
-// Check if gravity works on one testPiece. 
+// Check if gravity works on one testPiece at the time.
 static void
 check_Gravity (int b1[COORD_NUM], int b2[COORD_NUM],
                int b3[COORD_NUM], int b4[COORD_NUM]);
 
+// Check if shifting works on one testPiece at the time. 
 static void
 check_Shift (int b1[COORD_NUM], int b2[COORD_NUM],
              int b3[COORD_NUM], int b4[COORD_NUM]);
-
-static void
-check_Rotation (int b1[COORD_NUM], int b2[COORD_NUM],
-                int b3[COORD_NUM], int b4[COORD_NUM]);
 
 // Initialize and test a single I piece on the board.
 static void
@@ -143,6 +141,41 @@ static void
 onlyPiece_Z (void (*test2Perform)(int b1[COORD_NUM], int b2[COORD_NUM],
                                   int b3[COORD_NUM], int b4[COORD_NUM]));
 
+// Check if rotation works on tetromino I.
+static void
+check_rotationI (int b1[COORD_NUM], int b2[COORD_NUM],
+                 int b3[COORD_NUM], int b4[COORD_NUM]);
+
+// Check if rotation works on tetromino J.
+static void
+check_rotationJ (int b1[COORD_NUM], int b2[COORD_NUM],
+                 int b3[COORD_NUM], int b4[COORD_NUM]);
+
+// Check if rotation works on tetromino L.
+static void
+check_rotationL (int b1[COORD_NUM], int b2[COORD_NUM],
+                 int b3[COORD_NUM], int b4[COORD_NUM]);
+
+// Check if rotation works on tetromino O.
+static void
+check_rotationO (int b1[COORD_NUM], int b2[COORD_NUM],
+                 int b3[COORD_NUM], int b4[COORD_NUM]);
+
+// Check if rotation works on tetromino S.
+static void
+check_rotationS (int b1[COORD_NUM], int b2[COORD_NUM],
+                 int b3[COORD_NUM], int b4[COORD_NUM]);
+
+// Check if rotation works on tetromino T.
+static void
+check_rotationT (int b1[COORD_NUM], int b2[COORD_NUM],
+                 int b3[COORD_NUM], int b4[COORD_NUM]);
+
+// Check if rotation works on tetromino Z.
+static void
+check_rotationZ (int b1[COORD_NUM], int b2[COORD_NUM],
+                 int b3[COORD_NUM], int b4[COORD_NUM]);
+
 /*
  * clearMoving, setFixed, setMoving functions are copy-pasted from board.c file
  * as this test is only meant to test pieces, not board functions but this are
@@ -178,10 +211,6 @@ static char bag[TETROMINOS];
 static int position;
 
 // === Global function definitions ===
-
-/*
- * TODO Test piece rotation and shifting
- */
 
 /**
  * @brief Test suites initialization, starting and clearing
@@ -434,10 +463,43 @@ test4 (void)
     onlyPiece_Z(&check_Shift);
 }
 
+/**
+ * @brief Test each piece rotation
+ * 
+ * The piece appears at the top of the board and is rotated once to the right,
+ * then it's dropped once and rotated again to the right, and the process is
+ * repeated with each possible position of the piece. When all right rotations
+ * have been performed, the piece is dropped once and the same process is 
+ * repeated rotating it to the left. After all left cases were tested, that
+ * piece's test is finished.
+ * 
+ * @param None
+ * 
+ * @return Nothing
+ */
 void
 test5 (void)
 {
-    onlyPiece_I(&check_Rotation);
+    // TETROMINO_I
+    onlyPiece_I(&check_rotationI);
+
+    // TETROMINO_J
+    onlyPiece_J(&check_rotationJ);
+
+    // TETROMINO_L
+    onlyPiece_L(&check_rotationL);
+
+    // TETROMINO_O
+    onlyPiece_O(&check_rotationO);
+
+    // TETROMINO_S
+    onlyPiece_S(&check_rotationS);
+
+    // TETROMINO_T
+    onlyPiece_T(&check_rotationT);
+
+    // TETROMINO_Z
+    onlyPiece_Z(&check_rotationZ);
 }
 
 // === Local function definitions ===
@@ -549,11 +611,11 @@ check_onePieceMoving (int b1[COORD_NUM], int b2[COORD_NUM],
 {
     int i, j;
 
+    // Update board
     clearMoving();
     setMoving();
-    printBoard();
 
-
+    // Perform test
     for ( i = 0; i < H_BOARD; i++ )
     {
         for ( j = 0; j < W_BOARD; j++ )
@@ -591,8 +653,8 @@ check_onePieceFixed (int b1[COORD_NUM], int b2[COORD_NUM],
 {
     int i, j;
 
+    // In case the board hasn't been updated
     clearMoving();
-
 
     for ( i = 0; i < H_BOARD; i++ )
     {
@@ -603,6 +665,7 @@ check_onePieceFixed (int b1[COORD_NUM], int b2[COORD_NUM],
                  (i == b3[COORD_Y] && j == b3[COORD_X]) ||
                  (i == b4[COORD_Y] && j == b4[COORD_X]) )
             {
+                // Fix type for each piece
                 switch ( testPiece.type )
                 {
                     case TETROMINO_I:
@@ -645,14 +708,15 @@ check_onePieceFixed (int b1[COORD_NUM], int b2[COORD_NUM],
 }
 
 /**
- * @brief Check if gravity works on one testPiece. 
+ * @brief Check if gravity works on one testPiece at the time. 
  * 
- * It's passed as a pointer to function test3
+ * It's passed as a pointer to functions in test3
  * 
  * @param b1 Coordinates of block b1
  * @param b2 Coordinates of block b2
  * @param b3 Coordinates of block b3
  * @param b4 Coordinates of block b4
+ * 
  * @return Nothing
  */
 static void
@@ -665,12 +729,15 @@ check_Gravity (int b1[COORD_NUM], int b2[COORD_NUM],
     {
         testPiece.update();
 
+        // Last drop (must be fixed after that)
         if ( i == H_BOARD - 1 && testPiece.type != TETROMINO_I )
         {
 
             check_onePieceFixed(b1, b2, b3, b4);
         }
 
+            // TETROMINO I has a special condition on the end because it's
+            // dropped leaving an extra space from the bottom
         else if ( i == H_BOARD - 1 && testPiece.type == TETROMINO_I )
         {
             (b1[COORD_Y]) += 1;
@@ -685,6 +752,7 @@ check_Gravity (int b1[COORD_NUM], int b2[COORD_NUM],
             check_onePieceFixed(b1, b2, b3, b4);
         }
 
+            // Piece hasn't reached the bottom
         else
         {
             (b1[COORD_Y]) += 1;
@@ -698,12 +766,15 @@ check_Gravity (int b1[COORD_NUM], int b2[COORD_NUM],
 }
 
 /**
- * @brief
+ * @brief Check if shifting works on one testPiece at the time. 
+ * 
+ * It's passed as a pointer to functions in test4
  * 
  * @param b1 Coordinates of block b1
  * @param b2 Coordinates of block b2
  * @param b3 Coordinates of block b3
  * @param b4 Coordinates of block b4
+ * 
  * @return Nothing
  */
 static void
@@ -803,43 +874,6 @@ check_Shift (int b1[COORD_NUM], int b2[COORD_NUM],
     (b4[COORD_Y]) += 1;
 
     check_onePieceMoving(b1, b2, b3, b4);
-}
-
-/**
- * @brief
- * 
- * @param b1 Coordinates of block b1
- * @param b2 Coordinates of block b2
- * @param b3 Coordinates of block b3
- * @param b4 Coordinates of block b4
- * @return Nothing
- */
-static void
-check_Rotation (int b1[COORD_NUM], int b2[COORD_NUM],
-                int b3[COORD_NUM], int b4[COORD_NUM])
-{
-    switch ( testPiece.type )
-    {
-        case TETROMINO_I:
-            printBoard();
-            testPiece.rotate(RIGHT);
-
-            (b1[COORD_X]) += 2;
-            (b2[COORD_X]) += 1;
-            (b4[COORD_X]) -= 1;
-
-            (b1[COORD_Y]) -= 2;
-            (b2[COORD_Y]) -= 1;
-            (b4[COORD_Y]) += 1;
-
-            check_onePieceMoving(b1, b2, b3, b4);
-            printBoard();
-            break;
-
-
-        default:
-            break;
-    }
 }
 
 /**
@@ -1194,6 +1228,1425 @@ onlyPiece_Z (void (*test2Perform)(int b1[COORD_NUM], int b2[COORD_NUM],
     (*test2Perform)(b1, b2, b3, b4);
 }
 
+/**
+ * @brief Check if rotation works on tetromino I.
+ * 
+ * It's called from a function in test5.
+ * 
+ * @param b1 Coordinates of block b1
+ * @param b2 Coordinates of block b2
+ * @param b3 Coordinates of block b3
+ * @param b4 Coordinates of block b4
+ * 
+ * @return Nothing
+ */
+static void
+check_rotationI (int b1[COORD_NUM], int b2[COORD_NUM],
+                 int b3[COORD_NUM], int b4[COORD_NUM])
+{
+    // Position 1 to 2
+    testPiece.rotate(RIGHT);
+
+    (b1[COORD_X]) += 2;
+    (b2[COORD_X]) += 1;
+    (b3[COORD_X]) += 0;
+    (b4[COORD_X]) -= 1;
+
+    (b1[COORD_Y]) -= 1;
+    (b2[COORD_Y]) += 0;
+    (b3[COORD_Y]) += 1;
+    (b4[COORD_Y]) += 2;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 2 to 3
+    testPiece.rotate(RIGHT);
+
+    (b1[COORD_X]) -= 2;
+    (b2[COORD_X]) -= 1;
+    (b3[COORD_X]) += 0;
+    (b4[COORD_X]) += 1;
+
+    (b1[COORD_Y]) += 2;
+    (b2[COORD_Y]) += 1;
+    (b3[COORD_Y]) += 0;
+    (b4[COORD_Y]) -= 1;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 3 to 4
+    testPiece.rotate(RIGHT);
+
+    (b1[COORD_X]) += 1;
+    (b2[COORD_X]) += 0;
+    (b3[COORD_X]) -= 1;
+    (b4[COORD_X]) -= 2;
+
+    (b1[COORD_Y]) -= 2;
+    (b2[COORD_Y]) -= 1;
+    (b3[COORD_Y]) += 0;
+    (b4[COORD_Y]) += 1;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 4 to 1
+    testPiece.rotate(RIGHT);
+
+    (b1[COORD_X]) -= 1;
+    (b2[COORD_X]) += 0;
+    (b3[COORD_X]) += 1;
+    (b4[COORD_X]) += 2;
+
+    (b1[COORD_Y]) += 1;
+    (b2[COORD_Y]) += 0;
+    (b3[COORD_Y]) -= 1;
+    (b4[COORD_Y]) -= 2;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 1 to 4
+    testPiece.rotate(LEFT);
+
+    (b1[COORD_X]) += 1;
+    (b2[COORD_X]) += 0;
+    (b3[COORD_X]) -= 1;
+    (b4[COORD_X]) -= 2;
+
+    (b1[COORD_Y]) -= 1;
+    (b2[COORD_Y]) += 0;
+    (b3[COORD_Y]) += 1;
+    (b4[COORD_Y]) += 2;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 4 to 3
+    testPiece.rotate(LEFT);
+
+    (b1[COORD_X]) -= 1;
+    (b2[COORD_X]) += 0;
+    (b3[COORD_X]) += 1;
+    (b4[COORD_X]) += 2;
+
+    (b1[COORD_Y]) += 2;
+    (b2[COORD_Y]) += 1;
+    (b3[COORD_Y]) += 0;
+    (b4[COORD_Y]) -= 1;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 3 to 2
+    testPiece.rotate(LEFT);
+
+    (b1[COORD_X]) += 2;
+    (b2[COORD_X]) += 1;
+    (b3[COORD_X]) += 0;
+    (b4[COORD_X]) -= 1;
+
+    (b1[COORD_Y]) -= 2;
+    (b2[COORD_Y]) -= 1;
+    (b3[COORD_Y]) += 0;
+    (b4[COORD_Y]) += 1;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 2 to 1
+    testPiece.rotate(LEFT);
+
+    (b1[COORD_X]) -= 2;
+    (b2[COORD_X]) -= 1;
+    (b3[COORD_X]) += 0;
+    (b4[COORD_X]) += 1;
+
+    (b1[COORD_Y]) += 1;
+    (b2[COORD_Y]) += 0;
+    (b3[COORD_Y]) -= 1;
+    (b4[COORD_Y]) -= 2;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+}
+
+/**
+ * @brief Check if rotation works on tetromino J.
+ * 
+ * It's called from a function in test5.
+ * 
+ * @param b1 Coordinates of block b1
+ * @param b2 Coordinates of block b2
+ * @param b3 Coordinates of block b3
+ * @param b4 Coordinates of block b4
+ * 
+ * @return Nothing
+ */
+static void
+check_rotationJ (int b1[COORD_NUM], int b2[COORD_NUM],
+                 int b3[COORD_NUM], int b4[COORD_NUM])
+{
+    // Position 1 to 2
+    testPiece.rotate(RIGHT);
+
+    (b1[COORD_X]) += 1;
+    (b2[COORD_X]) += 0;
+    (b3[COORD_X]) -= 1;
+    (b4[COORD_X]) -= 2;
+
+    (b1[COORD_Y]) -= 1;
+    (b2[COORD_Y]) -= 2;
+    (b3[COORD_Y]) -= 1;
+    (b4[COORD_Y]) += 0;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 2 to 3
+    testPiece.rotate(RIGHT);
+
+    (b1[COORD_X]) += 1;
+    (b2[COORD_X]) += 2;
+    (b3[COORD_X]) += 1;
+    (b4[COORD_X]) += 0;
+
+    (b1[COORD_Y]) += 1;
+    (b2[COORD_Y]) += 0;
+    (b3[COORD_Y]) -= 1;
+    (b4[COORD_Y]) -= 2;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 3 to 4
+    testPiece.rotate(RIGHT);
+
+    (b1[COORD_X]) -= 1;
+    (b2[COORD_X]) += 0;
+    (b3[COORD_X]) += 1;
+    (b4[COORD_X]) += 2;
+
+    (b1[COORD_Y]) += 1;
+    (b2[COORD_Y]) += 2;
+    (b3[COORD_Y]) += 1;
+    (b4[COORD_Y]) += 0;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 4 to 1
+    testPiece.rotate(RIGHT);
+
+    (b1[COORD_X]) -= 1;
+    (b2[COORD_X]) -= 2;
+    (b3[COORD_X]) -= 1;
+    (b4[COORD_X]) += 0;
+
+    (b1[COORD_Y]) -= 1;
+    (b2[COORD_Y]) += 0;
+    (b3[COORD_Y]) += 1;
+    (b4[COORD_Y]) += 2;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 1 to 4
+    testPiece.rotate(LEFT);
+
+    (b1[COORD_X]) += 1;
+    (b2[COORD_X]) += 2;
+    (b3[COORD_X]) += 1;
+    (b4[COORD_X]) -= 0;
+
+    (b1[COORD_Y]) += 1;
+    (b2[COORD_Y]) -= 0;
+    (b3[COORD_Y]) -= 1;
+    (b4[COORD_Y]) -= 2;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 4 to 3
+    testPiece.rotate(LEFT);
+
+    (b1[COORD_X]) += 1;
+    (b2[COORD_X]) += 0;
+    (b3[COORD_X]) -= 1;
+    (b4[COORD_X]) -= 2;
+
+    (b1[COORD_Y]) -= 1;
+    (b2[COORD_Y]) -= 2;
+    (b3[COORD_Y]) -= 1;
+    (b4[COORD_Y]) += 0;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 3 to 2
+    testPiece.rotate(LEFT);
+
+    (b1[COORD_X]) -= 1;
+    (b2[COORD_X]) -= 2;
+    (b3[COORD_X]) -= 1;
+    (b4[COORD_X]) += 0;
+
+    (b1[COORD_Y]) -= 1;
+    (b2[COORD_Y]) += 0;
+    (b3[COORD_Y]) += 1;
+    (b4[COORD_Y]) += 2;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 2 to 1
+    testPiece.rotate(LEFT);
+
+    (b1[COORD_X]) -= 1;
+    (b2[COORD_X]) += 0;
+    (b3[COORD_X]) += 1;
+    (b4[COORD_X]) += 2;
+
+    (b1[COORD_Y]) += 1;
+    (b2[COORD_Y]) += 2;
+    (b3[COORD_Y]) += 1;
+    (b4[COORD_Y]) += 0;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+}
+
+/**
+ * @brief Check if rotation works on tetromino L.
+ * 
+ * It's called from a function in test5.
+ * 
+ * @param b1 Coordinates of block b1
+ * @param b2 Coordinates of block b2
+ * @param b3 Coordinates of block b3
+ * @param b4 Coordinates of block b4
+ * 
+ * @return Nothing
+ */
+static void
+check_rotationL (int b1[COORD_NUM], int b2[COORD_NUM],
+                 int b3[COORD_NUM], int b4[COORD_NUM])
+{
+    // Position 1 to 2
+    testPiece.rotate(RIGHT);
+
+    (b1[COORD_X]) -= 1;
+    (b2[COORD_X]) -= 2;
+    (b3[COORD_X]) -= 1;
+    (b4[COORD_X]) += 0;
+
+    (b1[COORD_Y]) += 1;
+    (b2[COORD_Y]) += 0;
+    (b3[COORD_Y]) -= 1;
+    (b4[COORD_Y]) -= 2;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 2 to 3
+    testPiece.rotate(RIGHT);
+
+    (b1[COORD_X]) -= 1;
+    (b2[COORD_X]) += 0;
+    (b3[COORD_X]) += 1;
+    (b4[COORD_X]) += 2;
+
+    (b1[COORD_Y]) -= 1;
+    (b2[COORD_Y]) -= 2;
+    (b3[COORD_Y]) -= 1;
+    (b4[COORD_Y]) += 0;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 3 to 4
+    testPiece.rotate(RIGHT);
+
+    (b1[COORD_X]) += 1;
+    (b2[COORD_X]) += 2;
+    (b3[COORD_X]) += 1;
+    (b4[COORD_X]) += 0;
+
+    (b1[COORD_Y]) -= 1;
+    (b2[COORD_Y]) += 0;
+    (b3[COORD_Y]) += 1;
+    (b4[COORD_Y]) += 2;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 4 to 1
+    testPiece.rotate(RIGHT);
+
+    (b1[COORD_X]) += 1;
+    (b2[COORD_X]) += 0;
+    (b3[COORD_X]) -= 1;
+    (b4[COORD_X]) -= 2;
+
+    (b1[COORD_Y]) += 1;
+    (b2[COORD_Y]) += 2;
+    (b3[COORD_Y]) += 1;
+    (b4[COORD_Y]) += 0;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 1 to 4
+    testPiece.rotate(LEFT);
+
+    (b1[COORD_X]) -= 1;
+    (b2[COORD_X]) += 0;
+    (b3[COORD_X]) += 1;
+    (b4[COORD_X]) += 2;
+
+    (b1[COORD_Y]) -= 1;
+    (b2[COORD_Y]) -= 2;
+    (b3[COORD_Y]) -= 1;
+    (b4[COORD_Y]) += 0;
+
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 4 to 3
+    testPiece.rotate(LEFT);
+
+    (b1[COORD_X]) -= 1;
+    (b2[COORD_X]) -= 2;
+    (b3[COORD_X]) -= 1;
+    (b4[COORD_X]) += 0;
+
+    (b1[COORD_Y]) += 1;
+    (b2[COORD_Y]) += 0;
+    (b3[COORD_Y]) -= 1;
+    (b4[COORD_Y]) -= 2;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 3 to 2
+    testPiece.rotate(LEFT);
+
+    (b1[COORD_X]) += 1;
+    (b2[COORD_X]) += 0;
+    (b3[COORD_X]) -= 1;
+    (b4[COORD_X]) -= 2;
+
+    (b1[COORD_Y]) += 1;
+    (b2[COORD_Y]) += 2;
+    (b3[COORD_Y]) += 1;
+    (b4[COORD_Y]) += 0;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 2 to 1
+    testPiece.rotate(LEFT);
+
+    (b1[COORD_X]) += 1;
+    (b2[COORD_X]) += 2;
+    (b3[COORD_X]) += 1;
+    (b4[COORD_X]) += 0;
+
+    (b1[COORD_Y]) -= 1;
+    (b2[COORD_Y]) += 0;
+    (b3[COORD_Y]) += 1;
+    (b4[COORD_Y]) += 2;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+}
+
+/**
+ * @brief Check if rotation works on tetromino O.
+ * 
+ * It's called from a function in test5.
+ * 
+ * @param b1 Coordinates of block b1
+ * @param b2 Coordinates of block b2
+ * @param b3 Coordinates of block b3
+ * @param b4 Coordinates of block b4
+ * 
+ * @return Nothing
+ */
+static void
+check_rotationO (int b1[COORD_NUM], int b2[COORD_NUM],
+                 int b3[COORD_NUM], int b4[COORD_NUM])
+{
+    // Position 1 to 2
+    testPiece.rotate(RIGHT);
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 2 to 3
+    testPiece.rotate(RIGHT);
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 3 to 4
+    testPiece.rotate(RIGHT);
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 4 to 1
+    testPiece.rotate(RIGHT);
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 1 to 4
+    testPiece.rotate(LEFT);
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 4 to 3
+    testPiece.rotate(LEFT);
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 3 to 2
+    testPiece.rotate(LEFT);
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 2 to 1
+    testPiece.rotate(LEFT);
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+}
+
+/**
+ * @brief Check if rotation works on tetromino S.
+ * 
+ * It's called from a function in test5.
+ * 
+ * @param b1 Coordinates of block b1
+ * @param b2 Coordinates of block b2
+ * @param b3 Coordinates of block b3
+ * @param b4 Coordinates of block b4
+ * 
+ * @return Nothing
+ */
+static void
+check_rotationS (int b1[COORD_NUM], int b2[COORD_NUM],
+                 int b3[COORD_NUM], int b4[COORD_NUM])
+{
+    // Position 1 to 2
+    testPiece.rotate(RIGHT);
+
+    (b1[COORD_X]) += 1;
+    (b2[COORD_X]) += 0;
+    (b3[COORD_X]) += 1;
+    (b4[COORD_X]) += 0;
+
+    (b1[COORD_Y]) += 1;
+    (b2[COORD_Y]) += 2;
+    (b3[COORD_Y]) -= 1;
+    (b4[COORD_Y]) += 0;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 2 to 3
+    testPiece.rotate(RIGHT);
+
+    (b1[COORD_X]) -= 1;
+    (b2[COORD_X]) += 0;
+    (b3[COORD_X]) -= 1;
+    (b4[COORD_X]) += 0;
+
+    (b1[COORD_Y]) -= 1;
+    (b2[COORD_Y]) -= 2;
+    (b3[COORD_Y]) += 1;
+    (b4[COORD_Y]) += 0;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 3 to 4
+    testPiece.rotate(RIGHT);
+
+    (b1[COORD_X]) += 1;
+    (b2[COORD_X]) += 0;
+    (b3[COORD_X]) += 1;
+    (b4[COORD_X]) += 0;
+
+    (b1[COORD_Y]) += 1;
+    (b2[COORD_Y]) += 2;
+    (b3[COORD_Y]) -= 1;
+    (b4[COORD_Y]) += 0;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 4 to 1
+    testPiece.rotate(RIGHT);
+
+    (b1[COORD_X]) -= 1;
+    (b2[COORD_X]) += 0;
+    (b3[COORD_X]) -= 1;
+    (b4[COORD_X]) += 0;
+
+    (b1[COORD_Y]) -= 1;
+    (b2[COORD_Y]) -= 2;
+    (b3[COORD_Y]) += 1;
+    (b4[COORD_Y]) += 0;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 1 to 4
+    testPiece.rotate(LEFT);
+
+    (b1[COORD_X]) += 1;
+    (b2[COORD_X]) += 0;
+    (b3[COORD_X]) += 1;
+    (b4[COORD_X]) += 0;
+
+    (b1[COORD_Y]) += 1;
+    (b2[COORD_Y]) += 2;
+    (b3[COORD_Y]) -= 1;
+    (b4[COORD_Y]) += 0;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 4 to 3
+    testPiece.rotate(LEFT);
+
+    (b1[COORD_X]) -= 1;
+    (b2[COORD_X]) += 0;
+    (b3[COORD_X]) -= 1;
+    (b4[COORD_X]) += 0;
+
+    (b1[COORD_Y]) -= 1;
+    (b2[COORD_Y]) -= 2;
+    (b3[COORD_Y]) += 1;
+    (b4[COORD_Y]) += 0;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 3 to 2
+    testPiece.rotate(LEFT);
+
+    (b1[COORD_X]) += 1;
+    (b2[COORD_X]) += 0;
+    (b3[COORD_X]) += 1;
+    (b4[COORD_X]) += 0;
+
+    (b1[COORD_Y]) += 1;
+    (b2[COORD_Y]) += 2;
+    (b3[COORD_Y]) -= 1;
+    (b4[COORD_Y]) += 0;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 2 to 1
+    testPiece.rotate(LEFT);
+
+    (b1[COORD_X]) -= 1;
+    (b2[COORD_X]) += 0;
+    (b3[COORD_X]) -= 1;
+    (b4[COORD_X]) += 0;
+
+    (b1[COORD_Y]) -= 1;
+    (b2[COORD_Y]) -= 2;
+    (b3[COORD_Y]) += 1;
+    (b4[COORD_Y]) += 0;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+}
+
+/**
+ * @brief Check if rotation works on tetromino T.
+ * 
+ * It's called from a function in test5.
+ * 
+ * @param b1 Coordinates of block b1
+ * @param b2 Coordinates of block b2
+ * @param b3 Coordinates of block b3
+ * @param b4 Coordinates of block b4
+ * 
+ * @return Nothing
+ */
+static void
+check_rotationT (int b1[COORD_NUM], int b2[COORD_NUM],
+                 int b3[COORD_NUM], int b4[COORD_NUM])
+{
+    // Position 1 to 2
+    testPiece.rotate(RIGHT);
+
+    (b1[COORD_X]) += 1;
+    (b2[COORD_X]) += 1;
+    (b3[COORD_X]) += 0;
+    (b4[COORD_X]) -= 1;
+
+    (b1[COORD_Y]) += 1;
+    (b2[COORD_Y]) -= 1;
+    (b3[COORD_Y]) += 0;
+    (b4[COORD_Y]) += 1;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 2 to 3
+    testPiece.rotate(RIGHT);
+
+    (b1[COORD_X]) -= 1;
+    (b2[COORD_X]) -= 1;
+    (b3[COORD_X]) += 0;
+    (b4[COORD_X]) += 1;
+
+    (b1[COORD_Y]) += 1;
+    (b2[COORD_Y]) += 1;
+    (b3[COORD_Y]) += 0;
+    (b4[COORD_Y]) -= 1;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 3 to 4
+    testPiece.rotate(RIGHT);
+
+    (b1[COORD_X]) -= 1;
+    (b2[COORD_X]) += 1;
+    (b3[COORD_X]) += 0;
+    (b4[COORD_X]) -= 1;
+
+    (b1[COORD_Y]) -= 1;
+    (b2[COORD_Y]) -= 1;
+    (b3[COORD_Y]) += 0;
+    (b4[COORD_Y]) += 1;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 4 to 1
+    testPiece.rotate(RIGHT);
+
+    (b1[COORD_X]) += 1;
+    (b2[COORD_X]) -= 1;
+    (b3[COORD_X]) += 0;
+    (b4[COORD_X]) += 1;
+
+    (b1[COORD_Y]) -= 1;
+    (b2[COORD_Y]) += 1;
+    (b3[COORD_Y]) += 0;
+    (b4[COORD_Y]) -= 1;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 1 to 4
+    testPiece.rotate(LEFT);
+
+    (b1[COORD_X]) -= 1;
+    (b2[COORD_X]) += 1;
+    (b3[COORD_X]) += 0;
+    (b4[COORD_X]) -= 1;
+
+    (b1[COORD_Y]) += 1;
+    (b2[COORD_Y]) -= 1;
+    (b3[COORD_Y]) += 0;
+    (b4[COORD_Y]) += 1;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 4 to 3
+    testPiece.rotate(LEFT);
+
+    (b1[COORD_X]) += 1;
+    (b2[COORD_X]) -= 1;
+    (b3[COORD_X]) += 0;
+    (b4[COORD_X]) += 1;
+
+    (b1[COORD_Y]) += 1;
+    (b2[COORD_Y]) += 1;
+    (b3[COORD_Y]) += 0;
+    (b4[COORD_Y]) -= 1;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 3 to 2
+    testPiece.rotate(LEFT);
+
+    (b1[COORD_X]) += 1;
+    (b2[COORD_X]) += 1;
+    (b3[COORD_X]) += 0;
+    (b4[COORD_X]) -= 1;
+
+    (b1[COORD_Y]) -= 1;
+    (b2[COORD_Y]) -= 1;
+    (b3[COORD_Y]) += 0;
+    (b4[COORD_Y]) += 1;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 2 to 1
+    testPiece.rotate(LEFT);
+
+    (b1[COORD_X]) -= 1;
+    (b2[COORD_X]) -= 1;
+    (b3[COORD_X]) += 0;
+    (b4[COORD_X]) += 1;
+
+    (b1[COORD_Y]) -= 1;
+    (b2[COORD_Y]) += 1;
+    (b3[COORD_Y]) += 0;
+    (b4[COORD_Y]) -= 1;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+}
+
+/**
+ * @brief Check if rotation works on tetromino Z.
+ * 
+ * It's called from a function in test5.
+ * 
+ * @param b1 Coordinates of block b1
+ * @param b2 Coordinates of block b2
+ * @param b3 Coordinates of block b3
+ * @param b4 Coordinates of block b4
+ * 
+ * @return Nothing
+ */
+static void
+check_rotationZ (int b1[COORD_NUM], int b2[COORD_NUM],
+                 int b3[COORD_NUM], int b4[COORD_NUM])
+{
+    // Position 1 to 2
+    testPiece.rotate(RIGHT);
+
+    (b1[COORD_X]) += 2;
+    (b2[COORD_X]) += 1;
+    (b3[COORD_X]) += 0;
+    (b4[COORD_X]) -= 1;
+
+    (b1[COORD_Y]) += 0;
+    (b2[COORD_Y]) += 1;
+    (b3[COORD_Y]) += 0;
+    (b4[COORD_Y]) += 1;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 2 to 3
+    testPiece.rotate(RIGHT);
+
+    (b1[COORD_X]) -= 2;
+    (b2[COORD_X]) -= 1;
+    (b3[COORD_X]) += 0;
+    (b4[COORD_X]) += 1;
+
+    (b1[COORD_Y]) += 0;
+    (b2[COORD_Y]) -= 1;
+    (b3[COORD_Y]) += 0;
+    (b4[COORD_Y]) -= 1;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 3 to 4
+    testPiece.rotate(RIGHT);
+
+    (b1[COORD_X]) += 2;
+    (b2[COORD_X]) += 1;
+    (b3[COORD_X]) += 0;
+    (b4[COORD_X]) -= 1;
+
+    (b1[COORD_Y]) += 0;
+    (b2[COORD_Y]) += 1;
+    (b3[COORD_Y]) += 0;
+    (b4[COORD_Y]) += 1;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 4 to 1
+    testPiece.rotate(RIGHT);
+
+    (b1[COORD_X]) -= 2;
+    (b2[COORD_X]) -= 1;
+    (b3[COORD_X]) += 0;
+    (b4[COORD_X]) += 1;
+
+    (b1[COORD_Y]) += 0;
+    (b2[COORD_Y]) -= 1;
+    (b3[COORD_Y]) += 0;
+    (b4[COORD_Y]) -= 1;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 1 to 4
+    testPiece.rotate(LEFT);
+
+    (b1[COORD_X]) += 2;
+    (b2[COORD_X]) += 1;
+    (b3[COORD_X]) += 0;
+    (b4[COORD_X]) -= 1;
+
+    (b1[COORD_Y]) += 0;
+    (b2[COORD_Y]) += 1;
+    (b3[COORD_Y]) += 0;
+    (b4[COORD_Y]) += 1;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 4 to 3
+    testPiece.rotate(LEFT);
+
+    (b1[COORD_X]) -= 2;
+    (b2[COORD_X]) -= 1;
+    (b3[COORD_X]) += 0;
+    (b4[COORD_X]) += 1;
+
+    (b1[COORD_Y]) += 0;
+    (b2[COORD_Y]) -= 1;
+    (b3[COORD_Y]) += 0;
+    (b4[COORD_Y]) -= 1;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 3 to 2
+    testPiece.rotate(LEFT);
+
+    (b1[COORD_X]) += 2;
+    (b2[COORD_X]) += 1;
+    (b3[COORD_X]) += 0;
+    (b4[COORD_X]) -= 1;
+
+    (b1[COORD_Y]) += 0;
+    (b2[COORD_Y]) += 1;
+    (b3[COORD_Y]) += 0;
+    (b4[COORD_Y]) += 1;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 2 to 1
+    testPiece.rotate(LEFT);
+
+    (b1[COORD_X]) -= 2;
+    (b2[COORD_X]) -= 1;
+    (b3[COORD_X]) += 0;
+    (b4[COORD_X]) += 1;
+
+    (b1[COORD_Y]) += 0;
+    (b2[COORD_Y]) -= 1;
+    (b3[COORD_Y]) += 0;
+    (b4[COORD_Y]) -= 1;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+}
 
 // === Copied from board.c ===
 
