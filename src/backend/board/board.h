@@ -127,9 +127,9 @@ typedef struct GAMEBOARD
         /// Get coordinate (0,0) of the board (top-left)
         int * (* board) (void);
 
-        int filledLines (int arr[BOARD_HEIGHT]);
+        int (* filledLines) (int arr[BOARD_HEIGHT]);
 
-        int endGame (void);
+        int (* endGame) (void);
     } ask;
 
     /// Clear a specific part of the board
@@ -137,7 +137,7 @@ typedef struct GAMEBOARD
     struct
     {
         /// Clear all filled lines. Intended to be called after an animation
-        void (* line) (void);
+        void (* line) (int line);
     } clear;
 
     /// Manage the current piece

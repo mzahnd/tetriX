@@ -42,7 +42,7 @@
 #include <stdbool.h>
 
 // For pieces, board_cell and coords enum; for GAMEBOARD structure
-#include "../board.h"
+//#include "../board.h"
 
 // This file
 #include "piece_actions.h"
@@ -122,7 +122,7 @@ destroy (void);
 
 // Initialize piece's type and coordinates in the PIECE structure
 static int
-init (const char piece);
+init (const int piece);
 
 // Increment or decrement by 1 the piece's coordinates on the given axis
 static void
@@ -624,7 +624,7 @@ static piece_private_t currentPiece;
 int
 piece_init (struct PIECE * pstruct, struct GAMEBOARD * boardStr,
             int * board, int boardHeight, int boardWidth,
-            const char piece)
+            const int piece)
 {
     int exitStatus = -1;
 
@@ -674,6 +674,8 @@ piece_init (struct PIECE * pstruct, struct GAMEBOARD * boardStr,
         // Normal drop
         currentPiece.public -> update = &normalDrop;
 
+        currentPiece.public -> destroy = &destroy;
+
         // Initialize the piece in the given position of the bag
         if ( !init(piece) )
         {
@@ -710,6 +712,8 @@ destroy (void)
     currentPiece.board.width = 0;
 
     currentPiece.board.pBoard = NULL;
+
+    currentPiece.public -> destroy = NULL;
     currentPiece.public = NULL;
 }
 
@@ -728,7 +732,7 @@ destroy (void)
  * @return Fail: Non 0
  */
 static int
-init (const char piece)
+init (const int piece)
 {
     int exitStatus = 0;
 
@@ -1122,7 +1126,7 @@ static void
 softDrop (void)
 {
     // Drop once
-    currentPiece.board.pBoard.update();
+    currentPiece.board.pBoard -> update();
 }
 
 /**

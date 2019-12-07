@@ -36,7 +36,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-
 #include "random_generator.h"
 
 #include "pieces/piece_actions.h"
@@ -47,15 +46,16 @@
 /// @privatesection
 // === Constants and Macro definitions ===
 // Board Height for the matrix. The additional 3 rows are hidden to the user
-#define MBOARD_H     BOARD_HEIGHT + 3
+#define HIDDEN_ROWS     3
+#define MBOARD_H        BOARD_HEIGHT + HIDDEN_ROWS
 // Board Width for the matrix.
-#define MBOARD_W     BOARD_WIDTH
+#define MBOARD_W        BOARD_WIDTH
 
 // === Enumerations, structures and typedefs ===
 
 typedef struct GAMEBOARD_PRIVATE
 {
-    board_t * public = NULL;
+    board_t * public;
 
     int gboard[MBOARD_H][MBOARD_W];
 
@@ -76,11 +76,26 @@ static int *
 askBoard (void);
 
 static int
-init (int * bag, int size);
+init ();
+
+static void
+clearLine (int line);
 
 // Clear all cells with moving pieces on the board
 static void
 clearMoving (void);
+
+static int
+endGame (void);
+
+static void
+fillBag (void);
+
+static int
+filledLines (int lines[BOARD_HEIGHT]);
+
+static void
+rotatePiece (int direction);
 
 // Set the piece's coordinates as CELL_FIXED on the board
 static void
@@ -89,6 +104,12 @@ setFixed (int cellType);
 // Set the piece's coordinates as CELL_MOVING on the board
 static void
 setMoving (void);
+
+static void
+shiftPiece (int direction);
+
+static void
+softDropPiece (void);
 
 // Updates the board accoding the moving piece actions.
 static int
@@ -182,8 +203,10 @@ init (void)
 
     //bStruct -> ask.FPG =;
     bStruct.public -> ask.board = &askBoard;
+    bStruct.public -> ask.filledLines = &filledLines;
+    bStruct.public -> ask.endGame = &endGame;
 
-    //bStruct -> clear.line = &;
+    bStruct.public -> clear.line = &clearLine;
 
     /*bStruct.public -> piece.clear.moving = &clearMoving;
 
@@ -220,7 +243,36 @@ init (void)
 static int *
 askBoard (void)
 {
-    return &bStruct.gboard[3][0];
+    return &bStruct.gboard[HIDDEN_ROWS][0];
+}
+
+static void
+clearLine (int line)
+{
+    int i, j;
+
+    // Goes from bottom to top starting in the filled line
+    for ( i = line + HIDDEN_ROWS; i > 0; i-- )
+    {
+        for ( j = 0; j < MBOARD_W; j++ )
+        {
+            // If there's a fixed piece or a CELL_CLEAR, copy it
+            if ( bStruct.gboard[line - 1][j] > CELL_MOVING &&
+                 bStruct.gboard[line][j] > CELL_MOVING )
+            {
+                bStruct.gboard[ line ] [j] = bStruct.gboard [line - 1][j];
+            }
+
+                // If the previous grid cell has a CELL_MOVING but not the one it's
+                // meant to be filled, ignore the piece and leave the cell as 
+                // CELL_CLEAR
+            else if ( bStruct.gboard[line - 1][j] == CELL_MOVING &&
+                      bStruct.gboard[line][j] > CELL_MOVING )
+            {
+                bStruct.gboard[ line ] [j] = CELL_CLEAR;
+            }
+        }
+    }
 }
 
 static int
@@ -229,7 +281,7 @@ endGame (void)
     int i, j;
     int ans = 0;
 
-    for ( i = 0; i < MBOARD_H - BOARD_HEIGHT; i++ )
+    for ( i = 0; i < HIDDEN_ROWS; i++ )
     {
         for ( j = 0; j < MBOARD_W; j++ )
         {
@@ -247,20 +299,20 @@ fillBag (void)
             bStruct.lastTetromino = bStruct.bag[TETROMINOS - 1] : 0;
 
     // Generate set of pieces
-    random_generator(bStruct.bag, size);
+    random_generator(bStruct.bag, TETROMINOS);
 
     bStruct.bagPosition = 0;
     bStruct.lastTetromino = bStruct.bag[TETROMINOS - 1];
 }
 
 static int
-filledLines (int arr[BOARD_HEIGHT])
+filledLines (int lines[BOARD_HEIGHT])
 {
     int i, j;
 
     int fixed, nFill;
 
-    for ( i = MBOARD_H - BOARD_HEIGHT, nFill = 0; i < MBOARD_H; i++ )
+    for ( i = HIDDEN_ROWS, nFill = 0; i < MBOARD_H; i++ )
     {
 
         if ( bStruct.gboard[i][0] > CELL_CLEAR )
@@ -268,10 +320,10 @@ filledLines (int arr[BOARD_HEIGHT])
 
             for ( j = 1, fixed = 1; j < MBOARD_W && fixed > 0; j++ )
             {
-                bStruct.gboard[i][j] > CELL_CLEAR ? fixed++ : fixed = 0;
+                (bStruct.gboard[i][j] > CELL_CLEAR) ? (fixed++) : (fixed = 0);
             }
 
-            fixed > 0 ? (arr[nFill++] = i - (MBOARD_H - BOARD_HEIGHT)) : 0;
+            (fixed > 0) ? (lines[nFill++] = i - HIDDEN_ROWS) : 0;
         }
     }
 
@@ -329,6 +381,7 @@ updateBoard (void)
     else
     {
         setFixed(cellType);
+        bStruct.piece.destroy();
     }
 
     return 0;

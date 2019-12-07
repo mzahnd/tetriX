@@ -42,6 +42,9 @@
 #include <stdlib.h>
 #include <time.h>       // for srand()
 
+// For NUM_PIECES and PIECE_X definitions
+#include "board.h"
+
 // This file
 #include "random_generator.h"
 

@@ -41,8 +41,6 @@
 #    define RANDOM_GENERATOR_H
 
 // === Libraries and header files ===
-// For NUM_PIECES and PIECE_X definitions
-#include "board.h"
 
 // === Constants and Macro definitions ===
 

@@ -40,6 +40,8 @@
 #    define PIECE_ACTIONS_H
 
 // === Libraries and header files ===
+// For BLOCKS, COORD_NUM
+#include "../board.h"
 
 // === Constants and Macro definitions ===
 
@@ -80,7 +82,7 @@ typedef struct PIECE
     struct
     {
         /// Board coordinates of the piece. To access, use coords enum in board.h    
-        int coordinates[BLOCKS][COORD_NUM];
+        int coordinates[4][2];
 
     } get;
 
@@ -119,9 +121,12 @@ typedef struct PIECE
      * @return Nothing
      */
     void (* update) (int * cellType);
+    
+    void (* destroy) (void);
 } piece_t;
 
 // === Global variables ===
+extern struct GAMEBOARD * boardStr;
 
 // === ROM Constant variables ===
 
@@ -130,6 +135,6 @@ typedef struct PIECE
 int
 piece_init (struct PIECE * pstruct, struct GAMEBOARD * boardStr,
             int * board, int boardHeight, int boardWidth,
-            const char piece);
+            const int piece);
 
 #endif /* PIECE_ACTIONS_H */

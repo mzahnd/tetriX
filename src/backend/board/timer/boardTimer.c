@@ -57,17 +57,17 @@
 // === Global function definitions ===
 /// @publicsection
 
-void *
+void
 init_timer (void)
 {
-    clock_t t0, delta;
+    //clock_t t0, delta;
 
-    t0 = clock();
+    /*t0 = clock();
 
     while ( 1 )
     {
         delta = clock() - t0;
-    }
+    }*/
 }
 /// @privatesection
 // === Local function definitions ===

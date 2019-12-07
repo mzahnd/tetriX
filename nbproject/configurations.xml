@@ -30,11 +30,11 @@
                    projectFiles="true">
       <logicalFolder name="f1" displayName="Backend" projectFiles="true">
         <logicalFolder name="f1" displayName="Board" projectFiles="true">
+          <itemPath>src/backend/board/board.c</itemPath>
+          <itemPath>src/backend/board/timer/boardTimer.c</itemPath>
+          <itemPath>src/backend/board/pieces/piece_actions.c</itemPath>
+          <itemPath>src/backend/board/random_generator.c</itemPath>
         </logicalFolder>
-        <itemPath>src/backend/board/board.c</itemPath>
-        <itemPath>src/backend/board/timer/boardTimer.c</itemPath>
-        <itemPath>src/backend/board/pieces/piece_actions.c</itemPath>
-        <itemPath>src/backend/board/random_generator.c</itemPath>
         <itemPath>src/backend/rw/rw_ops.c</itemPath>
         <itemPath>src/backend/stats/stats_mgmt.c</itemPath>
       </logicalFolder>
