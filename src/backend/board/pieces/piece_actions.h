@@ -84,7 +84,6 @@ typedef struct PIECE
 
     } get;
 
-    //TODO
     /**
      * @brief Perform piece rotation
      * 
@@ -119,7 +118,7 @@ typedef struct PIECE
      * 
      * @return Nothing
      */
-    void (* update) (void);
+    void (* update) (int * cellType);
 } piece_t;
 
 // === Global variables ===

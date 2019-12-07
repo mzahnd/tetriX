@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/backend/board/board.o \
 	${OBJECTDIR}/src/backend/board/pieces/piece_actions.o \
 	${OBJECTDIR}/src/backend/board/random_generator.o \
+	${OBJECTDIR}/src/backend/board/timer/boardTimer.o \
 	${OBJECTDIR}/src/backend/rw/rw_ops.o \
 	${OBJECTDIR}/src/backend/stats/stats_mgmt.o \
 	${OBJECTDIR}/src/main.o
@@ -93,6 +94,11 @@ ${OBJECTDIR}/src/backend/board/random_generator.o: src/backend/board/random_gene
 	${MKDIR} -p ${OBJECTDIR}/src/backend/board
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/backend/board/random_generator.o src/backend/board/random_generator.c
+
+${OBJECTDIR}/src/backend/board/timer/boardTimer.o: src/backend/board/timer/boardTimer.c
+	${MKDIR} -p ${OBJECTDIR}/src/backend/board/timer
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/backend/board/timer/boardTimer.o src/backend/board/timer/boardTimer.c
 
 ${OBJECTDIR}/src/backend/rw/rw_ops.o: src/backend/rw/rw_ops.c
 	${MKDIR} -p ${OBJECTDIR}/src/backend/rw
@@ -174,6 +180,19 @@ ${OBJECTDIR}/src/backend/board/random_generator_nomain.o: ${OBJECTDIR}/src/backe
 	    $(COMPILE.c) -O2 -std=c11 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/backend/board/random_generator_nomain.o src/backend/board/random_generator.c;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/backend/board/random_generator.o ${OBJECTDIR}/src/backend/board/random_generator_nomain.o;\
+	fi
+
+${OBJECTDIR}/src/backend/board/timer/boardTimer_nomain.o: ${OBJECTDIR}/src/backend/board/timer/boardTimer.o src/backend/board/timer/boardTimer.c 
+	${MKDIR} -p ${OBJECTDIR}/src/backend/board/timer
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/backend/board/timer/boardTimer.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.c) -O2 -std=c11 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/backend/board/timer/boardTimer_nomain.o src/backend/board/timer/boardTimer.c;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/backend/board/timer/boardTimer.o ${OBJECTDIR}/src/backend/board/timer/boardTimer_nomain.o;\
 	fi
 
 ${OBJECTDIR}/src/backend/rw/rw_ops_nomain.o: ${OBJECTDIR}/src/backend/rw/rw_ops.o src/backend/rw/rw_ops.c 

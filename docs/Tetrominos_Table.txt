@@ -2,6 +2,9 @@ const int pieceArr[TETROMINOS][ORIENTATION][BLOCKS][COORD_NUM] = {
 
     // TETROMINO I
     /*
+	 *		 Initial position
+     *
+	 *		 0    1    2    3
      *     ---------------------
      *  0  |    |    |    |    |
      *     ---------------------
@@ -13,14 +16,37 @@ const int pieceArr[TETROMINOS][ORIENTATION][BLOCKS][COORD_NUM] = {
      *     ---------------------
      */
     {
+	/*
+	 * Position 1
+     *  {X, Y}
+     * b1      b2      b3      b4
+     */
     {{0, 1}, {1, 1}, {2, 1}, {3, 1}},
+	/*
+     * Position 2
+     *  {X, Y}
+     * b1      b2      b3      b4
+     */
     {{2, 0}, {2, 1}, {2, 2}, {2, 3}},
+	/*
+     * Position 3
+     *  {X, Y}
+     * b1      b2      b3      b4
+     */
     {{0, 2}, {1, 2}, {2, 2}, {3, 2}},
+	/*
+     * Position 4
+     *  {X, Y}
+     * b1      b2      b3      b4
+     */
     {{1, 0}, {1, 1}, {1, 2}, {1, 3}}
     },
     
     // TETROMINO J
     /*
+	 *		 Initial position
+     *
+	 *		 0    1    2    3
      *     ---------------------
      *  0  |    |    |    |    |
      *     ---------------------
@@ -32,14 +58,37 @@ const int pieceArr[TETROMINOS][ORIENTATION][BLOCKS][COORD_NUM] = {
      *     ---------------------
      */
     {
+	/*
+     * Position 1
+     *  {X, Y}
+     * b1      b2      b3      b4
+     */
     {{0, 1}, {0, 2}, {1, 2}, {2, 2}},
+	/*
+     * Position 2
+     *  {X, Y}
+     * b1      b2      b3      b4
+     */
     {{1, 0}, {0, 0}, {0, 1}, {0, 2}},
+	/*
+     * Position 3
+     *  {X, Y}
+     * b1      b2      b3      b4
+     */
     {{2, 1}, {2, 0}, {1, 0}, {0, 0}},
+	/*
+     * Position 4
+     *  {X, Y}
+     * b1      b2      b3      b4
+     */
     {{1, 2}, {2, 2}, {2, 1}, {2, 0}}
     },
     
     // TETROMINO L
     /*
+	 *		 Initial position
+     *
+	 *		 0    1    2    3
      *     ---------------------
      *  0  |    |    |    |    |
      *     ---------------------
@@ -51,14 +100,37 @@ const int pieceArr[TETROMINOS][ORIENTATION][BLOCKS][COORD_NUM] = {
      *     ---------------------
      */
     {
+	/*
+     * Position 1
+     *  {X, Y}
+     * b1      b2      b3      b4
+     */
     {{2, 1}, {2, 2}, {1, 2}, {0, 2}},
+	/*
+     * Position 2
+     *  {X, Y}
+     * b1      b2      b3      b4
+     */
     {{1, 2},  {0, 2}, {0, 1}, {0, 0}},
+	/*
+     * Position 3
+     *  {X, Y}
+     * b1      b2      b3      b4
+     */
     {{0, 1},  {0, 0}, {1, 0}, {2, 0}},
+	/*
+     * Position 4
+     *  {X, Y}
+     * b1      b2      b3      b4
+     */
     {{1, 0},  {2, 0}, {2, 1}, {2, 2}}
     },
             
     // TETROMINO O
     /*
+	 *		 Initial position
+     *
+	 *		 0    1    2    3
      *     ---------------------
      *  0  | b1 | b2 |    |    |
      *     ---------------------
@@ -70,14 +142,37 @@ const int pieceArr[TETROMINOS][ORIENTATION][BLOCKS][COORD_NUM] = {
      *     ---------------------
      */
     {
+	/*
+     * Position 1
+     *  {X, Y}
+     * b1      b2      b3      b4
+     */
     {{0, 0}, {1, 0}, {0, 1}, {1, 1}},
+	/*
+     * Position 2
+     *  {X, Y}
+     * b1      b2      b3      b4
+     */
     {{0, 0}, {1, 0}, {0, 1}, {1, 1}},
+	/*
+     * Position 3
+     *  {X, Y}
+     * b1      b2      b3      b4
+     */
     {{0, 0}, {1, 0}, {0, 1}, {1, 1}},
+	/*
+     * Position 4
+     *  {X, Y}
+     * b1      b2      b3      b4
+     */
     {{0, 0}, {1, 0}, {0, 1}, {1, 1}}
     },
             
     // TETROMINO S
     /*
+	 *		 Initial position
+     *
+	 *		 0    1    2    3
      *     ---------------------
      *  0  |    | b1 | b2 |    |
      *     ---------------------
@@ -89,14 +184,37 @@ const int pieceArr[TETROMINOS][ORIENTATION][BLOCKS][COORD_NUM] = {
      *     ---------------------
      */
     {
+	/*
+     * Position 1
+     *  {X, Y}
+     * b1      b2      b3      b4
+     */
     {{1, 0}, {2, 0}, {0, 1}, {1, 1}},
+	/*
+     * Position 2
+     *  {X, Y}
+     * b1      b2      b3      b4
+     */
     {{2, 1},  {2, 2}, {1, 0}, {1, 1}},
+	/*
+     * Position 3
+     *  {X, Y}
+     * b1      b2      b3      b4
+     */
     {{1, 0},  {2, 0}, {0, 1}, {1, 1}},
+	/*
+     * Position 4
+     *  {X, Y}
+     * b1      b2      b3      b4
+     */
     {{2, 1},  {2, 2}, {1, 0}, {1, 1}}
     },
             
     // TETROMINO T
     /*
+	 *		 Initial position
+     *
+	 *		 0    1    2    3
      *     ---------------------
      *  0  |    | b1 |    |    |
      *     ---------------------
@@ -108,14 +226,37 @@ const int pieceArr[TETROMINOS][ORIENTATION][BLOCKS][COORD_NUM] = {
      *     ---------------------
      */
     {
+	/*
+     * Position 1
+     *  {X, Y}
+     * b1      b2      b3      b4
+     */
     {{1, 0}, {0, 1}, {1, 1}, {2, 1}},
+	/*
+     * Position 2
+     *  {X, Y}
+     * b1      b2      b3      b4
+     */
     {{2, 1},  {1, 0}, {1, 1}, {1, 2}},
+	/*
+     * Position 3
+     *  {X, Y}
+     * b1      b2      b3      b4
+     */
     {{1, 2},  {0, 1}, {1, 1}, {2, 1}},
+	/*
+     * Position 4
+     *  {X, Y}
+     * b1      b2      b3      b4
+     */
     {{0, 1},  {1, 0}, {1, 1}, {1, 2}}
     },
             
     // TETROMINO Z
     /*
+	 *		 Initial position
+     *
+	 *		 0    1    2    3
      *     ---------------------
      *  0  | b1 | b2 |    |    |
      *     ---------------------
@@ -127,9 +268,29 @@ const int pieceArr[TETROMINOS][ORIENTATION][BLOCKS][COORD_NUM] = {
      *     ---------------------
      */
     {
+	/*
+     * Position 1
+     *  {X, Y}
+     * b1      b2      b3      b4
+     */
     {{0, 0}, {1, 0}, {1, 1}, {2, 1}},
+	/*
+     * Position 2
+     *  {X, Y}
+     * b1      b2      b3      b4
+     */
     {{2, 0},  {2, 1}, {1, 1}, {1, 2}},
+	/*
+     * Position 3
+     *  {X, Y}
+     * b1      b2      b3      b4
+     */
     {{0, 0}, {1, 0}, {1, 1}, {2, 1}},
+	/*
+     * Position 4
+     *  {X, Y}
+     * b1      b2      b3      b4
+     */
     {{2, 0},  {2, 1}, {1, 1}, {1, 2}}
     }
 };

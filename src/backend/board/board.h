@@ -35,6 +35,8 @@
 #    define BOARD_H
 
 // === Libraries and header files ===
+// For LEFT and RIGHT directions
+#    include "pieces/piece_actions.h"
 
 // === Constants and Macro definitions ===
 /// @def BOARD_HEIGHT
@@ -120,10 +122,14 @@ typedef struct GAMEBOARD
 
     struct
     {
-        /// How fast is the board being updated in Frames Per Grid
+        /// How fast is the board being updated in Frames Per Gridcell
         int (* FPG) (void);
         /// Get coordinate (0,0) of the board (top-left)
         int * (* board) (void);
+
+        int filledLines (int arr[BOARD_HEIGHT]);
+
+        int endGame (void);
     } ask;
 
     /// Clear a specific part of the board
@@ -138,7 +144,8 @@ typedef struct GAMEBOARD
 
     struct
     {
-        /// Clear pieces that are...
+
+        /*/// Clear pieces that are...
 
         struct
         {
@@ -152,8 +159,18 @@ typedef struct GAMEBOARD
             void (* moving) (void);
             /// Set the piece's coordinates as CELL_FIXED
             void (* fixed) (int cellType);
-        } set;
+        } set;*/
+
+        struct
+        {
+            void (* rotate) (int direction);
+            void (* shift) (int direction);
+            void (* softDrop) (void);
+        } action;
+
     } piece;
+
+    void (* update) (void);
 
 } board_t;
 

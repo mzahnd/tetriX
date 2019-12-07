@@ -53,6 +53,21 @@
 
 // === Enumerations, structures and typedefs ===
 
+typedef struct GAMEBOARD_PRIVATE
+{
+    board_t * public = NULL;
+
+    int gboard[MBOARD_H][MBOARD_W];
+
+    piece_t piece;
+
+    int bag[TETROMINOS];
+
+    int bagPosition;
+
+    int lastTetromino;
+
+} board_private_t;
 // === Global variables ===
 
 // === Function prototypes for private functions with file level scope ===
@@ -77,16 +92,12 @@ setMoving (void);
 
 // Updates the board accoding the moving piece actions.
 static int
-updateBoard (int * bag, int position);
+updateBoard (void);
 
 // === ROM Constant variables with file level scope ===
 
 // === Static variables and constant variables with file level scope ===
-static board_t * bStruct = NULL;
-
-static int gboard[MBOARD_H][MBOARD_W];
-
-static piece_t piece;
+static board_private_t bStruct;
 
 //static stats_t stats;
 
@@ -106,20 +117,20 @@ void
 board_init (void * gameBoardStruct)
 {
     //int pos;
-    int bag[TETROMINOS]; //, tmp_bag[NUM_PIECES];
+
 
     if ( gameBoardStruct == NULL )
     {
         fputs("Invalid argument.", stderr);
-        fputs("A GAMEBOARD struct must be passed by reference", stderr);
+        fputs("A GAMEBOARD struct must be passed by reference.", stderr);
     }
 
     else
     {
-        bStruct = (board_t *) gameBoardStruct;
+        bStruct.public = (board_t *) gameBoardStruct;
     }
 
-    init(bag, TETROMINOS);
+    init();
 
     /*while ( 1 )
     {
@@ -153,7 +164,7 @@ board_init (void * gameBoardStruct)
  */
 
 static int
-init (int * bag, int size)
+init (void)
 {
     if ( init_random_generator() )
     {
@@ -161,19 +172,27 @@ init (int * bag, int size)
     }
 
     // Generate first set of pieces
-    random_generator(bag, size);
+    bStruct.bagPosition = 0;
+    fillBag();
 
     // Piece to PIECE_NONE
-    piece.type = TETROMINO_NONE;
+    bStruct.piece.type = TETROMINO_NONE;
 
     //bStruct -> destroy = ;
+
     //bStruct -> ask.FPG =;
-    bStruct -> ask.board = &askBoard;
+    bStruct.public -> ask.board = &askBoard;
+
     //bStruct -> clear.line = &;
 
-    bStruct -> piece.clear.moving = &clearMoving;
-    bStruct -> piece.set.moving = &setMoving;
-    bStruct -> piece.set.fixed = &setFixed;
+    /*bStruct.public -> piece.clear.moving = &clearMoving;
+
+    bStruct.public -> piece.set.moving = &setMoving;
+    bStruct.public -> piece.set.fixed = &setFixed;*/
+
+    bStruct.public -> piece.action.rotate = &rotatePiece;
+    bStruct.public -> piece.action.shift = &shiftPiece;
+    bStruct.public -> piece.action.softDrop = &softDropPiece;
 
     // Stats
     /*
@@ -201,7 +220,62 @@ init (int * bag, int size)
 static int *
 askBoard (void)
 {
-    return &gboard[3][0];
+    return &bStruct.gboard[3][0];
+}
+
+static int
+endGame (void)
+{
+    int i, j;
+    int ans = 0;
+
+    for ( i = 0; i < MBOARD_H - BOARD_HEIGHT; i++ )
+    {
+        for ( j = 0; j < MBOARD_W; j++ )
+        {
+            bStruct.gboard[i][j] > CELL_CLEAR ? ans = 1 : 0;
+        }
+    }
+
+    return ans;
+}
+
+static void
+fillBag (void)
+{
+    (bStruct.bagPosition == TETROMINOS - 2) ? \
+            bStruct.lastTetromino = bStruct.bag[TETROMINOS - 1] : 0;
+
+    // Generate set of pieces
+    random_generator(bStruct.bag, size);
+
+    bStruct.bagPosition = 0;
+    bStruct.lastTetromino = bStruct.bag[TETROMINOS - 1];
+}
+
+static int
+filledLines (int arr[BOARD_HEIGHT])
+{
+    int i, j;
+
+    int fixed, nFill;
+
+    for ( i = MBOARD_H - BOARD_HEIGHT, nFill = 0; i < MBOARD_H; i++ )
+    {
+
+        if ( bStruct.gboard[i][0] > CELL_CLEAR )
+        {
+
+            for ( j = 1, fixed = 1; j < MBOARD_W && fixed > 0; j++ )
+            {
+                bStruct.gboard[i][j] > CELL_CLEAR ? fixed++ : fixed = 0;
+            }
+
+            fixed > 0 ? (arr[nFill++] = i - (MBOARD_H - BOARD_HEIGHT)) : 0;
+        }
+    }
+
+    return nFill;
 }
 
 /**
@@ -210,46 +284,87 @@ askBoard (void)
  * If the current piece isn't initialized, calls piece_init(), otherwise, 
  * follows the user input, rotating, shifting or dropping the piece.
  * 
- * @param bag
- * @param position
  * @return 
  */
 static int
-updateBoard (int * bag, int position)
+updateBoard (void)
 {
-    /*  // Piece not initialized
-      if ( piece.type == PIECE_NONE )
-      {
-          piece_init(&piece, bag, position);
-      }
+    int cellType;
 
-      // User asked to rotate the piece
-      if ( piece.rotation.status == true )
-      {
-          piece.rotate(gboard, MBOARD_H);
-      }
-
-      // User asked soft drop
-      if ( piece.drop == true )
-      {
-          // Update the piece in the board
-          piece.update(bStruct, gboard, MBOARD_H);
-
-          // FIXME Add some timer here (FPG dependent)
-
-          piece.drop = false;
-      }
-     */
-    // User asked to shift the piece (either left or right)
-    /*if ( piece.shift != NONE )
+    if ( bStruct.piece.type == TETROMINO_NONE )
     {
-        piece.shift(gboard, BOARD_HEIGHT);
-    }*/
-    /*
-        // Update the piece in the board
-        piece.update(bStruct, gboard, MBOARD_H);*/
+        switch ( bStruct.bagPosition )
+        {
+
+            case TETROMINOS - 2:
+                bStruct.piece.type = bStruct.bag[bStruct.bagPosition++];
+                fillBag();
+                break;
+
+            case TETROMINOS - 1:
+                bStruct.piece.type = bStruct.lastTetromino;
+                break;
+
+            default:
+                bStruct.piece.type = bStruct.bag[bStruct.bagPosition++];
+                break;
+        }
+
+        piece_init(&bStruct.piece, bStruct.public,
+                   &bStruct.gboard[0][0], MBOARD_H, MBOARD_W,
+                   bStruct.piece.type);
+
+    }
+
+    bStruct.piece.update(&cellType);
+
+    clearMoving();
+
+    if ( cellType == CELL_MOVING )
+    {
+
+        setMoving();
+    }
+
+    else
+    {
+        setFixed(cellType);
+    }
 
     return 0;
+}
+
+static void
+rotatePiece (int direction)
+{
+    if ( direction == LEFT || direction == RIGHT )
+    {
+        bStruct.piece.rotate(direction);
+
+        // Force update
+        updateBoard();
+    }
+}
+
+static void
+shiftPiece (int direction)
+{
+    if ( direction == LEFT || direction == RIGHT )
+    {
+        bStruct.piece.shift(direction);
+
+        // Force update
+        updateBoard();
+    }
+}
+
+static void
+softDropPiece (void)
+{
+    bStruct.piece.softDrop();
+
+    // Force update
+    updateBoard();
 }
 
 /**
@@ -268,9 +383,9 @@ clearMoving (void)
     {
         for ( j = 0; j < MBOARD_W; j++ )
         {
-            if ( gboard[i][j] == CELL_MOVING )
+            if ( bStruct.gboard[i][j] == CELL_MOVING )
             {
-                gboard[i][j] = CELL_CLEAR;
+                bStruct.gboard[i][j] = CELL_CLEAR;
             }
         }
     }
@@ -286,23 +401,24 @@ clearMoving (void)
 static void
 setMoving (void)
 {
-    gboard[ piece.get.coordinates[b1][COORD_Y] ][ \
-                        piece.get.coordinates[b1][COORD_X] ] = CELL_MOVING;
+    bStruct.gboard[ bStruct.piece.get.coordinates[b1][COORD_Y] ][ \
+                    bStruct.piece.get.coordinates[b1][COORD_X] ] = CELL_MOVING;
 
-    gboard[ piece.get.coordinates[b2][COORD_Y] ][ \
-                        piece.get.coordinates[b2][COORD_X] ] = CELL_MOVING;
+    bStruct.gboard[ bStruct.piece.get.coordinates[b2][COORD_Y] ][ \
+                    bStruct.piece.get.coordinates[b2][COORD_X] ] = CELL_MOVING;
 
-    gboard[ piece.get.coordinates[b3][COORD_Y] ][ \
-                        piece.get.coordinates[b3][COORD_X] ] = CELL_MOVING;
+    bStruct.gboard[ bStruct.piece.get.coordinates[b3][COORD_Y] ][ \
+                    bStruct.piece.get.coordinates[b3][COORD_X] ] = CELL_MOVING;
 
-    gboard[ piece.get.coordinates[b4][COORD_Y] ][ \
-                        piece.get.coordinates[b4][COORD_X] ] = CELL_MOVING;
+    bStruct.gboard[ bStruct.piece.get.coordinates[b4][COORD_Y] ][ \
+                    bStruct.piece.get.coordinates[b4][COORD_X] ] = CELL_MOVING;
 }
 
 /**
- * @brief Set the piece's coordinates as CELL_FIXED on the board
+ * @brief Set the piece's coordinates as fixed (CELL_X) on the board
  *  
- * @param None
+ * @param cellType Block that's going to be fixed. (i.e. TETROMINO_J will set
+ * the four cells as CELL_J)
  * 
  * @return Nothing
  */
@@ -311,17 +427,17 @@ setFixed (int cellType)
 {
     if ( cellType >= CELL_I )
     {
-        gboard[ piece.get.coordinates[b1][COORD_Y] ][ \
-                        piece.get.coordinates[b1][COORD_X] ] = cellType;
+        bStruct.gboard[ bStruct.piece.get.coordinates[b1][COORD_Y] ][ \
+                       bStruct.piece.get.coordinates[b1][COORD_X] ] = cellType;
 
-        gboard[ piece.get.coordinates[b2][COORD_Y] ][ \
-                        piece.get.coordinates[b2][COORD_X] ] = cellType;
+        bStruct.gboard[ bStruct.piece.get.coordinates[b2][COORD_Y] ][ \
+                       bStruct.piece.get.coordinates[b2][COORD_X] ] = cellType;
 
-        gboard[ piece.get.coordinates[b3][COORD_Y] ][ \
-                        piece.get.coordinates[b3][COORD_X] ] = cellType;
+        bStruct.gboard[ bStruct.piece.get.coordinates[b3][COORD_Y] ][ \
+                       bStruct.piece.get.coordinates[b3][COORD_X] ] = cellType;
 
-        gboard[ piece.get.coordinates[b4][COORD_Y] ][ \
-                        piece.get.coordinates[b4][COORD_X] ] = cellType;
+        bStruct.gboard[ bStruct.piece.get.coordinates[b4][COORD_Y] ][ \
+                       bStruct.piece.get.coordinates[b4][COORD_X] ] = cellType;
     }
 
     else

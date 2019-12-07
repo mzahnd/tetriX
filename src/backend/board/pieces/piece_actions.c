@@ -41,7 +41,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-// For BOARD_WIDTH definition in this header and PIECE_X in the .c file
+// For pieces, board_cell and coords enum; for GAMEBOARD structure
 #include "../board.h"
 
 // This file
@@ -116,6 +116,10 @@ typedef struct PRIVATE_PIECE
 // === Global variables ===
 
 // === Function prototypes for private functions with file level scope ===
+
+static void
+destroy (void);
+
 // Initialize piece's type and coordinates in the PIECE structure
 static int
 init (const char piece);
@@ -126,7 +130,7 @@ moveOneCell (int coord, int pm);
 
 // Updates the piece in the board (called from public PIECE)
 static void
-normalDrop (void);
+normalDrop (int * cellType);
 
 // Rotate the piece in the desired direction
 static void
@@ -154,30 +158,64 @@ verifyFixedPieces (void);
 
 // === ROM Constant variables with file level scope ===
 /// Array with each piece coordinates and orientations.
-/// @note A much readable code can be readed from "Tetrominos_Table.txt" file,
+/// @note A more readable code can be readed from "Tetrominos_Table.txt" file,
 /// inside docs folder
 const int pieceArr[TETROMINOS][ORIENTATION][BLOCKS][COORD_NUM] = {
 
-                                                                  // TETROMINO I
+    // TETROMINO I
+    /*
+     *		 Initial position
+     *
+     *		 0    1    2    3
+     *     ---------------------
+     *  0  |    |    |    |    |
+     *     ---------------------
+     *  1  | b1 | b2 | b3 | b4 |
+     *     ---------------------
+     *  2  |    |    |    |    |
+     *     ---------------------
+     *  3  |    |    |    |    |
+     *     ---------------------
+     */
     {
+        /*
+         * Position 1
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
         {
             {0, 1},
             {1, 1},
             {2, 1},
             {3, 1}
         },
+        /*
+         * Position 2
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
         {
             {2, 0},
             {2, 1},
             {2, 2},
             {2, 3}
         },
+        /*
+         * Position 3
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
         {
             {0, 2},
             {1, 2},
             {2, 2},
             {3, 2}
         },
+        /*
+         * Position 4
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
         {
             {1, 0},
             {1, 1},
@@ -186,26 +224,60 @@ const int pieceArr[TETROMINOS][ORIENTATION][BLOCKS][COORD_NUM] = {
         }
     },
 
-                                                                  // TETROMINO J
+    // TETROMINO J
+    /*
+     *		 Initial position
+     *
+     *		 0    1    2    3
+     *     ---------------------
+     *  0  |    |    |    |    |
+     *     ---------------------
+     *  1  | b1 |    |    |    |
+     *     ---------------------
+     *  2  | b2 | b3 | b4 |    |
+     *     ---------------------
+     *  3  |    |    |    |    |
+     *     ---------------------
+     */
     {
+        /*
+         * Position 1
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
         {
             {0, 1},
             {0, 2},
             {1, 2},
             {2, 2}
         },
+        /*
+         * Position 2
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
         {
             {1, 0},
             {0, 0},
             {0, 1},
             {0, 2}
         },
+        /*
+         * Position 3
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
         {
             {2, 1},
             {2, 0},
             {1, 0},
             {0, 0}
         },
+        /*
+         * Position 4
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
         {
             {1, 2},
             {2, 2},
@@ -214,26 +286,60 @@ const int pieceArr[TETROMINOS][ORIENTATION][BLOCKS][COORD_NUM] = {
         }
     },
 
-                                                                  // TETROMINO L
+    // TETROMINO L
+    /*
+     *		 Initial position
+     *
+     *		 0    1    2    3
+     *     ---------------------
+     *  0  |    |    |    |    |
+     *     ---------------------
+     *  1  |    |    | b1 |    |
+     *     ---------------------
+     *  2  | b4 | b3 | b2 |    |
+     *     ---------------------
+     *  3  |    |    |    |    |
+     *     ---------------------
+     */
     {
+        /*
+         * Position 1
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
         {
             {2, 1},
             {2, 2},
             {1, 2},
             {0, 2}
         },
+        /*
+         * Position 2
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
         {
             {1, 2},
             {0, 2},
             {0, 1},
             {0, 0}
         },
+        /*
+         * Position 3
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
         {
             {0, 1},
             {0, 0},
             {1, 0},
             {2, 0}
         },
+        /*
+         * Position 4
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
         {
             {1, 0},
             {2, 0},
@@ -242,26 +348,60 @@ const int pieceArr[TETROMINOS][ORIENTATION][BLOCKS][COORD_NUM] = {
         }
     },
 
-                                                                  // TETROMINO O
+    // TETROMINO O
+    /*
+     *		 Initial position
+     *
+     *		 0    1    2    3
+     *     ---------------------
+     *  0  | b1 | b2 |    |    |
+     *     ---------------------
+     *  1  | b3 | b4 |    |    |
+     *     ---------------------
+     *  2  |    |    |    |    |
+     *     ---------------------
+     *  3  |    |    |    |    |
+     *     ---------------------
+     */
     {
+        /*
+         * Position 1
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
         {
             {0, 0},
             {1, 0},
             {0, 1},
             {1, 1}
         },
+        /*
+         * Position 2
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
         {
             {0, 0},
             {1, 0},
             {0, 1},
             {1, 1}
         },
+        /*
+         * Position 3
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
         {
             {0, 0},
             {1, 0},
             {0, 1},
             {1, 1}
         },
+        /*
+         * Position 4
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
         {
             {0, 0},
             {1, 0},
@@ -270,26 +410,60 @@ const int pieceArr[TETROMINOS][ORIENTATION][BLOCKS][COORD_NUM] = {
         }
     },
 
-                                                                  // TETROMINO S
+    // TETROMINO S
+    /*
+     *		 Initial position
+     *
+     *		 0    1    2    3
+     *     ---------------------
+     *  0  |    | b1 | b2 |    |
+     *     ---------------------
+     *  1  | b3 | b4 |    |    |
+     *     ---------------------
+     *  2  |    |    |    |    |
+     *     ---------------------
+     *  3  |    |    |    |    |
+     *     ---------------------
+     */
     {
+        /*
+         * Position 1
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
         {
             {1, 0},
             {2, 0},
             {0, 1},
             {1, 1}
         },
+        /*
+         * Position 2
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
         {
             {2, 1},
             {2, 2},
             {1, 0},
             {1, 1}
         },
+        /*
+         * Position 3
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
         {
             {1, 0},
             {2, 0},
             {0, 1},
             {1, 1}
         },
+        /*
+         * Position 4
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
         {
             {2, 1},
             {2, 2},
@@ -298,26 +472,60 @@ const int pieceArr[TETROMINOS][ORIENTATION][BLOCKS][COORD_NUM] = {
         }
     },
 
-                                                                  // TETROMINO T
+    // TETROMINO T
+    /*
+     *		 Initial position
+     *
+     *		 0    1    2    3
+     *     ---------------------
+     *  0  |    | b1 |    |    |
+     *     ---------------------
+     *  1  | b2 | b3 | b4 |    |
+     *     ---------------------
+     *  2  |    |    |    |    |
+     *     ---------------------
+     *  3  |    |    |    |    |
+     *     ---------------------
+     */
     {
+        /*
+         * Position 1
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
         {
             {1, 0},
             {0, 1},
             {1, 1},
             {2, 1}
         },
+        /*
+         * Position 2
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
         {
             {2, 1},
             {1, 0},
             {1, 1},
             {1, 2}
         },
+        /*
+         * Position 3
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
         {
             {1, 2},
             {0, 1},
             {1, 1},
             {2, 1}
         },
+        /*
+         * Position 4
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
         {
             {0, 1},
             {1, 0},
@@ -326,26 +534,60 @@ const int pieceArr[TETROMINOS][ORIENTATION][BLOCKS][COORD_NUM] = {
         }
     },
 
-                                                                  // TETROMINO Z
+    // TETROMINO Z
+    /*
+     *		 Initial position
+     *
+     *		 0    1    2    3
+     *     ---------------------
+     *  0  | b1 | b2 |    |    |
+     *     ---------------------
+     *  1  |    | b3 | b4 |    |
+     *     ---------------------
+     *  2  |    |    |    |    |
+     *     ---------------------
+     *  3  |    |    |    |    |
+     *     ---------------------
+     */
     {
+        /*
+         * Position 1
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
         {
             {0, 0},
             {1, 0},
             {1, 1},
             {2, 1}
         },
+        /*
+         * Position 2
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
         {
             {2, 0},
             {2, 1},
             {1, 1},
             {1, 2}
         },
+        /*
+         * Position 3
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
         {
             {0, 0},
             {1, 0},
             {1, 1},
             {2, 1}
         },
+        /*
+         * Position 4
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
         {
             {2, 0},
             {2, 1},
@@ -445,6 +687,31 @@ piece_init (struct PIECE * pstruct, struct GAMEBOARD * boardStr,
 
 /// @privatesection
 // === Local function definitions ===
+
+static void
+destroy (void)
+{
+    if ( currentPiece.public == NULL )
+    {
+        fputs("Bad destroy call. Noting to destroy, exiting...", stderr);
+        return;
+    }
+
+    currentPiece.public -> type = TETROMINO_NONE;
+    currentPiece.public -> rotate = NULL;
+    currentPiece.public -> shift = NULL;
+    currentPiece.public -> softDrop = NULL;
+    currentPiece.public -> update = NULL;
+
+    currentPiece.type = TETROMINO_NONE;
+
+    currentPiece.board.r0c0 = NULL;
+    currentPiece.board.height = 0;
+    currentPiece.board.width = 0;
+
+    currentPiece.board.pBoard = NULL;
+    currentPiece.public = NULL;
+}
 
 /**
  * @details Initialize piece's type and coordinates in the PIECE structure
@@ -672,9 +939,9 @@ moveOneCell (int coord, int pm)
  * @return Nothing
  */
 static void
-normalDrop (void)
+normalDrop (int * cellType)
 {
-    int cellType = CELL_MOVING;
+    *cellType = CELL_MOVING;
 
     // Drop the piece one position
     moveOneCell(COORD_Y, PLUS);
@@ -690,48 +957,48 @@ normalDrop (void)
         updatePublicCoordinates();
 
         // Clear the piece as moving from the board
-        currentPiece.board.pBoard -> piece.clear.moving();
+        //currentPiece.board.pBoard -> piece.clear.moving();
 
         // And fix it according to its type
         switch ( currentPiece.type )
         {
             case TETROMINO_I:
-                cellType = CELL_I;
+                *cellType = CELL_I;
                 break;
 
             case TETROMINO_J:
-                cellType = CELL_J;
+                *cellType = CELL_J;
                 break;
 
             case TETROMINO_L:
-                cellType = CELL_L;
+                *cellType = CELL_L;
                 break;
 
             case TETROMINO_O:
-                cellType = CELL_O;
+                *cellType = CELL_O;
                 break;
 
             case TETROMINO_S:
-                cellType = CELL_S;
+                *cellType = CELL_S;
                 break;
 
             case TETROMINO_T:
-                cellType = CELL_T;
+                *cellType = CELL_T;
                 break;
 
             case TETROMINO_Z:
-                cellType = CELL_Z;
+                *cellType = CELL_Z;
                 break;
 
             default:
-                cellType = CELL_MOVING;
+                *cellType = CELL_MOVING;
                 break;
         }
 
-        currentPiece.board.pBoard -> piece.set.fixed(cellType);
+        //currentPiece.board.pBoard -> piece.set.fixed(cellType);
 
-        currentPiece.public -> type = TETROMINO_NONE;
-        currentPiece.type = TETROMINO_NONE;
+        //destroy();
+
     }
 
     else
@@ -855,7 +1122,7 @@ static void
 softDrop (void)
 {
     // Drop once
-    normalDrop();
+    currentPiece.board.pBoard.update();
 }
 
 /**
