@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['shiftingtypes_106',['shiftingTypes',['../piece__actions_8h.html#aeb17937ca06d418b5bc07c95e02c5a54',1,'piece_actions.h']]]
+  ['pieces_114',['pieces',['../board_8h.html#a21ddfcf7ee9df16a820d99deb4fda263',1,'board.h']]]
 ];

@@ -50,6 +50,9 @@
                    displayName="Test Files"
                    projectFiles="false"
                    kind="TEST_LOGICAL_FOLDER">
+      <logicalFolder name="f3" displayName="Board" projectFiles="true" kind="TEST">
+        <itemPath>tests/backend/test_board.c</itemPath>
+      </logicalFolder>
       <logicalFolder name="f2"
                      displayName="Piece Actions"
                      projectFiles="true"
@@ -103,6 +106,14 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f3">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f3</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <item path="src/backend/board/board.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/backend/board/board.h" ex="false" tool="3" flavor2="0">
@@ -146,6 +157,8 @@
       <item path="src/backend/stats/stats_mgmt.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/main.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="tests/backend/test_board.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="tests/backend/test_piece_actions.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -189,6 +202,14 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f3">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f3</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <item path="src/backend/board/board.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/backend/board/board.h" ex="false" tool="3" flavor2="0">
@@ -232,6 +253,8 @@
       <item path="src/backend/stats/stats_mgmt.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/main.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="tests/backend/test_board.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="tests/backend/test_piece_actions.c" ex="false" tool="0" flavor2="0">
       </item>

@@ -268,12 +268,6 @@ init_suite (void)
 {
     board_init(&bStru);
 
-    // Replace function pointer to another in this file as we're performing
-    // tests on pieces, not on board
-    bStru.piece.clear.moving = &clearMoving;
-    bStru.piece.set.moving = &setMoving;
-    bStru.piece.set.fixed = &setFixed;
-
     // Create a bag with all pieces, in order
     bag[0] = TETROMINO_I;
     bag[1] = TETROMINO_J;
@@ -723,16 +717,16 @@ static void
 check_Gravity (int b1[COORD_NUM], int b2[COORD_NUM],
                int b3[COORD_NUM], int b4[COORD_NUM])
 {
-    int i;
+    int i, cellType;
 
     for ( i = 3; i < H_BOARD; i++ )
     {
-        testPiece.update();
+        cellType = testPiece.update();
 
         // Last drop (must be fixed after that)
         if ( i == H_BOARD - 1 && testPiece.type != TETROMINO_I )
         {
-
+            setFixed(cellType);
             check_onePieceFixed(b1, b2, b3, b4);
         }
 
@@ -747,8 +741,9 @@ check_Gravity (int b1[COORD_NUM], int b2[COORD_NUM],
 
             check_onePieceMoving(b1, b2, b3, b4);
 
-            testPiece.update();
+            cellType = testPiece.update();
 
+            setFixed(cellType);
             check_onePieceFixed(b1, b2, b3, b4);
         }
 

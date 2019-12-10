@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['num_5fpieces_126',['NUM_PIECES',['../board_8h.html#ac233b85833d4e82cb395766265eb287d',1,'board.h']]]
+  ['orientation_127',['ORIENTATION',['../board_8h.html#ac815b03ec48abf99301f44140ff0b0a9',1,'board.h']]]
 ];

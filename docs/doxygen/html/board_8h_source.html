@@ -98,127 +98,146 @@ $(function() {
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#    define BOARD_WIDTH     10</span></div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#    define ORIENTATION     4</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">// === Enumerations, structures and typedefs ===</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">enum</span> block</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;{</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    b1 = 0,</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    b2,</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    b3,</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    b4,</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    BLOCKS</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;};</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">enum</span> pieces</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;{</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    TETROMINO_NONE = -1,</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    TETROMINO_I = 0,</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    TETROMINO_J,</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    TETROMINO_L,</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    TETROMINO_O,</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    TETROMINO_S,</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    TETROMINO_T,</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    TETROMINO_Z,</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    TETROMINOS</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;};</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword">enum</span> <a class="code" href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07">board_cell</a></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;{</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <a class="code" href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07ad73b275c7238a36a34f9ae1cb1c5804e">CELL_MOVING</a> = -1,</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <a class="code" href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07a0b9a98181effaaf40d469af30f93f2d1">CELL_CLEAR</a> = 0,</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <a class="code" href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07a8c1ddfdae169669995efcadf44d5d161">CELL_I</a>,</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    CELL_J,</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    CELL_L,</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    CELL_O,</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    CELL_S,</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    CELL_T,</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    CELL_Z,</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;};</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="keyword">enum</span> <a class="code" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891c">coords</a></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;{</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <a class="code" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891ca90b0030b76559a27bf6099278d48d001">COORD_X</a>,</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <a class="code" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891ca63ebf6d854e134f261b0f03b54fac644">COORD_Y</a>,</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <a class="code" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891ca5a6527e7417dc323385004a43565feec">COORD_NUM</a></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;};</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct_g_a_m_e_b_o_a_r_d.html">GAMEBOARD</a></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;{</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    void (* <a class="code" href="struct_g_a_m_e_b_o_a_r_d.html#a2601a17a3e2edc404d8eab8e8b6d40c6">destroy</a>) (void);</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="keyword">struct</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    {</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        int (* <a class="code" href="struct_g_a_m_e_b_o_a_r_d.html#ad3d2b58bbc1ae90cd04357f9ecaed7e3">FPG</a>) (void);</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        <span class="keywordtype">int</span> * (* board) (void);</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    } <a class="code" href="struct_g_a_m_e_b_o_a_r_d.html#abd1ca5175fd44ca3a77fb51f20f14e77">ask</a>;</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#    define ORIENTATION     4</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">// === Enumerations, structures and typedefs ===</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">enum</span> <a class="code" href="board_8h.html#a17afa58b2bc574dedcd1cc02e1fdf165">block</a></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;{</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    b1 = 0,</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    b2,</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    b3,</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    b4,</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    BLOCKS</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;};</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keyword">enum</span> <a class="code" href="board_8h.html#a21ddfcf7ee9df16a820d99deb4fda263">pieces</a></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;{</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    TETROMINO_NONE = -1,</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    TETROMINO_I = 0,</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    TETROMINO_J,</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    TETROMINO_L,</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    TETROMINO_O,</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    TETROMINO_S,</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    TETROMINO_T,</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    TETROMINO_Z,</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    TETROMINOS</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;};</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keyword">enum</span> <a class="code" href="board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54">shiftingTypes</a></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;{</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <a class="code" href="board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54ac157bdf0b85a40d2619cbc8bc1ae5fe2">NONE</a>,</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <a class="code" href="board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54adb45120aafd37a973140edee24708065">LEFT</a>,</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <a class="code" href="board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54aec8379af7490bb9eaaf579cf17876f38">RIGHT</a></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;};</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="keyword">enum</span> <a class="code" href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07">board_cell</a></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;{</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <a class="code" href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07ad73b275c7238a36a34f9ae1cb1c5804e">CELL_MOVING</a> = -1,</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <a class="code" href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07a0b9a98181effaaf40d469af30f93f2d1">CELL_CLEAR</a> = 0,</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <a class="code" href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07a8c1ddfdae169669995efcadf44d5d161">CELL_I</a>,</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    CELL_J,</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    CELL_L,</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    CELL_O,</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    CELL_S,</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    CELL_T,</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    CELL_Z</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;};</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="keyword">enum</span> <a class="code" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891c">coords</a></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;{</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <a class="code" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891ca90b0030b76559a27bf6099278d48d001">COORD_X</a>,</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <a class="code" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891ca63ebf6d854e134f261b0f03b54fac644">COORD_Y</a>,</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <a class="code" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891ca5a6527e7417dc323385004a43565feec">COORD_NUM</a></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;};</div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="keyword">struct</span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    {</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        void (* <a class="code" href="struct_g_a_m_e_b_o_a_r_d.html#a9dba6b702359dac08fd7dec25917d261">line</a>) (void);</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    } <a class="code" href="struct_g_a_m_e_b_o_a_r_d.html#a7bc8dd997881b9557695110c61d596ac">clear</a>;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160; </div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160; </div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <span class="keyword">struct</span></div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    {</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160; </div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        <span class="keyword">struct</span></div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        {</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;            void (* <a class="code" href="struct_g_a_m_e_b_o_a_r_d.html#adc6ebe5d6fa62f1667e39f03114bad98">moving</a>) (void);</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        } <a class="code" href="struct_g_a_m_e_b_o_a_r_d.html#a7bc8dd997881b9557695110c61d596ac">clear</a>;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="keyword">typedef</span> <span class="keywordtype">int</span> <a class="code" href="board_8h.html#ad52f776081dcdce29aa7eff07d9513ef">grid_t</a>;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160; </div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct_g_a_m_e_b_o_a_r_d.html">GAMEBOARD</a></div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;{</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    void (* <a class="code" href="struct_g_a_m_e_b_o_a_r_d.html#a2601a17a3e2edc404d8eab8e8b6d40c6">destroy</a>) (void);</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160; </div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160; </div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        <span class="keyword">struct</span></div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        {</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;            void (* <a class="code" href="struct_g_a_m_e_b_o_a_r_d.html#adc6ebe5d6fa62f1667e39f03114bad98">moving</a>) (void);</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;            void (* <a class="code" href="struct_g_a_m_e_b_o_a_r_d.html#acf50dd01e4225abc204d844ad2c63fe7">fixed</a>) (<span class="keywordtype">int</span> cellType);</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        } set;</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    } <a class="code" href="struct_g_a_m_e_b_o_a_r_d.html#af5ed5155aa10bfb9ca29242935680c84">piece</a>;</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160; </div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;} <a class="code" href="board_8h.html#aea9f99b90c751f90ae6dd2f35d49bb4e">board_t</a>;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; </div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="comment">// === Global variables ===</span></div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="comment">// === ROM Constant variables ===</span></div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="comment">// === Global function definitions ===</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    <span class="keyword">struct</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    {</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        int (* <a class="code" href="struct_g_a_m_e_b_o_a_r_d.html#ad3d2b58bbc1ae90cd04357f9ecaed7e3">FPG</a>) (void);</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; </div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        <a class="code" href="board_8h.html#ad52f776081dcdce29aa7eff07d9513ef">grid_t</a> * (* board) (void);</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160; </div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        int (* <a class="code" href="struct_g_a_m_e_b_o_a_r_d.html#a14543271d4d3aaed1bf9fb0671811187">filledRows</a>) (<span class="keywordtype">int</span> lines[<a class="code" href="board_8h.html#a94ed08e31d2f3a38d35f0cb89c762f04">BOARD_HEIGHT</a>]);</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="comment">// Initialize a GAMEBOARD structure</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<a class="code" href="board_8h.html#a11fc500f2e7dfea6e7540ca1f8b2193c">board_init</a> (<span class="keywordtype">void</span> * gameBoardStruct);</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; </div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* BOARD_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        int (* <a class="code" href="struct_g_a_m_e_b_o_a_r_d.html#a165ec10fee1e6a7cc22dca444f1943ba">endGame</a>) (void);</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    } <a class="code" href="struct_g_a_m_e_b_o_a_r_d.html#abd1ca5175fd44ca3a77fb51f20f14e77">ask</a>;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160; </div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160; </div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <span class="keyword">struct</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    {</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        void (* <a class="code" href="struct_g_a_m_e_b_o_a_r_d.html#aa57283c6e542b6635c353acce43cecb8">line</a>) (<span class="keywordtype">int</span> lines[<a class="code" href="board_8h.html#a94ed08e31d2f3a38d35f0cb89c762f04">BOARD_HEIGHT</a>], <span class="keywordtype">int</span> position);</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    } <a class="code" href="struct_g_a_m_e_b_o_a_r_d.html#a7bc8dd997881b9557695110c61d596ac">clear</a>;</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160; </div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160; </div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <span class="keyword">struct</span></div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    {</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        void (* <a class="code" href="struct_g_a_m_e_b_o_a_r_d.html#a5e38bdb89055fcfbd6838a75400a42fe">rotate</a>) (<span class="keywordtype">int</span> direction);</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160; </div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        void (* <a class="code" href="struct_g_a_m_e_b_o_a_r_d.html#aaba3c820f8f695d7e79c75ddc4f5ab51">shift</a>) (<span class="keywordtype">int</span> direction);</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160; </div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        void (* <a class="code" href="struct_g_a_m_e_b_o_a_r_d.html#acec6ad5c0cbf6b5187c313b14fed68ef">softDrop</a>) (void);</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    } <a class="code" href="struct_g_a_m_e_b_o_a_r_d.html#af5ed5155aa10bfb9ca29242935680c84">piece</a>;</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160; </div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    void (* <a class="code" href="struct_g_a_m_e_b_o_a_r_d.html#a74222636e9a0ad2bcbcd3bed90fa0e88">update</a>) (void);</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160; </div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;} <a class="code" href="board_8h.html#aea9f99b90c751f90ae6dd2f35d49bb4e">board_t</a>;</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160; </div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;<span class="comment">// === Global variables ===</span></div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160; </div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;<span class="comment">// === ROM Constant variables ===</span></div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160; </div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;<span class="comment">// === Global function definitions ===</span></div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160; </div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;<span class="comment">// Initialize a GAMEBOARD structure</span></div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<a class="code" href="board_8h.html#a11fc500f2e7dfea6e7540ca1f8b2193c">board_init</a> (<span class="keywordtype">void</span> * gameBoardStruct);</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; </div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* BOARD_H */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="astruct_g_a_m_e_b_o_a_r_d_html_ad3d2b58bbc1ae90cd04357f9ecaed7e3"><div class="ttname"><a href="struct_g_a_m_e_b_o_a_r_d.html#ad3d2b58bbc1ae90cd04357f9ecaed7e3">GAMEBOARD::FPG</a></div><div class="ttdeci">int(* FPG)(void)</div><div class="ttdoc">How fast is the board being updated in Frames Per Grid.</div><div class="ttdef"><b>Definition:</b> board.h:123</div></div>
-<div class="ttc" id="astruct_g_a_m_e_b_o_a_r_d_html_adc6ebe5d6fa62f1667e39f03114bad98"><div class="ttname"><a href="struct_g_a_m_e_b_o_a_r_d.html#adc6ebe5d6fa62f1667e39f03114bad98">GAMEBOARD::moving</a></div><div class="ttdeci">void(* moving)(void)</div><div class="ttdoc">Clear pieces that are moving (should be only one)</div><div class="ttdef"><b>Definition:</b> board.h:145</div></div>
-<div class="ttc" id="aboard_8h_html_a08c0d40577c76f7c726d2bf932b42c07a0b9a98181effaaf40d469af30f93f2d1"><div class="ttname"><a href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07a0b9a98181effaaf40d469af30f93f2d1">CELL_CLEAR</a></div><div class="ttdoc">The cell is clear.</div><div class="ttdef"><b>Definition:</b> board.h:81</div></div>
-<div class="ttc" id="astruct_p_i_e_c_e_html_ae01a327ae856e1d1a462cd4bb9b41f6e"><div class="ttname"><a href="struct_p_i_e_c_e.html#ae01a327ae856e1d1a462cd4bb9b41f6e">PIECE::coordinates</a></div><div class="ttdeci">int coordinates[BLOCKS][COORD_NUM]</div><div class="ttdoc">Board coordinates of the piece. To access, use coords enum in board.h</div><div class="ttdef"><b>Definition:</b> piece_actions.h:82</div></div>
-<div class="ttc" id="aboard_8h_html_a08c0d40577c76f7c726d2bf932b42c07a8c1ddfdae169669995efcadf44d5d161"><div class="ttname"><a href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07a8c1ddfdae169669995efcadf44d5d161">CELL_I</a></div><div class="ttdoc">The cell has a fixed piece.</div><div class="ttdef"><b>Definition:</b> board.h:83</div></div>
-<div class="ttc" id="aboard_8h_html_a08c0d40577c76f7c726d2bf932b42c07"><div class="ttname"><a href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07">board_cell</a></div><div class="ttdeci">board_cell</div><div class="ttdoc">Board cell definitions.</div><div class="ttdef"><b>Definition:</b> board.h:76</div></div>
-<div class="ttc" id="astruct_g_a_m_e_b_o_a_r_d_html_abc858af32e3b3a1de5f802fa034d0e46"><div class="ttname"><a href="struct_g_a_m_e_b_o_a_r_d.html#abc858af32e3b3a1de5f802fa034d0e46">GAMEBOARD::board</a></div><div class="ttdeci">int *(* board)(void)</div><div class="ttdoc">Get coordinate (0,0) of the board (top-left)</div><div class="ttdef"><b>Definition:</b> board.h:125</div></div>
+<div class="ttc" id="aboard_8h_html_aeb17937ca06d418b5bc07c95e02c5a54adb45120aafd37a973140edee24708065"><div class="ttname"><a href="board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54adb45120aafd37a973140edee24708065">LEFT</a></div><div class="ttdoc">Shift piece one position to the left.</div><div class="ttdef"><b>Definition:</b> board.h:93</div></div>
+<div class="ttc" id="astruct_g_a_m_e_b_o_a_r_d_html_ad3d2b58bbc1ae90cd04357f9ecaed7e3"><div class="ttname"><a href="struct_g_a_m_e_b_o_a_r_d.html#ad3d2b58bbc1ae90cd04357f9ecaed7e3">GAMEBOARD::FPG</a></div><div class="ttdeci">int(* FPG)(void)</div><div class="ttdoc">How fast is the board being updated in Frames Per Gridcell.</div><div class="ttdef"><b>Definition:</b> board.h:151</div></div>
+<div class="ttc" id="aboard_8h_html_a08c0d40577c76f7c726d2bf932b42c07a0b9a98181effaaf40d469af30f93f2d1"><div class="ttname"><a href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07a0b9a98181effaaf40d469af30f93f2d1">CELL_CLEAR</a></div><div class="ttdoc">The cell is clear.</div><div class="ttdef"><b>Definition:</b> board.h:106</div></div>
+<div class="ttc" id="aboard_8h_html_a08c0d40577c76f7c726d2bf932b42c07a8c1ddfdae169669995efcadf44d5d161"><div class="ttname"><a href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07a8c1ddfdae169669995efcadf44d5d161">CELL_I</a></div><div class="ttdoc">The cell has a fixed piece.</div><div class="ttdef"><b>Definition:</b> board.h:108</div></div>
+<div class="ttc" id="aboard_8h_html_a08c0d40577c76f7c726d2bf932b42c07"><div class="ttname"><a href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07">board_cell</a></div><div class="ttdeci">board_cell</div><div class="ttdoc">Board cell definitions.</div><div class="ttdef"><b>Definition:</b> board.h:101</div></div>
+<div class="ttc" id="astruct_g_a_m_e_b_o_a_r_d_html_a5e38bdb89055fcfbd6838a75400a42fe"><div class="ttname"><a href="struct_g_a_m_e_b_o_a_r_d.html#a5e38bdb89055fcfbd6838a75400a42fe">GAMEBOARD::rotate</a></div><div class="ttdeci">void(* rotate)(int direction)</div><div class="ttdoc">Rotate the piece in the given direction.</div><div class="ttdef"><b>Definition:</b> board.h:206</div></div>
 <div class="ttc" id="astruct_g_a_m_e_b_o_a_r_d_html_af5ed5155aa10bfb9ca29242935680c84"><div class="ttname"><a href="struct_g_a_m_e_b_o_a_r_d.html#af5ed5155aa10bfb9ca29242935680c84">GAMEBOARD::piece</a></div><div class="ttdeci">struct GAMEBOARD::@2 piece</div><div class="ttdoc">Manage the current piece.</div></div>
-<div class="ttc" id="aboard_8h_html_adf44f03c6ae7b279f60019d07e59891ca63ebf6d854e134f261b0f03b54fac644"><div class="ttname"><a href="board_8h.html#adf44f03c6ae7b279f60019d07e59891ca63ebf6d854e134f261b0f03b54fac644">COORD_Y</a></div><div class="ttdoc">Y Coordinate.</div><div class="ttdef"><b>Definition:</b> board.h:100</div></div>
-<div class="ttc" id="astruct_p_i_e_c_e_html"><div class="ttname"><a href="struct_p_i_e_c_e.html">PIECE</a></div><div class="ttdoc">Piece object.</div><div class="ttdef"><b>Definition:</b> piece_actions.h:72</div></div>
-<div class="ttc" id="astruct_g_a_m_e_b_o_a_r_d_html_a2601a17a3e2edc404d8eab8e8b6d40c6"><div class="ttname"><a href="struct_g_a_m_e_b_o_a_r_d.html#a2601a17a3e2edc404d8eab8e8b6d40c6">GAMEBOARD::destroy</a></div><div class="ttdeci">void(* destroy)(void)</div><div class="ttdoc">Destroy current board. All structure information is deleted.</div><div class="ttdef"><b>Definition:</b> board.h:116</div></div>
-<div class="ttc" id="aboard_8h_html_a08c0d40577c76f7c726d2bf932b42c07ad73b275c7238a36a34f9ae1cb1c5804e"><div class="ttname"><a href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07ad73b275c7238a36a34f9ae1cb1c5804e">CELL_MOVING</a></div><div class="ttdoc">The cell has a block that is part of a moving piece.</div><div class="ttdef"><b>Definition:</b> board.h:79</div></div>
-<div class="ttc" id="aboard_8h_html_a11fc500f2e7dfea6e7540ca1f8b2193c"><div class="ttname"><a href="board_8h.html#a11fc500f2e7dfea6e7540ca1f8b2193c">board_init</a></div><div class="ttdeci">void board_init(void *gameBoardStruct)</div><div class="ttdoc">Initialize a GAMEBOARD structure.</div><div class="ttdef"><b>Definition:</b> board.c:106</div></div>
-<div class="ttc" id="astruct_p_i_e_c_e_html_ac765329451135abec74c45e1897abf26"><div class="ttname"><a href="struct_p_i_e_c_e.html#ac765329451135abec74c45e1897abf26">PIECE::type</a></div><div class="ttdeci">int type</div><div class="ttdoc">Type of piece. Set using definitions in board.h file.</div><div class="ttdef"><b>Definition:</b> piece_actions.h:75</div></div>
+<div class="ttc" id="aboard_8h_html_adf44f03c6ae7b279f60019d07e59891ca63ebf6d854e134f261b0f03b54fac644"><div class="ttname"><a href="board_8h.html#adf44f03c6ae7b279f60019d07e59891ca63ebf6d854e134f261b0f03b54fac644">COORD_Y</a></div><div class="ttdoc">Y Coordinate.</div><div class="ttdef"><b>Definition:</b> board.h:125</div></div>
+<div class="ttc" id="astruct_g_a_m_e_b_o_a_r_d_html_a74222636e9a0ad2bcbcd3bed90fa0e88"><div class="ttname"><a href="struct_g_a_m_e_b_o_a_r_d.html#a74222636e9a0ad2bcbcd3bed90fa0e88">GAMEBOARD::update</a></div><div class="ttdeci">void(* update)(void)</div><div class="ttdoc">Update the board.</div><div class="ttdef"><b>Definition:</b> board.h:242</div></div>
+<div class="ttc" id="astruct_p_i_e_c_e_html"><div class="ttname"><a href="struct_p_i_e_c_e.html">PIECE</a></div><div class="ttdoc">Piece object.</div><div class="ttdef"><b>Definition:</b> piece_actions.h:59</div></div>
+<div class="ttc" id="astruct_g_a_m_e_b_o_a_r_d_html_a2601a17a3e2edc404d8eab8e8b6d40c6"><div class="ttname"><a href="struct_g_a_m_e_b_o_a_r_d.html#a2601a17a3e2edc404d8eab8e8b6d40c6">GAMEBOARD::destroy</a></div><div class="ttdeci">void(* destroy)(void)</div><div class="ttdoc">Destroy current board. All structure information is deleted.</div><div class="ttdef"><b>Definition:</b> board.h:144</div></div>
+<div class="ttc" id="aboard_8h_html_a08c0d40577c76f7c726d2bf932b42c07ad73b275c7238a36a34f9ae1cb1c5804e"><div class="ttname"><a href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07ad73b275c7238a36a34f9ae1cb1c5804e">CELL_MOVING</a></div><div class="ttdoc">The cell has a block that is part of a moving piece.</div><div class="ttdef"><b>Definition:</b> board.h:104</div></div>
+<div class="ttc" id="aboard_8h_html_a11fc500f2e7dfea6e7540ca1f8b2193c"><div class="ttname"><a href="board_8h.html#a11fc500f2e7dfea6e7540ca1f8b2193c">board_init</a></div><div class="ttdeci">void board_init(void *gameBoardStruct)</div><div class="ttdoc">Initialize a GAMEBOARD structure.</div><div class="ttdef"><b>Definition:</b> board.c:197</div></div>
+<div class="ttc" id="astruct_g_a_m_e_b_o_a_r_d_html_a14543271d4d3aaed1bf9fb0671811187"><div class="ttname"><a href="struct_g_a_m_e_b_o_a_r_d.html#a14543271d4d3aaed1bf9fb0671811187">GAMEBOARD::filledRows</a></div><div class="ttdeci">int(* filledRows)(int lines[BOARD_HEIGHT])</div><div class="ttdoc">How many rows are complete and which are those.</div><div class="ttdef"><b>Definition:</b> board.h:163</div></div>
+<div class="ttc" id="aboard_8h_html_aeb17937ca06d418b5bc07c95e02c5a54"><div class="ttname"><a href="board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54">shiftingTypes</a></div><div class="ttdeci">shiftingTypes</div><div class="ttdoc">Parameters to shift a piece.</div><div class="ttdef"><b>Definition:</b> board.h:88</div></div>
 <div class="ttc" id="aboard_8h_html_aea9f99b90c751f90ae6dd2f35d49bb4e"><div class="ttname"><a href="board_8h.html#aea9f99b90c751f90ae6dd2f35d49bb4e">board_t</a></div><div class="ttdeci">struct GAMEBOARD board_t</div><div class="ttdoc">Current game's board object.</div></div>
+<div class="ttc" id="astruct_g_a_m_e_b_o_a_r_d_html_aaba3c820f8f695d7e79c75ddc4f5ab51"><div class="ttname"><a href="struct_g_a_m_e_b_o_a_r_d.html#aaba3c820f8f695d7e79c75ddc4f5ab51">GAMEBOARD::shift</a></div><div class="ttdeci">void(* shift)(int direction)</div><div class="ttdoc">Shift the piece in the given direction.</div><div class="ttdef"><b>Definition:</b> board.h:218</div></div>
 <div class="ttc" id="apiece__actions_8h_html"><div class="ttname"><a href="piece__actions_8h.html">piece_actions.h</a></div><div class="ttdoc">Manage a piece actions like rotation, shifting and dropping.</div></div>
-<div class="ttc" id="astruct_g_a_m_e_b_o_a_r_d_html_acf50dd01e4225abc204d844ad2c63fe7"><div class="ttname"><a href="struct_g_a_m_e_b_o_a_r_d.html#acf50dd01e4225abc204d844ad2c63fe7">GAMEBOARD::fixed</a></div><div class="ttdeci">void(* fixed)(int cellType)</div><div class="ttdoc">Set the piece's coordinates as CELL_FIXED.</div><div class="ttdef"><b>Definition:</b> board.h:153</div></div>
-<div class="ttc" id="astruct_g_a_m_e_b_o_a_r_d_html"><div class="ttname"><a href="struct_g_a_m_e_b_o_a_r_d.html">GAMEBOARD</a></div><div class="ttdoc">Current game's board object.</div><div class="ttdef"><b>Definition:</b> board.h:113</div></div>
-<div class="ttc" id="astruct_p_i_e_c_e_html_a6073c7910019d13c52aa7f39a0370533"><div class="ttname"><a href="struct_p_i_e_c_e.html#a6073c7910019d13c52aa7f39a0370533">PIECE::get</a></div><div class="ttdeci">struct PIECE::@6 get</div><div class="ttdoc">Board coordinates of the piece. To access, use coords enum in board.h.</div></div>
+<div class="ttc" id="aboard_8h_html_ad52f776081dcdce29aa7eff07d9513ef"><div class="ttname"><a href="board_8h.html#ad52f776081dcdce29aa7eff07d9513ef">grid_t</a></div><div class="ttdeci">int grid_t</div><div class="ttdoc">Type of every grid in the board.</div><div class="ttdef"><b>Definition:</b> board.h:131</div></div>
+<div class="ttc" id="astruct_g_a_m_e_b_o_a_r_d_html_a165ec10fee1e6a7cc22dca444f1943ba"><div class="ttname"><a href="struct_g_a_m_e_b_o_a_r_d.html#a165ec10fee1e6a7cc22dca444f1943ba">GAMEBOARD::endGame</a></div><div class="ttdeci">int(* endGame)(void)</div><div class="ttdoc">Ask if game has to finish.</div><div class="ttdef"><b>Definition:</b> board.h:171</div></div>
+<div class="ttc" id="aboard_8h_html_a21ddfcf7ee9df16a820d99deb4fda263"><div class="ttname"><a href="board_8h.html#a21ddfcf7ee9df16a820d99deb4fda263">pieces</a></div><div class="ttdeci">pieces</div><div class="ttdoc">Tetrominos definitions and number of tetrominos.</div><div class="ttdef"><b>Definition:</b> board.h:70</div></div>
+<div class="ttc" id="astruct_g_a_m_e_b_o_a_r_d_html"><div class="ttname"><a href="struct_g_a_m_e_b_o_a_r_d.html">GAMEBOARD</a></div><div class="ttdoc">Current game's board object.</div><div class="ttdef"><b>Definition:</b> board.h:141</div></div>
+<div class="ttc" id="aboard_8h_html_a17afa58b2bc574dedcd1cc02e1fdf165"><div class="ttname"><a href="board_8h.html#a17afa58b2bc574dedcd1cc02e1fdf165">block</a></div><div class="ttdeci">block</div><div class="ttdoc">Tetromino's block number and how many blocks a tetromino has.</div><div class="ttdef"><b>Definition:</b> board.h:58</div></div>
+<div class="ttc" id="apiece__actions_8h_html_a44c68c9370e56a84cdb6dbab273aefa3"><div class="ttname"><a href="piece__actions_8h.html#a44c68c9370e56a84cdb6dbab273aefa3">piece_init</a></div><div class="ttdeci">int piece_init(struct PIECE *pstruct, struct GAMEBOARD *boardStr, grid_t *board, int boardHeight, int boardWidth, const int piece)</div><div class="ttdoc">Piece initialization.</div><div class="ttdef"><b>Definition:</b> piece_actions.c:614</div></div>
+<div class="ttc" id="aboard_8h_html_aeb17937ca06d418b5bc07c95e02c5a54ac157bdf0b85a40d2619cbc8bc1ae5fe2"><div class="ttname"><a href="board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54ac157bdf0b85a40d2619cbc8bc1ae5fe2">NONE</a></div><div class="ttdoc">Don't shift piece.</div><div class="ttdef"><b>Definition:</b> board.h:91</div></div>
+<div class="ttc" id="astruct_g_a_m_e_b_o_a_r_d_html_aa57283c6e542b6635c353acce43cecb8"><div class="ttname"><a href="struct_g_a_m_e_b_o_a_r_d.html#aa57283c6e542b6635c353acce43cecb8">GAMEBOARD::line</a></div><div class="ttdeci">void(* line)(int lines[BOARD_HEIGHT], int position)</div><div class="ttdoc">Clear a filled row.</div><div class="ttdef"><b>Definition:</b> board.h:189</div></div>
+<div class="ttc" id="astruct_g_a_m_e_b_o_a_r_d_html_acec6ad5c0cbf6b5187c313b14fed68ef"><div class="ttname"><a href="struct_g_a_m_e_b_o_a_r_d.html#acec6ad5c0cbf6b5187c313b14fed68ef">GAMEBOARD::softDrop</a></div><div class="ttdeci">void(* softDrop)(void)</div><div class="ttdoc">Perform a soft drop of the piece.</div><div class="ttdef"><b>Definition:</b> board.h:229</div></div>
 <div class="ttc" id="astruct_g_a_m_e_b_o_a_r_d_html_a7bc8dd997881b9557695110c61d596ac"><div class="ttname"><a href="struct_g_a_m_e_b_o_a_r_d.html#a7bc8dd997881b9557695110c61d596ac">GAMEBOARD::clear</a></div><div class="ttdeci">struct GAMEBOARD::@1 clear</div><div class="ttdoc">Clear a specific part of the board.</div></div>
 <div class="ttc" id="aboard_8h_html"><div class="ttname"><a href="board_8h.html">board.h</a></div><div class="ttdoc">;</div></div>
 <div class="ttc" id="astruct_g_a_m_e_b_o_a_r_d_html_abd1ca5175fd44ca3a77fb51f20f14e77"><div class="ttname"><a href="struct_g_a_m_e_b_o_a_r_d.html#abd1ca5175fd44ca3a77fb51f20f14e77">GAMEBOARD::ask</a></div><div class="ttdeci">struct GAMEBOARD::@0 ask</div><div class="ttdoc">Get board information.</div></div>
-<div class="ttc" id="aboard_8h_html_adf44f03c6ae7b279f60019d07e59891ca90b0030b76559a27bf6099278d48d001"><div class="ttname"><a href="board_8h.html#adf44f03c6ae7b279f60019d07e59891ca90b0030b76559a27bf6099278d48d001">COORD_X</a></div><div class="ttdoc">X Coordinate.</div><div class="ttdef"><b>Definition:</b> board.h:98</div></div>
-<div class="ttc" id="arandom__generator_8h_html_afd4ea4b87811315d07e3b4d3666038a1"><div class="ttname"><a href="random__generator_8h.html#afd4ea4b87811315d07e3b4d3666038a1">random_generator</a></div><div class="ttdeci">void random_generator(int *rnd_bag, int size)</div><div class="ttdoc">Generates a TETROMINOS size bag with a pseudo-random list of pieces.</div><div class="ttdef"><b>Definition:</b> random_generator.c:102</div></div>
-<div class="ttc" id="aboard_8h_html_adf44f03c6ae7b279f60019d07e59891ca5a6527e7417dc323385004a43565feec"><div class="ttname"><a href="board_8h.html#adf44f03c6ae7b279f60019d07e59891ca5a6527e7417dc323385004a43565feec">COORD_NUM</a></div><div class="ttdoc">Number of coordinates.</div><div class="ttdef"><b>Definition:</b> board.h:102</div></div>
-<div class="ttc" id="astruct_g_a_m_e_b_o_a_r_d_html_a9dba6b702359dac08fd7dec25917d261"><div class="ttname"><a href="struct_g_a_m_e_b_o_a_r_d.html#a9dba6b702359dac08fd7dec25917d261">GAMEBOARD::line</a></div><div class="ttdeci">void(* line)(void)</div><div class="ttdoc">Clear all filled lines. Intended to be called after an animation.</div><div class="ttdef"><b>Definition:</b> board.h:133</div></div>
-<div class="ttc" id="aboard_8h_html_adf44f03c6ae7b279f60019d07e59891c"><div class="ttname"><a href="board_8h.html#adf44f03c6ae7b279f60019d07e59891c">coords</a></div><div class="ttdeci">coords</div><div class="ttdoc">Coordinates definitions.</div><div class="ttdef"><b>Definition:</b> board.h:95</div></div>
-<div class="ttc" id="arandom__generator_8h_html_acb1c945f587d4b5e5c4a496fe8796e7e"><div class="ttname"><a href="random__generator_8h.html#acb1c945f587d4b5e5c4a496fe8796e7e">init_random_generator</a></div><div class="ttdeci">int init_random_generator(void)</div><div class="ttdoc">Initialize random generator.</div><div class="ttdef"><b>Definition:</b> random_generator.c:79</div></div>
+<div class="ttc" id="aboard_8h_html_adf44f03c6ae7b279f60019d07e59891ca90b0030b76559a27bf6099278d48d001"><div class="ttname"><a href="board_8h.html#adf44f03c6ae7b279f60019d07e59891ca90b0030b76559a27bf6099278d48d001">COORD_X</a></div><div class="ttdoc">X Coordinate.</div><div class="ttdef"><b>Definition:</b> board.h:123</div></div>
+<div class="ttc" id="arandom__generator_8h_html_afd4ea4b87811315d07e3b4d3666038a1"><div class="ttname"><a href="random__generator_8h.html#afd4ea4b87811315d07e3b4d3666038a1">random_generator</a></div><div class="ttdeci">void random_generator(int *rnd_bag, int size)</div><div class="ttdoc">Generates a TETROMINOS size bag with a pseudo-random list of pieces.</div><div class="ttdef"><b>Definition:</b> random_generator.c:105</div></div>
+<div class="ttc" id="aboard_8h_html_aeb17937ca06d418b5bc07c95e02c5a54aec8379af7490bb9eaaf579cf17876f38"><div class="ttname"><a href="board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54aec8379af7490bb9eaaf579cf17876f38">RIGHT</a></div><div class="ttdoc">Shift piece one position to the right.</div><div class="ttdef"><b>Definition:</b> board.h:95</div></div>
+<div class="ttc" id="aboard_8h_html_adf44f03c6ae7b279f60019d07e59891ca5a6527e7417dc323385004a43565feec"><div class="ttname"><a href="board_8h.html#adf44f03c6ae7b279f60019d07e59891ca5a6527e7417dc323385004a43565feec">COORD_NUM</a></div><div class="ttdoc">Number of coordinates.</div><div class="ttdef"><b>Definition:</b> board.h:127</div></div>
+<div class="ttc" id="aboard_8h_html_a94ed08e31d2f3a38d35f0cb89c762f04"><div class="ttname"><a href="board_8h.html#a94ed08e31d2f3a38d35f0cb89c762f04">BOARD_HEIGHT</a></div><div class="ttdeci">#define BOARD_HEIGHT</div><div class="ttdoc">Board Height.</div><div class="ttdef"><b>Definition:</b> board.h:41</div></div>
+<div class="ttc" id="aboard_8h_html_adf44f03c6ae7b279f60019d07e59891c"><div class="ttname"><a href="board_8h.html#adf44f03c6ae7b279f60019d07e59891c">coords</a></div><div class="ttdeci">coords</div><div class="ttdoc">Coordinates definitions.</div><div class="ttdef"><b>Definition:</b> board.h:120</div></div>
+<div class="ttc" id="arandom__generator_8h_html_acb1c945f587d4b5e5c4a496fe8796e7e"><div class="ttname"><a href="random__generator_8h.html#acb1c945f587d4b5e5c4a496fe8796e7e">init_random_generator</a></div><div class="ttdeci">int init_random_generator(void)</div><div class="ttdoc">Initialize random generator.</div><div class="ttdef"><b>Definition:</b> random_generator.c:82</div></div>
 <div class="ttc" id="arandom__generator_8h_html"><div class="ttname"><a href="random__generator_8h.html">random_generator.h</a></div><div class="ttdoc">Functions used to generate a bag of random pieces.</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

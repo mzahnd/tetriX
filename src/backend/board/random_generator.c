@@ -42,7 +42,7 @@
 #include <stdlib.h>
 #include <time.h>       // for srand()
 
-// For NUM_PIECES and PIECE_X definitions
+// For pieces, board_cell and coords enum
 #include "board.h"
 
 // This file

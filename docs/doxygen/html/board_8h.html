@@ -100,18 +100,23 @@ Macros</h2></td></tr>
 <tr class="memdesc:a1cd139e8d1f7ae83f54c8d477313d8ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Board Width. <br /></td></tr>
 <tr class="separator:a1cd139e8d1f7ae83f54c8d477313d8ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac815b03ec48abf99301f44140ff0b0a9"><td class="memItemLeft" align="right" valign="top"><a id="ac815b03ec48abf99301f44140ff0b0a9"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ORIENTATION</b>&#160;&#160;&#160;4</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#ac815b03ec48abf99301f44140ff0b0a9">ORIENTATION</a>&#160;&#160;&#160;4</td></tr>
+<tr class="memdesc:ac815b03ec48abf99301f44140ff0b0a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many different orientations a piece can have. <br /></td></tr>
 <tr class="separator:ac815b03ec48abf99301f44140ff0b0a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:ad52f776081dcdce29aa7eff07d9513ef"><td class="memItemLeft" align="right" valign="top"><a id="ad52f776081dcdce29aa7eff07d9513ef"></a>
+typedef int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#ad52f776081dcdce29aa7eff07d9513ef">grid_t</a></td></tr>
+<tr class="memdesc:ad52f776081dcdce29aa7eff07d9513ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of every grid in the board. <br /></td></tr>
+<tr class="separator:ad52f776081dcdce29aa7eff07d9513ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea9f99b90c751f90ae6dd2f35d49bb4e"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="struct_g_a_m_e_b_o_a_r_d.html">GAMEBOARD</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#aea9f99b90c751f90ae6dd2f35d49bb4e">board_t</a></td></tr>
 <tr class="memdesc:aea9f99b90c751f90ae6dd2f35d49bb4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current game's board object.  <a href="board_8h.html#aea9f99b90c751f90ae6dd2f35d49bb4e">More...</a><br /></td></tr>
 <tr class="separator:aea9f99b90c751f90ae6dd2f35d49bb4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a17afa58b2bc574dedcd1cc02e1fdf165"><td class="memItemLeft" align="right" valign="top"><a id="a17afa58b2bc574dedcd1cc02e1fdf165"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>block</b> { <br />
+<tr class="memitem:a17afa58b2bc574dedcd1cc02e1fdf165"><td class="memItemLeft" align="right" valign="top"><a id="a17afa58b2bc574dedcd1cc02e1fdf165"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#a17afa58b2bc574dedcd1cc02e1fdf165">block</a> { <br />
 &#160;&#160;<b>b1</b> = 0, 
 <b>b2</b>, 
 <b>b3</b>, 
@@ -120,8 +125,9 @@ Enumerations</h2></td></tr>
 &#160;&#160;<b>BLOCKS</b>
 <br />
  }</td></tr>
+<tr class="memdesc:a17afa58b2bc574dedcd1cc02e1fdf165"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tetromino's block number and how many blocks a tetromino has. <br /></td></tr>
 <tr class="separator:a17afa58b2bc574dedcd1cc02e1fdf165"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21ddfcf7ee9df16a820d99deb4fda263"><td class="memItemLeft" align="right" valign="top"><a id="a21ddfcf7ee9df16a820d99deb4fda263"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>pieces</b> { <br />
+<tr class="memitem:a21ddfcf7ee9df16a820d99deb4fda263"><td class="memItemLeft" align="right" valign="top"><a id="a21ddfcf7ee9df16a820d99deb4fda263"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#a21ddfcf7ee9df16a820d99deb4fda263">pieces</a> { <br />
 &#160;&#160;<b>TETROMINO_NONE</b> = -1, 
 <b>TETROMINO_I</b> = 0, 
 <b>TETROMINO_J</b>, 
@@ -135,7 +141,14 @@ Enumerations</h2></td></tr>
 &#160;&#160;<b>TETROMINOS</b>
 <br />
  }</td></tr>
+<tr class="memdesc:a21ddfcf7ee9df16a820d99deb4fda263"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tetrominos definitions and number of tetrominos. <br /></td></tr>
 <tr class="separator:a21ddfcf7ee9df16a820d99deb4fda263"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb17937ca06d418b5bc07c95e02c5a54"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54">shiftingTypes</a> { <a class="el" href="board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54ac157bdf0b85a40d2619cbc8bc1ae5fe2">NONE</a>, 
+<a class="el" href="board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54adb45120aafd37a973140edee24708065">LEFT</a>, 
+<a class="el" href="board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54aec8379af7490bb9eaaf579cf17876f38">RIGHT</a>
+ }</td></tr>
+<tr class="memdesc:aeb17937ca06d418b5bc07c95e02c5a54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parameters to shift a piece.  <a href="board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54">More...</a><br /></td></tr>
+<tr class="separator:aeb17937ca06d418b5bc07c95e02c5a54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a08c0d40577c76f7c726d2bf932b42c07"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07">board_cell</a> { <br />
 &#160;&#160;<a class="el" href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07ad73b275c7238a36a34f9ae1cb1c5804e">CELL_MOVING</a> = -1, 
 <a class="el" href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07a0b9a98181effaaf40d469af30f93f2d1">CELL_CLEAR</a> = 0, 
@@ -241,6 +254,31 @@ Martín E. Zahnd <a href="#" onclick="location.href='mai'+'lto:'+'mza'+'hn'+'d@i
 
 </div>
 </div>
+<a id="aeb17937ca06d418b5bc07c95e02c5a54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb17937ca06d418b5bc07c95e02c5a54">&#9670;&nbsp;</a></span>shiftingTypes</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54">shiftingTypes</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Parameters to shift a piece. </p>
+<p>One of this is passed to the shifting variable in <a class="el" href="struct_p_i_e_c_e.html" title="Piece object.">PIECE</a> structure. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aeb17937ca06d418b5bc07c95e02c5a54ac157bdf0b85a40d2619cbc8bc1ae5fe2"></a>NONE&#160;</td><td class="fielddoc"><p>Don't shift piece. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aeb17937ca06d418b5bc07c95e02c5a54adb45120aafd37a973140edee24708065"></a>LEFT&#160;</td><td class="fielddoc"><p>Shift piece one position to the left. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aeb17937ca06d418b5bc07c95e02c5a54aec8379af7490bb9eaaf579cf17876f38"></a>RIGHT&#160;</td><td class="fielddoc"><p>Shift piece one position to the right. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a11fc500f2e7dfea6e7540ca1f8b2193c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a11fc500f2e7dfea6e7540ca1f8b2193c">&#9670;&nbsp;</a></span>board_init()</h2>
@@ -261,7 +299,7 @@ Martín E. Zahnd <a href="#" onclick="location.href='mai'+'lto:'+'mza'+'hn'+'d@i
 <p>Initialize a <a class="el" href="struct_g_a_m_e_b_o_a_r_d.html" title="Current game&#39;s board object.">GAMEBOARD</a> structure. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">gameBoardStruct</td><td></td></tr>
+    <tr><td class="paramname">gameBoardStruct</td><td><a class="el" href="struct_g_a_m_e_b_o_a_r_d.html" title="Current game&#39;s board object.">GAMEBOARD</a> structure to initialize </td></tr>
   </table>
   </dd>
 </dl>

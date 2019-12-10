@@ -40,27 +40,12 @@
 #    define PIECE_ACTIONS_H
 
 // === Libraries and header files ===
-// For BLOCKS, COORD_NUM
-#include "../board.h"
+// For BLOCKS, COORD_NUM and GAMEBOARD structure
+#    include "../board.h"
 
 // === Constants and Macro definitions ===
 
 // === Enumerations, structures and typedefs ===
-
-/**
- * @brief Parameters to shift a piece.
- * 
- * One of this is passed to the shifting variable in PIECE structure.
- */
-enum shiftingTypes
-{
-    /// Don't shift piece
-    NONE,
-    /// Shift piece one position to the left
-    LEFT,
-    /// Shift piece one position to the right
-    RIGHT
-};
 
 /**
  * @brief Piece object.
@@ -81,8 +66,9 @@ typedef struct PIECE
 
     struct
     {
-        /// Board coordinates of the piece. To access, use coords enum in board.h    
-        int coordinates[4][2];
+        /// Board coordinates of the piece. To access, use coords enum in 
+        /// board.h    
+        int coordinates[BLOCKS][COORD_NUM];
 
     } get;
 
@@ -112,7 +98,7 @@ typedef struct PIECE
      * @return Nothing
      */
     void (* softDrop) (void);
-    
+
     /**
      * @brief Update the board with this piece's information
      * 
@@ -120,21 +106,29 @@ typedef struct PIECE
      * 
      * @return Nothing
      */
-    void (* update) (int * cellType);
-    
+    int (* update) (void);
+
+    /**
+     * @brief Destroy the current piece. All structure information will be 
+     * ereased
+     * 
+     * @param None
+     * 
+     * @return Nothing
+     */
     void (* destroy) (void);
 } piece_t;
 
 // === Global variables ===
-extern struct GAMEBOARD * boardStr;
 
 // === ROM Constant variables ===
 
 // === Global function definitions ===
+
 // Piece initialization
 int
 piece_init (struct PIECE * pstruct, struct GAMEBOARD * boardStr,
-            int * board, int boardHeight, int boardWidth,
+            grid_t * board, int boardHeight, int boardWidth,
             const int piece);
 
 #endif /* PIECE_ACTIONS_H */

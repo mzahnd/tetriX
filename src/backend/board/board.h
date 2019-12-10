@@ -35,8 +35,6 @@
 #    define BOARD_H
 
 // === Libraries and header files ===
-// For LEFT and RIGHT directions
-#    include "pieces/piece_actions.h"
 
 // === Constants and Macro definitions ===
 /// @def BOARD_HEIGHT
@@ -47,10 +45,17 @@
 /// @brief Board Width
 #    define BOARD_WIDTH     10
 
+/**
+ * @def ORIENTATION
+ * @brief How many different orientations a piece can have
+ */
 #    define ORIENTATION     4
 
 // === Enumerations, structures and typedefs ===
 
+/**
+ * @brief Tetromino's block number and how many blocks a tetromino has
+ */
 enum block
 {
     b1 = 0,
@@ -60,6 +65,9 @@ enum block
     BLOCKS
 };
 
+/**
+ * @brief Tetrominos definitions and number of tetrominos
+ */
 enum pieces
 {
     TETROMINO_NONE = -1,
@@ -71,6 +79,21 @@ enum pieces
     TETROMINO_T,
     TETROMINO_Z,
     TETROMINOS
+};
+
+/**
+ * @brief Parameters to shift a piece.
+ * 
+ * One of this is passed to the shifting variable in PIECE structure.
+ */
+enum shiftingTypes
+{
+    /// Don't shift piece
+    NONE,
+    /// Shift piece one position to the left
+    LEFT,
+    /// Shift piece one position to the right
+    RIGHT
 };
 
 /**
@@ -89,7 +112,7 @@ enum board_cell
     CELL_O,
     CELL_S,
     CELL_T,
-    CELL_Z,
+    CELL_Z
 };
 
 /**
@@ -104,6 +127,9 @@ enum coords
     /// Number of coordinates
     COORD_NUM
 };
+
+/// Type of every grid in the board.
+typedef int grid_t;
 
 /**
  * @brief Current game's board object.
@@ -124,11 +150,25 @@ typedef struct GAMEBOARD
     {
         /// How fast is the board being updated in Frames Per Gridcell
         int (* FPG) (void);
+
         /// Get coordinate (0,0) of the board (top-left)
-        int * (* board) (void);
+        grid_t * (* board) (void);
 
-        int (* filledLines) (int arr[BOARD_HEIGHT]);
+        /**
+         * @brief How many rows are complete and which are those.
+         * 
+         * @param lines Array with the number of the rows that are filled.
+         * 
+         * @return Number of filled rows
+         */
+        int (* filledRows) (int lines[BOARD_HEIGHT]);
 
+        /** 
+         * @brief Ask if game has to finish
+         * 
+         * @return True: 1
+         * @return False: 0
+         */
         int (* endGame) (void);
     } ask;
 
@@ -136,40 +176,70 @@ typedef struct GAMEBOARD
 
     struct
     {
-        /// Clear all filled lines. Intended to be called after an animation
-        void (* line) (int line);
+        /**
+         * @brief Clear a filled row.
+         * 
+         * Clears the given row and drops the board "as it is" once. This 
+         * function it's intended to be called after an animation.
+         * 
+         * @param lines Array with all the filled rows.
+         * @param position Position of the row to be cleared in @p lines array.
+         * 
+         * @return Nothing
+         */
+        void (* line) (int lines[BOARD_HEIGHT], int position);
     } clear;
 
     /// Manage the current piece
 
     struct
     {
+        /**
+         * @brief Rotate the piece in the given direction
+         * 
+         * Automatically performs a board update but does not fixes the piece
+         * if the ratation cannot be performed.
+         * 
+         * @param direction LEFT or RIGHT, according to shiftingTypes enum
+         * 
+         * @return Nothing
+         */
+        void (* rotate) (int direction);
 
-        /*/// Clear pieces that are...
+        /**
+         * @brief Shift the piece in the given direction
+         *
+         * Automatically performs a board update but does not fixes the piece
+         * if the shifting cannot be performed.
+         * 
+         * @param direction LEFT or RIGHT, according to shiftingTypes enum
+         * 
+         * @return Nothing
+         */
+        void (* shift) (int direction);
 
-        struct
-        {
-            /// Clear pieces that are moving (should be only one)
-            void (* moving) (void);
-        } clear;
-
-        struct
-        {
-            /// Set the piece's coordinates as CELL_MOVING
-            void (* moving) (void);
-            /// Set the piece's coordinates as CELL_FIXED
-            void (* fixed) (int cellType);
-        } set;*/
-
-        struct
-        {
-            void (* rotate) (int direction);
-            void (* shift) (int direction);
-            void (* softDrop) (void);
-        } action;
-
+        /**
+         * @brief Perform a soft drop of the piece
+         * 
+         * Automatically performs a board update.
+         * 
+         * @param None
+         * 
+         * @return Nothing
+         */
+        void (* softDrop) (void);
     } piece;
 
+    /**
+     * @brief Update the board
+     * 
+     * Updates the piece position in the board, dropping it once or fixing it
+     * if necessary.
+     * 
+     * @param None
+     * 
+     * @return Nothing
+     */
     void (* update) (void);
 
 } board_t;

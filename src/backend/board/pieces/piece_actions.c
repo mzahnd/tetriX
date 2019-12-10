@@ -39,10 +39,6 @@
 // === Libraries and header files ===
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-
-// For pieces, board_cell and coords enum; for GAMEBOARD structure
-//#include "../board.h"
 
 // This file
 #include "piece_actions.h"
@@ -54,8 +50,8 @@
  * @def CELL(r,c)
  * @brief Returns the information in the row (r) and column (c) of the board
  */
-#define CELL(r,c) ( *( (currentPiece.board.r0c0) + \
-                    ( ((r) * currentPiece.board.width) + (c) ) ) )
+#define CELL(c,r) ( * (currentPiece.board.r0c0 + \
+                    (((r) * currentPiece.board.width) + (c)) ) )
 
 // === Enumerations, structures and typedefs ===
 
@@ -72,11 +68,8 @@ enum plusminus
  * @brief Private variables of a piece object.
  * 
  * This structure let's the piece's related functions modify it. Contains the
- * needed parameters to shift it, drop it and rotate it, as well as the board
+ * needed parameters to shift, drop and rotate it, as well as the board
  * where the given piece exists.
- * 
- * @note When setting a value to @verbatim true @endverbatim or 
- * @verbatim false @endverbatim make sure to be using stdbool.h
  * 
  * @note Public PIECE structure is located in piece_actions.h
  */
@@ -105,9 +98,6 @@ typedef struct PRIVATE_PIECE
     /// Board coordinates of the piece. Use coords enum in board.h
     int move[COORD_NUM];
 
-    /// LEFT or RIGHT: perform shifting ; NONE: don't perform any shifting
-    int shifting;
-
     /// Rotation status (true or false) and which is the piece's position
     int orientation;
 
@@ -117,6 +107,7 @@ typedef struct PRIVATE_PIECE
 
 // === Function prototypes for private functions with file level scope ===
 
+// Destroy the current piece.
 static void
 destroy (void);
 
@@ -129,8 +120,8 @@ static void
 moveOneCell (int coord, int pm);
 
 // Updates the piece in the board (called from public PIECE)
-static void
-normalDrop (int * cellType);
+static int
+normalDrop (void);
 
 // Rotate the piece in the desired direction
 static void
@@ -144,7 +135,7 @@ shift (int direction);
 static void
 softDrop (void);
 
-// @brief Update piece orientation
+// Update piece orientation
 static void
 updateOrientation (int pm);
 
@@ -623,7 +614,7 @@ static piece_private_t currentPiece;
  */
 int
 piece_init (struct PIECE * pstruct, struct GAMEBOARD * boardStr,
-            int * board, int boardHeight, int boardWidth,
+            grid_t * board, int boardHeight, int boardWidth,
             const int piece)
 {
     int exitStatus = -1;
@@ -690,28 +681,54 @@ piece_init (struct PIECE * pstruct, struct GAMEBOARD * boardStr,
 /// @privatesection
 // === Local function definitions ===
 
+/**
+ * @brief Destroy the current piece. 
+ * 
+ * All structure information is ereased.
+ * 
+ * @param None
+ * 
+ * @return Nothing
+ */
 static void
 destroy (void)
 {
+    int i, j;
+
+    // Check if it's accidentaly called
     if ( currentPiece.public == NULL )
     {
         fputs("Bad destroy call. Noting to destroy, exiting...", stderr);
         return;
     }
 
+    // Clear public variables and set pointers to NULL
     currentPiece.public -> type = TETROMINO_NONE;
     currentPiece.public -> rotate = NULL;
     currentPiece.public -> shift = NULL;
     currentPiece.public -> softDrop = NULL;
     currentPiece.public -> update = NULL;
 
-    currentPiece.type = TETROMINO_NONE;
+    // Clear public piece's coordinates
+    for ( i = b1; i < BLOCKS; i++ )
+    {
+        for ( j = COORD_X; j < COORD_NUM; j++ )
+        {
+            currentPiece.public -> get.coordinates[i][j] = 0;
+        }
+    }
 
+    // Clear board information
     currentPiece.board.r0c0 = NULL;
     currentPiece.board.height = 0;
     currentPiece.board.width = 0;
-
     currentPiece.board.pBoard = NULL;
+
+    // Clear type and position information
+    currentPiece.type = TETROMINO_NONE;
+    currentPiece.move[COORD_X] = 0;
+    currentPiece.move[COORD_Y] = 0;
+    currentPiece.orientation = 0;
 
     currentPiece.public -> destroy = NULL;
     currentPiece.public = NULL;
@@ -720,14 +737,13 @@ destroy (void)
 /**
  * @details Initialize piece's type and coordinates in the PIECE structure
  * 
- * Clear structure variables, setting rotation and dropping to false and
- * shifting to NONE, and initialize piece's coordinates in the structure.
- * If the board is updated right after this function, the piece won't be 
- * visible as it's initialized in the top two cells so two droppings must occur
- * before the user can see it.
+ * Clear piece orientation variable and initialize it in the middle of the 
+ * board. Take into account that some pieces wont be visible to the user if the
+ * function to update the board is called right after this function as they
+ * appear a row or two over the first visible row.
  * 
- * @param bag Pointer to bag array with the piece to initialize.
- * @param position Position of the piece in the bag.
+ * @param piece Piece to initialize. Use tetrominos enum in board.h
+ * 
  * @return Success: 0
  * @return Fail: Non 0
  */
@@ -738,9 +754,6 @@ init (const int piece)
 
     // No rotation
     currentPiece.orientation = 0;
-
-    // No shifting
-    currentPiece.shifting = NONE;
 
     // Coordinates
     switch ( piece )
@@ -942,10 +955,10 @@ moveOneCell (int coord, int pm)
  * 
  * @return Nothing
  */
-static void
-normalDrop (int * cellType)
+static int
+normalDrop (void)
 {
-    *cellType = CELL_MOVING;
+    int cellType = CELL_MOVING;
 
     // Drop the piece one position
     moveOneCell(COORD_Y, PLUS);
@@ -967,35 +980,35 @@ normalDrop (int * cellType)
         switch ( currentPiece.type )
         {
             case TETROMINO_I:
-                *cellType = CELL_I;
+                cellType = CELL_I;
                 break;
 
             case TETROMINO_J:
-                *cellType = CELL_J;
+                cellType = CELL_J;
                 break;
 
             case TETROMINO_L:
-                *cellType = CELL_L;
+                cellType = CELL_L;
                 break;
 
             case TETROMINO_O:
-                *cellType = CELL_O;
+                cellType = CELL_O;
                 break;
 
             case TETROMINO_S:
-                *cellType = CELL_S;
+                cellType = CELL_S;
                 break;
 
             case TETROMINO_T:
-                *cellType = CELL_T;
+                cellType = CELL_T;
                 break;
 
             case TETROMINO_Z:
-                *cellType = CELL_Z;
+                cellType = CELL_Z;
                 break;
 
             default:
-                *cellType = CELL_MOVING;
+                cellType = CELL_MOVING;
                 break;
         }
 
@@ -1010,6 +1023,8 @@ normalDrop (int * cellType)
         // No other piece is blocking this one, so update the public coords
         updatePublicCoordinates();
     }
+
+    return cellType;
 }
 
 /**
@@ -1072,31 +1087,20 @@ shift (int direction)
     switch ( direction )
     {
         case LEFT:
-#ifdef DEBUG
-            printf("Coords pre: %d, %d,\n",
-                   currentPiece.move[COORD_X], currentPiece.move[COORD_Y]);
-#endif
-
             moveOneCell(COORD_X, MINUS);
 
-#ifdef DEBUG
-            printf("Coords post: %d, %d,\n",
-                   currentPiece.move[COORD_X], currentPiece.move[COORD_Y]);
-#endif
-
+            // If the piece can't be left in the new position, reset it
             if ( verifyFixedPieces() )
             {
                 moveOneCell(COORD_X, PLUS);
-#ifdef DEBUG
-                printf("Coords reverted: %d, %d,\n",
-                       currentPiece.move[COORD_X], currentPiece.move[COORD_Y]);
-#endif
             }
 
             break;
 
         case RIGHT:
             moveOneCell(COORD_X, PLUS);
+
+            // If the piece can't be left in the new position, reset it
             if ( verifyFixedPieces() )
             {
                 moveOneCell(COORD_X, MINUS);
@@ -1264,7 +1268,8 @@ verifyFixedPieces (void)
         {
             // If not, does the desired board cell have a fixed block?
             // count++ if no fixed block is found
-            (CELL(x, y) <= CELL_CLEAR) ? (count++) : (count = -1);
+            (CELL(x, y) > CELL_CLEAR) ? (count = -1) : (count++);
+
         }
         else
         {

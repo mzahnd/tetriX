@@ -70,7 +70,6 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">piece_actions.h File Reference</div>  </div>
@@ -79,7 +78,8 @@ $(function() {
 
 <p>Manage a piece actions like rotation, shifting and dropping.  
 <a href="#details">More...</a></p>
-
+<div class="textblock"><code>#include &quot;<a class="el" href="board_8h_source.html">../board.h</a>&quot;</code><br />
+</div>
 <p><a href="piece__actions_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
@@ -94,25 +94,16 @@ Typedefs</h2></td></tr>
 <tr class="memdesc:a36ec2954d787981651c5bedf0d3261ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Piece object.  <a href="piece__actions_8h.html#a36ec2954d787981651c5bedf0d3261ae">More...</a><br /></td></tr>
 <tr class="separator:a36ec2954d787981651c5bedf0d3261ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:aeb17937ca06d418b5bc07c95e02c5a54"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="piece__actions_8h.html#aeb17937ca06d418b5bc07c95e02c5a54">shiftingTypes</a> { <a class="el" href="piece__actions_8h.html#aeb17937ca06d418b5bc07c95e02c5a54ac157bdf0b85a40d2619cbc8bc1ae5fe2">NONE</a>, 
-<a class="el" href="piece__actions_8h.html#aeb17937ca06d418b5bc07c95e02c5a54adb45120aafd37a973140edee24708065">LEFT</a>, 
-<a class="el" href="piece__actions_8h.html#aeb17937ca06d418b5bc07c95e02c5a54aec8379af7490bb9eaaf579cf17876f38">RIGHT</a>
- }</td></tr>
-<tr class="memdesc:aeb17937ca06d418b5bc07c95e02c5a54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parameters to shift a piece.  <a href="piece__actions_8h.html#aeb17937ca06d418b5bc07c95e02c5a54">More...</a><br /></td></tr>
-<tr class="separator:aeb17937ca06d418b5bc07c95e02c5a54"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ade0668f86af8e09355b2430542096d0e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="piece__actions_8h.html#ade0668f86af8e09355b2430542096d0e">piece_init</a> (struct <a class="el" href="struct_p_i_e_c_e.html">PIECE</a> *pstruct, struct <a class="el" href="struct_g_a_m_e_b_o_a_r_d.html">GAMEBOARD</a> *boardStr, int *board, int boardHeight, int boardWidth, const char piece)</td></tr>
-<tr class="memdesc:ade0668f86af8e09355b2430542096d0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Piece initialization.  <a href="piece__actions_8h.html#ade0668f86af8e09355b2430542096d0e">More...</a><br /></td></tr>
-<tr class="separator:ade0668f86af8e09355b2430542096d0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44c68c9370e56a84cdb6dbab273aefa3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="piece__actions_8h.html#a44c68c9370e56a84cdb6dbab273aefa3">piece_init</a> (struct <a class="el" href="struct_p_i_e_c_e.html">PIECE</a> *pstruct, struct <a class="el" href="struct_g_a_m_e_b_o_a_r_d.html">GAMEBOARD</a> *boardStr, <a class="el" href="board_8h.html#ad52f776081dcdce29aa7eff07d9513ef">grid_t</a> *board, int boardHeight, int boardWidth, const int piece)</td></tr>
+<tr class="memdesc:a44c68c9370e56a84cdb6dbab273aefa3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Piece initialization.  <a href="piece__actions_8h.html#a44c68c9370e56a84cdb6dbab273aefa3">More...</a><br /></td></tr>
+<tr class="separator:a44c68c9370e56a84cdb6dbab273aefa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Manage a piece actions like rotation, shifting and dropping. </p>
 <p>Using <a class="el" href="struct_p_i_e_c_e.html" title="Piece object.">PIECE</a> structure a given piece can be rotated, shifted and droped using soft drop. Also it's coordinates can be retrived for "real time" representation of it in the board.</p>
-<dl class="section note"><dt>Note</dt><dd><a class="el" href="piece__actions_8h.html#ade0668f86af8e09355b2430542096d0e" title="Piece initialization.">piece_init()</a> <b>must</b> be called before accessing the structure. If not done so, the structure behaviour is undefined.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd><a class="el" href="piece__actions_8h.html#a44c68c9370e56a84cdb6dbab273aefa3" title="Piece initialization.">piece_init()</a> <b>must</b> be called before accessing the structure. If not done so, the structure behaviour is undefined.</dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Gino Minnucci <a href="#" onclick="location.href='mai'+'lto:'+'gmi'+'nn'+'ucc'+'i@'+'itb'+'a.'+'edu'+'.a'+'r'; return false;">gminn<span style="display: none;">.nosp@m.</span>ucci<span style="display: none;">.nosp@m.</span>@itba<span style="display: none;">.nosp@m.</span>.edu<span style="display: none;">.nosp@m.</span>.ar</a> </dd>
 <dd>
 Martín E. Zahnd <a href="#" onclick="location.href='mai'+'lto:'+'mza'+'hn'+'d@i'+'tb'+'a.e'+'du'+'.ar'; return false;">mzahn<span style="display: none;">.nosp@m.</span>d@it<span style="display: none;">.nosp@m.</span>ba.ed<span style="display: none;">.nosp@m.</span>u.ar</a></dd></dl>
@@ -133,39 +124,13 @@ Martín E. Zahnd <a href="#" onclick="location.href='mai'+'lto:'+'mza'+'hn'+'d@i
 
 <p>Piece object. </p>
 <p>Contains a piece's type, actions it has to perform, and it's current position in the board.</p>
-<dl class="section warning"><dt>Warning</dt><dd>Function <a class="el" href="piece__actions_8h.html#ade0668f86af8e09355b2430542096d0e" title="Piece initialization.">piece_init()</a> must be called before using this object </dd></dl>
-
-</div>
-</div>
-<h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="aeb17937ca06d418b5bc07c95e02c5a54"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeb17937ca06d418b5bc07c95e02c5a54">&#9670;&nbsp;</a></span>shiftingTypes</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="piece__actions_8h.html#aeb17937ca06d418b5bc07c95e02c5a54">shiftingTypes</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Parameters to shift a piece. </p>
-<p>One of this is passed to the shifting variable in <a class="el" href="struct_p_i_e_c_e.html" title="Piece object.">PIECE</a> structure. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aeb17937ca06d418b5bc07c95e02c5a54ac157bdf0b85a40d2619cbc8bc1ae5fe2"></a>NONE&#160;</td><td class="fielddoc"><p>Don't shift piece. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="aeb17937ca06d418b5bc07c95e02c5a54adb45120aafd37a973140edee24708065"></a>LEFT&#160;</td><td class="fielddoc"><p>Shift piece one position to the left. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="aeb17937ca06d418b5bc07c95e02c5a54aec8379af7490bb9eaaf579cf17876f38"></a>RIGHT&#160;</td><td class="fielddoc"><p>Shift piece one position to the right. </p>
-</td></tr>
-</table>
+<dl class="section warning"><dt>Warning</dt><dd>Function <a class="el" href="piece__actions_8h.html#a44c68c9370e56a84cdb6dbab273aefa3" title="Piece initialization.">piece_init()</a> must be called before using this object </dd></dl>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ade0668f86af8e09355b2430542096d0e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ade0668f86af8e09355b2430542096d0e">&#9670;&nbsp;</a></span>piece_init()</h2>
+<a id="a44c68c9370e56a84cdb6dbab273aefa3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44c68c9370e56a84cdb6dbab273aefa3">&#9670;&nbsp;</a></span>piece_init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -185,7 +150,7 @@ Martín E. Zahnd <a href="#" onclick="location.href='mai'+'lto:'+'mza'+'hn'+'d@i
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int *&#160;</td>
+          <td class="paramtype"><a class="el" href="board_8h.html#ad52f776081dcdce29aa7eff07d9513ef">grid_t</a> *&#160;</td>
           <td class="paramname"><em>board</em>, </td>
         </tr>
         <tr>
@@ -203,7 +168,7 @@ Martín E. Zahnd <a href="#" onclick="location.href='mai'+'lto:'+'mza'+'hn'+'d@i
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const char&#160;</td>
+          <td class="paramtype">const int&#160;</td>
           <td class="paramname"><em>piece</em>&#160;</td>
         </tr>
         <tr>

@@ -37,6 +37,9 @@
 #include <stdlib.h>
 #include <CUnit/Basic.h>
 
+// For TETROMINO_X, NUM_PIECES, board_cell, coords and board_t
+#include "../../src/backend/board/board.h"
+
 // Functions to test
 #include "../../src/backend/board/random_generator.h"
 
@@ -297,12 +300,6 @@ test2 ()
     }
 
     random_generator(rnd_bag, TETROMINOS);
-
-    /*puts("\nold_bag: ");
-    print_arr(old_bag);
-
-    puts("rnd_bag: ");
-    print_arr(rnd_bag);*/
 
     for ( i = 0; i < TETROMINOS; i++ )
     {

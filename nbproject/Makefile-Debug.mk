@@ -48,11 +48,13 @@ TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
 
 # Test Files
 TESTFILES= \
+	${TESTDIR}/TestFiles/f3 \
 	${TESTDIR}/TestFiles/f2 \
 	${TESTDIR}/TestFiles/f1
 
 # Test Object Files
 TESTOBJECTFILES= \
+	${TESTDIR}/tests/backend/test_board.o \
 	${TESTDIR}/tests/backend/test_piece_actions.o \
 	${TESTDIR}/tests/backend/test_random_gen.o
 
@@ -122,6 +124,10 @@ ${OBJECTDIR}/src/main.o: src/main.c
 .build-tests-conf: .build-tests-subprojects .build-conf ${TESTFILES}
 .build-tests-subprojects:
 
+${TESTDIR}/TestFiles/f3: ${TESTDIR}/tests/backend/test_board.o ${OBJECTFILES:%.o=%_nomain.o}
+	${MKDIR} -p ${TESTDIR}/TestFiles
+	${LINK.c} -o ${TESTDIR}/TestFiles/f3 $^ ${LDLIBSOPTIONS}   -lcunit 
+
 ${TESTDIR}/TestFiles/f2: ${TESTDIR}/tests/backend/test_piece_actions.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.c} -o ${TESTDIR}/TestFiles/f2 $^ ${LDLIBSOPTIONS}   -lcunit 
@@ -129,6 +135,12 @@ ${TESTDIR}/TestFiles/f2: ${TESTDIR}/tests/backend/test_piece_actions.o ${OBJECTF
 ${TESTDIR}/TestFiles/f1: ${TESTDIR}/tests/backend/test_random_gen.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.c} -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS}   -lcunit 
+
+
+${TESTDIR}/tests/backend/test_board.o: tests/backend/test_board.c 
+	${MKDIR} -p ${TESTDIR}/tests/backend
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Wall -std=c11 -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/backend/test_board.o tests/backend/test_board.c
 
 
 ${TESTDIR}/tests/backend/test_piece_actions.o: tests/backend/test_piece_actions.c 
@@ -238,6 +250,7 @@ ${OBJECTDIR}/src/main_nomain.o: ${OBJECTDIR}/src/main.o src/main.c
 .test-conf:
 	@if [ "${TEST}" = "" ]; \
 	then  \
+	    ${TESTDIR}/TestFiles/f3 || true; \
 	    ${TESTDIR}/TestFiles/f2 || true; \
 	    ${TESTDIR}/TestFiles/f1 || true; \
 	else  \
