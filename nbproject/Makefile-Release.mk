@@ -41,7 +41,9 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/backend/board/timer/boardTimer.o \
 	${OBJECTDIR}/src/backend/rw/rw_ops.o \
 	${OBJECTDIR}/src/backend/stats/stats_mgmt.o \
-	${OBJECTDIR}/src/main.o
+	${OBJECTDIR}/src/frontend/Raspberry\ PI/display.o \
+	${OBJECTDIR}/src/frontend/Raspberry\ PI/joystick.o \
+	${OBJECTDIR}/src/frontend/Raspberry\ PI/rpcontrol.o
 
 # Test Directory
 TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
@@ -112,10 +114,23 @@ ${OBJECTDIR}/src/backend/stats/stats_mgmt.o: src/backend/stats/stats_mgmt.c
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/backend/stats/stats_mgmt.o src/backend/stats/stats_mgmt.c
 
-${OBJECTDIR}/src/main.o: src/main.c
-	${MKDIR} -p ${OBJECTDIR}/src
+.NO_PARALLEL:${OBJECTDIR}/src/frontend/Raspberry\ PI/display.o
+${OBJECTDIR}/src/frontend/Raspberry\ PI/display.o: src/frontend/Raspberry\ PI/display.c
+	${MKDIR} -p ${OBJECTDIR}/src/frontend PI
 	${RM} "$@.d"
-	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main.o src/main.c
+	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/Raspberry\ PI/display.o src/frontend/Raspberry\ PI/display.c
+
+.NO_PARALLEL:${OBJECTDIR}/src/frontend/Raspberry\ PI/joystick.o
+${OBJECTDIR}/src/frontend/Raspberry\ PI/joystick.o: src/frontend/Raspberry\ PI/joystick.c
+	${MKDIR} -p ${OBJECTDIR}/src/frontend PI
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/Raspberry\ PI/joystick.o src/frontend/Raspberry\ PI/joystick.c
+
+.NO_PARALLEL:${OBJECTDIR}/src/frontend/Raspberry\ PI/rpcontrol.o
+${OBJECTDIR}/src/frontend/Raspberry\ PI/rpcontrol.o: src/frontend/Raspberry\ PI/rpcontrol.c
+	${MKDIR} -p ${OBJECTDIR}/src/frontend PI
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/Raspberry\ PI/rpcontrol.o src/frontend/Raspberry\ PI/rpcontrol.c
 
 # Subprojects
 .build-subprojects:
@@ -233,17 +248,46 @@ ${OBJECTDIR}/src/backend/stats/stats_mgmt_nomain.o: ${OBJECTDIR}/src/backend/sta
 	    ${CP} ${OBJECTDIR}/src/backend/stats/stats_mgmt.o ${OBJECTDIR}/src/backend/stats/stats_mgmt_nomain.o;\
 	fi
 
-${OBJECTDIR}/src/main_nomain.o: ${OBJECTDIR}/src/main.o src/main.c 
-	${MKDIR} -p ${OBJECTDIR}/src
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/main.o`; \
+.NO_PARALLEL:${OBJECTDIR}/src/frontend/Raspberry\ PI/display.o
+${OBJECTDIR}/src/frontend/Raspberry\ PI/display_nomain.o: ${OBJECTDIR}/src/frontend/Raspberry\ PI/display.o src/frontend/Raspberry\ PI/display.c 
+	${MKDIR} -p ${OBJECTDIR}/src/frontend/Raspberry\ PI
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/frontend/Raspberry\ PI/display.o`; \
 	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.c) -O2 -std=c11 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main_nomain.o src/main.c;\
+	    $(COMPILE.c) -O2 -std=c11 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/Raspberry\ PI/display_nomain.o src/frontend/Raspberry\ PI/display.c;\
 	else  \
-	    ${CP} ${OBJECTDIR}/src/main.o ${OBJECTDIR}/src/main_nomain.o;\
+	    ${CP} ${OBJECTDIR}/src/frontend/Raspberry\ PI/display.o ${OBJECTDIR}/src/frontend/Raspberry\ PI/display_nomain.o;\
+	fi
+
+.NO_PARALLEL:${OBJECTDIR}/src/frontend/Raspberry\ PI/joystick.o
+${OBJECTDIR}/src/frontend/Raspberry\ PI/joystick_nomain.o: ${OBJECTDIR}/src/frontend/Raspberry\ PI/joystick.o src/frontend/Raspberry\ PI/joystick.c 
+	${MKDIR} -p ${OBJECTDIR}/src/frontend/Raspberry\ PI
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/frontend/Raspberry\ PI/joystick.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.c) -O2 -std=c11 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/Raspberry\ PI/joystick_nomain.o src/frontend/Raspberry\ PI/joystick.c;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/frontend/Raspberry\ PI/joystick.o ${OBJECTDIR}/src/frontend/Raspberry\ PI/joystick_nomain.o;\
+	fi
+
+.NO_PARALLEL:${OBJECTDIR}/src/frontend/Raspberry\ PI/rpcontrol.o
+${OBJECTDIR}/src/frontend/Raspberry\ PI/rpcontrol_nomain.o: ${OBJECTDIR}/src/frontend/Raspberry\ PI/rpcontrol.o src/frontend/Raspberry\ PI/rpcontrol.c 
+	${MKDIR} -p ${OBJECTDIR}/src/frontend/Raspberry\ PI
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/frontend/Raspberry\ PI/rpcontrol.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.c) -O2 -std=c11 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/Raspberry\ PI/rpcontrol_nomain.o src/frontend/Raspberry\ PI/rpcontrol.c;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/frontend/Raspberry\ PI/rpcontrol.o ${OBJECTDIR}/src/frontend/Raspberry\ PI/rpcontrol_nomain.o;\
 	fi
 
 # Run Test Targets

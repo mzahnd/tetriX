@@ -11,6 +11,7 @@
             <make-dep-projects/>
             <sourceRootList>
                 <sourceRootElem>res</sourceRootElem>
+                <sourceRootElem>res</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

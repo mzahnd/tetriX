@@ -9,10 +9,14 @@
         <group name="ITBA">
             <file>file:/home/martin/Documents/Universidad/ITBA/2019%20-%20Segundo%20Cuatrimestre/Programación%201/Practicas/TPF/tetriCs/src/backend/board/board.c</file>
             <file>file:/home/martin/Documents/Universidad/ITBA/2019%20-%20Segundo%20Cuatrimestre/Programación%201/Practicas/TPF/tetriCs/src/backend/board/pieces/piece_actions.c</file>
-            <file>file:/home/martin/Documents/Universidad/ITBA/2019%20-%20Segundo%20Cuatrimestre/Programación%201/Practicas/TPF/tetriCs/tests/backend/test_board.c</file>
+            <file>file:/home/martin/Documents/Universidad/ITBA/2019%20-%20Segundo%20Cuatrimestre/Programación%201/Practicas/TPF/tetriCs/src/backend/board/random_generator.h</file>
+            <file>file:/home/martin/Documents/Universidad/ITBA/2019%20-%20Segundo%20Cuatrimestre/Programación%201/Practicas/TPF/tetriCs/src/backend/board/timer/boardTimer.c</file>
+            <file>file:/home/martin/Documents/Universidad/ITBA/2019%20-%20Segundo%20Cuatrimestre/Programación%201/Practicas/TPF/tetriCs/src/backend/stats/stats_mgmt.h</file>
+            <file>file:/home/martin/Documents/Universidad/ITBA/2019%20-%20Segundo%20Cuatrimestre/Programación%201/Practicas/TPF/tetriCs/src/backend/board/timer/boardTimer.h</file>
             <file>file:/home/martin/Documents/Universidad/ITBA/2019%20-%20Segundo%20Cuatrimestre/Programación%201/Practicas/TPF/tetriCs/tests/backend/test_piece_actions.c</file>
             <file>file:/home/martin/Documents/Universidad/ITBA/2019%20-%20Segundo%20Cuatrimestre/Programación%201/Practicas/TPF/tetriCs/src/backend/board/board.h</file>
             <file>file:/home/martin/Documents/Universidad/ITBA/2019%20-%20Segundo%20Cuatrimestre/Programación%201/Practicas/TPF/tetriCs/src/backend/board/pieces/piece_actions.h</file>
         </group>
+        <group/>
     </open-files>
 </project-private>
