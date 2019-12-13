@@ -68,7 +68,7 @@ enum block
 /**
  * @brief Tetrominos definitions and number of tetrominos
  */
-enum pieces
+enum piecesType
 {
     TETROMINO_NONE = -1,
     TETROMINO_I = 0,
@@ -170,6 +170,13 @@ typedef struct GAMEBOARD
          * @return False: 0
          */
         int (* endGame) (void);
+        
+        /**
+         * @brief Get the current game stats.
+         * 
+         * @note This pointer must be casted to stats_t or STATS structure.
+         */
+        const void * (* stats) (void);
     } ask;
 
     /// Clear a specific part of the board
@@ -241,7 +248,7 @@ typedef struct GAMEBOARD
      * @return Nothing
      */
     void (* update) (void);
-
+    
 } board_t;
 
 // === Global variables ===

@@ -2,21 +2,13 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <data xmlns="http://www.netbeans.org/ns/make-project-private/1">
         <activeConfTypeElem>1</activeConfTypeElem>
-        <activeConfIndexElem>0</activeConfIndexElem>
+        <activeConfIndexElem>2</activeConfIndexElem>
     </data>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group name="ITBA">
-            <file>file:/home/martin/Documents/Universidad/ITBA/2019%20-%20Segundo%20Cuatrimestre/Programación%201/Practicas/TPF/tetriCs/src/backend/board/board.c</file>
-            <file>file:/home/martin/Documents/Universidad/ITBA/2019%20-%20Segundo%20Cuatrimestre/Programación%201/Practicas/TPF/tetriCs/src/backend/board/pieces/piece_actions.c</file>
-            <file>file:/home/martin/Documents/Universidad/ITBA/2019%20-%20Segundo%20Cuatrimestre/Programación%201/Practicas/TPF/tetriCs/src/backend/board/random_generator.h</file>
-            <file>file:/home/martin/Documents/Universidad/ITBA/2019%20-%20Segundo%20Cuatrimestre/Programación%201/Practicas/TPF/tetriCs/src/backend/board/timer/boardTimer.c</file>
-            <file>file:/home/martin/Documents/Universidad/ITBA/2019%20-%20Segundo%20Cuatrimestre/Programación%201/Practicas/TPF/tetriCs/src/backend/stats/stats_mgmt.h</file>
-            <file>file:/home/martin/Documents/Universidad/ITBA/2019%20-%20Segundo%20Cuatrimestre/Programación%201/Practicas/TPF/tetriCs/src/backend/board/timer/boardTimer.h</file>
-            <file>file:/home/martin/Documents/Universidad/ITBA/2019%20-%20Segundo%20Cuatrimestre/Programación%201/Practicas/TPF/tetriCs/tests/backend/test_piece_actions.c</file>
-            <file>file:/home/martin/Documents/Universidad/ITBA/2019%20-%20Segundo%20Cuatrimestre/Programación%201/Practicas/TPF/tetriCs/src/backend/board/board.h</file>
-            <file>file:/home/martin/Documents/Universidad/ITBA/2019%20-%20Segundo%20Cuatrimestre/Programación%201/Practicas/TPF/tetriCs/src/backend/board/pieces/piece_actions.h</file>
+            <file>file:/home/martin/Documents/Universidad/ITBA/2019%20-%20Segundo%20Cuatrimestre/Programación%201/Practicas/TPF/tetriCs/src/frontend/rpi/rpcontrol.c</file>
+            <file>file:/home/martin/Documents/Universidad/ITBA/2019%20-%20Segundo%20Cuatrimestre/Programación%201/Practicas/TPF/tetriCs/src/frontend/rpi/rpcontrol.h</file>
         </group>
-        <group/>
     </open-files>
 </project-private>

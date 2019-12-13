@@ -35,6 +35,8 @@
 #    define STATS_MGMT_H
 
 // === Libraries and header files ===
+// For TETROMINOS
+#    include "../board/board.h"
 
 // === Constants and Macro definitions ===
 
@@ -51,45 +53,84 @@
  * 
  * @headerfile stats_mgmt.h
  */
-typedef struct
+typedef struct STATS
 {
     /// Current level
-    unsigned int level;
-    /// Amount of lines cleared
-    unsigned int lines;
-    /// Next piece
-    unsigned char next;
+    int level;
 
-    /// How many pieces of each type have been deployed in this game.
-    struct PIECES_STRC
+    /// Amount of lines cleared
+
+    /// Lines information
+
+    struct
     {
-        /// How many I have been deployed
-        unsigned int I;
-        /// How many J have been deployed
-        unsigned int J;
-        /// How many L have been deployed
-        unsigned int L;
-        /// How many O have been deployed
-        unsigned int O;
-        /// How many S have been deployed
-        unsigned int S;
-        /// How many T have been deployed
-        unsigned int T;
-        /// How many Z have been deployed
-        unsigned int Z;
-    } pieces;
+        /// Amount of lines cleared
+        int cleared;
+    } lines;
+
+    /// Piece information
+
+    struct
+    {
+        /// Current piece
+        int current;
+
+        /// Next piece
+        int next;
+
+        /// How many pieces of each type have been deployed in this game.
+        int number[TETROMINOS];
+    } piece;
 
     /// Top and Actual scores
-    struct SCORE_STRC
+
+    /// Top and actual scores
+
+    struct
     {
         /// Top score
-        unsigned int top;
+        int top;
         /// Actual score
-        unsigned int actual;
+        int actual;
     } score;
 
-    /// Current game status (0 if running, 1 if ended)
-    int status;
+    /**
+     * @brief Call when a soft drop has been performed
+     * 
+     * @param None
+     * 
+     * @return Nothing
+     */
+    void (* softDrop) (void);
+
+    /**
+     * @brief Update the stats with a new piece
+     * 
+     * @param cp Current Piece (using pieces enum in board.h)
+     * @param np Next Piece (using pieces enum in board.h)
+     * 
+     * @return Nothing
+     */
+    void (* newPiece) (int * cp, int * np);
+
+    /**
+     * @brief Update scoring when a/some line(s) is/are cleared
+     * 
+     * @param rows Number of rows to be cleared
+     * 
+     * @return Nothing
+     */
+    void (* update) (int rows);
+
+    /**
+     * @brief Destroy current stats, erasing all the structure's information
+     * 
+     * @param None
+     * 
+     * @return Nothing
+     */
+    void (* destroy) (void);
+
 } stats_t;
 
 // === Global variables ===
@@ -97,5 +138,9 @@ typedef struct
 // === ROM Constant variables ===
 
 // === Global function definitions ===
+
+// Initialize a STATS structure
+int
+initStats (struct STATS * stats);
 
 #endif /* STATS_MGMT_H */

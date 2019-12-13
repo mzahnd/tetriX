@@ -34,11 +34,12 @@
 // === Libraries and header files ===
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 
 #include "random_generator.h"
 
 #include "pieces/piece_actions.h"
+
+#include "../stats/stats_mgmt.h"
 
 // This file
 #include "board.h"
@@ -80,6 +81,12 @@
 
 // === Enumerations, structures and typedefs ===
 
+enum statsUpdates
+{
+    SOFT,
+    NPIECE
+};
+
 /**
  * @brief Private variables of the GAMEBOARD structure.
  * 
@@ -97,6 +104,8 @@ typedef struct GAMEBOARD_PRIVATE
 
     /// PIECE structure with the functions needed to modify it
     piece_t piece;
+
+    stats_t stats;
 
     /// Bag of pieces
     int bag[TETROMINOS];
@@ -121,6 +130,10 @@ typedef struct GAMEBOARD_PRIVATE
 // Returns the point (0,0) of the public board
 static int *
 askBoard (void);
+
+// Returns a constant pointer to the current STATS structure.
+static const void *
+askStats (void);
 
 // Clear a filled row.
 static void
@@ -178,6 +191,10 @@ updateBoard (int cellType);
 static void
 updatePiece (void);
 
+// @brief Update STATS structure using an action from statsUpdate enum
+static void
+updateStats (int action);
+
 // === ROM Constant variables with file level scope ===
 
 // === Static variables and constant variables with file level scope ===
@@ -232,6 +249,19 @@ static grid_t *
 askBoard (void)
 {
     return CELL_ADDRESS(HIDDEN_ROWS, 0);
+}
+
+/**
+ * @brief Returns a constant pointer to the current STATS structure.
+ * 
+ * @param None
+ * 
+ * @return Pointer to the current game' STATS structure
+ */
+static const void *
+askStats (void)
+{
+    return &bStruct.stats;
 }
 
 /**
@@ -341,6 +371,14 @@ destroy (void)
     if ( bStruct.piece.destroy != NULL )
     {
         bStruct.piece.destroy();
+        bStruct.piece.destroy = NULL;
+    }
+
+    //
+    if ( bStruct.public -> ask.stats != NULL )
+    {
+        bStruct.stats.destroy();
+        bStruct.public -> ask.stats = NULL;
     }
 
     // Clear function pointers
@@ -454,6 +492,8 @@ filledRows (int lines[BOARD_HEIGHT])
         }
     }
 
+    bStruct.stats.update(nFill);
+
     // Number of filled rows
     return nFill;
 }
@@ -489,6 +529,16 @@ init (void)
         return 1;
     }
 
+    if ( initStats(&bStruct.stats) )
+    {
+        fputs("Could initialize STATS. Game will run anyway", stderr);
+    }
+
+    else
+    {
+        bStruct.public -> ask.stats = &askStats;
+    }
+
     // Generate first set of pieces
     bStruct.bagPosition = 0;
     fillBag();
@@ -510,26 +560,6 @@ init (void)
     bStruct.public -> piece.rotate = &rotatePiece;
     bStruct.public -> piece.shift = &shiftPiece;
     bStruct.public -> piece.softDrop = &softDropPiece;
-
-    // Stats
-    /*
-    stats.score.actual = 0;
-    stats.next = PIECE_NONE;
-    stats.pieces.I = 0;
-    stats.pieces.J = 0;
-    stats.pieces.L = 0;
-    stats.pieces.O = 0;
-    stats.pieces.S = 0;
-    stats.pieces.T = 0;
-    stats.pieces.Z = 0;
-
-    stats.status = 0;
-
-    /// FIXME
-    stats.score.top = 1000;
-    stats.level = 0;
-    stats.lines = 0;
-     */
 
     return 0;
 }
@@ -657,6 +687,9 @@ softDropPiece (void)
 {
     // Soft drop (calls board update)
     bStruct.piece.softDrop();
+
+    // Update stats
+    updateStats(SOFT);
 }
 
 /**
@@ -718,6 +751,7 @@ updatePiece (void)
             case TETROMINOS - 2:
                 bStruct.piece.type = bStruct.bag[bStruct.bagPosition++];
                 fillBag();
+
                 break;
 
                 // Last piece in the bag
@@ -731,6 +765,9 @@ updatePiece (void)
                 break;
         }
 
+        // Update piece type in stats
+        updateStats(NPIECE);
+
         // Initialize the piece
         piece_init(&bStruct.piece, bStruct.public,
                    CELL_ADDRESS(0, 0), MBOARD_H, MBOARD_W,
@@ -743,4 +780,33 @@ updatePiece (void)
 
     // And update the board
     updateBoard(cellType);
+}
+
+/**
+ * @brief Update STATS structure using an action from statsUpdate enum
+ * 
+ * Function used to update the stats when a soft drop is performed or a new
+ * piece is generated.
+ * 
+ * @param action
+ * 
+ * @return Nothing
+ */
+static void
+updateStats (int action)
+{
+    switch ( action )
+    {
+        case SOFT:
+            bStruct.stats.softDrop();
+            break;
+
+        case NPIECE:
+            bStruct.stats.newPiece(&bStruct.piece.type,
+                                   &bStruct.bag[bStruct.bagPosition]);
+            break;
+
+        default:
+            break;
+    }
 }

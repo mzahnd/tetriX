@@ -6,20 +6,35 @@
                    projectFiles="true">
       <logicalFolder name="f1" displayName="Backend" projectFiles="true">
         <logicalFolder name="f1" displayName="Board" projectFiles="true">
+          <logicalFolder name="f2" displayName="Pieces" projectFiles="true">
+            <itemPath>src/backend/board/pieces/piece_actions.h</itemPath>
+          </logicalFolder>
+          <logicalFolder name="f1" displayName="Timer" projectFiles="true">
+            <itemPath>src/backend/board/timer/boardTimer.h</itemPath>
+          </logicalFolder>
           <itemPath>src/backend/board/board.h</itemPath>
-          <itemPath>src/backend/board/timer/boardTimer.h</itemPath>
-          <itemPath>src/backend/board/pieces/piece_actions.h</itemPath>
           <itemPath>src/backend/board/random_generator.h</itemPath>
         </logicalFolder>
+        <logicalFolder name="f2" displayName="Stats" projectFiles="true">
+          <itemPath>src/backend/stats/stats_mgmt.h</itemPath>
+        </logicalFolder>
         <itemPath>src/backend/rw/rw_ops.h</itemPath>
-        <itemPath>src/backend/stats/stats_mgmt.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f2" displayName="Frontend" projectFiles="true">
         <logicalFolder name="f1" displayName="Allegro" projectFiles="true">
         </logicalFolder>
         <logicalFolder name="f2" displayName="Raspberry Pi" projectFiles="true">
-          <itemPath>src/frontend/Raspberry PI/display.h</itemPath>
-          <itemPath>src/frontend/Raspberry PI/joystick.h</itemPath>
+          <itemPath>src/frontend/rpi/display.h</itemPath>
+          <itemPath>src/frontend/rpi/joystick.h</itemPath>
+          <itemPath>src/frontend/rpi/rpcontrol.h</itemPath>
+        </logicalFolder>
+      </logicalFolder>
+    </logicalFolder>
+    <logicalFolder name="f1" displayName="Libraries" projectFiles="true">
+      <logicalFolder name="f2" displayName="Raspberry Pi" projectFiles="true">
+        <logicalFolder name="f1" displayName="Audio" projectFiles="true">
+          <logicalFolder name="f1" displayName="SDL" projectFiles="true">
+          </logicalFolder>
         </logicalFolder>
       </logicalFolder>
     </logicalFolder>
@@ -36,23 +51,30 @@
                    projectFiles="true">
       <logicalFolder name="f1" displayName="Backend" projectFiles="true">
         <logicalFolder name="f1" displayName="Board" projectFiles="true">
+          <logicalFolder name="f1" displayName="Pieces" projectFiles="true">
+          </logicalFolder>
+          <logicalFolder name="f2" displayName="Timer" projectFiles="true">
+            <itemPath>src/backend/board/timer/boardTimer.c</itemPath>
+            <itemPath>src/backend/board/pieces/piece_actions.c</itemPath>
+          </logicalFolder>
           <itemPath>src/backend/board/board.c</itemPath>
-          <itemPath>src/backend/board/timer/boardTimer.c</itemPath>
-          <itemPath>src/backend/board/pieces/piece_actions.c</itemPath>
           <itemPath>src/backend/board/random_generator.c</itemPath>
         </logicalFolder>
+        <logicalFolder name="f2" displayName="Stats" projectFiles="true">
+          <itemPath>src/backend/stats/stats_mgmt.c</itemPath>
+        </logicalFolder>
         <itemPath>src/backend/rw/rw_ops.c</itemPath>
-        <itemPath>src/backend/stats/stats_mgmt.c</itemPath>
       </logicalFolder>
       <logicalFolder name="f2" displayName="Frontend" projectFiles="true">
         <logicalFolder name="f1" displayName="Allegro" projectFiles="true">
         </logicalFolder>
         <logicalFolder name="f2" displayName="Raspberry Pi" projectFiles="true">
-          <itemPath>src/frontend/Raspberry PI/display.c</itemPath>
-          <itemPath>src/frontend/Raspberry PI/joystick.c</itemPath>
-          <itemPath>src/frontend/Raspberry PI/rpcontrol.c</itemPath>
+          <itemPath>src/frontend/rpi/display.c</itemPath>
+          <itemPath>src/frontend/rpi/joystick.c</itemPath>
+          <itemPath>src/frontend/rpi/rpcontrol.c</itemPath>
         </logicalFolder>
       </logicalFolder>
+      <itemPath>src/main.c</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -80,29 +102,6 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
-    <logicalFolder name="TestFiles"
-                   displayName="Test Files"
-                   projectFiles="false"
-                   kind="TEST_LOGICAL_FOLDER">
-      <logicalFolder name="f3" displayName="Board" projectFiles="true" kind="TEST">
-      </logicalFolder>
-      <logicalFolder name="f2"
-                     displayName="Piece Actions"
-                     projectFiles="true"
-                     kind="TEST">
-      </logicalFolder>
-      <logicalFolder name="f1"
-                     displayName="Random Generator"
-                     projectFiles="true"
-                     kind="TEST">
-      </logicalFolder>
-    </logicalFolder>
-    <logicalFolder name="ExternalFiles"
-                   displayName="Important Files"
-                   projectFiles="false"
-                   kind="IMPORTANT_FILES_FOLDER">
-      <itemPath>Makefile</itemPath>
-    </logicalFolder>
   </logicalFolder>
   <sourceRootList>
     <Elem>res</Elem>
@@ -110,7 +109,7 @@
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
-    <conf name="Debug" type="1">
+    <conf name="RaspberryPi" type="1">
       <toolsSet>
         <compilerSet>default</compilerSet>
         <dependencyChecking>true</dependencyChecking>
@@ -121,6 +120,9 @@
           <standard>10</standard>
           <warningLevel>2</warningLevel>
         </cTool>
+        <linkerTool>
+          <commandLine>src/frontend/rpi/libs/disdrv.o src/frontend/rpi/libs/joydrv.o src/frontend/rpi/libs/termlib.o src/frontend/rpi/audiolib/libaudio.so src/frontend/rpi/audiolib/SDL/libSDL1.so src/frontend/rpi/audiolib/SDL/libSDL-1.2.so.0 src/frontend/rpi/audiolib/SDL/libSDL-1.2.so.0.11.4</commandLine>
+        </linkerTool>
       </compileType>
       <folder path="TestFiles/f1">
         <linkerTool>
@@ -192,30 +194,19 @@
       </item>
       <item path="src/backend/stats/stats_mgmt.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/frontend/Raspberry PI/display.c"
-            ex="false"
-            tool="0"
-            flavor2="0">
+      <item path="src/frontend/rpi/display.c" ex="false" tool="0" flavor2="0">
       </item>
-      <item path="src/frontend/Raspberry PI/display.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="src/frontend/rpi/display.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/frontend/Raspberry PI/joystick.c"
-            ex="false"
-            tool="0"
-            flavor2="0">
+      <item path="src/frontend/rpi/joystick.c" ex="false" tool="0" flavor2="0">
       </item>
-      <item path="src/frontend/Raspberry PI/joystick.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="src/frontend/rpi/joystick.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/frontend/Raspberry PI/rpcontrol.c"
-            ex="false"
-            tool="0"
-            flavor2="0">
+      <item path="src/frontend/rpi/rpcontrol.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/frontend/rpi/rpcontrol.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/main.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="tests/backend/test_board.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -315,30 +306,122 @@
       </item>
       <item path="src/backend/stats/stats_mgmt.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/frontend/Raspberry PI/display.c"
+      <item path="src/frontend/rpi/display.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/frontend/rpi/display.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/rpi/joystick.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/frontend/rpi/joystick.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/rpi/rpcontrol.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/frontend/rpi/rpcontrol.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/main.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="tests/backend/test_board.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="tests/backend/test_piece_actions.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="tests/backend/test_random_gen.c" ex="false" tool="0" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Allegro" type="1">
+      <toolsSet>
+        <compilerSet>GNU|GNU</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <standard>10</standard>
+          <warningLevel>2</warningLevel>
+        </cTool>
+      </compileType>
+      <folder path="TestFiles/f1">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f1</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f2">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f2</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f3">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f3</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <item path="res/audio/chau.wav" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="res/audio/tetris.wav" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/backend/board/board.c" ex="false" tool="0" flavor2="10">
+      </item>
+      <item path="src/backend/board/board.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/backend/board/pieces/piece_actions.c"
             ex="false"
             tool="0"
-            flavor2="0">
+            flavor2="10">
       </item>
-      <item path="src/frontend/Raspberry PI/display.h"
+      <item path="src/backend/board/pieces/piece_actions.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="src/frontend/Raspberry PI/joystick.c"
+      <item path="src/backend/board/random_generator.c"
             ex="false"
             tool="0"
-            flavor2="0">
+            flavor2="10">
       </item>
-      <item path="src/frontend/Raspberry PI/joystick.h"
+      <item path="src/backend/board/random_generator.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="src/frontend/Raspberry PI/rpcontrol.c"
+      <item path="src/backend/board/timer/boardTimer.c"
             ex="false"
             tool="0"
+            flavor2="10">
+      </item>
+      <item path="src/backend/board/timer/boardTimer.h"
+            ex="false"
+            tool="3"
             flavor2="0">
+      </item>
+      <item path="src/backend/rw/rw_ops.c" ex="false" tool="0" flavor2="10">
+      </item>
+      <item path="src/backend/rw/rw_ops.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/backend/stats/stats_mgmt.c" ex="false" tool="0" flavor2="10">
+      </item>
+      <item path="src/backend/stats/stats_mgmt.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/rpi/display.c" ex="true" tool="0" flavor2="10">
+      </item>
+      <item path="src/frontend/rpi/display.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/rpi/joystick.c" ex="true" tool="0" flavor2="10">
+      </item>
+      <item path="src/frontend/rpi/joystick.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/rpi/rpcontrol.c" ex="true" tool="0" flavor2="10">
+      </item>
+      <item path="src/frontend/rpi/rpcontrol.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/main.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="tests/backend/test_board.c" ex="false" tool="0" flavor2="0">
       </item>

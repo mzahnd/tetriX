@@ -1012,10 +1012,6 @@ normalDrop (void)
                 break;
         }
 
-        //currentPiece.board.pBoard -> piece.set.fixed(cellType);
-
-        //destroy();
-
     }
 
     else

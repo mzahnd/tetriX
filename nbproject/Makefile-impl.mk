@@ -27,11 +27,11 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 PROJECTNAME=tetriCs
 
 # Active Configuration
-DEFAULTCONF=Debug
+DEFAULTCONF=RaspberryPi
 CONF=${DEFAULTCONF}
 
 # All Configurations
-ALLCONFS=Debug Release 
+ALLCONFS=RaspberryPi Release Allegro 
 
 
 # build

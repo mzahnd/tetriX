@@ -6,14 +6,14 @@
 CND_BASEDIR=`pwd`
 CND_BUILDDIR=build
 CND_DISTDIR=dist
-# Debug configuration
-CND_PLATFORM_Debug=GNU-Linux
-CND_ARTIFACT_DIR_Debug=dist/Debug/GNU-Linux
-CND_ARTIFACT_NAME_Debug=tetrics
-CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-Linux/tetrics
-CND_PACKAGE_DIR_Debug=dist/Debug/GNU-Linux/package
-CND_PACKAGE_NAME_Debug=tetrics.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux/package/tetrics.tar
+# RaspberryPi configuration
+CND_PLATFORM_RaspberryPi=GNU-Linux
+CND_ARTIFACT_DIR_RaspberryPi=dist/RaspberryPi/GNU-Linux
+CND_ARTIFACT_NAME_RaspberryPi=tetrics
+CND_ARTIFACT_PATH_RaspberryPi=dist/RaspberryPi/GNU-Linux/tetrics
+CND_PACKAGE_DIR_RaspberryPi=dist/RaspberryPi/GNU-Linux/package
+CND_PACKAGE_NAME_RaspberryPi=tetrics.tar
+CND_PACKAGE_PATH_RaspberryPi=dist/RaspberryPi/GNU-Linux/package/tetrics.tar
 # Release configuration
 CND_PLATFORM_Release=GNU-Linux
 CND_ARTIFACT_DIR_Release=dist/Release/GNU-Linux
@@ -22,6 +22,14 @@ CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux/tetrics
 CND_PACKAGE_DIR_Release=dist/Release/GNU-Linux/package
 CND_PACKAGE_NAME_Release=tetrics.tar
 CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux/package/tetrics.tar
+# Allegro configuration
+CND_PLATFORM_Allegro=GNU-Linux
+CND_ARTIFACT_DIR_Allegro=dist/Allegro/GNU-Linux
+CND_ARTIFACT_NAME_Allegro=tetrics
+CND_ARTIFACT_PATH_Allegro=dist/Allegro/GNU-Linux/tetrics
+CND_PACKAGE_DIR_Allegro=dist/Allegro/GNU-Linux/package
+CND_PACKAGE_NAME_Allegro=tetrics.tar
+CND_PACKAGE_PATH_Allegro=dist/Allegro/GNU-Linux/package/tetrics.tar
 #
 # include compiler specific variables
 #

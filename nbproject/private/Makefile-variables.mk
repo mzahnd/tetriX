@@ -3,5 +3,6 @@
 #
 # NOCDDL
 #
-# Debug configuration
+# RaspberryPi configuration
 # Release configuration
+# Allegro configuration

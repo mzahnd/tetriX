@@ -15,11 +15,15 @@
             </sourceRootList>
             <confList>
                 <confElem>
-                    <name>Debug</name>
+                    <name>RaspberryPi</name>
                     <type>1</type>
                 </confElem>
                 <confElem>
                     <name>Release</name>
+                    <type>1</type>
+                </confElem>
+                <confElem>
+                    <name>Allegro</name>
                     <type>1</type>
                 </confElem>
             </confList>
