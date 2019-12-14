@@ -58,8 +58,6 @@ typedef struct STATS
     /// Current level
     int level;
 
-    /// Amount of lines cleared
-
     /// Lines information
 
     struct
@@ -83,8 +81,6 @@ typedef struct STATS
     } piece;
 
     /// Top and Actual scores
-
-    /// Top and actual scores
 
     struct
     {

@@ -49,6 +49,7 @@ TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
 # Test Files
 TESTFILES= \
 	${TESTDIR}/TestFiles/f3 \
+	${TESTDIR}/TestFiles/f4 \
 	${TESTDIR}/TestFiles/f2 \
 	${TESTDIR}/TestFiles/f1
 
@@ -56,7 +57,8 @@ TESTFILES= \
 TESTOBJECTFILES= \
 	${TESTDIR}/tests/backend/test_board.o \
 	${TESTDIR}/tests/backend/test_piece_actions.o \
-	${TESTDIR}/tests/backend/test_random_gen.o
+	${TESTDIR}/tests/backend/test_random_gen.o \
+	${TESTDIR}/tests/test_boardTimer.o
 
 # C Compiler Flags
 CFLAGS=
@@ -128,6 +130,10 @@ ${TESTDIR}/TestFiles/f3: ${TESTDIR}/tests/backend/test_board.o ${OBJECTFILES:%.o
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.c} -o ${TESTDIR}/TestFiles/f3 $^ ${LDLIBSOPTIONS}   -lcunit 
 
+${TESTDIR}/TestFiles/f4: ${TESTDIR}/tests/test_boardTimer.o ${OBJECTFILES:%.o=%_nomain.o}
+	${MKDIR} -p ${TESTDIR}/TestFiles
+	${LINK.c} -o ${TESTDIR}/TestFiles/f4 $^ ${LDLIBSOPTIONS}   -lcunit 
+
 ${TESTDIR}/TestFiles/f2: ${TESTDIR}/tests/backend/test_piece_actions.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.c} -o ${TESTDIR}/TestFiles/f2 $^ ${LDLIBSOPTIONS}   -lcunit 
@@ -141,6 +147,12 @@ ${TESTDIR}/tests/backend/test_board.o: tests/backend/test_board.c
 	${MKDIR} -p ${TESTDIR}/tests/backend
 	${RM} "$@.d"
 	$(COMPILE.c) -g -Wall -std=c11 -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/backend/test_board.o tests/backend/test_board.c
+
+
+${TESTDIR}/tests/test_boardTimer.o: tests/test_boardTimer.c 
+	${MKDIR} -p ${TESTDIR}/tests
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Wall -std=c11 -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/test_boardTimer.o tests/test_boardTimer.c
 
 
 ${TESTDIR}/tests/backend/test_piece_actions.o: tests/backend/test_piece_actions.c 
@@ -251,6 +263,7 @@ ${OBJECTDIR}/src/main_nomain.o: ${OBJECTDIR}/src/main.o src/main.c
 	@if [ "${TEST}" = "" ]; \
 	then  \
 	    ${TESTDIR}/TestFiles/f3 || true; \
+	    ${TESTDIR}/TestFiles/f4 || true; \
 	    ${TESTDIR}/TestFiles/f2 || true; \
 	    ${TESTDIR}/TestFiles/f1 || true; \
 	else  \

@@ -83,6 +83,12 @@
       <logicalFolder name="f3" displayName="Board" projectFiles="true" kind="TEST">
         <itemPath>tests/backend/test_board.c</itemPath>
       </logicalFolder>
+      <logicalFolder name="f4"
+                     displayName="Board Timer"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>tests/test_boardTimer.c</itemPath>
+      </logicalFolder>
       <logicalFolder name="f2"
                      displayName="Piece Actions"
                      projectFiles="true"
@@ -148,6 +154,14 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f4">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f4</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <item path="res/audio/chau.wav" ex="false" tool="3" flavor2="0">
       </item>
       <item path="res/audio/tetris.wav" ex="false" tool="3" flavor2="0">
@@ -213,6 +227,8 @@
       <item path="tests/backend/test_piece_actions.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="tests/backend/test_random_gen.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="tests/test_boardTimer.c" ex="false" tool="0" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -260,6 +276,14 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f4">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f4</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <item path="res/audio/chau.wav" ex="false" tool="3" flavor2="0">
       </item>
       <item path="res/audio/tetris.wav" ex="false" tool="3" flavor2="0">
@@ -326,6 +350,8 @@
       </item>
       <item path="tests/backend/test_random_gen.c" ex="false" tool="0" flavor2="0">
       </item>
+      <item path="tests/test_boardTimer.c" ex="false" tool="0" flavor2="0">
+      </item>
     </conf>
     <conf name="Allegro" type="1">
       <toolsSet>
@@ -358,6 +384,14 @@
       <folder path="TestFiles/f3">
         <linkerTool>
           <output>${TESTDIR}/TestFiles/f3</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f4">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f4</output>
           <linkerLibItems>
             <linkerOptionItem>-lcunit</linkerOptionItem>
           </linkerLibItems>
@@ -428,6 +462,8 @@
       <item path="tests/backend/test_piece_actions.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="tests/backend/test_random_gen.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="tests/test_boardTimer.c" ex="false" tool="0" flavor2="0">
       </item>
     </conf>
   </confs>

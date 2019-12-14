@@ -35,6 +35,8 @@
 #    define BOARDTIMER_H
 
 // === Libraries and header files ===
+// For STATS struct
+#include "../../stats/stats_mgmt.h"
 
 // === Constants and Macro definitions ===
 
@@ -45,5 +47,15 @@
 // === ROM Constant variables ===
 
 // === Global function definitions ===
+// Initialize the timer functions.
+int
+initTimer (struct STATS * sts);
 
+// Tells if the time limit has been reached
+bool
+askTimer (void);
+
+// Reset timer
+void
+startTimer (void);
 #endif /* BOARDTIMER_H */

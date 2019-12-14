@@ -531,13 +531,11 @@ init (void)
 
     if ( initStats(&bStruct.stats) )
     {
-        fputs("Could initialize STATS. Game will run anyway", stderr);
+        fputs("Could initialize STATS.", stderr);
+        return 1;
     }
 
-    else
-    {
-        bStruct.public -> ask.stats = &askStats;
-    }
+    bStruct.public -> ask.stats = &askStats;
 
     // Generate first set of pieces
     bStruct.bagPosition = 0;
@@ -560,6 +558,8 @@ init (void)
     bStruct.public -> piece.rotate = &rotatePiece;
     bStruct.public -> piece.shift = &shiftPiece;
     bStruct.public -> piece.softDrop = &softDropPiece;
+
+    initTimer(&bStruct.stats);
 
     return 0;
 }

@@ -77,6 +77,8 @@ void test3 (void);
 void test4 (void);
 // Test each piece rotation
 void test5 (void);
+// Test rotation at the top and bottom of the board
+void test6 (void);
 
 // === Function prototypes for private functions with file level scope ===
 // Clears the board and initializes only one testPiece.
@@ -494,6 +496,20 @@ test5 (void)
 
     // TETROMINO_Z
     onlyPiece_Z(&check_rotationZ);
+}
+
+/**
+ * @brief Test rotation at the top and bottom of the board
+ * 
+ * @param None
+ * 
+ * @return Nothing
+ */
+void
+test6 (void)
+{
+    // TETROMINO_I
+    onlyPiece_I(&check_rotationI);
 }
 
 // === Local function definitions ===

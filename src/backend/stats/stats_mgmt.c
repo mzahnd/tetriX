@@ -279,9 +279,13 @@ static void
 uLevel (void)
 {
     // Advance to the next level when 10*n rows have been cleared
-    if ( (gameStats.public -> lines.cleared + 1) % 10 == 0 )
+    // And 10*n equals the current level (i.e. level to advance from level 10
+    // to 11, 110 must have been cleared)
+    if ( ((gameStats.public -> level + 1) * 10 == \
+        gameStats.public -> lines.cleared + 1) &&
+         ((gameStats.public -> lines.cleared + 1) % 10 == 0) )
     {
-        gameStats.public -> level++;
+        (gameStats.public -> level)++;
     }
 }
 

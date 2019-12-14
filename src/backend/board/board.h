@@ -105,13 +105,19 @@ enum board_cell
     CELL_MOVING = -1,
     /// The cell is clear
     CELL_CLEAR = 0,
-    /// The cell has a fixed piece
+    /// The cell has a fixed piece of type I
     CELL_I,
+    /// The cell has a fixed piece of type J
     CELL_J,
+    /// The cell has a fixed piece of type L
     CELL_L,
+    /// The cell has a fixed piece of type O
     CELL_O,
+    /// The cell has a fixed piece of type S
     CELL_S,
+    /// The cell has a fixed piece of type T
     CELL_T,
+    /// The cell has a fixed piece of type Z
     CELL_Z
 };
 
