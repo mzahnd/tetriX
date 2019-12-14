@@ -34,12 +34,19 @@
 // === Libraries and header files ===
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
+// To generate random pieces
 #include "random_generator.h"
 
+// For PIECE
 #include "pieces/piece_actions.h"
 
+// For STATS
 #include "../stats/stats_mgmt.h"
+
+// For initTimer
+#include "timer/boardTimer.h"
 
 // This file
 #include "board.h"

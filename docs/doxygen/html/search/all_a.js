@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['next_35',['next',['../structstats__t.html#a5f3a37439f808c546ba27a25350b64ed',1,'stats_t']]],
-  ['none_36',['NONE',['../board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54ac157bdf0b85a40d2619cbc8bc1ae5fe2',1,'board.h']]]
+  ['kbhit_105',['kbhit',['../termlib_8h.html#a97e9b1fe8d4c010474637a654aad6566',1,'termlib.h']]]
 ];

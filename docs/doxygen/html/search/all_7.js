@@ -1,5 +1,9 @@
 var searchData=
 [
-  ['i_27',['I',['../structstats__t_1_1_p_i_e_c_e_s___s_t_r_c.html#aa7146dbb3117598b7205f0f7b71d6f9a',1,'stats_t::PIECES_STRC']]],
-  ['init_5frandom_5fgenerator_28',['init_random_generator',['../random__generator_8h.html#acb1c945f587d4b5e5c4a496fe8796e7e',1,'random_generator.c']]]
+  ['h_90',['h',['../struct_s_d_l___resize_event.html#a16611451551e3d15916bae723c3f59f7',1,'SDL_ResizeEvent::h()'],['../struct_s_d_l___surface.html#a16611451551e3d15916bae723c3f59f7',1,'SDL_Surface::h()'],['../struct_s_d_l___overlay.html#a16611451551e3d15916bae723c3f59f7',1,'SDL_Overlay::h()']]],
+  ['hat_91',['hat',['../struct_s_d_l___joy_hat_event.html#a6ba9d2ca9d3fcb96dd9d63af1f70b785',1,'SDL_JoyHatEvent']]],
+  ['hot_5fy_92',['hot_y',['../struct_s_d_l___cursor.html#aab682f16fa686135294fc8a2ebf8f64d',1,'SDL_Cursor']]],
+  ['hw_5favailable_93',['hw_available',['../struct_s_d_l___video_info.html#a6613f0d8296b4ae44189fd5d0ebaa56e',1,'SDL_VideoInfo']]],
+  ['hw_5foverlay_94',['hw_overlay',['../struct_s_d_l___overlay.html#a979a5eccb836fc5273c01bcdbda6b068',1,'SDL_Overlay']]],
+  ['hwdata_95',['hwdata',['../struct_s_d_l___surface.html#a9f77af70b86a21e83e7458fae93b781f',1,'SDL_Surface']]]
 ];

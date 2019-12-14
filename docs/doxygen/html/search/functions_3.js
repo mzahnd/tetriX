@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['random_5fgenerator_78',['random_generator',['../random__generator_8h.html#afd4ea4b87811315d07e3b4d3666038a1',1,'random_generator.c']]]
+  ['disp_5fn_5fclear_566',['disp_n_clear',['../display_8h.html#a352c62d92be7017b5ceaa0e217341500',1,'display.c']]]
 ];

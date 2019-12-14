@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['s_99',['S',['../structstats__t_1_1_p_i_e_c_e_s___s_t_r_c.html#a0c493647d06bff498c43169001af7497',1,'stats_t::PIECES_STRC']]],
-  ['shift_100',['shift',['../struct_g_a_m_e_b_o_a_r_d.html#aaba3c820f8f695d7e79c75ddc4f5ab51',1,'GAMEBOARD::shift()'],['../struct_p_i_e_c_e.html#aaba3c820f8f695d7e79c75ddc4f5ab51',1,'PIECE::shift()']]],
-  ['softdrop_101',['softDrop',['../struct_g_a_m_e_b_o_a_r_d.html#acec6ad5c0cbf6b5187c313b14fed68ef',1,'GAMEBOARD::softDrop()'],['../struct_p_i_e_c_e.html#acec6ad5c0cbf6b5187c313b14fed68ef',1,'PIECE::softDrop()']]],
-  ['status_102',['status',['../structstats__t.html#a6e27f49150e9a14580fb313cc2777e00',1,'stats_t']]]
+  ['rate_5fincr_813',['rate_incr',['../struct_s_d_l___audio_c_v_t.html#aa84e79f31da7eaa8715492a7655fc12e',1,'SDL_AudioCVT']]],
+  ['refcount_814',['refcount',['../struct_s_d_l___surface.html#a6022c8a609170c7365fb96e83cb2df48',1,'SDL_Surface']]],
+  ['rotate_815',['rotate',['../struct_g_a_m_e_b_o_a_r_d.html#a5e38bdb89055fcfbd6838a75400a42fe',1,'GAMEBOARD::rotate()'],['../struct_p_i_e_c_e.html#a5e38bdb89055fcfbd6838a75400a42fe',1,'PIECE::rotate()']]]
 ];

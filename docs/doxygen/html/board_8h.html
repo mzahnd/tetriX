@@ -127,7 +127,7 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a17afa58b2bc574dedcd1cc02e1fdf165"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tetromino's block number and how many blocks a tetromino has. <br /></td></tr>
 <tr class="separator:a17afa58b2bc574dedcd1cc02e1fdf165"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21ddfcf7ee9df16a820d99deb4fda263"><td class="memItemLeft" align="right" valign="top"><a id="a21ddfcf7ee9df16a820d99deb4fda263"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#a21ddfcf7ee9df16a820d99deb4fda263">pieces</a> { <br />
+<tr class="memitem:aa8acd4b6f8e39eb057cf562c3910c554"><td class="memItemLeft" align="right" valign="top"><a id="aa8acd4b6f8e39eb057cf562c3910c554"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#aa8acd4b6f8e39eb057cf562c3910c554">piecesType</a> { <br />
 &#160;&#160;<b>TETROMINO_NONE</b> = -1, 
 <b>TETROMINO_I</b> = 0, 
 <b>TETROMINO_J</b>, 
@@ -141,8 +141,8 @@ Enumerations</h2></td></tr>
 &#160;&#160;<b>TETROMINOS</b>
 <br />
  }</td></tr>
-<tr class="memdesc:a21ddfcf7ee9df16a820d99deb4fda263"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tetrominos definitions and number of tetrominos. <br /></td></tr>
-<tr class="separator:a21ddfcf7ee9df16a820d99deb4fda263"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:aa8acd4b6f8e39eb057cf562c3910c554"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tetrominos definitions and number of tetrominos. <br /></td></tr>
+<tr class="separator:aa8acd4b6f8e39eb057cf562c3910c554"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb17937ca06d418b5bc07c95e02c5a54"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54">shiftingTypes</a> { <a class="el" href="board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54ac157bdf0b85a40d2619cbc8bc1ae5fe2">NONE</a>, 
 <a class="el" href="board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54adb45120aafd37a973140edee24708065">LEFT</a>, 
 <a class="el" href="board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54aec8379af7490bb9eaaf579cf17876f38">RIGHT</a>
@@ -153,24 +153,27 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07ad73b275c7238a36a34f9ae1cb1c5804e">CELL_MOVING</a> = -1, 
 <a class="el" href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07a0b9a98181effaaf40d469af30f93f2d1">CELL_CLEAR</a> = 0, 
 <a class="el" href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07a8c1ddfdae169669995efcadf44d5d161">CELL_I</a>, 
-<b>CELL_J</b>, 
+<a class="el" href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07a11ba20e8a0002b0a7ed1ea520571c0b8">CELL_J</a>, 
 <br />
-&#160;&#160;<b>CELL_L</b>, 
-<b>CELL_O</b>, 
-<b>CELL_S</b>, 
-<b>CELL_T</b>, 
+&#160;&#160;<a class="el" href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07aad95b51b29be914e2af38a7662fe93f3">CELL_L</a>, 
+<a class="el" href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07a0cf38d8185def37c4379123c8441f88b">CELL_O</a>, 
+<a class="el" href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07a6ea13933cf61a1a4c45fca422903284a">CELL_S</a>, 
+<a class="el" href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07abd376ec8d831beae899d653b94f02e68">CELL_T</a>, 
 <br />
-&#160;&#160;<b>CELL_Z</b>
+&#160;&#160;<a class="el" href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07a52ec8dfaf122dc380e06398914af01f6">CELL_Z</a>
 <br />
  }</td></tr>
 <tr class="memdesc:a08c0d40577c76f7c726d2bf932b42c07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Board cell definitions.  <a href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07">More...</a><br /></td></tr>
 <tr class="separator:a08c0d40577c76f7c726d2bf932b42c07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf44f03c6ae7b279f60019d07e59891c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891c">coords</a> { <a class="el" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891ca90b0030b76559a27bf6099278d48d001">COORD_X</a>, 
-<a class="el" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891ca63ebf6d854e134f261b0f03b54fac644">COORD_Y</a>, 
-<a class="el" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891ca5a6527e7417dc323385004a43565feec">COORD_NUM</a>
+<tr><td colspan="2"><div class="groupHeader">GLext.h</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p>This file taken from "GLext.h" from the Jeff Molofee OpenGL tutorials. It is included here because glext.h is not available on some systems. If you don't want this version included, simply define "NO_SDL_GLEXT" </p>
+</div></td></tr>
+<tr class="memitem:a84609a7641d05359c95bd5d3ace5a4d3"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#a84609a7641d05359c95bd5d3ace5a4d3">coords</a> { <a class="el" href="board_8h.html#a84609a7641d05359c95bd5d3ace5a4d3a90b0030b76559a27bf6099278d48d001">COORD_X</a>, 
+<a class="el" href="board_8h.html#a84609a7641d05359c95bd5d3ace5a4d3a63ebf6d854e134f261b0f03b54fac644">COORD_Y</a>, 
+<a class="el" href="board_8h.html#a84609a7641d05359c95bd5d3ace5a4d3a5a6527e7417dc323385004a43565feec">COORD_NUM</a>
  }</td></tr>
-<tr class="memdesc:adf44f03c6ae7b279f60019d07e59891c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Coordinates definitions.  <a href="board_8h.html#adf44f03c6ae7b279f60019d07e59891c">More...</a><br /></td></tr>
-<tr class="separator:adf44f03c6ae7b279f60019d07e59891c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:a84609a7641d05359c95bd5d3ace5a4d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Coordinates definitions.  <a href="board_8h.html#a84609a7641d05359c95bd5d3ace5a4d3">More...</a><br /></td></tr>
+<tr class="separator:a84609a7641d05359c95bd5d3ace5a4d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -224,31 +227,43 @@ Martín E. Zahnd <a href="#" onclick="location.href='mai'+'lto:'+'mza'+'hn'+'d@i
 </td></tr>
 <tr><td class="fieldname"><a id="a08c0d40577c76f7c726d2bf932b42c07a0b9a98181effaaf40d469af30f93f2d1"></a>CELL_CLEAR&#160;</td><td class="fielddoc"><p>The cell is clear. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a08c0d40577c76f7c726d2bf932b42c07a8c1ddfdae169669995efcadf44d5d161"></a>CELL_I&#160;</td><td class="fielddoc"><p>The cell has a fixed piece. </p>
+<tr><td class="fieldname"><a id="a08c0d40577c76f7c726d2bf932b42c07a8c1ddfdae169669995efcadf44d5d161"></a>CELL_I&#160;</td><td class="fielddoc"><p>The cell has a fixed piece of type I. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a08c0d40577c76f7c726d2bf932b42c07a11ba20e8a0002b0a7ed1ea520571c0b8"></a>CELL_J&#160;</td><td class="fielddoc"><p>The cell has a fixed piece of type J. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a08c0d40577c76f7c726d2bf932b42c07aad95b51b29be914e2af38a7662fe93f3"></a>CELL_L&#160;</td><td class="fielddoc"><p>The cell has a fixed piece of type L. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a08c0d40577c76f7c726d2bf932b42c07a0cf38d8185def37c4379123c8441f88b"></a>CELL_O&#160;</td><td class="fielddoc"><p>The cell has a fixed piece of type O. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a08c0d40577c76f7c726d2bf932b42c07a6ea13933cf61a1a4c45fca422903284a"></a>CELL_S&#160;</td><td class="fielddoc"><p>The cell has a fixed piece of type S. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a08c0d40577c76f7c726d2bf932b42c07abd376ec8d831beae899d653b94f02e68"></a>CELL_T&#160;</td><td class="fielddoc"><p>The cell has a fixed piece of type T. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a08c0d40577c76f7c726d2bf932b42c07a52ec8dfaf122dc380e06398914af01f6"></a>CELL_Z&#160;</td><td class="fielddoc"><p>The cell has a fixed piece of type Z. </p>
 </td></tr>
 </table>
 
 </div>
 </div>
-<a id="adf44f03c6ae7b279f60019d07e59891c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adf44f03c6ae7b279f60019d07e59891c">&#9670;&nbsp;</a></span>coords</h2>
+<a id="a84609a7641d05359c95bd5d3ace5a4d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84609a7641d05359c95bd5d3ace5a4d3">&#9670;&nbsp;</a></span>coords</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891c">coords</a></td>
+          <td class="memname">enum typedef const GLdouble * <a class="el" href="board_8h.html#a84609a7641d05359c95bd5d3ace5a4d3">coords</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Coordinates definitions. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="adf44f03c6ae7b279f60019d07e59891ca90b0030b76559a27bf6099278d48d001"></a>COORD_X&#160;</td><td class="fielddoc"><p>X Coordinate. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a84609a7641d05359c95bd5d3ace5a4d3a90b0030b76559a27bf6099278d48d001"></a>COORD_X&#160;</td><td class="fielddoc"><p>X Coordinate. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="adf44f03c6ae7b279f60019d07e59891ca63ebf6d854e134f261b0f03b54fac644"></a>COORD_Y&#160;</td><td class="fielddoc"><p>Y Coordinate. </p>
+<tr><td class="fieldname"><a id="a84609a7641d05359c95bd5d3ace5a4d3a63ebf6d854e134f261b0f03b54fac644"></a>COORD_Y&#160;</td><td class="fielddoc"><p>Y Coordinate. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="adf44f03c6ae7b279f60019d07e59891ca5a6527e7417dc323385004a43565feec"></a>COORD_NUM&#160;</td><td class="fielddoc"><p>Number of coordinates. </p>
+<tr><td class="fieldname"><a id="a84609a7641d05359c95bd5d3ace5a4d3a5a6527e7417dc323385004a43565feec"></a>COORD_NUM&#160;</td><td class="fielddoc"><p>Number of coordinates. </p>
 </td></tr>
 </table>
 

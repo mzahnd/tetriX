@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['stats_5fmgmt_2eh_74',['stats_mgmt.h',['../stats__mgmt_8h.html',1,'']]]
+  ['joystick_2eh_528',['joystick.h',['../joystick_8h.html',1,'']]]
 ];

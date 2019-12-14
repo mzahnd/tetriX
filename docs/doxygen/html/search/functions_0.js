@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['board_5finit_75',['board_init',['../board_8h.html#a11fc500f2e7dfea6e7540ca1f8b2193c',1,'board.c']]]
+  ['asktimer_562',['askTimer',['../board_timer_8h.html#a2a7d312b386922eba37d4328bcac9df5',1,'boardTimer.c']]]
 ];

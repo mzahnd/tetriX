@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['pieces_114',['pieces',['../board_8h.html#a21ddfcf7ee9df16a820d99deb4fda263',1,'board.h']]]
+  ['joy_5fstats_882',['joy_stats',['../joystick_8h.html#ab08530c803c5f138f276a958fc268e7d',1,'joystick.h']]]
 ];
