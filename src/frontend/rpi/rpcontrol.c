@@ -153,7 +153,7 @@ rpi(void)
                     ///If it is play, it opens the play menu.
                 case PLAY:
                     disp_clear();
-                    //This is to avoid segmentation fault.
+                    //This is done to avoid segmentation fault.
                     while(surf() == PRESSED)
                     {
                         joy_update();
@@ -249,71 +249,71 @@ rpi(void)
 void
 play_tetris(board_t * gameboard)
 {
+    //COMMENTS ARE NOT IN DOXYGEN FORMAT
     //This is not ready, it has many things to change 
-    //
+    //RIGHT is defined in board.h but I also defined it in joystick.h
+    //Thats why there is a RGHT for joystick.h functions differnt from 
+    //RIGHT.
 
-    int k, n, flag;
-    int status = CENTER;
-    int lines[MAXH];
+    //Flag is used to 
+    int jmovement, flag=0;
+    //int lines[MAXH];
     stats_t gamestats;
 
+    //If the timer doesn't work it returns.
     if(initTimer(&gamestats))
     {
         return;
     }
+    //It shows the gameboard.
+    printG(gameboard->ask.board());
+    disp_update();
+    //It starts the timer.
+    startTimer();
 
-
+    //It is a loop until the game ends.
     while(!(gameboard->ask.endGame()))
     {
-        printG(gameboard->ask.board());
-        disp_update();
+        //It asks for the user instruction(joystick movement)
+        joy_update();
+        jmovement=surf();
 
-        startTimer();
-
-        while(askTimer() != true)
+        //Checks with timer function if the game needs to update.
+        if(askTimer() == true)
         {
-            joy_update();
-            status = surf();
-
-            switch(status)
-            {
-                case LFT:
-                    gameboard->piece.shift(LEFT);
-                    printG(gameboard->ask.board());
-                    disp_update();
-                    break;
-
-                case RGHT:
-                    gameboard->piece.shift(RIGHT);
-                    printG(gameboard->ask.board());
-                    disp_update();
-                    break;
-
-                case PRESSED:
-                    if(flag == 0)
-                    {
-                        gameboard->piece.rotate(RIGHT);
-                        printG(gameboard->ask.board());
-                        disp_update();
-                        flag++;
-                    }
-                    break;
-
-                case DOWN:
-                    gameboard->piece.softDrop();
-                    printG(gameboard->ask.board());
-                    disp_update();
-                    break;
-
-                case CENTER:
-                    flag = 0;
-                    break;
-
-            }
-
+            gameboard->update();
+            //Resets the timer.
+            startTimer();
         }
-
-
+        //If the user goes to the right.
+        else if(jmovement == RGHT)
+        {
+            gameboard->piece.shift(RIGHT);
+        }
+        //If the user goes to the left.
+        else if(jmovement == LFT)
+        {
+            gameboard->piece.shift(LEFT);
+        }
+        //If the user pressed the switch bottom.
+        //The flag is used so as to press switch bottom every time
+        //it needs to rotate the piece.
+        else if(jmovement == PRESSED && flag == 0)
+        {
+            gameboard->piece.rotate(RIGHT);
+            flag++;
+        }
+        //If the user goes down.
+        else if(jmovement == DOWN)
+        {
+            gameboard->piece.softDrop();
+        }
+        //This is to unblock the switch bottom.
+        else if(jmovement == CENTER)
+        {
+            flag = 0;
+        }
+/*
         //It doesnt work
         if((n = (gameboard->ask.filledRows(lines))) != 0)
         {
@@ -323,12 +323,10 @@ play_tetris(board_t * gameboard)
             }
             printG(gameboard->ask.board());
             disp_update();
-
         }
-        gameboard->update();
+*/      //It prints the gameboard after this changes.
         printG(gameboard->ask.board());
         disp_update();
-
     }
 
 
