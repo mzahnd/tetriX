@@ -134,7 +134,7 @@ initTimer (struct STATS * sts)
     NTIMER_T.level = NTIMER_T.stats -> level;
 
     // Initial time limit
-    TLIMIT = 1000.0;
+    TLIMIT = 500.0;
 
     // Start timer in case askTimer is called before another call to startTimer
     RESET_T0;

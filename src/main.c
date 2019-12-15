@@ -70,8 +70,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "backend/board/board.h"
+#include "frontend/rpi/display.h"
+#include "frontend/rpi/libs/disdrv.h"
+
 /// @privatesection
 // === Constants and Macro definitions ===
+
+#define RPI
+
+#ifdef RPI
+
+#    include "frontend/rpi/rpcontrol.h"
+
+#endif
+
+#ifdef ALLEGRO
+
+#endif
+
 
 // === Enumerations, structures and typedefs ===
 
@@ -85,13 +102,50 @@
 
 // === Global function definitions ===
 /// @publicsection
-
+/*int ma[20][10] = {
+    {1, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+    {1, 0, 0, 0, 0, 0, 0, 0, 0, 1}};
+*/
 /**
  * @brief Main
  */
 int
-main (int argc, char** argv)
+main(void)
 {
+    
+    /*disp_init();
+    disp_clear();
+    printG(&(ma[0][0]));
+    disp_update();*/
+    
+#ifdef RPI
+    if(rpi()==ERROR)
+    {
+        printf("Something went wrong on your RPI\n");
+    }
+    else
+   {
+        printf("Thanks for playing\n");
+    }
+#endif
 
     return (EXIT_SUCCESS);
 }

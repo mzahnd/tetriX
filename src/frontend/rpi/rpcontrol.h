@@ -38,6 +38,14 @@
 
 // === Constants and Macro definitions ===
 
+///@def NO ERRROR
+///@brief No errors.
+#define NO_ERROR 0
+
+///@def ERROR
+///@brief Error value, it indicates that something went wrong.
+#define ERROR -1
+
 // === Enumerations, structures and typedefs ===
 
 // === Global variables ===
@@ -45,6 +53,17 @@
 // === ROM Constant variables ===
 
 // === Global function definitions ===
+
+/**
+ * @brief Run game on Raspberry PI.
+ * 
+ * The game runs on a display and it is controlled by a Rpi.
+ * 
+ * @param None.
+ * 
+ * @return NO_ERROR==0
+ * @return ERROR=-1
+ */
 int
 rpi (void);
 

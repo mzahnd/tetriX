@@ -211,7 +211,7 @@ typedef struct GAMEBOARD
          * @brief Rotate the piece in the given direction
          * 
          * Automatically performs a board update but does not fixes the piece
-         * if the ratation cannot be performed.
+         * if the rotation cannot be performed.
          * 
          * @param direction LEFT or RIGHT, according to shiftingTypes enum
          * 

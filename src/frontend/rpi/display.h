@@ -45,6 +45,10 @@
 ///@brief Playboard width
 #    define MAXW 10
 
+///@def HIDDEN ROWS
+///@brief Rows that are not showned in the display from the gameboard.
+#define HIDDEN_ROWS 4
+
 ///@def MAX_COORD
 ///@brief Max value+1 to coord.x or coord.y
 #    define MAX 16
@@ -120,7 +124,7 @@ initMenu(void);
  * @return Nothing
  */
 void
-printB(int matrix[MAXH][MAXW]); 
+printG(int * matrix); 
 
 /**
  * @brief Print words.

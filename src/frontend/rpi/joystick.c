@@ -83,12 +83,12 @@ surf(void)
     ///If the X coordinate  too big(to the right)
     else if(coord.x>=DIRECTION_LIMIT)
     {
-        result=RIGHT;
+        result=RGHT;
     }
     ///If the X coordinate too small(to the left)
     else if(coord.x<=-DIRECTION_LIMIT)
     {
-        result=LEFT;
+        result=LFT;
     }
     ///If the Y coordinate too big(to the top)
     else if(coord.y>=DIRECTION_LIMIT)

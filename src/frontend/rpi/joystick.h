@@ -58,9 +58,9 @@ enum joy_stats
     ///Status=Nothing(It's impossible this to happen, it is just for precaution)
     NOTHING,
     ///Status=On the left.
-    LEFT,
+    LFT,
     ///Status=On the right.
-    RIGHT,
+    RGHT,
     ///Status=At the top.
     UP,
     ///Status=At the bottom.

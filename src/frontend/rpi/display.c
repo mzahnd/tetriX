@@ -187,6 +187,10 @@ letters_t hh = {
     {1, 0, 1, 0, 0}
 };
 
+
+void
+lineoff(int line [MAXW], int y);
+
 // === Function prototypes for private functions with file level scope ===
 
 /**
@@ -202,7 +206,7 @@ letters_t hh = {
  * @return SAME(1)
  */
 int
-sameLetter (letters_t * letter1, letters_t * letter2);
+sameLetter(letters_t * letter1, letters_t * letter2);
 
 /**
  * @brief Print letters on the board.
@@ -217,7 +221,7 @@ sameLetter (letters_t * letter1, letters_t * letter2);
  * @return Nothing
  */
 void
-printL (letters_t * letter, int x, int y);
+printL(letters_t * letter, int x, int y);
 
 // === ROM Constant variables with file level scope ===
 
@@ -228,19 +232,19 @@ printL (letters_t * letter, int x, int y);
 /// @publicsection
 
 void
-disp_n_clear (int width, int height, int x, int y)
+disp_n_clear(int width, int height, int x, int y)
 {
     int i, j;
     dcoord_t point;
 
     ///It goes threw cols&rows turning off the leds until it reaches
     ///the end of the square or the border of the display.
-    for ( i = 0; ((y + i) < MAX)&&(i < height); i++ )
+    for(i = 0; ((y + i) < MAX)&&(i < height); i++)
     {
         ///Y value will be the origin plus the actual row.
         point.y = (i + y);
 
-        for ( j = 0; (j + x) < MAX && (j < width); j++ )
+        for(j = 0; (j + x) < MAX && (j < width); j++)
         {
             ///X value will be the origin plus the actual column.
             point.x = (j + x);
@@ -253,7 +257,7 @@ disp_n_clear (int width, int height, int x, int y)
 }
 
 void
-printW (words_t word, int x, int y)
+printW(words_t word, int x, int y)
 {
     int k;
     /**
@@ -262,17 +266,17 @@ printW (words_t word, int x, int y)
      * Between the letters it puts a Space that changes if the letter is 
      * shorter(width).
      */
-    for ( k = 0; (x < MAX)&&(y < MAX)&&(word[k] != NULL); k++ )
+    for(k = 0; (x < MAX)&&(y < MAX)&&(word[k] != NULL); k++)
     {
         ///Prints the letter.
         printL(word[k], x, y);
         ///If it is letter M it needs more space.
-        if ( sameLetter(word[k], &mm) )
+        if(sameLetter(word[k], &mm))
         {
             x += 2;
         }
             ///If it is a shorter letter, it doesn't as much space as the others.
-        else if ( ((*(word[k]))[4][2] == 0)&&(!sameLetter(word[k], &pp)) )
+        else if(((*(word[k]))[4][2] == 0)&&(!sameLetter(word[k], &pp)))
         {
             x -= 1;
         }
@@ -282,40 +286,56 @@ printW (words_t word, int x, int y)
 }
 
 void
-printB (int matrix[MAXH][MAXW])
+printG(int *matrix)
 {
     int i, j;
     dcoord_t point;
+    ///Pointer goes to the first element that first shows.
+    matrix=matrix+(MAXW*HIDDEN_ROWS);
 
     ///It goes threw cols&rows of the game board printing the 
     ///objects. It starts from the 4° column because the maximum it can show
     ///is a matrix with 16 columns of height and this one has 20.
-    for ( i = 4; i < MAXH; i++ )
+    for(i = 4; i < MAXH; i++)
     {
-        point.y = i;
+        point.y = (i - 4);
 
-        for ( j = 0; j < MAXW; j++ )
+        for(j = 0; j < MAX; j++)
         {
-            point.x = (j + 3);
-
-            if ( matrix[i][j] == 0 )
+            point.x = j;
+            
+            /**
+             * It prints columns at both sides(right and left) to mark the
+             * border of the  map.
+             */  
+            if((j<3)||(j>12))
+            {
+                disp_write(point, D_ON);
+            }
+            
+            /**
+             * If it isn't in a border line, it prints the matrix.
+             */
+            else if((*matrix) == 0)
             {
                 disp_write(point, D_OFF);
+                matrix++;
             }
 
             else
             {
                 disp_write(point, D_ON);
+                matrix++;
             }
         }
     }
 }
 
 void
-initMenu (void)
+initMenu(void)
 {
     int i;
-    for ( i = 0; i <= 5; i++ )
+    for(i = 0; i <= 5; i++)
     {
         /**
          * It prints the letter by letter, turning on and off them on 
@@ -325,35 +345,35 @@ initMenu (void)
         printL(&tt, 0, 0);
         printL(&tt, 0, 8);
 
-        if ( i > 0 )
+        if(i > 0)
         {
             printL(&ee, 3, 2);
             printL(&ee, 3, 10);
         }
-        if ( i > 1 )
+        if(i > 1)
         {
             printL(&tt, 5, 0);
             printL(&tt, 5, 8);
         }
-        if ( i > 2 )
+        if(i > 2)
         {
             printL(&rr, 8, 2);
             printL(&rr, 8, 10);
         }
-        if ( i > 3 )
+        if(i > 3)
         {
             printL(&ii, 11, 0);
             printL(&ii, 11, 8);
         }
-        if ( i > 4 )
+        if(i > 4)
         {
             printL(&ss, 13, 2);
             printL(&ss, 13, 10);
         }
         disp_update();
-        sleep(1);
+        //sleep(1);
         disp_clear();
-        sleep(1);
+        //sleep(1);
     }
     ///At the  end it just show the world TETRIS at the top.
     printL(&tt, 0, 0);
@@ -371,7 +391,7 @@ initMenu (void)
 // === Local function definitions ===
 
 void
-printL (letters_t * letter, int x, int y)
+printL(letters_t * letter, int x, int y)
 {
     int i, j;
     dcoord_t point;
@@ -381,15 +401,15 @@ printL (letters_t * letter, int x, int y)
      * in the position of the display given by the user until it is
      * on a border of the display.
      */
-    for ( i = 0; ((i + y) < MAX)&&(i < LROWS); i++ )
+    for(i = 0; ((i + y) < MAX)&&(i < LROWS); i++)
     {
         point.y = (i + y);
 
-        for ( j = 0; ((j + x) < MAX)&&(j < LCOLS); j++ )
+        for(j = 0; ((j + x) < MAX)&&(j < LCOLS); j++)
         {
             point.x = (j + x);
 
-            if ( (*letter)[i][j] == 0 )
+            if((*letter)[i][j] == 0)
             {
                 disp_write(point, D_OFF);
             }
@@ -403,7 +423,7 @@ printL (letters_t * letter, int x, int y)
 }
 
 int
-sameLetter (letters_t * letter1, letters_t * letter2)
+sameLetter(letters_t * letter1, letters_t * letter2)
 {
     int i, j;
     ///If it doesn't finds out any different element it will be the same.
@@ -411,15 +431,34 @@ sameLetter (letters_t * letter1, letters_t * letter2)
 
     ///It goes threw every element of the matrices of letters comparing
     ///every element.If it finds something different, it returns with NOT_SAME.
-    for ( i = 0; (i < LROWS)&&(result == SAME); i++ )
+    for(i = 0; (i < LROWS)&&(result == SAME); i++)
     {
-        for ( j = 0; j < LCOLS; j++ )
+        for(j = 0; j < LCOLS; j++)
         {
-            if ( ((*letter1)[i][j]) != ((*letter2)[i][j]) )
+            if(((*letter1)[i][j]) != ((*letter2)[i][j]))
             {
                 result = NOT_SAME;
             }
         }
     }
     return result;
+}
+
+
+
+void
+lineoff(int line [MAXW], int y)
+{
+    int j;
+    dcoord_t point;
+    
+    point.y=y;
+    
+    for(j=3;j<(MAXW-3);j++)
+    {
+        point.x=j;
+        disp_write(point,D_OFF);
+        disp_update();
+    }
+    return;
 }
