@@ -187,10 +187,6 @@ letters_t hh = {
     {1, 0, 1, 0, 0}
 };
 
-
-void
-lineoff(int line [MAXW], int y);
-
 // === Function prototypes for private functions with file level scope ===
 
 /**
@@ -227,7 +223,6 @@ printL(letters_t * letter, int x, int y);
 
 // === Static variables and constant variables with file level scope ===
 
-
 // === Global function definitions ===
 /// @publicsection
 
@@ -251,9 +246,7 @@ disp_n_clear(int width, int height, int x, int y)
             ///It turns off the point.
             disp_write(point, D_OFF);
         }
-
     }
-
 }
 
 void
@@ -291,31 +284,31 @@ printG(int *matrix)
     int i, j;
     dcoord_t point;
     ///Pointer goes to the first element that first shows.
-    matrix=matrix+(MAXW*HIDDEN_ROWS);
+    //matrix=matrix+(BOARD_WIDTH*HIDDEN_ROWS);
 
     ///It goes threw cols&rows of the game board printing the 
     ///objects. It starts from the 4° column because the maximum it can show
     ///is a matrix with 16 columns of height and this one has 20.
-    for(i = 4; i < MAXH; i++)
+    for(i = 0; i < BOARD_HEIGHT; i++)
     {
-        point.y = (i - 4);
+        point.y = i;
 
         for(j = 0; j < MAX; j++)
         {
             point.x = j;
-            
+
             /**
              * It prints columns at both sides(right and left) to mark the
              * border of the  map.
-             */  
-            if((j<3)||(j>12))
+             */
+            if((j < 3) || (j > 12))
             {
                 disp_write(point, D_ON);
             }
-            
-            /**
-             * If it isn't in a border line, it prints the matrix.
-             */
+
+                /**
+                 * If it isn't in a border line, it prints the matrix.
+                 */
             else if((*matrix) == 0)
             {
                 disp_write(point, D_OFF);
@@ -371,9 +364,9 @@ initMenu(void)
             printL(&ss, 13, 10);
         }
         disp_update();
-        //sleep(1);
+        usleep(200000);
         disp_clear();
-        //sleep(1);
+        usleep(200000);
     }
     ///At the  end it just show the world TETRIS at the top.
     printL(&tt, 0, 0);
@@ -444,20 +437,20 @@ sameLetter(letters_t * letter1, letters_t * letter2)
     return result;
 }
 
-
-
 void
-lineoff(int line [MAXW], int y)
+lineoff(int line [BOARD_WIDTH], int y)
 {
     int j;
     dcoord_t point;
-    
-    point.y=y;
-    
-    for(j=3;j<(MAXW-3);j++)
+
+    point.y = y;
+
+    ///It truns off every led of the line with a delay of 0.1 seconds.
+    for(j = 0; j < BOARD_WIDTH; j++)
     {
-        point.x=j;
-        disp_write(point,D_OFF);
+        point.x = (j + 3);
+        disp_write(point, D_OFF);
+        usleep(100000);
         disp_update();
     }
     return;

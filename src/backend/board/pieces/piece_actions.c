@@ -1256,9 +1256,15 @@ verifyFixedPieces (void)
         // was moved in this axis
         y = pieceArr[currentPiece.type][currentPiece.orientation][ \
                 i][COORD_Y] + currentPiece.move[COORD_Y];
+        
+        //ATTENTION, YOU DID THIS.
+        if (y >= currentPiece.board.height)
+        {
+            count = -1;
+        }
 
         // Does it get out of the board?
-        if ( (x < currentPiece.board.width) &&
+        else if ( (x < currentPiece.board.width) &&
              (y < currentPiece.board.height) &&
              x >= 0 && y >= 0 )
         {
@@ -1267,6 +1273,7 @@ verifyFixedPieces (void)
             (CELL(x, y) > CELL_CLEAR) ? (count = -1) : (count++);
 
         }
+        
         else
         {
             count = -1;

@@ -36,18 +36,9 @@
 
 // === Libraries and header files ===
 
+#include "../../backend/board/board.h"
+
 // === Constants and Macro definitions ===
-///@def PLAYBOARD_HEIGHT
-///@brief Playboard height
-#    define MAXH 20
-
-///@def PLAYBOARD_WIDTH
-///@brief Playboard width
-#    define MAXW 10
-
-///@def HIDDEN ROWS
-///@brief Rows that are not showned in the display from the gameboard.
-#define HIDDEN_ROWS 4
 
 ///@def MAX_COORD
 ///@brief Max value+1 to coord.x or coord.y
@@ -158,6 +149,17 @@ printW(words_t word, int x, int y);
 void
 disp_n_clear(int width, int height, int x, int y); 
 
-
+/**
+ * @brief Animation.
+ * 
+ * It shows a fulled line that it is cleared.
+ * 
+ * @param An array with each line that must be cleared.
+ * @param The number of the column to be cleared.
+ * 
+ * @return Nothing
+*/
+void
+lineoff(int line [BOARD_WIDTH], int y);
 
 #endif /* DISPLAY_H */

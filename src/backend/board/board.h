@@ -39,7 +39,11 @@
 // === Constants and Macro definitions ===
 /// @def BOARD_HEIGHT
 /// @brief Board Height
-#    define BOARD_HEIGHT    20
+//#ifdef ALLEGRO
+//#    define BOARD_HEIGHT    20
+//#elif RPI
+#   define  BOARD_HEIGHT    16
+//#endif
 
 /// @def BOARD_WIDTH
 /// @brief Board Width
@@ -91,9 +95,17 @@ enum shiftingTypes
     /// Don't shift piece
     NONE,
     /// Shift piece one position to the left
+    CENTER,
+    
     LEFT,
     /// Shift piece one position to the right
-    RIGHT
+    RIGHT,
+    
+    UP,
+    
+    DOWN,
+    
+    PRESSED
 };
 
 /**

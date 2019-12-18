@@ -77,10 +77,9 @@
 /// @privatesection
 // === Constants and Macro definitions ===
 
-#define RPI
-
 #ifdef RPI
-
+///This definition allows the use of usleep()
+#    define __USE_MISC
 #    include "frontend/rpi/rpcontrol.h"
 
 #endif
@@ -123,26 +122,27 @@
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
     {1, 0, 0, 0, 0, 0, 0, 0, 0, 1}};
-*/
+ */
+
 /**
  * @brief Main
  */
 int
 main(void)
 {
-    
+
     /*disp_init();
     disp_clear();
     printG(&(ma[0][0]));
     disp_update();*/
-    
+
 #ifdef RPI
-    if(rpi()==ERROR)
+    if(rpi() == ERROR)
     {
         printf("Something went wrong on your RPI\n");
     }
     else
-   {
+    {
         printf("Thanks for playing\n");
     }
 #endif

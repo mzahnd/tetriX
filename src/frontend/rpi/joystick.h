@@ -49,28 +49,6 @@
 
 // === Enumerations, structures and typedefs ===
 
-/**
-* @brief  Different joystick's status
-*         
-*/
-enum joy_stats
-{
-    ///Status=Nothing(It's impossible this to happen, it is just for precaution)
-    NOTHING,
-    ///Status=On the left.
-    LFT,
-    ///Status=On the right.
-    RGHT,
-    ///Status=At the top.
-    UP,
-    ///Status=At the bottom.
-    DOWN,
-    ///Status=In the center.
-    CENTER,
-    ///Status=JoySwitch pressed.
-    PRESSED
-};
-
 // === Global variables ===
 
 // === ROM Constant variables ===

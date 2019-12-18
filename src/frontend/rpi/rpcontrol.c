@@ -34,22 +34,23 @@
 // === Libraries and header files ===
 #include <stdio.h>
 #include <stdlib.h>
-#include <pthread.h>
 #include <unistd.h>
-#include <stdbool.h>    // For bool, true and false
+#include <stdbool.h> 
 
 #include "display.h"
 #include "joystick.h"
+
 #include "libs/disdrv.h"
 #include "libs/joydrv.h"
 #include "audiolib/libaudio.h"
 #include "audiolib/SDL/Include/SDL.h"
+
+#include "../../backend/board/board.h"
 #include "../../backend/stats/stats_mgmt.h"
 #include "../../backend/board/timer/boardTimer.h"
 
 // This file
 #include "rpcontrol.h"
-#include "../../backend/board/board.h"
 
 /// @privatesection
 // === Constants and Macro definitions ===
@@ -68,6 +69,7 @@ play_tetris(board_t * gameboard);
 // === Static variables and constant variables with file level scope ===
 
 // === Global function definitions ===
+
 /// @publicsection
 
 int
@@ -136,11 +138,11 @@ rpi(void)
 
         ///If the user goes right or left, it increase or decrease
         ///the counter that goes trew the array of words.
-        if(surf() == RGHT)
+        if(surf() == RIGHT)
         {
             k++;
         }
-        else if(surf() == LFT)
+        else if(surf() == LEFT)
         {
             k--;
         }
@@ -196,11 +198,11 @@ rpi(void)
          * on the array. If it is pointing a NULL, it goes back(or forward)
          * so as to comeback to the last word. 
          */
-        if((wordsArray[k] == NULL)&&(surf() == RGHT))
+        if((wordsArray[k] == NULL)&&(surf() == RIGHT))
         {
             k--;
         }
-        else if((wordsArray[k] == NULL)&&(surf() == LFT))
+        else if((wordsArray[k] == NULL)&&(surf() == LEFT))
         {
             k++;
         }
@@ -255,78 +257,101 @@ play_tetris(board_t * gameboard)
     //Thats why there is a RGHT for joystick.h functions differnt from 
     //RIGHT.
 
-    //Flag is used to 
-    int jmovement, flag=0;
-    //int lines[MAXH];
-    stats_t gamestats;
+    int jmovement;
 
-    //If the timer doesn't work it returns.
-    if(initTimer(&gamestats))
-    {
-        return;
-    }
-    //It shows the gameboard.
-    printG(gameboard->ask.board());
+    int flag = 0;
+
+    int k, n;
+    int lines[BOARD_HEIGHT];
+
+    grid_t * board = gameboard->ask.board();
+
+    /*
+        //If the timer doesn't work it returns.
+  
+        //stats_t gamestats; 
+ 
+        //if(initTimer(&gamestats))
+        //{
+        //    return;
+        //}
+        //It shows the gameboard.
+     */
+    printG(board);
     disp_update();
-    //It starts the timer.
-    startTimer();
-
+    /*
+        //It starts the timer.
+        //startTimer();
+     */
     //It is a loop until the game ends.
     while(!(gameboard->ask.endGame()))
     {
         //It asks for the user instruction(joystick movement)
         joy_update();
-        jmovement=surf();
+        jmovement = surf();
 
+        /*
         //Checks with timer function if the game needs to update.
-        if(askTimer() == true)
-        {
-            gameboard->update();
-            //Resets the timer.
-            startTimer();
-        }
+        //if(askTimer() == true)
+        //{
+        //Resets the timer.
+        //    startTimer();
+        //}
+         */
+
         //If the user goes to the right.
-        else if(jmovement == RGHT)
+        if(jmovement == RIGHT)
         {
             gameboard->piece.shift(RIGHT);
         }
-        //If the user goes to the left.
-        else if(jmovement == LFT)
+            //If the user goes to the left.
+        else if(jmovement == LEFT)
         {
             gameboard->piece.shift(LEFT);
         }
-        //If the user pressed the switch bottom.
-        //The flag is used so as to press switch bottom every time
-        //it needs to rotate the piece.
+
+        else if(jmovement == UP && flag == 0)
+        {
+            gameboard->piece.rotate(LEFT);
+            flag++;
+        }
+            //If the user pressed the switch bottom.
+            //The flag is used so as to press switch bottom every time
+            //it needs to rotate the piece.
         else if(jmovement == PRESSED && flag == 0)
         {
             gameboard->piece.rotate(RIGHT);
             flag++;
         }
-        //If the user goes down.
-        else if(jmovement == DOWN)
+            //If the user goes down.
+        else if(jmovement == DOWN && flag == 0)
         {
             gameboard->piece.softDrop();
+            flag++;
         }
-        //This is to unblock the switch bottom.
+            //This is to unblock the switch bottom.
         else if(jmovement == CENTER)
         {
             flag = 0;
         }
-/*
-        //It doesnt work
-        if((n = (gameboard->ask.filledRows(lines))) != 0)
+
+        n = gameboard->ask.filledRows(lines);
+        if(n != 0)
         {
-            for(k = 0; k <= n; k++)
+            for(k = 0; k < n; k++)
             {
-                gameboard->clear.line(lines, lines[k]);
+                lineoff(lines, lines[k]);
+                gameboard->clear.line(lines, k);
             }
-            printG(gameboard->ask.board());
-            disp_update();
         }
-*/      //It prints the gameboard after this changes.
-        printG(gameboard->ask.board());
+
+        gameboard->update();
+
+        //It prints the gameboard after this changes.
+        printG(board);
         disp_update();
+
+        usleep(200000);
     }
 
 

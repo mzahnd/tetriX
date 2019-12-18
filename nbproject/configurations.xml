@@ -124,6 +124,7 @@
       <compileType>
         <cTool>
           <standard>10</standard>
+          <commandLine>-D RPI</commandLine>
           <warningLevel>2</warningLevel>
         </cTool>
         <linkerTool>
@@ -168,8 +169,6 @@
       </item>
       <item path="src/backend/board/board.c" ex="false" tool="0" flavor2="0">
       </item>
-      <item path="src/backend/board/board.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="src/backend/board/pieces/piece_actions.c"
             ex="false"
             tool="0"
@@ -188,11 +187,6 @@
       <item path="src/backend/board/random_generator.h"
             ex="false"
             tool="3"
-            flavor2="0">
-      </item>
-      <item path="src/backend/board/timer/boardTimer.c"
-            ex="false"
-            tool="0"
             flavor2="0">
       </item>
       <item path="src/backend/board/timer/boardTimer.h"
@@ -362,6 +356,7 @@
       <compileType>
         <cTool>
           <standard>10</standard>
+          <commandLine>-D ALLEGRO</commandLine>
           <warningLevel>2</warningLevel>
         </cTool>
       </compileType>

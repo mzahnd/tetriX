@@ -39,6 +39,8 @@
 #include "libs/joydrv.h"
 #include "joystick.h"
 
+#include "../../backend/board/board.h"
+
 
 /// @privatesection
 // === Constants and Macro definitions ===
@@ -83,12 +85,12 @@ surf(void)
     ///If the X coordinate  too big(to the right)
     else if(coord.x>=DIRECTION_LIMIT)
     {
-        result=RGHT;
+        result=RIGHT;
     }
     ///If the X coordinate too small(to the left)
     else if(coord.x<=-DIRECTION_LIMIT)
     {
-        result=LFT;
+        result=LEFT;
     }
     ///If the Y coordinate too big(to the top)
     else if(coord.y>=DIRECTION_LIMIT)
@@ -109,7 +111,7 @@ surf(void)
     ///direction or another but jut for precaution there is NOTHING state.
     else
     {
-        result=NOTHING;
+        result=NONE;
     }
     return result;
 }
