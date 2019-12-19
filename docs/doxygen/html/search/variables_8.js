@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['id_788',['id',['../struct_s_d_l___c_dtrack.html#a7068f76889d34283f1a36b5a20ef4b04',1,'SDL_CDtrack::id()'],['../struct_s_d_l___c_d.html#a7441ef0865bcb3db9b8064dd7375c1ea',1,'SDL_CD::id()']]]
+  ['level_149',['level',['../struct_s_t_a_t_s.html#acf4d33ee4cff36f69b924471174dcb11',1,'STATS']]],
+  ['line_150',['line',['../struct_g_a_m_e_b_o_a_r_d.html#aa57283c6e542b6635c353acce43cecb8',1,'GAMEBOARD']]],
+  ['lines_151',['lines',['../struct_s_t_a_t_s.html#a924390dd2e09d91ff83a8d6b1e020300',1,'STATS']]]
 ];

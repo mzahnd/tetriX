@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.16"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>tetriCs: src/frontend/rpi/joystick.h File Reference</title>
+<title>tetriX: src/frontend/rpi/joystick.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">tetriCs
+   <div id="projectname">tetriX
    &#160;<span id="projectnumber">0.0.1</span>
    </div>
    <div id="projectbrief">Tetris written in C for Linux and Raspberry Pi</div>
@@ -69,7 +69,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#define-members">Macros</a> &#124;
-<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">joystick.h File Reference</div>  </div>
@@ -90,22 +89,6 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>CENTER_LIMIT</b>&#160;&#160;&#160;60</td></tr>
 <tr class="separator:a94a13df940d0cad6db9cd04917501cf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:ab08530c803c5f138f276a958fc268e7d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="joystick_8h.html#ab08530c803c5f138f276a958fc268e7d">joy_stats</a> { <br />
-&#160;&#160;<a class="el" href="joystick_8h.html#ab08530c803c5f138f276a958fc268e7dacfe24a7b308a82835c8a9a9a89bc4ca2">NOTHING</a>, 
-<a class="el" href="joystick_8h.html#ab08530c803c5f138f276a958fc268e7dadb45120aafd37a973140edee24708065">LEFT</a>, 
-<a class="el" href="joystick_8h.html#ab08530c803c5f138f276a958fc268e7daec8379af7490bb9eaaf579cf17876f38">RIGHT</a>, 
-<a class="el" href="joystick_8h.html#ab08530c803c5f138f276a958fc268e7daba595d8bca8bc5e67c37c0a9d89becfa">UP</a>, 
-<br />
-&#160;&#160;<a class="el" href="joystick_8h.html#ab08530c803c5f138f276a958fc268e7da9b0b4a95b99523966e0e34ffdadac9da">DOWN</a>, 
-<a class="el" href="joystick_8h.html#ab08530c803c5f138f276a958fc268e7da2159ffbd3a68037511ab5ab4dd35ace7">CENTER</a>, 
-<a class="el" href="joystick_8h.html#ab08530c803c5f138f276a958fc268e7da5ef9a100ac8b4b8d6dec477c377b7901">PRESSED</a>
-<br />
- }</td></tr>
-<tr class="memdesc:ab08530c803c5f138f276a958fc268e7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Different joystick's status.  <a href="joystick_8h.html#ab08530c803c5f138f276a958fc268e7d">More...</a><br /></td></tr>
-<tr class="separator:ab08530c803c5f138f276a958fc268e7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a7a3807facf093801fe3daf300804f175"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="joystick_8h.html#a7a3807facf093801fe3daf300804f175">surf</a> (void)</td></tr>
@@ -120,40 +103,7 @@ Functions</h2></td></tr>
 Martín E. Zahnd <a href="#" onclick="location.href='mai'+'lto:'+'mza'+'hn'+'d@i'+'tb'+'a.e'+'du'+'.ar'; return false;">mzahn<span style="display: none;">.nosp@m.</span>d@it<span style="display: none;">.nosp@m.</span>ba.ed<span style="display: none;">.nosp@m.</span>u.ar</a></dd></dl>
 <dl class="section date"><dt>Date</dt><dd>10/12/2019, 17:51</dd></dl>
 <dl class="section copyright"><dt>Copyright</dt><dd>GNU General Public License v3 </dd></dl>
-</div><h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="ab08530c803c5f138f276a958fc268e7d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab08530c803c5f138f276a958fc268e7d">&#9670;&nbsp;</a></span>joy_stats</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="joystick_8h.html#ab08530c803c5f138f276a958fc268e7d">joy_stats</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Different joystick's status. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ab08530c803c5f138f276a958fc268e7dacfe24a7b308a82835c8a9a9a89bc4ca2"></a>NOTHING&#160;</td><td class="fielddoc"><p>Status=Nothing(It's impossible this to happen, it is just for precaution) </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ab08530c803c5f138f276a958fc268e7dadb45120aafd37a973140edee24708065"></a>LEFT&#160;</td><td class="fielddoc"><p>Status=On the left. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ab08530c803c5f138f276a958fc268e7daec8379af7490bb9eaaf579cf17876f38"></a>RIGHT&#160;</td><td class="fielddoc"><p>Status=On the right. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ab08530c803c5f138f276a958fc268e7daba595d8bca8bc5e67c37c0a9d89becfa"></a>UP&#160;</td><td class="fielddoc"><p>Status=At the top. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ab08530c803c5f138f276a958fc268e7da9b0b4a95b99523966e0e34ffdadac9da"></a>DOWN&#160;</td><td class="fielddoc"><p>Status=At the bottom. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ab08530c803c5f138f276a958fc268e7da2159ffbd3a68037511ab5ab4dd35ace7"></a>CENTER&#160;</td><td class="fielddoc"><p>Status=In the center. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ab08530c803c5f138f276a958fc268e7da5ef9a100ac8b4b8d6dec477c377b7901"></a>PRESSED&#160;</td><td class="fielddoc"><p>Status=JoySwitch pressed. </p>
-</td></tr>
-</table>
-
-</div>
-</div>
-<h2 class="groupheader">Function Documentation</h2>
+</div><h2 class="groupheader">Function Documentation</h2>
 <a id="a7a3807facf093801fe3daf300804f175"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7a3807facf093801fe3daf300804f175">&#9670;&nbsp;</a></span>surf()</h2>
 

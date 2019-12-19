@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.16"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>tetriCs: src/frontend/rpi/joystick.h Source File</title>
+<title>tetriX: src/frontend/rpi/joystick.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">tetriCs
+   <div id="projectname">tetriX
    &#160;<span id="projectnumber">0.0.1</span>
    </div>
    <div id="projectbrief">Tetris written in C for Linux and Raspberry Pi</div>
@@ -101,41 +101,22 @@ $(function() {
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">// === Enumerations, structures and typedefs ===</span></div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">enum</span> <a class="code" href="joystick_8h.html#ab08530c803c5f138f276a958fc268e7d">joy_stats</a></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;{</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <a class="code" href="joystick_8h.html#ab08530c803c5f138f276a958fc268e7dacfe24a7b308a82835c8a9a9a89bc4ca2">NOTHING</a>,</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <a class="code" href="joystick_8h.html#ab08530c803c5f138f276a958fc268e7dadb45120aafd37a973140edee24708065">LEFT</a>,</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <a class="code" href="joystick_8h.html#ab08530c803c5f138f276a958fc268e7daec8379af7490bb9eaaf579cf17876f38">RIGHT</a>,</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <a class="code" href="joystick_8h.html#ab08530c803c5f138f276a958fc268e7daba595d8bca8bc5e67c37c0a9d89becfa">UP</a>,</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <a class="code" href="joystick_8h.html#ab08530c803c5f138f276a958fc268e7da9b0b4a95b99523966e0e34ffdadac9da">DOWN</a>,</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <a class="code" href="joystick_8h.html#ab08530c803c5f138f276a958fc268e7da2159ffbd3a68037511ab5ab4dd35ace7">CENTER</a>,</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <a class="code" href="joystick_8h.html#ab08530c803c5f138f276a958fc268e7da5ef9a100ac8b4b8d6dec477c377b7901">PRESSED</a></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;};</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">// === Global variables ===</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment">// === ROM Constant variables ===</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">// === Global function definitions ===</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="keywordtype">int</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<a class="code" href="joystick_8h.html#a7a3807facf093801fe3daf300804f175">surf</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* JOYSTICK_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">// === Global variables ===</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">// === ROM Constant variables ===</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">// === Global function definitions ===</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keywordtype">int</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<a class="code" href="joystick_8h.html#a7a3807facf093801fe3daf300804f175">surf</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* JOYSTICK_H */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aboard_8h_html_aeb17937ca06d418b5bc07c95e02c5a54adb45120aafd37a973140edee24708065"><div class="ttname"><a href="board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54adb45120aafd37a973140edee24708065">LEFT</a></div><div class="ttdoc">Shift piece one position to the left.</div><div class="ttdef"><b>Definition:</b> board.h:93</div></div>
-<div class="ttc" id="ajoystick_8h_html_ab08530c803c5f138f276a958fc268e7d"><div class="ttname"><a href="joystick_8h.html#ab08530c803c5f138f276a958fc268e7d">joy_stats</a></div><div class="ttdeci">joy_stats</div><div class="ttdoc">Different joystick's status.</div><div class="ttdef"><b>Definition:</b> joystick.h:55</div></div>
-<div class="ttc" id="ajoystick_8h_html_ab08530c803c5f138f276a958fc268e7dacfe24a7b308a82835c8a9a9a89bc4ca2"><div class="ttname"><a href="joystick_8h.html#ab08530c803c5f138f276a958fc268e7dacfe24a7b308a82835c8a9a9a89bc4ca2">NOTHING</a></div><div class="ttdoc">Status=Nothing(It's impossible this to happen, it is just for precaution)</div><div class="ttdef"><b>Definition:</b> joystick.h:58</div></div>
-<div class="ttc" id="ajoystick_8h_html_ab08530c803c5f138f276a958fc268e7daec8379af7490bb9eaaf579cf17876f38"><div class="ttname"><a href="joystick_8h.html#ab08530c803c5f138f276a958fc268e7daec8379af7490bb9eaaf579cf17876f38">RIGHT</a></div><div class="ttdoc">Status=On the right.</div><div class="ttdef"><b>Definition:</b> joystick.h:62</div></div>
+<div class="ttc" id="aboard_8h_html_aeb17937ca06d418b5bc07c95e02c5a54adb45120aafd37a973140edee24708065"><div class="ttname"><a href="board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54adb45120aafd37a973140edee24708065">LEFT</a></div><div class="ttdoc">Shift piece one position to the left.</div><div class="ttdef"><b>Definition:</b> board.h:102</div></div>
 <div class="ttc" id="ajoystick_8h_html_a7a3807facf093801fe3daf300804f175"><div class="ttname"><a href="joystick_8h.html#a7a3807facf093801fe3daf300804f175">surf</a></div><div class="ttdeci">int surf(void)</div><div class="ttdoc">Analyze the joystick status.</div><div class="ttdef"><b>Definition:</b> joystick.c:61</div></div>
-<div class="ttc" id="ajoystick_8h_html_ab08530c803c5f138f276a958fc268e7dadb45120aafd37a973140edee24708065"><div class="ttname"><a href="joystick_8h.html#ab08530c803c5f138f276a958fc268e7dadb45120aafd37a973140edee24708065">LEFT</a></div><div class="ttdoc">Status=On the left.</div><div class="ttdef"><b>Definition:</b> joystick.h:60</div></div>
-<div class="ttc" id="ajoystick_8h_html_ab08530c803c5f138f276a958fc268e7daba595d8bca8bc5e67c37c0a9d89becfa"><div class="ttname"><a href="joystick_8h.html#ab08530c803c5f138f276a958fc268e7daba595d8bca8bc5e67c37c0a9d89becfa">UP</a></div><div class="ttdoc">Status=At the top.</div><div class="ttdef"><b>Definition:</b> joystick.h:64</div></div>
 <div class="ttc" id="ajoystick_8h_html"><div class="ttname"><a href="joystick_8h.html">joystick.h</a></div><div class="ttdoc">;</div></div>
-<div class="ttc" id="ajoystick_8h_html_ab08530c803c5f138f276a958fc268e7da9b0b4a95b99523966e0e34ffdadac9da"><div class="ttname"><a href="joystick_8h.html#ab08530c803c5f138f276a958fc268e7da9b0b4a95b99523966e0e34ffdadac9da">DOWN</a></div><div class="ttdoc">Status=At the bottom.</div><div class="ttdef"><b>Definition:</b> joystick.h:66</div></div>
-<div class="ttc" id="ajoystick_8h_html_ab08530c803c5f138f276a958fc268e7da5ef9a100ac8b4b8d6dec477c377b7901"><div class="ttname"><a href="joystick_8h.html#ab08530c803c5f138f276a958fc268e7da5ef9a100ac8b4b8d6dec477c377b7901">PRESSED</a></div><div class="ttdoc">Status=JoySwitch pressed.</div><div class="ttdef"><b>Definition:</b> joystick.h:70</div></div>
-<div class="ttc" id="astructjcoord__t_html"><div class="ttname"><a href="structjcoord__t.html">jcoord_t</a></div><div class="ttdef"><b>Definition:</b> joydrv.h:33</div></div>
-<div class="ttc" id="aboard_8h_html_aeb17937ca06d418b5bc07c95e02c5a54aec8379af7490bb9eaaf579cf17876f38"><div class="ttname"><a href="board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54aec8379af7490bb9eaaf579cf17876f38">RIGHT</a></div><div class="ttdoc">Shift piece one position to the right.</div><div class="ttdef"><b>Definition:</b> board.h:95</div></div>
-<div class="ttc" id="ajoystick_8h_html_ab08530c803c5f138f276a958fc268e7da2159ffbd3a68037511ab5ab4dd35ace7"><div class="ttname"><a href="joystick_8h.html#ab08530c803c5f138f276a958fc268e7da2159ffbd3a68037511ab5ab4dd35ace7">CENTER</a></div><div class="ttdoc">Status=In the center.</div><div class="ttdef"><b>Definition:</b> joystick.h:68</div></div>
+<div class="ttc" id="aboard_8h_html_aeb17937ca06d418b5bc07c95e02c5a54ac157bdf0b85a40d2619cbc8bc1ae5fe2"><div class="ttname"><a href="board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54ac157bdf0b85a40d2619cbc8bc1ae5fe2">NONE</a></div><div class="ttdoc">Don't shift piece.</div><div class="ttdef"><b>Definition:</b> board.h:100</div></div>
+<div class="ttc" id="aboard_8h_html_aeb17937ca06d418b5bc07c95e02c5a54aec8379af7490bb9eaaf579cf17876f38"><div class="ttname"><a href="board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54aec8379af7490bb9eaaf579cf17876f38">RIGHT</a></div><div class="ttdoc">Shift piece one position to the right.</div><div class="ttdef"><b>Definition:</b> board.h:104</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

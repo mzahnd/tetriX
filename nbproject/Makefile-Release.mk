@@ -41,6 +41,9 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/backend/board/timer/boardTimer.o \
 	${OBJECTDIR}/src/backend/rw/rw_ops.o \
 	${OBJECTDIR}/src/backend/stats/stats_mgmt.o \
+	${OBJECTDIR}/src/frontend/allegro/alcontrol.o \
+	${OBJECTDIR}/src/frontend/allegro/screen/game.o \
+	${OBJECTDIR}/src/frontend/allegro/screen/menu.o \
 	${OBJECTDIR}/src/frontend/rpi/display.o \
 	${OBJECTDIR}/src/frontend/rpi/joystick.o \
 	${OBJECTDIR}/src/frontend/rpi/rpcontrol.o \
@@ -116,6 +119,21 @@ ${OBJECTDIR}/src/backend/stats/stats_mgmt.o: src/backend/stats/stats_mgmt.c
 	${MKDIR} -p ${OBJECTDIR}/src/backend/stats
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/backend/stats/stats_mgmt.o src/backend/stats/stats_mgmt.c
+
+${OBJECTDIR}/src/frontend/allegro/alcontrol.o: src/frontend/allegro/alcontrol.c
+	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/alcontrol.o src/frontend/allegro/alcontrol.c
+
+${OBJECTDIR}/src/frontend/allegro/screen/game.o: src/frontend/allegro/screen/game.c
+	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro/screen
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/screen/game.o src/frontend/allegro/screen/game.c
+
+${OBJECTDIR}/src/frontend/allegro/screen/menu.o: src/frontend/allegro/screen/menu.c
+	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro/screen
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/screen/menu.o src/frontend/allegro/screen/menu.c
 
 ${OBJECTDIR}/src/frontend/rpi/display.o: src/frontend/rpi/display.c
 	${MKDIR} -p ${OBJECTDIR}/src/frontend/rpi
@@ -261,6 +279,45 @@ ${OBJECTDIR}/src/backend/stats/stats_mgmt_nomain.o: ${OBJECTDIR}/src/backend/sta
 	    $(COMPILE.c) -O2 -std=c11 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/backend/stats/stats_mgmt_nomain.o src/backend/stats/stats_mgmt.c;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/backend/stats/stats_mgmt.o ${OBJECTDIR}/src/backend/stats/stats_mgmt_nomain.o;\
+	fi
+
+${OBJECTDIR}/src/frontend/allegro/alcontrol_nomain.o: ${OBJECTDIR}/src/frontend/allegro/alcontrol.o src/frontend/allegro/alcontrol.c 
+	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/frontend/allegro/alcontrol.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.c) -O2 -std=c11 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/alcontrol_nomain.o src/frontend/allegro/alcontrol.c;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/frontend/allegro/alcontrol.o ${OBJECTDIR}/src/frontend/allegro/alcontrol_nomain.o;\
+	fi
+
+${OBJECTDIR}/src/frontend/allegro/screen/game_nomain.o: ${OBJECTDIR}/src/frontend/allegro/screen/game.o src/frontend/allegro/screen/game.c 
+	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro/screen
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/frontend/allegro/screen/game.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.c) -O2 -std=c11 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/screen/game_nomain.o src/frontend/allegro/screen/game.c;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/frontend/allegro/screen/game.o ${OBJECTDIR}/src/frontend/allegro/screen/game_nomain.o;\
+	fi
+
+${OBJECTDIR}/src/frontend/allegro/screen/menu_nomain.o: ${OBJECTDIR}/src/frontend/allegro/screen/menu.o src/frontend/allegro/screen/menu.c 
+	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro/screen
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/frontend/allegro/screen/menu.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.c) -O2 -std=c11 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/screen/menu_nomain.o src/frontend/allegro/screen/menu.c;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/frontend/allegro/screen/menu.o ${OBJECTDIR}/src/frontend/allegro/screen/menu_nomain.o;\
 	fi
 
 ${OBJECTDIR}/src/frontend/rpi/display_nomain.o: ${OBJECTDIR}/src/frontend/rpi/display.o src/frontend/rpi/display.c 

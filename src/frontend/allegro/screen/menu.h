@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-/******************************************************************************
+/**
  * 
- * @file    screen.c
+ * @file    menu.h
  * 
  * @brief   ;
  * 
@@ -26,34 +26,28 @@
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
  * 
- * @date    14/12/2019, 00:02
+ * @date    17/12/2019, 12:26
  * 
  * @copyright GNU General Public License v3
- *****************************************************************************/
+ */
+
+#ifndef MENU_H
+#    define MENU_H
 
 // === Libraries and header files ===
-#include <stdio.h>
-#include <stdlib.h>
+#include "../alcontrol.h"
 
-// This file
-#include "screen.h"
-
-/// @privatesection
 // === Constants and Macro definitions ===
 
 // === Enumerations, structures and typedefs ===
 
 // === Global variables ===
 
-// === Function prototypes for private functions with file level scope ===
-
-// === ROM Constant variables with file level scope ===
-
-// === Static variables and constant variables with file level scope ===
-
+// === ROM Constant variables ===
 
 // === Global function definitions ===
-/// @publicsection
 
-/// @privatesection
-// === Local function definitions ===
+int
+alg_menu(allegro_t * alStru);
+
+#endif /* MENU_H */

@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['rw_5fseek_5fcur_951',['RW_SEEK_CUR',['../_s_d_l__rwops_8h.html#aba5f3b60c197def370ffa2ca1ab1348d',1,'SDL_rwops.h']]],
-  ['rw_5fseek_5fend_952',['RW_SEEK_END',['../_s_d_l__rwops_8h.html#a6cf141faabd1b8f2ec3c03cf76eaf553',1,'SDL_rwops.h']]],
-  ['rw_5fseek_5fset_953',['RW_SEEK_SET',['../_s_d_l__rwops_8h.html#ac028b032bb8230df64bc6284e04789f5',1,'SDL_rwops.h']]]
+  ['null_964',['NULL',['../begin__code_8h.html#a070d2ce7b6bb7e5c05602aa8c308d0c4',1,'begin_code.h']]]
 ];

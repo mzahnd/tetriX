@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.16"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>tetriCs: src/backend/board/board.h File Reference</title>
+<title>tetriX: src/backend/board/board.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">tetriCs
+   <div id="projectname">tetriX
    &#160;<span id="projectnumber">0.0.1</span>
    </div>
    <div id="projectbrief">Tetris written in C for Linux and Raspberry Pi</div>
@@ -80,7 +80,8 @@ $(function() {
 
 <p>;  
 <a href="#details">More...</a></p>
-
+<div class="textblock"><code>#include &lt;stdbool.h&gt;</code><br />
+</div>
 <p><a href="board_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
@@ -91,9 +92,8 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a94ed08e31d2f3a38d35f0cb89c762f04"><td class="memItemLeft" align="right" valign="top"><a id="a94ed08e31d2f3a38d35f0cb89c762f04"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#a94ed08e31d2f3a38d35f0cb89c762f04">BOARD_HEIGHT</a>&#160;&#160;&#160;20</td></tr>
-<tr class="memdesc:a94ed08e31d2f3a38d35f0cb89c762f04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Board Height. <br /></td></tr>
+<tr class="memitem:a94ed08e31d2f3a38d35f0cb89c762f04"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#a94ed08e31d2f3a38d35f0cb89c762f04">BOARD_HEIGHT</a>&#160;&#160;&#160;20</td></tr>
+<tr class="memdesc:a94ed08e31d2f3a38d35f0cb89c762f04"><td class="mdescLeft">&#160;</td><td class="mdescRight">For bool, true and false.  <a href="board_8h.html#a94ed08e31d2f3a38d35f0cb89c762f04">More...</a><br /></td></tr>
 <tr class="separator:a94ed08e31d2f3a38d35f0cb89c762f04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1cd139e8d1f7ae83f54c8d477313d8ea"><td class="memItemLeft" align="right" valign="top"><a id="a1cd139e8d1f7ae83f54c8d477313d8ea"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#a1cd139e8d1f7ae83f54c8d477313d8ea">BOARD_WIDTH</a>&#160;&#160;&#160;10</td></tr>
@@ -103,6 +103,10 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#ac815b03ec48abf99301f44140ff0b0a9">ORIENTATION</a>&#160;&#160;&#160;4</td></tr>
 <tr class="memdesc:ac815b03ec48abf99301f44140ff0b0a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many different orientations a piece can have. <br /></td></tr>
 <tr class="separator:ac815b03ec48abf99301f44140ff0b0a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdbe53bda9ade301796b7017b69562a3"><td class="memItemLeft" align="right" valign="top"><a id="afdbe53bda9ade301796b7017b69562a3"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#afdbe53bda9ade301796b7017b69562a3">GET_CELL</a>(r,  c,  b)&#160;&#160;&#160;( (b)[ ((r) * <a class="el" href="board_8h.html#a1cd139e8d1f7ae83f54c8d477313d8ea">BOARD_WIDTH</a>) + (c) ] )</td></tr>
+<tr class="memdesc:afdbe53bda9ade301796b7017b69562a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the information in the row (r) and column (c) of the board (b) <br /></td></tr>
+<tr class="separator:afdbe53bda9ade301796b7017b69562a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -165,15 +169,12 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a08c0d40577c76f7c726d2bf932b42c07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Board cell definitions.  <a href="board_8h.html#a08c0d40577c76f7c726d2bf932b42c07">More...</a><br /></td></tr>
 <tr class="separator:a08c0d40577c76f7c726d2bf932b42c07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">GLext.h</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><p>This file taken from "GLext.h" from the Jeff Molofee OpenGL tutorials. It is included here because glext.h is not available on some systems. If you don't want this version included, simply define "NO_SDL_GLEXT" </p>
-</div></td></tr>
-<tr class="memitem:a84609a7641d05359c95bd5d3ace5a4d3"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#a84609a7641d05359c95bd5d3ace5a4d3">coords</a> { <a class="el" href="board_8h.html#a84609a7641d05359c95bd5d3ace5a4d3a90b0030b76559a27bf6099278d48d001">COORD_X</a>, 
-<a class="el" href="board_8h.html#a84609a7641d05359c95bd5d3ace5a4d3a63ebf6d854e134f261b0f03b54fac644">COORD_Y</a>, 
-<a class="el" href="board_8h.html#a84609a7641d05359c95bd5d3ace5a4d3a5a6527e7417dc323385004a43565feec">COORD_NUM</a>
+<tr class="memitem:adf44f03c6ae7b279f60019d07e59891c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891c">coords</a> { <a class="el" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891ca90b0030b76559a27bf6099278d48d001">COORD_X</a>, 
+<a class="el" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891ca63ebf6d854e134f261b0f03b54fac644">COORD_Y</a>, 
+<a class="el" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891ca5a6527e7417dc323385004a43565feec">COORD_NUM</a>
  }</td></tr>
-<tr class="memdesc:a84609a7641d05359c95bd5d3ace5a4d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Coordinates definitions.  <a href="board_8h.html#a84609a7641d05359c95bd5d3ace5a4d3">More...</a><br /></td></tr>
-<tr class="separator:a84609a7641d05359c95bd5d3ace5a4d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:adf44f03c6ae7b279f60019d07e59891c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Coordinates definitions.  <a href="board_8h.html#adf44f03c6ae7b279f60019d07e59891c">More...</a><br /></td></tr>
+<tr class="separator:adf44f03c6ae7b279f60019d07e59891c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -189,7 +190,25 @@ Functions</h2></td></tr>
 Martín E. Zahnd <a href="#" onclick="location.href='mai'+'lto:'+'mza'+'hn'+'d@i'+'tb'+'a.e'+'du'+'.ar'; return false;">mzahn<span style="display: none;">.nosp@m.</span>d@it<span style="display: none;">.nosp@m.</span>ba.ed<span style="display: none;">.nosp@m.</span>u.ar</a></dd></dl>
 <dl class="section date"><dt>Date</dt><dd>27/11/2019, 23:02</dd></dl>
 <dl class="section copyright"><dt>Copyright</dt><dd>GNU General Public License v3 </dd></dl>
-</div><h2 class="groupheader">Typedef Documentation</h2>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a94ed08e31d2f3a38d35f0cb89c762f04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94ed08e31d2f3a38d35f0cb89c762f04">&#9670;&nbsp;</a></span>BOARD_HEIGHT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define BOARD_HEIGHT&#160;&#160;&#160;20</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>For bool, true and false. </p>
+<p>Board Height </p>
+
+</div>
+</div>
+<h2 class="groupheader">Typedef Documentation</h2>
 <a id="aea9f99b90c751f90ae6dd2f35d49bb4e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aea9f99b90c751f90ae6dd2f35d49bb4e">&#9670;&nbsp;</a></span>board_t</h2>
 
@@ -245,25 +264,25 @@ Martín E. Zahnd <a href="#" onclick="location.href='mai'+'lto:'+'mza'+'hn'+'d@i
 
 </div>
 </div>
-<a id="a84609a7641d05359c95bd5d3ace5a4d3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a84609a7641d05359c95bd5d3ace5a4d3">&#9670;&nbsp;</a></span>coords</h2>
+<a id="adf44f03c6ae7b279f60019d07e59891c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf44f03c6ae7b279f60019d07e59891c">&#9670;&nbsp;</a></span>coords</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum typedef const GLdouble * <a class="el" href="board_8h.html#a84609a7641d05359c95bd5d3ace5a4d3">coords</a></td>
+          <td class="memname">enum <a class="el" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891c">coords</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Coordinates definitions. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a84609a7641d05359c95bd5d3ace5a4d3a90b0030b76559a27bf6099278d48d001"></a>COORD_X&#160;</td><td class="fielddoc"><p>X Coordinate. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="adf44f03c6ae7b279f60019d07e59891ca90b0030b76559a27bf6099278d48d001"></a>COORD_X&#160;</td><td class="fielddoc"><p>X Coordinate. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a84609a7641d05359c95bd5d3ace5a4d3a63ebf6d854e134f261b0f03b54fac644"></a>COORD_Y&#160;</td><td class="fielddoc"><p>Y Coordinate. </p>
+<tr><td class="fieldname"><a id="adf44f03c6ae7b279f60019d07e59891ca63ebf6d854e134f261b0f03b54fac644"></a>COORD_Y&#160;</td><td class="fielddoc"><p>Y Coordinate. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a84609a7641d05359c95bd5d3ace5a4d3a5a6527e7417dc323385004a43565feec"></a>COORD_NUM&#160;</td><td class="fielddoc"><p>Number of coordinates. </p>
+<tr><td class="fieldname"><a id="adf44f03c6ae7b279f60019d07e59891ca5a6527e7417dc323385004a43565feec"></a>COORD_NUM&#160;</td><td class="fielddoc"><p>Number of coordinates. </p>
 </td></tr>
 </table>
 
@@ -282,7 +301,7 @@ Martín E. Zahnd <a href="#" onclick="location.href='mai'+'lto:'+'mza'+'hn'+'d@i
 </div><div class="memdoc">
 
 <p>Parameters to shift a piece. </p>
-<p>One of this is passed to the shifting variable in <a class="el" href="struct_p_i_e_c_e.html" title="Piece object.">PIECE</a> structure. </p>
+<p>One of this is passed to the shifting variable in <a class="el" href="struct_p_i_e_c_e.html" title="For bool, true and false.">PIECE</a> structure. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aeb17937ca06d418b5bc07c95e02c5a54ac157bdf0b85a40d2619cbc8bc1ae5fe2"></a>NONE&#160;</td><td class="fielddoc"><p>Don't shift piece. </p>
 </td></tr>
@@ -322,6 +341,12 @@ Martín E. Zahnd <a href="#" onclick="location.href='mai'+'lto:'+'mza'+'hn'+'d@i
 </div>
 </div>
 </div><!-- contents -->
+<div class="ttc" id="arpcontrol_8h_html"><div class="ttname"><a href="rpcontrol_8h.html">rpcontrol.h</a></div><div class="ttdoc">;</div></div>
+<div class="ttc" id="arpcontrol_8h_html_ac4eb95268bcc7d03c660ad642f6da760"><div class="ttname"><a href="rpcontrol_8h.html#ac4eb95268bcc7d03c660ad642f6da760">rpi</a></div><div class="ttdeci">int rpi(void)</div><div class="ttdoc">Run game on Raspberry PI.</div><div class="ttdef"><b>Definition:</b> rpcontrol.c:79</div></div>
+<div class="ttc" id="arpcontrol_8h_html_a8fe83ac76edc595f6b98cd4a4127aed5"><div class="ttname"><a href="rpcontrol_8h.html#a8fe83ac76edc595f6b98cd4a4127aed5">ERROR</a></div><div class="ttdeci">#define ERROR</div><div class="ttdoc">Error value, it indicates that something went wrong.</div><div class="ttdef"><b>Definition:</b> rpcontrol.h:46</div></div>
+<div class="ttc" id="adisplay_8h_html"><div class="ttname"><a href="display_8h.html">display.h</a></div><div class="ttdoc">;</div></div>
+<div class="ttc" id="aboard_8h_html"><div class="ttname"><a href="board_8h.html">board.h</a></div><div class="ttdoc">;</div></div>
+<div class="ttc" id="aalcontrol_8h_html"><div class="ttname"><a href="alcontrol_8h.html">alcontrol.h</a></div><div class="ttdoc">;</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

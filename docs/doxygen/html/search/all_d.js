@@ -1,11 +1,12 @@
 var searchData=
 [
-  ['needed_120',['needed',['../struct_s_d_l___audio_c_v_t.html#abaf982c31b3b8169de1fa31a5d139042',1,'SDL_AudioCVT']]],
-  ['newpiece_121',['newPiece',['../struct_s_t_a_t_s.html#a37fb093b1710001278f5a69d99adf041',1,'STATS']]],
-  ['next_122',['next',['../struct_s_t_a_t_s.html#a142a1b51e133e50c0a72b175958ac412',1,'STATS']]],
-  ['none_123',['NONE',['../board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54ac157bdf0b85a40d2619cbc8bc1ae5fe2',1,'board.h']]],
-  ['nothing_124',['NOTHING',['../joystick_8h.html#ab08530c803c5f138f276a958fc268e7dacfe24a7b308a82835c8a9a9a89bc4ca2',1,'joystick.h']]],
-  ['null_125',['NULL',['../begin__code_8h.html#a070d2ce7b6bb7e5c05602aa8c308d0c4',1,'begin_code.h']]],
-  ['number_126',['number',['../struct_s_t_a_t_s.html#a1ee19f851d41f22bc6079c2f01d31ce5',1,'STATS']]],
-  ['numtracks_127',['numtracks',['../struct_s_d_l___c_d.html#aec5edaf4b26a178bda6fad9d7c1c79d5',1,'SDL_CD']]]
+  ['piece_66',['PIECE',['../struct_p_i_e_c_e.html',1,'PIECE'],['../struct_g_a_m_e_b_o_a_r_d.html#af5ed5155aa10bfb9ca29242935680c84',1,'GAMEBOARD::piece()'],['../struct_s_t_a_t_s.html#a6b9403d86ee98a7920bf711048262338',1,'STATS::piece()']]],
+  ['piece_5factions_2eh_67',['piece_actions.h',['../piece__actions_8h.html',1,'']]],
+  ['piece_5finit_68',['piece_init',['../piece__actions_8h.html#a44c68c9370e56a84cdb6dbab273aefa3',1,'piece_actions.c']]],
+  ['piece_5ft_69',['piece_t',['../piece__actions_8h.html#a36ec2954d787981651c5bedf0d3261ae',1,'piece_actions.h']]],
+  ['piecestype_70',['piecesType',['../board_8h.html#aa8acd4b6f8e39eb057cf562c3910c554',1,'board.h']]],
+  ['play_71',['play',['../struct_a_l_l_e_g_r_o___m_g_m_t.html#a387ecd934698d7eb04526b5d5adf69d4',1,'ALLEGRO_MGMT::play()'],['../display_8h.html#a9f4e8630516f3da89537313b4c828759a0352906d1ea1dfcd663c918f3a86755b',1,'PLAY():&#160;display.h']]],
+  ['printg_72',['printG',['../display_8h.html#a8f45edf212c8595b8e9cf975eb45b235',1,'display.c']]],
+  ['printw_73',['printW',['../display_8h.html#a410d9a741e70114f461936f42edf7e8f',1,'display.c']]],
+  ['printwmove_74',['printWmove',['../display_8h.html#a558d379da947357daf3751b4e7663fee',1,'display.c']]]
 ];

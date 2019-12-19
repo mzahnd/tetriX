@@ -131,6 +131,9 @@ initStats (struct STATS * stats)
 
     gameStats.public = stats;
 
+    // Hold as uninitialized until done
+    gameStats.public -> init = false;
+
     gameStats.public -> level = 1;
     gameStats.public -> lines.cleared = 0;
     gameStats.public -> piece.next = TETROMINO_NONE;
@@ -156,6 +159,9 @@ initStats (struct STATS * stats)
     gameStats.newTop = false;
 
     gameStats.lastDifficult = false;
+
+    // Set as initialized
+    gameStats.public -> init = true;
 
     return 0;
 }

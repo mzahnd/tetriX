@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['changemode_564',['changemode',['../termlib_8h.html#a94488734ede92fcbf649962b7c6956b4',1,'termlib.h']]],
-  ['clrscr_565',['clrscr',['../termlib_8h.html#a209453284e1e2ed32261e11e00d53760',1,'termlib.h']]]
+  ['disp_5fn_5fclear_120',['disp_n_clear',['../display_8h.html#a352c62d92be7017b5ceaa0e217341500',1,'display.c']]]
 ];

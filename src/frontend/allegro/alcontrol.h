@@ -26,7 +26,7 @@
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
  * 
- * @date    14/12/2019, 00:03
+ * @date    17/12/2019, 11:27
  * 
  * @copyright GNU General Public License v3
  */
@@ -35,15 +35,113 @@
 #    define ALCONTROL_H
 
 // === Libraries and header files ===
+#    include <stdbool.h>
+
+#    include <allegro5/allegro5.h>
+#    include <allegro5/allegro_audio.h>
 
 // === Constants and Macro definitions ===
+#    define AL_ERROR    0
+#    define AL_OK       !AL_ERROR
+
+#    define SCREEN_WIDTH        800
+#    define SCREEN_HEIGHT       600
+
 
 // === Enumerations, structures and typedefs ===
+typedef struct ALLEGRO_MGMT allegro_t;
+
+struct ALLEGRO_MGMT
+{
+    /// True when user asked to exit the game
+    bool exit;
+
+    /**
+     * @brief Audio samples managment
+     */
+    struct
+    {
+
+        struct
+        {
+            /**
+             * @brief Play music
+             * @param None
+             * @return Nothing
+             */
+            void (* play) (void);
+
+            /**
+             * @brief Stop music
+             * @param None
+             * @return Nothing
+             */
+            void (* stop) (void);
+
+            /**
+             * @brief Music playing status.
+             * @param None
+             * @return True: Playing is enables
+             * @return False: Paying is disabled
+             */
+            bool (* status) (void);
+
+            /**
+             * @brief Invert Music playing status.
+             * @param None
+             * @return Nothing
+             */
+            void (* invertStatus) (void);
+        } music;
+
+        struct
+        {
+            /**
+             * @brief Play FX in path
+             * @param path Path to the desired sound FX
+             * @return Nothing
+             */
+            void (* play) (const char * path);
+
+            /**
+             * @brief FX playing status.
+             * @param None
+             * @return True: Playing is enables
+             * @return False: Paying is disabled
+             */
+            bool (* status) (void);
+
+            /**
+             * @brief Invert FX playing status.
+             * @param None
+             * @return Nothing
+             */
+            void (* invertStatus) (void);
+        } fx;
+
+    } samples;
+
+    struct
+    {
+
+        struct
+        {
+            int (* create) (allegro_t * alStru);
+        } menu;
+
+    } screen;
+
+};
 
 // === Global variables ===
 
 // === ROM Constant variables ===
 
 // === Global function definitions ===
+int
+allegro (void);
+
+void
+alg_destroy (void);
 
 #endif /* ALCONTROL_H */

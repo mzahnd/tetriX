@@ -1,31 +1,4 @@
 var searchData=
 [
-  ['sdl_5factiveevent_848',['SDL_ActiveEvent',['../_s_d_l__events_8h.html#a951f49b468c4a2b3dfcc0b6dfb01a155',1,'SDL_events.h']]],
-  ['sdl_5faudiocvt_849',['SDL_AudioCVT',['../_s_d_l__audio_8h.html#acddd16bc3257a83299e7abe6d160ba0a',1,'SDL_audio.h']]],
-  ['sdl_5faudiospec_850',['SDL_AudioSpec',['../_s_d_l__audio_8h.html#a77faa7fe3d22c03ee61466a901c22a25',1,'SDL_audio.h']]],
-  ['sdl_5fblit_851',['SDL_blit',['../_s_d_l__video_8h.html#a28fe7ff2a357ef0c078db3290a44df41',1,'SDL_video.h']]],
-  ['sdl_5fcd_852',['SDL_CD',['../_s_d_l__cdrom_8h.html#a935dd4f32061b4ce72d9bf7c9175893a',1,'SDL_cdrom.h']]],
-  ['sdl_5fevent_853',['SDL_Event',['../_s_d_l__events_8h.html#ac123539589592fb2a938d43fa7e13794',1,'SDL_events.h']]],
-  ['sdl_5fexposeevent_854',['SDL_ExposeEvent',['../_s_d_l__events_8h.html#a81cdf3a42369fb5fd992beca1affa646',1,'SDL_events.h']]],
-  ['sdl_5fjoyaxisevent_855',['SDL_JoyAxisEvent',['../_s_d_l__events_8h.html#a12d4cc4e7665b37af0cf4352cb522b71',1,'SDL_events.h']]],
-  ['sdl_5fjoyballevent_856',['SDL_JoyBallEvent',['../_s_d_l__events_8h.html#a5811cd314ff0fcb4a5a8d3da110e59b6',1,'SDL_events.h']]],
-  ['sdl_5fjoybuttonevent_857',['SDL_JoyButtonEvent',['../_s_d_l__events_8h.html#a1c9066d1e7d075042a55a5a0ebdeaf3e',1,'SDL_events.h']]],
-  ['sdl_5fjoyhatevent_858',['SDL_JoyHatEvent',['../_s_d_l__events_8h.html#a5753fe82887f64c4feef90a9f0a19099',1,'SDL_events.h']]],
-  ['sdl_5fkeyboardevent_859',['SDL_KeyboardEvent',['../_s_d_l__events_8h.html#a2dfd49e5d1391bed57dcbc2359d9580f',1,'SDL_events.h']]],
-  ['sdl_5fkeysym_860',['SDL_keysym',['../_s_d_l__keyboard_8h.html#acf493c0691cdf8af4e48937a73157b29',1,'SDL_keyboard.h']]],
-  ['sdl_5fmousebuttonevent_861',['SDL_MouseButtonEvent',['../_s_d_l__events_8h.html#ad32036e6c0ba8aeadfb3063a5e945e8d',1,'SDL_events.h']]],
-  ['sdl_5fmousemotionevent_862',['SDL_MouseMotionEvent',['../_s_d_l__events_8h.html#aefe38e3abc59e3312e5a50d98f708de4',1,'SDL_events.h']]],
-  ['sdl_5fnewtimercallback_863',['SDL_NewTimerCallback',['../_s_d_l__timer_8h.html#abf7c6b1f64b6f65de68ed6569771621e',1,'SDL_timer.h']]],
-  ['sdl_5foverlay_864',['SDL_Overlay',['../_s_d_l__video_8h.html#ae819ecf00f0fbd952c5645ff69f87ac4',1,'SDL_video.h']]],
-  ['sdl_5fpixelformat_865',['SDL_PixelFormat',['../_s_d_l__video_8h.html#a9e5dc2921ca058ecb7cbe15ff38248e2',1,'SDL_video.h']]],
-  ['sdl_5fquitevent_866',['SDL_QuitEvent',['../_s_d_l__events_8h.html#a2aa3b2097d14330fadfc91585fd18dfc',1,'SDL_events.h']]],
-  ['sdl_5fresizeevent_867',['SDL_ResizeEvent',['../_s_d_l__events_8h.html#a00ff869b4b6d9d829b84f5f6d0ae31ad',1,'SDL_events.h']]],
-  ['sdl_5frwops_868',['SDL_RWops',['../_s_d_l__rwops_8h.html#af758c42c576a0612bdf298c5823a5fe5',1,'SDL_rwops.h']]],
-  ['sdl_5fsurface_869',['SDL_Surface',['../_s_d_l__video_8h.html#a32471ad028ae3d2a132302bc5efcb1ee',1,'SDL_video.h']]],
-  ['sdl_5fsyswminfo_870',['SDL_SysWMinfo',['../_s_d_l__syswm_8h.html#aae8dac39eb53e894935f70e884894a91',1,'SDL_syswm.h']]],
-  ['sdl_5ftimercallback_871',['SDL_TimerCallback',['../_s_d_l__timer_8h.html#a6bfe78b1d532b2a227becdb635b1e2e5',1,'SDL_timer.h']]],
-  ['sdl_5ftimerid_872',['SDL_TimerID',['../_s_d_l__timer_8h.html#ac92c90c9c28c79541a4f1a5fa60bfc15',1,'SDL_timer.h']]],
-  ['sdl_5fuserevent_873',['SDL_UserEvent',['../_s_d_l__events_8h.html#a3c174fcb2518c4c9b858c8e3c3840830',1,'SDL_events.h']]],
-  ['sdl_5fvideoinfo_874',['SDL_VideoInfo',['../_s_d_l__video_8h.html#a7a6c28c396b5b87b3adc1bde63c80381',1,'SDL_video.h']]],
-  ['stats_5ft_875',['stats_t',['../stats__mgmt_8h.html#a09d48e3f13e86d369d6aa6e8f777006e',1,'stats_mgmt.h']]]
+  ['stats_5ft_172',['stats_t',['../stats__mgmt_8h.html#a09d48e3f13e86d369d6aa6e8f777006e',1,'stats_mgmt.h']]]
 ];

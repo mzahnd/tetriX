@@ -35,15 +35,13 @@
 #    define BOARD_H
 
 // === Libraries and header files ===
+/// For bool, true and false
+#include <stdbool.h>
 
 // === Constants and Macro definitions ===
 /// @def BOARD_HEIGHT
 /// @brief Board Height
-//#ifdef ALLEGRO
-//#    define BOARD_HEIGHT    20
-//#elif RPI
-#   define  BOARD_HEIGHT    16
-//#endif
+#    define BOARD_HEIGHT    20
 
 /// @def BOARD_WIDTH
 /// @brief Board Width
@@ -56,10 +54,11 @@
 #    define ORIENTATION     4
 
 /**
- * @def CELL(r,c)
- * @brief Returns the information in the row (r) and column (c) of the board
+ * @def GET_CELL(r,c)
+ * @brief Returns the information in the row (r) and column (c) of the board 
+ * (b)
  */
-#define GET_CELL(r,c,b) ( (b)[ ((r) * BOARD_WIDTH) + (c) ] )
+#    define GET_CELL(r,c,b) ( (b)[ ((r) * BOARD_WIDTH) + (c) ] )
 
 // === Enumerations, structures and typedefs ===
 
@@ -101,17 +100,9 @@ enum shiftingTypes
     /// Don't shift piece
     NONE,
     /// Shift piece one position to the left
-    CENTER,
-    
     LEFT,
     /// Shift piece one position to the right
-    RIGHT,
-    
-    UP,
-    
-    DOWN,
-    
-    PRESSED
+    RIGHT
 };
 
 /**
@@ -165,6 +156,14 @@ typedef int grid_t;
  */
 typedef struct GAMEBOARD
 {
+    /**
+     * @brief Set to true when the piece is initialized.
+     * 
+     * @note It is strongly recommended to check this parameter before calling
+     * anything inside this structure.
+     */
+    bool init;
+
     /// Destroy current board. All structure information is deleted.
     void (* destroy) (void);
 
@@ -194,7 +193,7 @@ typedef struct GAMEBOARD
          * @return False: 0
          */
         int (* endGame) (void);
-        
+
         /**
          * @brief Get the current game stats.
          * 
@@ -272,7 +271,7 @@ typedef struct GAMEBOARD
      * @return Nothing
      */
     void (* update) (void);
-    
+
 } board_t;
 
 // === Global variables ===

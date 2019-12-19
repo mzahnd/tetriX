@@ -40,7 +40,10 @@
 #    define PIECE_ACTIONS_H
 
 // === Libraries and header files ===
-// For BLOCKS, COORD_NUM and GAMEBOARD structure
+/// For bool, true and false
+#    include <stdbool.h>
+
+/// For BLOCKS, COORD_NUM and GAMEBOARD structure
 #    include "../board.h"
 
 // === Constants and Macro definitions ===
@@ -59,6 +62,14 @@
  */
 typedef struct PIECE
 {
+    /**
+     * @brief Set to true when the piece is initialized.
+     * 
+     * @note It is strongly recommended to check this parameter before calling
+     * anything inside this structure.
+     */
+    bool init;
+
     /// Type of piece. Set using definitions in board.h file.
     int type;
 
@@ -117,6 +128,7 @@ typedef struct PIECE
      * @return Nothing
      */
     void (* destroy) (void);
+
 } piece_t;
 
 // === Global variables ===

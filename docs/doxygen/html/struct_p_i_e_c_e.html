@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.16"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>tetriCs: PIECE Struct Reference</title>
+<title>tetriX: PIECE Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">tetriCs
+   <div id="projectname">tetriX
    &#160;<span id="projectnumber">0.0.1</span>
    </div>
    <div id="projectbrief">Tetris written in C for Linux and Raspberry Pi</div>
@@ -70,20 +70,23 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Piece object.  
+<p>For bool, true and false.  
  <a href="struct_p_i_e_c_e.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="piece__actions_8h_source.html">piece_actions.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
+<tr class="memitem:a50300ba6e38ec30121edcc07ebac42c6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_p_i_e_c_e.html#a50300ba6e38ec30121edcc07ebac42c6">init</a></td></tr>
+<tr class="memdesc:a50300ba6e38ec30121edcc07ebac42c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to true when the piece is initialized.  <a href="struct_p_i_e_c_e.html#a50300ba6e38ec30121edcc07ebac42c6">More...</a><br /></td></tr>
+<tr class="separator:a50300ba6e38ec30121edcc07ebac42c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac765329451135abec74c45e1897abf26"><td class="memItemLeft" align="right" valign="top"><a id="ac765329451135abec74c45e1897abf26"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_p_i_e_c_e.html#ac765329451135abec74c45e1897abf26">type</a></td></tr>
 <tr class="memdesc:ac765329451135abec74c45e1897abf26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of piece. Set using definitions in <a class="el" href="board_8h.html" title=";">board.h</a> file. <br /></td></tr>
 <tr class="separator:ac765329451135abec74c45e1897abf26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f31b930b4ee7052e4e8fa7db9c23353"><td class="memItemLeft" ><a id="a0f31b930b4ee7052e4e8fa7db9c23353"></a>
 struct {</td></tr>
-<tr class="memitem:ae01a327ae856e1d1a462cd4bb9b41f6e"><td class="memItemLeft" >&#160;&#160;&#160;int&#160;&#160;&#160;<a class="el" href="struct_p_i_e_c_e.html#ae01a327ae856e1d1a462cd4bb9b41f6e">coordinates</a> [BLOCKS][<a class="el" href="board_8h.html#a84609a7641d05359c95bd5d3ace5a4d3a5a6527e7417dc323385004a43565feec">COORD_NUM</a>]</td></tr>
+<tr class="memitem:ae01a327ae856e1d1a462cd4bb9b41f6e"><td class="memItemLeft" >&#160;&#160;&#160;int&#160;&#160;&#160;<a class="el" href="struct_p_i_e_c_e.html#ae01a327ae856e1d1a462cd4bb9b41f6e">coordinates</a> [BLOCKS][<a class="el" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891ca5a6527e7417dc323385004a43565feec">COORD_NUM</a>]</td></tr>
 <tr class="separator:ae01a327ae856e1d1a462cd4bb9b41f6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f31b930b4ee7052e4e8fa7db9c23353"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_p_i_e_c_e.html#a0f31b930b4ee7052e4e8fa7db9c23353">get</a></td></tr>
 <tr class="memdesc:a0f31b930b4ee7052e4e8fa7db9c23353"><td class="mdescLeft">&#160;</td><td class="mdescRight">Board coordinates of the piece. To access, use coords enum in <a class="el" href="board_8h.html" title=";">board.h</a>. <br /></td></tr>
@@ -105,7 +108,9 @@ struct {</td></tr>
 <tr class="separator:a2601a17a3e2edc404d8eab8e8b6d40c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Piece object. </p>
+<div class="textblock"><p>For bool, true and false. </p>
+<p>For BLOCKS, COORD_NUM and <a class="el" href="struct_g_a_m_e_b_o_a_r_d.html" title="Current game&#39;s board object.">GAMEBOARD</a> structure</p>
+<p>Piece object.</p>
 <p>Contains a piece's type, actions it has to perform, and it's current position in the board.</p>
 <dl class="section warning"><dt>Warning</dt><dd>Function <a class="el" href="piece__actions_8h.html#a44c68c9370e56a84cdb6dbab273aefa3" title="Piece initialization.">piece_init()</a> must be called before using this object </dd></dl>
 </div><h2 class="groupheader">Field Documentation</h2>
@@ -116,7 +121,7 @@ struct {</td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int coordinates[BLOCKS][<a class="el" href="board_8h.html#a84609a7641d05359c95bd5d3ace5a4d3a5a6527e7417dc323385004a43565feec">COORD_NUM</a>]</td>
+          <td class="memname">int coordinates[BLOCKS][<a class="el" href="board_8h.html#adf44f03c6ae7b279f60019d07e59891ca5a6527e7417dc323385004a43565feec">COORD_NUM</a>]</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -145,6 +150,23 @@ struct {</td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Nothing </dd></dl>
+
+</div>
+</div>
+<a id="a50300ba6e38ec30121edcc07ebac42c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50300ba6e38ec30121edcc07ebac42c6">&#9670;&nbsp;</a></span>init</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool init</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set to true when the piece is initialized. </p>
+<dl class="section note"><dt>Note</dt><dd>It is strongly recommended to check this parameter before calling anything inside this structure. </dd></dl>
 
 </div>
 </div>

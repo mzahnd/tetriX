@@ -647,6 +647,10 @@ piece_init (struct PIECE * pstruct, struct GAMEBOARD * boardStr,
         // Save the pointer to PIECE in a variable to avoid asking it again
         currentPiece.public = pstruct;
 
+        // Just in case, set piece as not initialized while performing the 
+        // configurations
+        currentPiece.public -> init = false;
+
         // Save the pointer to GAMEBOARD in a variable to avoid asking it again
         currentPiece.board.pBoard = boardStr;
 
@@ -665,6 +669,7 @@ piece_init (struct PIECE * pstruct, struct GAMEBOARD * boardStr,
         // Normal drop
         currentPiece.public -> update = &normalDrop;
 
+        // Destroy Piece
         currentPiece.public -> destroy = &destroy;
 
         // Initialize the piece in the given position of the bag
@@ -672,6 +677,9 @@ piece_init (struct PIECE * pstruct, struct GAMEBOARD * boardStr,
         {
             exitStatus = 0;
             updatePublicCoordinates();
+
+            // Set piece as initialized
+            currentPiece.public -> init = true;
         }
     }
 
@@ -729,6 +737,9 @@ destroy (void)
     currentPiece.move[COORD_X] = 0;
     currentPiece.move[COORD_Y] = 0;
     currentPiece.orientation = 0;
+
+    // Piece is not initialized
+    currentPiece.public -> init = false;
 
     currentPiece.public -> destroy = NULL;
     currentPiece.public = NULL;
@@ -966,6 +977,8 @@ normalDrop (void)
     // Check if no other already fixed piece is on this one's path
     if ( verifyFixedPieces() > 0 )
     {
+        currentPiece.public -> init = false;
+
         // Another piece is blocking this one
         // Restore the previous position
         moveOneCell(COORD_Y, MINUS);
@@ -1256,15 +1269,9 @@ verifyFixedPieces (void)
         // was moved in this axis
         y = pieceArr[currentPiece.type][currentPiece.orientation][ \
                 i][COORD_Y] + currentPiece.move[COORD_Y];
-        
-        //ATTENTION, YOU DID THIS.
-        if (y >= currentPiece.board.height)
-        {
-            count = -1;
-        }
 
         // Does it get out of the board?
-        else if ( (x < currentPiece.board.width) &&
+        if ( (x < currentPiece.board.width) &&
              (y < currentPiece.board.height) &&
              x >= 0 && y >= 0 )
         {
@@ -1273,7 +1280,6 @@ verifyFixedPieces (void)
             (CELL(x, y) > CELL_CLEAR) ? (count = -1) : (count++);
 
         }
-        
         else
         {
             count = -1;

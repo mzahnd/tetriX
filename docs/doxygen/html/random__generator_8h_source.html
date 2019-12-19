@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.16"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>tetriCs: src/backend/board/random_generator.h Source File</title>
+<title>tetriX: src/backend/board/random_generator.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">tetriCs
+   <div id="projectname">tetriX
    &#160;<span id="projectnumber">0.0.1</span>
    </div>
    <div id="projectbrief">Tetris written in C for Linux and Raspberry Pi</div>
@@ -103,20 +103,14 @@ $(function() {
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">// === Global function definitions ===</span></div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">// Initialize random generator</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keywordtype">int</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<a class="code" href="random__generator_8h.html#acb1c945f587d4b5e5c4a496fe8796e7e">init_random_generator</a> (<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">// Generates a NUM_PIECES size bag with a pseudo-random list of pieces.</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<a class="code" href="random__generator_8h.html#afd4ea4b87811315d07e3b4d3666038a1">random_generator</a> (<span class="keywordtype">int</span> * rnd_bag, <span class="keywordtype">int</span> size);</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">// Generates a NUM_PIECES size bag with a pseudo-random list of pieces.</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<a class="code" href="random__generator_8h.html#afd4ea4b87811315d07e3b4d3666038a1">random_generator</a> (<span class="keywordtype">int</span> * rnd_bag, <span class="keywordtype">int</span> size);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* RANDOM_GENERATOR_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* RANDOM_GENERATOR_H */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="abegin__code_8h_html_a070d2ce7b6bb7e5c05602aa8c308d0c4"><div class="ttname"><a href="begin__code_8h.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a></div><div class="ttdeci">#define NULL</div><div class="ttdef"><b>Definition:</b> begin_code.h:193</div></div>
 <div class="ttc" id="aboard_8h_html"><div class="ttname"><a href="board_8h.html">board.h</a></div><div class="ttdoc">;</div></div>
-<div class="ttc" id="arandom__generator_8h_html_afd4ea4b87811315d07e3b4d3666038a1"><div class="ttname"><a href="random__generator_8h.html#afd4ea4b87811315d07e3b4d3666038a1">random_generator</a></div><div class="ttdeci">void random_generator(int *rnd_bag, int size)</div><div class="ttdoc">Generates a TETROMINOS size bag with a pseudo-random list of pieces.</div><div class="ttdef"><b>Definition:</b> random_generator.c:105</div></div>
-<div class="ttc" id="arandom__generator_8h_html_acb1c945f587d4b5e5c4a496fe8796e7e"><div class="ttname"><a href="random__generator_8h.html#acb1c945f587d4b5e5c4a496fe8796e7e">init_random_generator</a></div><div class="ttdeci">int init_random_generator(void)</div><div class="ttdoc">Initialize random generator.</div><div class="ttdef"><b>Definition:</b> random_generator.c:82</div></div>
+<div class="ttc" id="arandom__generator_8h_html_afd4ea4b87811315d07e3b4d3666038a1"><div class="ttname"><a href="random__generator_8h.html#afd4ea4b87811315d07e3b4d3666038a1">random_generator</a></div><div class="ttdeci">void random_generator(int *rnd_bag, int size)</div><div class="ttdoc">Generates a TETROMINOS size bag with a pseudo-random list of pieces.</div><div class="ttdef"><b>Definition:</b> random_generator.c:99</div></div>
 <div class="ttc" id="arandom__generator_8h_html"><div class="ttname"><a href="random__generator_8h.html">random_generator.h</a></div><div class="ttdoc">Functions used to generate a bag of random pieces.</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

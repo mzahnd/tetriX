@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['piecestype_884',['piecesType',['../board_8h.html#aa8acd4b6f8e39eb057cf562c3910c554',1,'board.h']]]
+  ['shiftingtypes_179',['shiftingTypes',['../board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54',1,'board.h']]]
 ];

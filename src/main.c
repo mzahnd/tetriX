@@ -19,11 +19,11 @@
  * 
  * @file    main.c
  * 
- * @mainpage tetriCs documentation
+ * @mainpage tetriX documentation
  * 
  * @section Introduction
  * 
- * <i>tetriCs</i> is a Tetris game written in C, meant to be runned on any Linux
+ * <i>tetriX</i> is a Tetris game written in C, meant to be runned on any Linux
  * distribution or in a Raspberry Pi with a matrix display + joystick module 
  * attached.
  * 
@@ -57,6 +57,10 @@
  * \n Some ideas / pieces of code inspiration were taken from \n
  * https://stackoverflow.com/questions/351733/how-would-one-write-object-oriented-code-in-c \n
  * https://www.dyclassroom.com/c/c-pointers-and-two-dimensional-array \n
+ * https://stackoverflow.com/questions/2572366/how-to-use-dev-random-or-urandom-in-c \n
+ * http://man7.org/linux/man-pages/man2/getrandom.2.html \n
+ * https://github.com/liballeg/allegro_wiki/wiki/Allegro-Vivace%3A-Input \n
+ * 
  * 
  * @author Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author Martín E. Zahnd                                <mzahnd@itba.edu.ar>
@@ -85,7 +89,7 @@
 #endif
 
 #ifdef ALLEGRO
-
+#    include "frontend/allegro/alcontrol.h"
 #endif
 
 
@@ -128,7 +132,7 @@
  * @brief Main
  */
 int
-main(void)
+main (void)
 {
 
     /*disp_init();
@@ -137,13 +141,20 @@ main(void)
     disp_update();*/
 
 #ifdef RPI
-    if(rpi() == ERROR)
+    if ( rpi() == ERROR )
     {
         printf("Something went wrong on your RPI\n");
     }
     else
     {
         printf("Thanks for playing\n");
+    }
+#endif
+
+#ifdef ALLEGRO
+    if ( allegro() )
+    {
+        return (EXIT_FAILURE);
     }
 #endif
 

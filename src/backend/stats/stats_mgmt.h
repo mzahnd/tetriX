@@ -55,6 +55,14 @@
  */
 typedef struct STATS
 {
+    /**
+     * @brief Set to true when the piece is initialized.
+     * 
+     * @note It is strongly recommended to check this parameter before calling
+     * anything inside this structure.
+     */
+    bool init;
+
     /// Current level
     int level;
 

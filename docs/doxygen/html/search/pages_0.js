@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['deprecated_20list_1002',['Deprecated List',['../deprecated.html',1,'']]]
+  ['tetrix_20documentation_204',['tetriX documentation',['../index.html',1,'']]]
 ];

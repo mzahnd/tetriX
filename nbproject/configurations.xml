@@ -22,6 +22,11 @@
       </logicalFolder>
       <logicalFolder name="f2" displayName="Frontend" projectFiles="true">
         <logicalFolder name="f1" displayName="Allegro" projectFiles="true">
+          <logicalFolder name="f1" displayName="Screens" projectFiles="true">
+            <itemPath>src/frontend/allegro/screen/game.h</itemPath>
+            <itemPath>src/frontend/allegro/screen/menu.h</itemPath>
+          </logicalFolder>
+          <itemPath>src/frontend/allegro/alcontrol.h</itemPath>
         </logicalFolder>
         <logicalFolder name="f2" displayName="Raspberry Pi" projectFiles="true">
           <itemPath>src/frontend/rpi/display.h</itemPath>
@@ -67,6 +72,11 @@
       </logicalFolder>
       <logicalFolder name="f2" displayName="Frontend" projectFiles="true">
         <logicalFolder name="f1" displayName="Allegro" projectFiles="true">
+          <logicalFolder name="f1" displayName="Screens" projectFiles="true">
+            <itemPath>src/frontend/allegro/screen/game.c</itemPath>
+            <itemPath>src/frontend/allegro/screen/menu.c</itemPath>
+          </logicalFolder>
+          <itemPath>src/frontend/allegro/alcontrol.c</itemPath>
         </logicalFolder>
         <logicalFolder name="f2" displayName="Raspberry Pi" projectFiles="true">
           <itemPath>src/frontend/rpi/display.c</itemPath>
@@ -110,8 +120,7 @@
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
-    <Elem>res</Elem>
-    <Elem>res</Elem>
+    <Elem>src</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -201,6 +210,18 @@
       <item path="src/backend/stats/stats_mgmt.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/backend/stats/stats_mgmt.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/alcontrol.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/alcontrol.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/game.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/game.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/menu.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/menu.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/frontend/rpi/display.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -324,6 +345,18 @@
       </item>
       <item path="src/backend/stats/stats_mgmt.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/frontend/allegro/alcontrol.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/alcontrol.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/game.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/game.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/menu.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/menu.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/frontend/rpi/display.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/frontend/rpi/display.h" ex="false" tool="3" flavor2="0">
@@ -359,6 +392,23 @@
           <commandLine>-D ALLEGRO</commandLine>
           <warningLevel>2</warningLevel>
         </cTool>
+        <linkerTool>
+          <linkerLibItems>
+            <linkerOptionItem>`pkg-config --libs allegro-5`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_acodec-5`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_audio-5`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_color-5`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_dialog-5`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_font-5`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_image-5`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_main-5`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_memfile-5`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_physfs-5`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_primitives-5`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_ttf-5`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_video-5`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
       </compileType>
       <folder path="TestFiles/f1">
         <linkerTool>
@@ -437,6 +487,18 @@
       <item path="src/backend/stats/stats_mgmt.c" ex="false" tool="0" flavor2="10">
       </item>
       <item path="src/backend/stats/stats_mgmt.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/alcontrol.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/alcontrol.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/game.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/game.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/menu.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/menu.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/frontend/rpi/display.c" ex="true" tool="0" flavor2="10">
       </item>

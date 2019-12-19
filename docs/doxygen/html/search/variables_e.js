@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['rate_5fincr_813',['rate_incr',['../struct_s_d_l___audio_c_v_t.html#aa84e79f31da7eaa8715492a7655fc12e',1,'SDL_AudioCVT']]],
-  ['refcount_814',['refcount',['../struct_s_d_l___surface.html#a6022c8a609170c7365fb96e83cb2df48',1,'SDL_Surface']]],
-  ['rotate_815',['rotate',['../struct_g_a_m_e_b_o_a_r_d.html#a5e38bdb89055fcfbd6838a75400a42fe',1,'GAMEBOARD::rotate()'],['../struct_p_i_e_c_e.html#a5e38bdb89055fcfbd6838a75400a42fe',1,'PIECE::rotate()']]]
+  ['update_167',['update',['../struct_g_a_m_e_b_o_a_r_d.html#a74222636e9a0ad2bcbcd3bed90fa0e88',1,'GAMEBOARD::update()'],['../struct_p_i_e_c_e.html#ab57c58460735773dd4ad9b16952dff31',1,'PIECE::update()'],['../struct_s_t_a_t_s.html#ad958dc194ac388f50c867a0234a246fc',1,'STATS::update()']]]
 ];
