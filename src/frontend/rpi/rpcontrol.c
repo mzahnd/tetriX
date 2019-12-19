@@ -37,14 +37,17 @@
 #include <unistd.h>
 #include <stdbool.h> 
 
+///Frontend defines, enums and functions.
 #include "display.h"
 #include "joystick.h"
 
+///RPI Libraries.
 #include "libs/disdrv.h"
 #include "libs/joydrv.h"
 #include "audiolib/libaudio.h"
 #include "audiolib/SDL/Include/SDL.h"
 
+///Backend defines, enums and functions.
 #include "../../backend/board/board.h"
 #include "../../backend/stats/stats_mgmt.h"
 #include "../../backend/board/timer/boardTimer.h"
@@ -61,7 +64,7 @@
 
 // === Function prototypes for private functions with file level scope ===
 
-void
+int
 play_tetris(board_t * gameboard);
 
 // === ROM Constant variables with file level scope ===
@@ -76,13 +79,13 @@ int
 rpi(void)
 {
     extern letters_t tt, ee, rr, ii, ss, pp, ll, aa, yy;
-    extern letters_t mm, oo, dd, cc, nn, ff, xx, hh;
+    extern letters_t mm, oo, dd, cc, nn, ff, xx, hh, uu;
 
     ///Create words for the tetris menu.
     words_t play = {&pp, &ll, &aa, &yy, NULL};
     words_t mode = {&mm, &oo, &dd, &ee, NULL};
     words_t score = {&ss, &cc, &oo, &rr, &ee, NULL};
-    words_t snd = {&ss, &nn, &dd, NULL};
+    words_t sound = {&ss, &oo, &uu, &nn, &dd, NULL};
     words_t on = {&oo, &nn, NULL};
     words_t off = {&oo, &ff, &ff, NULL};
     words_t exit = {&ee, &xx, &ii, &tt, NULL};
@@ -100,37 +103,41 @@ rpi(void)
      * separeted from the others with a NULL pointer.
      */
     int k = PLAY;
-    words_t * (wordsArray[]) = {NULL, &play, &mode, &score, &snd, &exit, NULL,
+    words_t * (wordsArray[]) = {NULL, &play, &mode, &score, &sound, &exit, NULL,
                                 &on, &off, NULL,
                                 &easy, &hard, NULL};
 
     ///Initializes the display, audio, joystick and gameboard.
     disp_init();
     joy_init();
-    init_sound();
+    //init_sound();
     board_init(&gameboard);
 
     ///Clears the display.
     disp_clear();
 
     ///Starts the tetris music.
-    set_file_to_play("./res/audio/tetris.wav");
-    play_sound();
+    //set_file_to_play("./res/audio/tetris.wav");
+    //play_sound();
 
     ///Starts the introduction animation.
     initMenu();
     disp_update();
 
     ///Until the joyswitch is pressed, it doesn't show the menu.
-    /*while(surf() != PRESSED)
+    while(surf() != PRESSED)
     {
         joy_update();
     }
-    sleep(1);
-     */
+
     ///It shows the menu starting with PLAY.
     printW(play, 0, 9);
     disp_update();
+
+    while(surf() == PRESSED)
+    {
+        joy_update();
+    }
 
     while(loop)
     {
@@ -155,27 +162,26 @@ rpi(void)
                     ///If it is play, it opens the play menu.
                 case PLAY:
                     disp_clear();
-                    //This is done to avoid segmentation fault.
                     while(surf() == PRESSED)
                     {
                         joy_update();
                     }
-                    play_tetris(&gameboard);
-                    loop = 0;
+                    loop = play_tetris(&gameboard);
+                    disp_clear();
                     break;
 
                     ///If it is sound, it goes to On/Off.
-                case SND:
+                case SOUND:
                     k = ON;
                     break;
                     ///If it is on, it plays the music.
                 case ON:
-                    play_sound();
+                    //play_sound();
                     k = PLAY;
                     break;
                     ///If it is off, it pauses the music.
                 case OFF:
-                    pause_sound();
+                    //pause_sound();
                     k = PLAY;
                     break;
                     ///If it is exit, it finishes the loop.
@@ -209,7 +215,16 @@ rpi(void)
         ///It clears the menu but not the TeTrIs sign.
         disp_n_clear(MAX, MAX / 2, 0, 8);
         ///It prints the word chosen.
-        printW(*(wordsArray[k]), 0, 9);
+        if(k == 4)
+        {
+            printWmove(*(wordsArray[k]), 0, 9);
+        }
+
+        else
+        {
+            printW(*(wordsArray[k]), 0, 9);
+        }
+
         disp_update();
 
         /**
@@ -217,24 +232,20 @@ rpi(void)
          * This is done so as to make the user go to right or left every
          * time he wants to change the menu option.
          */
-        while(surf() != CENTER)
+        while(surf() != CENTER && k != 4)
         {
             joy_update();
         }
     }
 
     ///It stops the music. User chose EXIT to finish the program. 
-    stop_sound();
+    //stop_sound();
     ///It inicialyzes and plays a goodbye song.
-    set_file_to_play("./res/audio/chau.wav");
-    play_sound();
+    //set_file_to_play("./res/audio/chau.wav");
+    //play_sound();
 
     ///It makes an animation saying goodbye(same as hello twice)
-    disp_clear();
-    initMenu();
-    disp_clear();
-    initMenu();
-    disp_update();
+    theEnd();
 
     ///It doesn't finish until the song stops.
     while(player_status() == PLAYING)
@@ -248,7 +259,7 @@ rpi(void)
 /// @privatesection
 // === Local function definitions ===
 
-void
+int
 play_tetris(board_t * gameboard)
 {
     //COMMENTS ARE NOT IN DOXYGEN FORMAT
@@ -261,7 +272,7 @@ play_tetris(board_t * gameboard)
 
     int flag = 0;
 
-    int k, n;
+    int k, n, loop = 1;
     int lines[BOARD_HEIGHT];
 
     grid_t * board = gameboard->ask.board();
@@ -284,7 +295,7 @@ play_tetris(board_t * gameboard)
         //startTimer();
      */
     //It is a loop until the game ends.
-    while(!(gameboard->ask.endGame()))
+    while(!(gameboard->ask.endGame()) && loop)
     {
         //It asks for the user instruction(joystick movement)
         joy_update();
@@ -299,8 +310,12 @@ play_tetris(board_t * gameboard)
         //}
          */
 
-        //If the user goes to the right.
-        if(jmovement == RIGHT)
+        if(flag > 1)
+        {
+            loop = 0;
+        }
+            //If the user goes to the right.     
+        else if(jmovement == RIGHT)
         {
             gameboard->piece.shift(RIGHT);
         }
@@ -324,15 +339,19 @@ play_tetris(board_t * gameboard)
             flag++;
         }
             //If the user goes down.
-        else if(jmovement == DOWN && flag == 0)
+        else if(jmovement == DOWN)
         {
             gameboard->piece.softDrop();
-            flag++;
         }
             //This is to unblock the switch bottom.
         else if(jmovement == CENTER)
         {
             flag = 0;
+        }
+
+        else if(jmovement == PRESSED && flag != 0)
+        {
+            flag++;
         }
 
         n = gameboard->ask.filledRows(lines);
@@ -351,9 +370,9 @@ play_tetris(board_t * gameboard)
         printG(board);
         disp_update();
 
-        usleep(200000);
+        usleep(500000);
     }
 
 
-    return;
+    return !loop;
 }

@@ -36,7 +36,7 @@
 
 // === Libraries and header files ===
 
-#include "../../backend/board/board.h"
+#    include "../../backend/board/board.h"
 
 // === Constants and Macro definitions ===
 
@@ -56,8 +56,18 @@
 ///@brief Space between each letter printed on the board.
 #    define SPACE 4
 
-// === Enumerations, structures and typedefs ===
+///@def LEFT DISPLACEMENT
+///@brief Max displacement that a word can have from the left border
+///       of the display to the left(coordinate x value).
+#    define LEFT_DISPLACEMENT 14
 
+///@def RIGHT DISPLACEMENT
+///@brief Max displacement that a word can have from the right border
+///       of the display to the right(coordinate x value).
+#    define RIGHT_DISPLACEMENT 2
+
+
+// === Enumerations, structures and typedefs ===
 ///
 ///@brief Matrices for letters.
 typedef int letters_t [LROWS][LCOLS];
@@ -66,24 +76,28 @@ typedef int letters_t [LROWS][LCOLS];
 ///@brief Arrays of pointers to matrices of letters.
 typedef letters_t* (words_t[]);
 
+
+typedef int pie_t [LCOLS][LROWS];
+
 ///
 ///@brief Results for sameLetter();
+
 enum
 {
-    NOT_SAME, 
+    NOT_SAME,
     SAME
 };
 
 /**
-* @brief  Order in which every word is defined in an array of
-*         words, separated between menus by NULL.
-*/
+ * @brief  Order in which every word is defined in an array of
+ *         words, separated between menus by NULL.
+ */
 enum order
 {
     ///Principal menu.
-    PLAY = 1, MODE, SCORE, SND, EXIT, 
+    PLAY = 1, MODE, SCORE, SOUND, EXIT,
     ///Options on SND.
-    ON = 7, OFF, 
+    ON = 7, OFF,
     ///Options on MODE.
     EASY = 10, HARD
 };
@@ -101,8 +115,8 @@ enum order
  * @param None
  * 
  * @return Nothing
-*/
-void 
+ */
+void
 initMenu(void);
 
 /**
@@ -115,7 +129,7 @@ initMenu(void);
  * @return Nothing
  */
 void
-printG(int * matrix); 
+printG(int * matrix);
 
 /**
  * @brief Print words.
@@ -127,10 +141,27 @@ printG(int * matrix);
  * @param Coordinate's X value.
  * @param Coordinate's Y value.
  * 
- * @return Nothing
-*/
-void
+ * @return Coordinate's X value of the last letter of the word(it could be
+ *         bigger than the MAX value).
+ */
+int
 printW(words_t word, int x, int y);
+
+/**
+ * @brief Print words with an animation.
+ * 
+ * It prints words(made by letters) on the display with a space between them.
+ * It is similar to printW but this one can show bigger words displacing 
+ * the letters from right to left.
+ * 
+ * @param Pointer to letters_t.
+ * @param Coordinate's X value.
+ * @param Coordinate's Y value.
+ * 
+ * @return Nothing
+ */
+void
+printWmove(words_t word, int x, int y);
 
 /**
  * @brief Clear a square in the display. 
@@ -145,21 +176,33 @@ printW(words_t word, int x, int y);
  * @param Coordinate's Y value.
  * 
  * @return Nothing
-*/
+ */
 void
-disp_n_clear(int width, int height, int x, int y); 
+disp_n_clear(int width, int height, int x, int y);
 
 /**
- * @brief Animation.
+ * @brief Animation to show the elimination of a line.
  * 
- * It shows a fulled line that it is cleared.
+ * It shows an animation of a full line disappearing. 
  * 
  * @param An array with each line that must be cleared.
  * @param The number of the column to be cleared.
  * 
  * @return Nothing
-*/
+ */
 void
 lineoff(int line [BOARD_WIDTH], int y);
+
+/**
+ * @brief Ending animation.
+ * 
+ * It makes a nice animation of the end.
+ * 
+ * @param None
+ * 
+ * @return Nothing
+ */
+void
+theEnd(void);
 
 #endif /* DISPLAY_H */

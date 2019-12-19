@@ -36,9 +36,18 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+///RPI libraries
+#include "libs/disdrv.h"
+#include "libs/joydrv.h"
+
+///Joystick functions.
+#include "joystick.h"
+
+///Defines and enums used from the backend.
+#include "../../backend/board/board.h"
+
 // This file
 #include "display.h"
-#include "libs/disdrv.h"
 
 /// @privatesection
 // === Constants and Macro definitions ===
@@ -186,6 +195,56 @@ letters_t hh = {
     {1, 0, 1, 0, 0},
     {1, 0, 1, 0, 0}
 };
+///Letter U
+letters_t uu = {
+    {1, 0, 1, 0, 0},
+    {1, 0, 1, 0, 0},
+    {1, 0, 1, 0, 0},
+    {1, 0, 1, 0, 0},
+    {1, 1, 1, 0, 0}
+};
+
+/*
+pie_t lll = {
+    {1, 1, 1, 1, 0},
+    {1, 1, 1, 1, 0},
+    {0, 0, 1, 1, 0},
+    {0, 0, 1, 1, 0},
+    {0, 0, 1, 1, 0}
+};
+
+pie_t sss = {
+    {0, 1, 1, 0, 0},
+    {0, 0, 1, 1, 0},
+    {1, 0, 0, 0, 1},
+    {1, 1, 0, 1, 1},
+    {0, 1, 0, 1, 0}
+};
+
+pie_t ccc = {
+    {1, 1, 1, 0, 0},
+    {1, 1, 1, 0, 0},
+    {1, 1, 1, 0, 0},
+    {0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0}
+};
+
+pie_t iii = {
+    {1, 1, 0, 0, 0},
+    {1, 1, 0, 0, 0},
+    {1, 1, 0, 0, 0},
+    {1, 1, 0, 0, 0},
+    {1, 1, 0, 0, 0}
+};
+
+pie_t yyy = {
+    {0, 1, 1, 1, 0},
+    {0, 0, 1, 0, 0},
+    {1, 0, 0, 0, 1},
+    {1, 1, 0, 1, 1},
+    {1, 0, 0, 0, 1}
+};
+ */
 
 // === Function prototypes for private functions with file level scope ===
 
@@ -224,6 +283,10 @@ printL(letters_t * letter, int x, int y);
 // === Static variables and constant variables with file level scope ===
 
 // === Global function definitions ===
+
+
+
+
 /// @publicsection
 
 void
@@ -249,7 +312,7 @@ disp_n_clear(int width, int height, int x, int y)
     }
 }
 
-void
+int
 printW(words_t word, int x, int y)
 {
     int k;
@@ -268,13 +331,79 @@ printW(words_t word, int x, int y)
         {
             x += 2;
         }
-            ///If it is a shorter letter, it doesn't as much space as the others.
+            ///If it is a shorter letter, it doesn't as much space as the others
         else if(((*(word[k]))[4][2] == 0)&&(!sameLetter(word[k], &pp)))
         {
             x -= 1;
         }
         ///It adds the space between letters.    
         x += SPACE;
+    }
+    ///It returns with the value of the last point of the letter.(In case it is
+    ///a long word this number is bigger than the MAX)
+    return x;
+}
+
+void
+printWmove(words_t word, int xo, int y)
+{
+    ///X is the coordinate of the last letter of the word.
+    int x;
+    ///Next is a flag to know if the last coordinate x of the last letter
+    ///has an acceptable displacement.
+    int next;
+    ///Jmove takes surf() value(so as to avoid calling the function 
+    ///so many times)
+    int jmove;
+
+    ///It doesn't continue until the joystick  is in the center(as in rpcontrol)
+    while(surf() != CENTER)
+    {
+        joy_update();
+    }
+
+    jmove = surf();
+
+    ///Unless the user moves the joystick to the left, right or press
+    ///the switch button, it show the full word going from one side
+    ///to the other.
+    while(jmove != PRESSED && jmove != LEFT && jmove != RIGHT)
+    {
+        ///It clears the display every time there is a new printW.
+        disp_n_clear(MAX, MAX / 2, 0, MAX / 2);
+
+        ///It gets the displacement after printing the word.(If it a long word,
+        ///X will be huge)
+        x = printW(word, xo, y);
+
+        ///If it is not as displaced to the left as it should
+        ///It fix origin one place to the left.
+        if(x > LEFT_DISPLACEMENT && next == 0)
+        {
+            xo--;
+        }
+        ///If it is totally displaced to the left, it starts displacing the
+        ///word to the right until it is totally displaced. 
+        else if(xo <= RIGHT_DISPLACEMENT)
+        {
+            ///This flag blocks the first condition so as to displace the word
+            ///totally to the right and then start again.
+            next++;
+            xo++;
+        }
+        ///If it was totally displaced to the right, it starts again
+        ///(to the left).
+        else
+        {
+            next = 0;
+        }
+        ///It shows the printed word.
+        disp_update();
+        ///Delay
+        usleep(200000);
+        ///Analyzes the user's joystick instruction.
+        joy_update();
+        jmove = surf();
     }
 }
 
@@ -309,7 +438,7 @@ printG(int *matrix)
                 /**
                  * If it isn't in a border line, it prints the matrix.
                  */
-            else if((*matrix) == 0)
+            else if(*matrix == 0)
             {
                 disp_write(point, D_OFF);
                 matrix++;
@@ -360,8 +489,8 @@ initMenu(void)
         }
         if(i > 4)
         {
-            printL(&ss, 13, 2);
-            printL(&ss, 13, 10);
+            printL(&xx, 13, 2);
+            printL(&xx, 13, 10);
         }
         disp_update();
         usleep(200000);
@@ -374,7 +503,7 @@ initMenu(void)
     printL(&tt, 5, 0);
     printL(&rr, 8, 2);
     printL(&ii, 11, 0);
-    printL(&ss, 13, 2);
+    printL(&xx, 13, 2);
     //disp_update();
 
 }
@@ -386,7 +515,7 @@ initMenu(void)
 void
 printL(letters_t * letter, int x, int y)
 {
-    int i, j;
+    int i, j, xp = x;
     dcoord_t point;
 
     /**
@@ -402,7 +531,12 @@ printL(letters_t * letter, int x, int y)
         {
             point.x = (j + x);
 
-            if((*letter)[i][j] == 0)
+            if(xp < 0)
+            {
+                xp++;
+            }
+
+            else if((*letter)[i][j] == 0)
             {
                 disp_write(point, D_OFF);
             }
@@ -412,6 +546,7 @@ printL(letters_t * letter, int x, int y)
                 disp_write(point, D_ON);
             }
         }
+        xp = x;
     }
 }
 
@@ -445,7 +580,7 @@ lineoff(int line [BOARD_WIDTH], int y)
 
     point.y = y;
 
-    ///It truns off every led of the line with a delay of 0.1 seconds.
+    ///It turns off every led of the line with a delay of 0.1 seconds.
     for(j = 0; j < BOARD_WIDTH; j++)
     {
         point.x = (j + 3);
@@ -454,4 +589,55 @@ lineoff(int line [BOARD_WIDTH], int y)
         disp_update();
     }
     return;
+}
+
+void
+theEnd(void)
+{
+    int i, j, k = 0,n=0;
+    dcoord_t point;
+
+    while(k <= 4)
+    {
+        for(i = 0; i < MAX; i++)
+        {
+            point.y = i;
+
+            for(j = 0; j < MAX; j++)
+            {
+                point.x = j;
+                
+                if(((i + j) % 2)&&n)
+                {
+                    disp_write(point, D_OFF);
+                }
+                else if(n)
+                {
+                    disp_write(point, D_ON);
+                }
+                else if((i + j) % 2)
+                {
+                    disp_write(point, D_ON);
+                }
+                else 
+                {
+                    disp_write(point, D_OFF);
+                }
+            }
+        }
+        k++;
+        
+        if(n==0)
+        {
+            n++;
+        }
+        else
+        {
+            n=0;
+        }
+        
+        disp_update();
+        usleep(1000000);
+    }
+
 }

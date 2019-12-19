@@ -55,6 +55,12 @@
  */
 #    define ORIENTATION     4
 
+/**
+ * @def CELL(r,c)
+ * @brief Returns the information in the row (r) and column (c) of the board
+ */
+#define GET_CELL(r,c,b) ( (b)[ ((r) * BOARD_WIDTH) + (c) ] )
+
 // === Enumerations, structures and typedefs ===
 
 /**
