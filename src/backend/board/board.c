@@ -73,6 +73,7 @@
 #define MBOARD_W        (BOARD_WIDTH)
 
 #define INVALID_LINE    -1
+#define INVALID_PIECE   -1
 
 /**
  * @def CELL(r,c)
@@ -552,6 +553,7 @@ init (void)
 
     // Generate first set of pieces
     bStruct.bagPosition = 0;
+    bStruct.lastTetromino = INVALID_PIECE;
     fillBag();
 
     // Piece to PIECE_NONE
@@ -769,17 +771,19 @@ updatePiece (void)
             case TETROMINOS - 2:
                 bStruct.piece.type = bStruct.bag[bStruct.bagPosition++];
                 fillBag();
-
                 break;
 
                 // Last piece in the bag
             case TETROMINOS - 1:
                 bStruct.piece.type = bStruct.lastTetromino;
+                // Reset bagPosition
+                bStruct.bagPosition = 0;
                 break;
 
                 // More than 2 pieces left in the bag
             default:
                 bStruct.piece.type = bStruct.bag[bStruct.bagPosition++];
+                bStruct.lastTetromino = INVALID_PIECE;
                 break;
         }
 
