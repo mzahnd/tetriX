@@ -488,7 +488,7 @@ filledRows(int lines[BOARD_HEIGHT])
             // And when both columns have a fixed block, the rest of the 
             // columns are checked
             for(j = 1, fixed = 2;
-                j < MBOARD_W - 1 && fixed > 0;
+                (j < MBOARD_W)  && (fixed > 0);
                 j++)
             {
                 // Every grid cell must have a fixed block
@@ -566,7 +566,7 @@ init(void)
     bStruct.public -> piece.shift = &shiftPiece;
     bStruct.public -> piece.softDrop = &softDropPiece;
 
-    initTimer(&bStruct.stats);
+    //initTimer(&bStruct.stats);
 
     return 0;
 }
