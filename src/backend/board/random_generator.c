@@ -41,8 +41,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#ifndef TRUERANDOM
+// For srand
+#    include <time.h>
+#else
 // For getrandom
-#include <sys/random.h>
+#    include <sys/random.h>
+#endif
 
 // For pieces, board_cell and coords enum
 #include "board.h"
@@ -70,9 +75,11 @@
 static char
 chk_rnd (int * rnd_bag, int pos, int * old_bag);
 
+#ifdef TRUERANDOM
 // Generate a true random unsigned int
 static unsigned int
 myRand (void);
+#endif
 
 // === ROM Constant variables with file level scope ===
 
@@ -80,6 +87,24 @@ myRand (void);
 
 // === Global function definitions ===
 /// @publicsection
+
+#ifndef TRUERANDOM
+
+/**
+ * @brief Initialize random generator
+ * 
+ * Must be called once before random_generator().
+ * 
+ * @return Success: 0
+ * @return Fail: Non 0
+ */
+int
+init_random_generator (void)
+{
+    srand(time(NULL));
+    return 0;
+}
+#endif
 
 /**
  * @brief Generates a TETROMINOS size bag with a pseudo-random list of pieces.
@@ -120,7 +145,12 @@ random_generator (int * rnd_bag, int size)
     i = 0;
     while ( i < TETROMINOS )
     {
+#ifndef TRUERANDOM
+        piece = (rand() % TETROMINOS) + 1;
+#else
         piece = (myRand() % TETROMINOS) + 1;
+#endif
+
         switch ( piece )
         {
             case 1:
@@ -265,6 +295,8 @@ chk_rnd (int * rnd_bag, int pos, int * old_bag)
     return ans;
 }
 
+#ifdef TRUERANDOM
+
 /**
  * @brief Generate a true random unsigned int
  * 
@@ -308,3 +340,4 @@ myRand (void)
 
     return rndInt;
 }
+#endif

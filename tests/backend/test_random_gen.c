@@ -63,7 +63,7 @@ void test1 (void);
 void test2 (void);
 
 static void
-print_arr (char arr[TETROMINOS]);
+printArr (int arr[TETROMINOS]);
 
 // === ROM Constant variables with file level scope ===
 
@@ -209,10 +209,12 @@ main ()
 int
 init_suite (void)
 {
+#ifndef TRUERANDOM
     if ( init_random_generator() )
     {
         return 1;
     }
+#endif
 
     return 0;
 }
@@ -292,7 +294,7 @@ test2 ()
     int i;
     int count_sz = 0;
 
-    char old_bag[TETROMINOS];
+    int old_bag[TETROMINOS];
 
     for ( i = 0; i < TETROMINOS; i++ )
     {
@@ -360,7 +362,7 @@ test2 ()
 // === Local function definitions ===
 
 static void
-print_arr (char arr[TETROMINOS])
+printArr (int arr[TETROMINOS])
 {
     int i;
 

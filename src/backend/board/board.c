@@ -534,6 +534,14 @@ filledRows (int lines[BOARD_HEIGHT])
 static int
 init (void)
 {
+
+#ifndef TRUERANDOM
+    if ( init_random_generator() )
+    {
+        return 1;
+    }
+#endif
+
     // Allocate board
     bStruct.gboard = (grid_t *) calloc(MBOARD_W * MBOARD_H, sizeof (grid_t));
 
