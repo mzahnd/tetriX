@@ -383,7 +383,7 @@
       <compileType>
         <cTool>
           <standard>10</standard>
-          <commandLine>-D ALLEGRO</commandLine>
+          <commandLine>-D ALLEGRO -D TRUERANDOM</commandLine>
           <warningLevel>2</warningLevel>
         </cTool>
         <linkerTool>
@@ -487,8 +487,6 @@
       <item path="src/frontend/allegro/alcontrol.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/frontend/allegro/screen/game.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="src/frontend/allegro/screen/game.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/frontend/allegro/screen/menu.c" ex="false" tool="0" flavor2="0">
       </item>

@@ -73,6 +73,9 @@
                           "res/fonts/liberation_serif/LiberationSerif-Bold.ttf"
 #define TXT_OFFSET          10
 
+#define BTN_ROUNDNESS       25.0
+#define BTN_THICKNESS       2.5
+
 #define TXT_EXIT_NUM        3
 #define TXT_EXIT_COLOR      "#0613DD"
 #define TXT_EXIT_SIZE       (TXT_SIZE * 2.5)
@@ -186,20 +189,15 @@ alg_menu (allegro_t * alStru)
     }
 
     // == Display ==
-
-    // Enable antialiasing
-    al_set_new_display_option(ALLEGRO_SAMPLE_BUFFERS, 1, ALLEGRO_SUGGEST);
-    al_set_new_display_option(ALLEGRO_SAMPLES, 10, ALLEGRO_SUGGEST);
-    // Show nicer bitmaps
-    al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
-
     // Create display
+    menu.display = alStru -> screen.display;
 
-    menu.display = al_create_display(SCREEN_WIDTH, SCREEN_HEIGHT);
-    if ( menu.display == NULL )
+    // Load background
+    menu.bkgnd = al_load_bitmap("res/images/main/background.png");
+
+    if ( menu.bkgnd == NULL )
     {
-        fputs("Error creating main menu.", stderr);
-        alg_destroy();
+        fputs("Error loading background.", stderr);
         return AL_ERROR;
     }
 
@@ -362,25 +360,11 @@ checkKeys (menu_t * menu, unsigned char key[ALLEGRO_KEY_MAX])
 static void
 drawMainMenu (menu_t * menu)
 {
-    static int first_time = true;
     int i;
 
     ALLEGRO_FONT * text = al_load_font(TXT_FONT_PATH, TXT_SIZE, 0);
 
     al_clear_to_color(al_color_html(BKGND_COLOR));
-
-    if ( first_time == true )
-    {
-        menu -> bkgnd = al_load_bitmap("res/images/main/background.png");
-
-        if ( menu -> bkgnd == NULL )
-        {
-            fputs("Error loading background.", stderr);
-            return;
-        }
-
-        first_time = false;
-    }
 
     al_draw_scaled_bitmap(menu -> bkgnd,
                           0, 0, BKGND_WIDTH, BKGND_HEIGHT,
@@ -449,7 +433,6 @@ destroy (menu_t * menu)
     al_destroy_timer(menu -> timer.main);
     al_destroy_event_queue(menu -> evq);
     al_destroy_bitmap(menu -> bkgnd);
-    al_destroy_display(menu -> display);
 }
 
 static void
@@ -507,7 +490,7 @@ selectText (ALLEGRO_FONT * font, const menu_t * const menu)
                                      txt_pos[*pos][1] - TXT_OFFSET, \
                                    txt_pos[*pos][0] + TXT_OFFSET + (width / 2),
                                      txt_pos[*pos][1] + TXT_OFFSET + TXT_SIZE,\
-                                 25.0, 25.0,
+                                 BTN_ROUNDNESS, BTN_ROUNDNESS,
                                      al_color_html(TXT_COLOR_SEL_BKGND));
 
     al_draw_rounded_rectangle(
@@ -515,6 +498,6 @@ selectText (ALLEGRO_FONT * font, const menu_t * const menu)
                               txt_pos[*pos][1] - TXT_OFFSET,
                               txt_pos[*pos][0] + TXT_OFFSET + (width / 2),
                               txt_pos[*pos][1] + TXT_OFFSET + TXT_SIZE,
-                              25.0, 25.0,
-                              al_color_html(TXT_COLOR_SEL_BDR), 2.5);
+                              BTN_ROUNDNESS, BTN_ROUNDNESS,
+                              al_color_html(TXT_COLOR_SEL_BDR), BTN_THICKNESS);
 }

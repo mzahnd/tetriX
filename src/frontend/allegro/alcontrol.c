@@ -156,8 +156,6 @@ allegro (void)
     alStru.samples.music.status = true;
 
     // Public stuff
-    //alStru.public -> screen.game.create = &alg_game;
-    alStru.public -> screen.menu.create = &alg_menu;
 
     alStru.public -> samples.fx.play = &playFx;
     alStru.public -> samples.fx.invertStatus = &invertFx;
@@ -169,6 +167,24 @@ allegro (void)
     alStru.public -> samples.music.status = &statusMusic;
 
     alStru.public -> exit = false;
+
+
+    // Create display
+    // Enable antialiasing
+    al_set_new_display_option(ALLEGRO_SAMPLE_BUFFERS, 1, ALLEGRO_SUGGEST);
+    al_set_new_display_option(ALLEGRO_SAMPLES, 15, ALLEGRO_SUGGEST);
+    // Show nicer bitmaps
+    al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
+
+
+    alStru.public->screen.display = al_create_display(SCREEN_WIDTH,
+                                                      SCREEN_HEIGHT);
+    if ( alStru.public->screen.display == NULL )
+    {
+        fputs("Error creating display.", stderr);
+        alg_destroy();
+        ret = 1;
+    }
 
     // Create main menu
     if ( ret != 1 && alg_menu(alStru.public) == AL_ERROR )
@@ -189,13 +205,13 @@ alg_destroy (void)
     alStru.public -> samples.fx.play = NULL;
     alStru.public -> samples.music.play = NULL;
     alStru.public -> samples.music.play = NULL;
-    alStru.public -> screen.menu.create = NULL;
-    //alStru.public -> screen.game.create = NULL;
 
     alStru.samples.fx.sample = NULL;
     alStru.samples.fx.sample_id = NULL;
     alStru.samples.music.sample = NULL;
     alStru.samples.music.sample_id = NULL;
+
+    al_destroy_display(alStru.public -> screen.display);
 
     al_destroy_sample(alStru.samples.fx.sample);
     al_destroy_sample(alStru.samples.music.sample);

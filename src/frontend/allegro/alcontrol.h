@@ -123,12 +123,7 @@ struct ALLEGRO_MGMT
 
     struct
     {
-
-        struct
-        {
-            int (* create) (allegro_t * alStru);
-        } menu;
-
+        ALLEGRO_DISPLAY * display;
     } screen;
 
 };

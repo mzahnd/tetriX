@@ -47,13 +47,18 @@
 // === ROM Constant variables ===
 
 // === Global function definitions ===
-// Initialize the timer functions.
-int
-initTimer (struct STATS * sts);
 
 // Tells if the time limit has been reached
 bool
 askTimer (void);
+
+// Returns the time in ms that a piece has to be static before updating
+int
+askTimeLimit (void);
+
+// Initialize the timer functions.
+int
+initTimer (const stats_t * sts);
 
 // Reset timer
 void

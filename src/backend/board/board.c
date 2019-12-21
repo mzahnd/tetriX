@@ -429,13 +429,24 @@ endGame (void)
 {
     int i, j;
     int ans = 0;
+    bool found = false;
 
-    for ( i = 0; i < HIDDEN_ROWS; i++ )
+    if ( bStruct.public -> init == true )
     {
         for ( j = 0; j < MBOARD_W; j++ )
         {
+            CELL(HIDDEN_ROWS, j) ? found = true : 0;
+        }
 
-            CELL(i, j) > CELL_CLEAR ? ans = 1 : 0;
+        if ( found == true )
+        {
+            for ( i = 0; i < HIDDEN_ROWS; i++ )
+            {
+                for ( j = 0; j < MBOARD_W; j++ )
+                {
+                    CELL(i, j) > CELL_CLEAR ? ans = 1 : 0;
+                }
+            }
         }
     }
 
@@ -831,8 +842,13 @@ updateStats (int action)
             break;
 
         case NPIECE:
-            bStruct.stats.newPiece(&bStruct.piece.type,
-                                   &bStruct.bag[bStruct.bagPosition]);
+            // When using the last position in the bag, read lastTetromino as 
+            // the next piece. Otherwise, read the following piece in the bag
+            (bStruct.bagPosition == TETROMINOS - 1) ? \
+                                  bStruct.stats.newPiece(&bStruct.piece.type, \
+                                                    &bStruct.lastTetromino) : \
+                                  bStruct.stats.newPiece(&bStruct.piece.type, \
+                                            &bStruct.bag[bStruct.bagPosition]);
             break;
 
         default:

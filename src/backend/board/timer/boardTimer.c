@@ -79,7 +79,7 @@
 typedef struct TIMER
 {
     // Stats structure used to get the current level
-    stats_t * stats;
+    const stats_t * stats;
 
     // Initial timer
     clock_t t0;
@@ -106,41 +106,6 @@ static tmr_t NTIMER_T;
 
 // === Global function definitions ===
 /// @publicsection
-
-/**
- * @brief Initialize the timer functions.
- * 
- * @param sts Pointer to the current STATS structure. Used to get the current
- * game level.
- * 
- * @return Success: 0
- * @return Fail: Non-zero
- * 
- * @note This function <b>must</b> be called once before askTimer or startTimer
- */
-int
-initTimer (struct STATS * sts)
-{
-    // Check that STATS is valid
-    if ( sts == NULL )
-    {
-        fputs("Bad STATS structure.", stderr);
-        return 1;
-    }
-
-    NTIMER_T.stats = sts;
-
-    // Get current level
-    NTIMER_T.level = NTIMER_T.stats -> level;
-
-    // Initial time limit
-    TLIMIT = 100.0;
-
-    // Start timer in case askTimer is called before another call to startTimer
-    RESET_T0;
-
-    return 0;
-}
 
 /**
  * @brief Tells if the time limit has been reached
@@ -175,6 +140,61 @@ askTimer (void)
 }
 
 /**
+ * @brief Returns the time in ms that a piece has to be static before updating
+ * 
+ * @param None
+ * 
+ * @return Time limit for the current level
+ */
+int
+askTimeLimit (void)
+{
+    // Update time limit if level has changed
+    if ( NTIMER_T.level != NTIMER_T.stats -> level )
+    {
+        updateLimit();
+    }
+
+    return TLIMIT;
+}
+
+/**
+ * @brief Initialize the timer functions.
+ * 
+ * @param sts Pointer to the current STATS structure. Used to get the current
+ * game level.
+ * 
+ * @return Success: 0
+ * @return Fail: Non-zero
+ * 
+ * @note This function <b>must</b> be called once before askTimer or startTimer
+ */
+int
+initTimer (const stats_t * sts)
+{
+    // Check that STATS is valid
+    if ( sts == NULL )
+    {
+        fputs("Bad STATS structure.", stderr);
+        return 1;
+    }
+
+    NTIMER_T.stats = sts;
+
+    // Get current level
+    //NTIMER_T.level = NTIMER_T.stats -> level;
+
+    // Initial time limit
+    updateLimit();
+    //TLIMIT = 1000.0;
+
+    // Start timer in case askTimer is called before another call to startTimer
+    RESET_T0;
+
+    return 0;
+}
+
+/**
  * @brief Reset timer
  * 
  * This function should be called when the delay counter should start.
@@ -188,6 +208,7 @@ startTimer (void)
 {
     RESET_T0;
 }
+
 /// @privatesection
 // === Local function definitions ===
 
@@ -197,31 +218,28 @@ startTimer (void)
 static void
 updateLimit (void)
 {
+    const float times[] = {
+        1000.0,
+        900.0, 800.0, 700.0, 600.0, 500.0, 400.0, 325.0, 300.0, 275.0,
+        250.0, 225.0, 200.0, 175.0, 150.0, 125.0, 100.0
+    };
+
     // Update level
     NTIMER_T.level = (NTIMER_T.stats -> level);
 
 
-    if ( NTIMER_T.stats -> level < 6 )
+    if ( NTIMER_T.level < 2 )
     {
-        TLIMIT -= 30.0;
+        TLIMIT = times[0];
     }
 
-    else if ( NTIMER_T.stats -> level < 11 )
+    else if ( NTIMER_T.level < (sizeof (times) / sizeof (float) - 2) )
     {
-        TLIMIT -= 50.0;
+        TLIMIT = times[NTIMER_T.level - 1];
     }
 
-    else if ( NTIMER_T.stats -> level < 16 )
+    else
     {
-        TLIMIT -= 70;
-    }
-
-    else if ( NTIMER_T.stats -> level == 16 )
-    {
-        TLIMIT -= 30.0;
-    }
-    else if ( NTIMER_T.stats -> level == 20 )
-    {
-        TLIMIT -= 50.0;
+        TLIMIT = times[sizeof (times) / sizeof (float) - 1];
     }
 }

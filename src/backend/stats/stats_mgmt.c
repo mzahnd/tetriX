@@ -134,7 +134,7 @@ initStats (struct STATS * stats)
     // Hold as uninitialized until done
     gameStats.public -> init = false;
 
-    gameStats.public -> level = 1;
+    gameStats.public -> level = 0;
     gameStats.public -> lines.cleared = 0;
     gameStats.public -> piece.next = TETROMINO_NONE;
     gameStats.public -> piece.current = TETROMINO_NONE;
@@ -287,9 +287,10 @@ uLevel (void)
     // Advance to the next level when 10*n rows have been cleared
     // And 10*n equals the current level (i.e. level to advance from level 10
     // to 11, 110 must have been cleared)
-    if ( ((gameStats.public -> level + 1) * 10 == \
-        gameStats.public -> lines.cleared + 1) &&
-         ((gameStats.public -> lines.cleared + 1) % 10 == 0) )
+    if ( ((gameStats.public -> level + 1) * 10 <= \
+        gameStats.public -> lines.cleared) &&
+         (((gameStats.public -> lines.cleared) % 10 >= 0) &&
+          ((gameStats.public -> lines.cleared) % 10 <= BLOCKS)) )
     {
         (gameStats.public -> level)++;
     }
