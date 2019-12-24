@@ -85,21 +85,22 @@
 #define PAUSE_BKGND_COLOR   "#1E1E60"
 #define PAUSE_BORDER_COLOR  "#C5C5E1"
 #define PAUSE_TXT_COLOR     "#BA3020"
-#define PAUSE_TXT_SIZE      26
+#define PAUSE_TXT_SIZE      48
 #define PAUSE_BOX_THICKNESS 5.0
 #define PAUSE_TXT_FONT_PATH \
-                          "res/fonts/liberation_serif/LiberationSerif-Bold.ttf"
+                          "res/fonts/pixel-operator/PixelOperatorSC.ttf"
 
 #define SEL_BKGND_COLOR     "#1E1E60"
 #define SEL_BORDER_COLOR    "#C5C5E1"
 #define SEL_TXT_COLOR       "#FFFF00"
-#define SEL_TXT_SIZE        26
+#define SEL_TXT_SIZE        52
 #define SEL_BOX_THICKNESS   5.0
 #define SEL_TXT_FONT_PATH   \
-                          "res/fonts/liberation_serif/LiberationSerif-Bold.ttf"
+                         "res/fonts/pixel-operator/PixelOperatorSC-Bold.ttf"
 
 
 #define TXT_SIZE            32
+#define TXT_SIZE_BOLD       32
 #define TXT_COLOR           "#FFFFFF"
 
 #define MS2S(t)             ((t) / 1000.0)
@@ -110,7 +111,9 @@
 #define KEY_READY            ( (KEY_SEEN | KEY_RELEASED) & KEY_RELEASED)
 
 #define TXT_FONT_PATH       \
-                          "res/fonts/liberation_serif/LiberationSerif-Bold.ttf"
+                          "res/fonts/pixel-operator/PixelOperatorMono.ttf"
+#define TXT_FONT_BOLD_PATH  \
+                          "res/fonts/pixel-operator/PixelOperatorMono-Bold.ttf"
 #define TXT_OFFSET          10
 
 #define DRAWSTATS(s)        drawStats_ ## s ## _f (&screenStats)
@@ -122,6 +125,17 @@ enum game_status
     NEW = 0,
     PLAYING,
     PAUSED
+};
+
+enum wordsarr
+{
+    STATS,
+    LVL,
+    ASCORE,
+    TSCORE,
+    NP,
+    LINESC,
+    GOVER,
 };
 
 typedef struct
@@ -174,8 +188,10 @@ typedef struct
 
     struct
     {
-        ALLEGRO_FONT * font;
-        unsigned int size;
+        ALLEGRO_FONT * bold;
+        ALLEGRO_FONT * regular;
+        unsigned int bsize;
+        unsigned int csize;
         const char * color;
     } text;
 
@@ -278,6 +294,9 @@ init_scrStats (screenStats_t * stats, board_t * logic);
 
 static void
 manageEvents (game_t * game, board_t * boardLogic, pause_t * menu);
+
+static void
+restartGame (game_t * game, screenBoard_t * board, screenStats_t * stats);
 
 static void
 restartPiecesTimer (game_t * game);
@@ -431,8 +450,15 @@ alg_game (allegro_t * alStru)
 
         game.redraw = false;
 
+        if ( game.restart == true )
+        {
+            // Restart
+            restartGame(&game, &screenBoard, &screenStats);
+            pMenu.selected.n = 0;
+        }
 
-        if ( (filled = game.logic.ask.filledRows(lines)) > 0 )
+            // Check if a row has been filled
+        else if ( (filled = game.logic.ask.filledRows(lines)) > 0 )
         {
             int i;
             for ( i = 0; i < filled; i++ )
@@ -444,7 +470,7 @@ alg_game (allegro_t * alStru)
             restartPiecesTimer(&game);
         }
 
-            // End game
+            // Check End Game
         else if ( game.logic.ask.endGame() )
         {
             al_stop_timer(game.timer.piece);
@@ -458,8 +484,6 @@ alg_game (allegro_t * alStru)
         {
             manageEvents(&game, &(game.logic), &pMenu);
         }
-
-
     }
 
     destroy(&game);
@@ -469,6 +493,30 @@ alg_game (allegro_t * alStru)
 
 /// @privatesection
 // === Local function definitions ===
+
+static void
+restartGame (game_t * game, screenBoard_t * board, screenStats_t * stats)
+{
+    game -> logic.destroy();
+
+    // Init game logic
+    board_init(&(game -> logic));
+
+    if ( game -> logic.init == false )
+    {
+        fputs("Error initializing boardLogic.", stderr);
+        game -> exit = true;
+    }
+
+    init_scrBoard(board, &(game -> logic));
+    init_scrStats(stats, &(game -> logic));
+
+    game -> redraw = true;
+    game -> restart = false;
+    game -> status = NEW;
+
+    restartPiecesTimer(game);
+}
 
 static void
 checkKeys (unsigned char key[ALLEGRO_KEY_MAX],
@@ -800,14 +848,14 @@ drawStats_pieces_f (screenStats_t * stats)
     {
         coord[COORD_X] = stats -> piecesBox.corner.x + TXT_OFFSET;
         coord[COORD_Y] = stats->piecesBox.corner.y + \
-                           i * TXT_OFFSET + 2.5 * i * CELL_HEIGHT + \
-                           1.5 * al_get_font_line_height(stats->piecesBox.text.font);
+                                     i * TXT_OFFSET + 2.5 * i * CELL_HEIGHT + \
+                  1.5 * al_get_font_line_height(stats->piecesBox.text.regular);
 
         drawPiece(coord[COORD_X], coord[COORD_Y], i);
 
         coord[COORD_X] += CELL_WIDTH * 4 + TXT_OFFSET;
 
-        al_draw_textf(stats->piecesBox.text.font,
+        al_draw_textf(stats->piecesBox.text.regular,
                       al_color_html(stats -> piecesBox.text.color),
                       coord[COORD_X],
                       coord[COORD_Y] + 0.25 * CELL_HEIGHT,
@@ -817,16 +865,17 @@ drawStats_pieces_f (screenStats_t * stats)
 
     // Size
     stats -> piecesBox.width = coord[COORD_X] + \
-                       al_get_text_width(stats->piecesBox.text.font, "000000");
-    stats -> piecesBox.height = SCREEN_HEIGHT - BOX_OFFSET - stats -> piecesBox.corner.y;
+                    al_get_text_width(stats->piecesBox.text.regular, "000000");
+    stats -> piecesBox.height = SCREEN_HEIGHT - BOX_OFFSET - \
+                                                   stats -> piecesBox.corner.y;
 
     // Box title
-    al_draw_textf(stats->piecesBox.text.font,
+    al_draw_textf(stats->piecesBox.text.bold,
                   al_color_html(stats -> piecesBox.text.color),
                   stats -> piecesBox.corner.x + stats->piecesBox.width / 2,
                   stats -> piecesBox.corner.y + TXT_OFFSET,
                   ALLEGRO_ALIGN_CENTRE,
-                  words[0]);
+                  words[STATS]);
 
     // Draw box
     drawBox(&(stats -> piecesBox));
@@ -835,17 +884,17 @@ drawStats_pieces_f (screenStats_t * stats)
 static void
 drawStats_level_f (screenStats_t * stats)
 {
-    char str[strlen(words[1]) + 7];
+    char str[strlen(words[LVL]) + 7];
 
-    strcpy(str, words[1]);
+    strcpy(str, words[LVL]);
     strcat(str, " %03d");
 
     // Draw level information in its box
-    al_draw_textf(stats->levelBox.text.font,
+    al_draw_textf(stats->levelBox.text.bold,
                   al_color_html(stats -> levelBox.text.color),
                   (stats->levelBox.width / 2) + stats -> levelBox.corner.x,
                   (stats->levelBox.height / 2) - \
-                  (al_get_font_line_height(stats->levelBox.text.font) / 2) + \
+                (al_get_font_line_height(stats->levelBox.text.regular) / 2) + \
                   stats->levelBox.corner.y,
                   ALLEGRO_ALIGN_CENTRE,
                   str, stats -> gStats -> level);
@@ -856,7 +905,8 @@ drawStats_level_f (screenStats_t * stats)
 static void
 drawStats_score_f (screenStats_t * stats)
 {
-    int fontHeight = al_get_font_line_height(stats->scoreBox.text.font);
+    float fontHeight = al_get_font_line_height(stats->scoreBox.text.regular);
+    float fontHeight_B = al_get_font_line_height(stats->scoreBox.text.bold);
     float coord[COORD_NUM] = {};
 
     // == Draw score box ==
@@ -864,15 +914,15 @@ drawStats_score_f (screenStats_t * stats)
     coord[COORD_X] = (stats->scoreBox.width / 2) + stats -> scoreBox.corner.x;
     coord[COORD_Y] = stats->scoreBox.corner.y + TXT_OFFSET;
 
-    al_draw_text(stats->scoreBox.text.font,
+    al_draw_text(stats->scoreBox.text.bold,
                  al_color_html(stats -> scoreBox.text.color),
                  coord[COORD_X], coord[COORD_Y],
                  ALLEGRO_ALIGN_CENTRE,
-                 words[2]);
+                 words[ASCORE]);
 
-    coord[COORD_Y] += TXT_OFFSET + fontHeight;
+    coord[COORD_Y] += TXT_OFFSET + fontHeight_B;
 
-    al_draw_textf(stats->scoreBox.text.font,
+    al_draw_textf(stats->scoreBox.text.regular,
                   al_color_html(stats -> scoreBox.text.color),
                   coord[COORD_X], coord[COORD_Y],
                   ALLEGRO_ALIGN_LEFT,
@@ -881,15 +931,15 @@ drawStats_score_f (screenStats_t * stats)
     // Top score
     coord[COORD_Y] += TXT_OFFSET + fontHeight;
 
-    al_draw_text(stats->scoreBox.text.font,
+    al_draw_text(stats->scoreBox.text.bold,
                  al_color_html(stats -> scoreBox.text.color),
                  coord[COORD_X], coord[COORD_Y],
                  ALLEGRO_ALIGN_CENTRE,
-                 words[3]);
+                 words[TSCORE]);
 
-    coord[COORD_Y] += TXT_OFFSET + fontHeight;
+    coord[COORD_Y] += TXT_OFFSET + fontHeight_B;
 
-    al_draw_textf(stats->scoreBox.text.font,
+    al_draw_textf(stats->scoreBox.text.regular,
                   al_color_html(stats -> scoreBox.text.color),
                   coord[COORD_X], coord[COORD_Y],
                   ALLEGRO_ALIGN_LEFT,
@@ -906,7 +956,7 @@ drawStats_score_f (screenStats_t * stats)
 static void
 drawStats_nextPiece_f (screenStats_t * stats)
 {
-    int fontHeight = al_get_font_line_height(stats->nextPieceBox.text.font);
+    float fontHeight_B = al_get_font_line_height(stats->nextPieceBox.text.bold);
     float coord[COORD_NUM] = {};
 
     // == Next Piece box ==
@@ -919,23 +969,23 @@ drawStats_nextPiece_f (screenStats_t * stats)
                                                 stats -> nextPieceBox.corner.x;
     coord[COORD_Y] = stats->nextPieceBox.corner.y + TXT_OFFSET;
     // Draw next piece information in its box
-    al_draw_text(stats->nextPieceBox.text.font,
+    al_draw_text(stats->nextPieceBox.text.bold,
                  al_color_html(stats -> nextPieceBox.text.color),
                  coord[COORD_X], coord[COORD_Y],
                  ALLEGRO_ALIGN_CENTRE,
-                 words[4]);
+                 words[NP]);
 
     if ( stats->gStats->piece.next != TETROMINO_NONE )
     {
         coord[COORD_X] = (stats->nextPieceBox.width / 2) + \
                                stats -> nextPieceBox.corner.x - CELL_WIDTH * 2;
         coord[COORD_Y] = stats->nextPieceBox.corner.y + 2.5 * TXT_OFFSET + \
-                            fontHeight;
+                            fontHeight_B;
 
         drawPiece(coord[COORD_X], coord[COORD_Y], stats->gStats->piece.next);
     }
 
-    stats -> nextPieceBox.height = 2 * CELL_HEIGHT + fontHeight + \
+    stats -> nextPieceBox.height = 2 * CELL_HEIGHT + fontHeight_B + \
                                                                 4 * TXT_OFFSET;
     drawBox(&(stats -> nextPieceBox));
 }
@@ -943,26 +993,26 @@ drawStats_nextPiece_f (screenStats_t * stats)
 static void
 drawStats_lines_f (screenStats_t * stats)
 {
-    float fontHeight = al_get_font_line_height(stats->linesBox.text.font);
+    float fontHeight_B = al_get_font_line_height(stats->linesBox.text.bold);
 
     stats -> linesBox.corner.x = stats -> scoreBox.corner.x;
     stats -> linesBox.corner.y = stats -> nextPieceBox.corner.y + \
                                  stats -> nextPieceBox.height + BOX_OFFSET;
 
     stats -> linesBox.width = stats -> scoreBox.width;
-    stats -> linesBox.height = 2 * fontHeight + 3 * TXT_OFFSET;
+    stats -> linesBox.height = 2 * fontHeight_B + 3 * TXT_OFFSET;
 
     // Draw level information in its box
-    al_draw_text(stats -> linesBox.text.font,
+    al_draw_text(stats -> linesBox.text.bold,
                  al_color_html(stats -> linesBox.text.color),
                  stats -> linesBox.width / 2 + stats -> linesBox.corner.x,
                  stats -> linesBox.corner.y + TXT_OFFSET,
-                 ALLEGRO_ALIGN_CENTRE, words[5]);
+                 ALLEGRO_ALIGN_CENTRE, words[LINESC]);
 
-    al_draw_textf(stats->linesBox.text.font,
+    al_draw_textf(stats->linesBox.text.regular,
                   al_color_html(stats -> linesBox.text.color),
                   stats->linesBox.width / 2 + stats -> linesBox.corner.x,
-                  fontHeight + 2 * TXT_OFFSET + stats->linesBox.corner.y,
+                  fontHeight_B + 2 * TXT_OFFSET + stats->linesBox.corner.y,
                   ALLEGRO_ALIGN_CENTRE,
                   "%03d", stats -> gStats -> lines.cleared);
 
@@ -1256,16 +1306,27 @@ init_scrStats (screenStats_t * stats, board_t * logic)
             stats -> linesBox.text.color = \
             stats -> piecesBox.text.color = TXT_COLOR;
 
-    stats -> levelBox.text.size = stats -> scoreBox.text.size = \
-            stats -> nextPieceBox.text.size = \
-            stats -> linesBox.text.size = \
-            stats -> piecesBox.text.size = TXT_SIZE;
+    stats -> levelBox.text.csize = stats -> scoreBox.text.csize = \
+            stats -> nextPieceBox.text.csize = \
+            stats -> linesBox.text.csize = \
+            stats -> piecesBox.text.csize = TXT_SIZE;
 
-    stats -> levelBox.text.font = stats -> scoreBox.text.font = \
-            stats -> nextPieceBox.text.font = \
-            stats -> piecesBox.text.font = \
-            stats -> linesBox.text.font = \
-            al_load_font(TXT_FONT_PATH, stats -> levelBox.text.size, 0);
+    stats -> levelBox.text.bsize = stats -> scoreBox.text.bsize = \
+            stats -> nextPieceBox.text.bsize = \
+            stats -> linesBox.text.bsize = \
+            stats -> piecesBox.text.bsize = TXT_SIZE_BOLD;
+
+    stats -> levelBox.text.regular = stats -> scoreBox.text.regular = \
+            stats -> nextPieceBox.text.regular = \
+            stats -> piecesBox.text.regular = \
+            stats -> linesBox.text.regular = \
+            al_load_font(TXT_FONT_PATH, stats -> levelBox.text.csize, 0);
+
+    stats -> levelBox.text.bold = stats -> scoreBox.text.bold = \
+            stats -> nextPieceBox.text.bold = \
+            stats -> piecesBox.text.bold = \
+            stats -> linesBox.text.bold = \
+            al_load_font(TXT_FONT_BOLD_PATH, stats -> levelBox.text.bsize, 0);
 }
 
 static void
@@ -1358,7 +1419,7 @@ static void
 drawPause (pause_t * pstru)
 {
     int i;
-    float fontHeight_nSel = al_get_font_line_height(pstru->menuBox.text.font);
+    float fontHeight_nSel = al_get_font_line_height(pstru->menuBox.text.regular);
 
     drawBox(&(pstru -> menuBox));
 
@@ -1366,7 +1427,7 @@ drawPause (pause_t * pstru)
     {
         if ( (pstru->selected.n) == i )
         {
-            al_draw_text(pstru -> selected.box.text.font,
+            al_draw_text(pstru -> selected.box.text.regular,
                          al_color_html(pstru -> selected.box.text.color),
                          pstru -> menuBox.corner.x + \
                                                  pstru->menuBox.width / 2,
@@ -1377,7 +1438,7 @@ drawPause (pause_t * pstru)
 
         else
         {
-            al_draw_text(pstru -> menuBox.text.font,
+            al_draw_text(pstru -> menuBox.text.regular,
                          al_color_html(pstru -> menuBox.text.color),
                          pstru -> menuBox.corner.x + pstru->menuBox.width / 2,
                          pstru -> menuBox.corner.y + (1 + i) * TXT_OFFSET + \
@@ -1400,26 +1461,26 @@ init_pause (pause_t * pstru)
     pstru -> menuBox.color.bkgnd = PAUSE_BKGND_COLOR;
     pstru -> menuBox.color.border = PAUSE_BORDER_COLOR;
     pstru -> menuBox.text.color = PAUSE_TXT_COLOR;
-    pstru -> menuBox.text.size = PAUSE_TXT_SIZE;
-    pstru -> menuBox.text.font = al_load_font(PAUSE_TXT_FONT_PATH,
-                                              pstru -> menuBox.text.size, 0);
+    pstru -> menuBox.text.csize = PAUSE_TXT_SIZE;
+    pstru -> menuBox.text.regular = al_load_font(PAUSE_TXT_FONT_PATH,
+                                                 pstru -> menuBox.text.csize, 0);
 
     pstru -> menuBox.thickness = PAUSE_BOX_THICKNESS;
 
     pstru -> selected.box.color.bkgnd = SEL_BKGND_COLOR;
     pstru -> selected.box.color.border = SEL_BORDER_COLOR;
     pstru -> selected.box.text.color = SEL_TXT_COLOR;
-    pstru -> selected.box.text.size = SEL_TXT_SIZE;
-    pstru -> selected.box.text.font = al_load_font(SEL_TXT_FONT_PATH, \
-                                           pstru -> selected.box.text.size, 0);
+    pstru -> selected.box.text.csize = SEL_TXT_SIZE;
+    pstru -> selected.box.text.regular = al_load_font(SEL_TXT_FONT_PATH, \
+                                           pstru -> selected.box.text.csize, 0);
 
     pstru -> selected.box.thickness = SEL_BOX_THICKNESS;
 
     pstru -> selected.n = 0;
 
     // Calculate height and width of the box
-    fontHeight_Sel = al_get_font_line_height(pstru->selected.box.text.font);
-    fontHeight_nSel = al_get_font_line_height(pstru->menuBox.text.font);
+    fontHeight_Sel = al_get_font_line_height(pstru->selected.box.text.regular);
+    fontHeight_nSel = al_get_font_line_height(pstru->menuBox.text.regular);
 
     pstru -> nWords = 0;
     // Get the bigger word in the array as well as the number of words in it
@@ -1440,9 +1501,9 @@ init_pause (pause_t * pstru)
                       fontHeight_Sel + (pstru -> nWords - 1) * fontHeight_nSel;
 
 
-    sWidth = al_get_text_width(pstru->selected.box.text.font,
+    sWidth = al_get_text_width(pstru->selected.box.text.regular,
                                menuWords[biggerWord]) + 2 * TXT_OFFSET;
-    nWidth = al_get_text_width(pstru->menuBox.text.font,
+    nWidth = al_get_text_width(pstru->menuBox.text.regular,
                                menuWords[biggerWord]) + 2 * TXT_OFFSET;
 
     (sWidth > nWidth) ? \

@@ -486,21 +486,17 @@
       </item>
       <item path="src/frontend/allegro/screen/game.c" ex="false" tool="0" flavor2="0">
       </item>
+      <item path="src/frontend/allegro/screen/game.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/frontend/allegro/screen/menu.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/frontend/allegro/screen/menu.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/frontend/rpi/display.c" ex="true" tool="0" flavor2="10">
       </item>
-      <item path="src/frontend/rpi/display.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="src/frontend/rpi/joystick.c" ex="true" tool="0" flavor2="10">
       </item>
-      <item path="src/frontend/rpi/joystick.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="src/frontend/rpi/rpcontrol.c" ex="true" tool="0" flavor2="10">
-      </item>
-      <item path="src/frontend/rpi/rpcontrol.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/main.c" ex="false" tool="0" flavor2="0">
       </item>
