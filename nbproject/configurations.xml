@@ -213,8 +213,6 @@
       </item>
       <item path="src/frontend/allegro/alcontrol.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/frontend/allegro/screen/game.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="src/frontend/allegro/screen/menu.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/frontend/rpi/display.c" ex="false" tool="0" flavor2="0">

@@ -36,12 +36,16 @@
 
 // === Libraries and header files ===
 /// For bool, true and false
-#include <stdbool.h>
+#    include <stdbool.h>
 
 // === Constants and Macro definitions ===
 /// @def BOARD_HEIGHT
 /// @brief Board Height
-#    define BOARD_HEIGHT    20
+#    ifdef RPI
+#        define BOARD_HEIGHT    16
+#    elif ALLEGRO
+#        define BOARD_HEIGHT    20
+#    endif
 
 /// @def BOARD_WIDTH
 /// @brief Board Width
@@ -102,7 +106,11 @@ enum shiftingTypes
     /// Shift piece one position to the left
     LEFT,
     /// Shift piece one position to the right
-    RIGHT
+    RIGHT,
+    CENTER,
+    PRESSED,
+    UP,
+    DOWN
 };
 
 /**
@@ -282,6 +290,6 @@ typedef struct GAMEBOARD
 
 // Initialize a GAMEBOARD structure
 void
-board_init (void * gameBoardStruct);
+board_init(void * gameBoardStruct);
 
 #endif /* BOARD_H */
