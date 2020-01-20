@@ -80,16 +80,23 @@
 #define TXT_EXIT_COLOR      "#0613DD"
 #define TXT_EXIT_SIZE       (TXT_SIZE * 2.5)
 
+#define TXT_ABOUT_NUM       6
+
 #define FPS                 60.0
 
-#define KEY_SEEN            1
-#define KEY_RELEASED        2
+#define LOGO_FILE_WIDTH     490
+#define LOGO_FILE_HEIGHT    166
+#define LOGO_WIDTH          LOGO_FILE_WIDTH / 2
+#define LOGO_HEIGHT         LOGO_FILE_HEIGHT / 2
+
 // === Enumerations, structures and typedefs ===
 
-enum
+enum menu_options
 {
     NONE,
     PLAY,
+    ABOUT,
+    OPTIONS,
     EXIT
 };
 
@@ -112,6 +119,7 @@ typedef struct
     int txt_sel;
 
     int action;
+
     bool redraw;
 
 } menu_t;
@@ -130,13 +138,19 @@ static void
 drawMainMenu (menu_t * menu);
 
 static void
+drawAbout (menu_t * menu);
+
+static void
 destroy (menu_t * menu);
 
 static void
 manageEvents (menu_t * menu);
 
 static void
-selectText (ALLEGRO_FONT * font, const menu_t * const menu);
+selectInMenu (const ALLEGRO_FONT * font, const menu_t * menu);
+
+static void
+selectText (const int tlx, const int tly, const int textWidth);
 
 // === ROM Constant variables with file level scope ===
 static const float txt_pos[TXT_NUM][2] = {
@@ -153,12 +167,26 @@ static const float txt_exit_pos[TXT_EXIT_NUM][2] = {
 
 };
 
+static const float txt_about_pos[TXT_ABOUT_NUM][2] = {
+    {SCREEN_WIDTH * 0.78, SCREEN_HEIGHT / 5},
+    {SCREEN_WIDTH * 0.78, SCREEN_HEIGHT / 5 + TXT_SIZE + TXT_OFFSET},
+    {SCREEN_WIDTH * 0.78, SCREEN_HEIGHT / 5 + 2 * TXT_SIZE + 2 * TXT_OFFSET},
+    {SCREEN_WIDTH / 4.8, SCREEN_HEIGHT / 5},
+    {SCREEN_WIDTH / 4.8, SCREEN_HEIGHT / 5 + TXT_SIZE + TXT_OFFSET},
+    {SCREEN_WIDTH / 4.8, SCREEN_HEIGHT / 5 + 2 * TXT_SIZE + 2 * TXT_OFFSET}
+};
+
 static const char * txt_str[TXT_NUM] = {
     "PLAY", "OPTIONS", "ABOUT", "EXIT"
 };
 
 static const char * txt_exit_str[TXT_EXIT_NUM] = {
     "THANKS", "FOR", "PLAYING!"
+};
+
+static const char * txt_about_str[TXT_ABOUT_NUM] = {
+    "Developed by", "Gino Minnucci", "Martin E. Zahnd",
+    "Version", "February 2020", "0.0.1"
 };
 
 // === Static variables and constant variables with file level scope ===
@@ -238,34 +266,59 @@ alg_menu (allegro_t * alStru)
     al_start_timer(menu.timer.main);
 
     // Draw and display window
-    while ( menu.action == NONE )
+    while ( menu.action != EXIT )
     {
-        // Draw main menu
-        drawMainMenu(&menu);
-
-        al_flip_display();
-
-        menu.redraw = false;
-
-        while ( menu.redraw == false && menu.action == NONE )
+        switch ( menu.action )
         {
-            manageEvents(&menu);
+            case NONE:
+                // Draw main menu
+                drawMainMenu(&menu);
+
+                al_flip_display();
+
+                menu.redraw = false;
+
+                while ( menu.redraw == false && menu.action == NONE )
+                {
+                    manageEvents(&menu);
+                }
+                break;
+
+            case PLAY:
+                alg_game(alStru);
+
+                // Clear events from queue to avoid catching a wrong one
+                al_flush_event_queue(menu.evq);
+                // Perform menu actions
+                menu.action = NONE;
+                break;
+
+            case ABOUT:
+                drawAbout(&menu);
+
+                while ( menu.action == ABOUT )
+                {
+                    manageEvents(&menu);
+                }
+                break;
+
+            case OPTIONS:
+
+                // Clear events from queue to avoid catching a wrong one
+                al_flush_event_queue(menu.evq);
+                // Perform menu actions
+                menu.action = NONE;
+                break;
+
+            default:
+                break;
         }
     }
 
-    if ( menu.action == EXIT )
-    {
-        drawExit(&menu);
-        sleep(5);
+    drawExit(&menu);
+    sleep(3);
 
-        destroy(&menu);
-    }
-
-    if ( menu.action == PLAY )
-    {
-        destroy(&menu);
-        alg_game(alStru);
-    }
+    destroy(&menu);
 
     return AL_OK;
 }
@@ -276,7 +329,7 @@ alg_menu (allegro_t * alStru)
 static void
 checkKeys (menu_t * menu, unsigned char key[ALLEGRO_KEY_MAX])
 {
-    if ( key[ALLEGRO_KEY_UP] )
+    if ( key[ALLEGRO_KEY_UP] == KEY_READY )
     {
         // Clear key from array
         key[ALLEGRO_KEY_UP] &= KEY_SEEN;
@@ -290,7 +343,7 @@ checkKeys (menu_t * menu, unsigned char key[ALLEGRO_KEY_MAX])
 
     }
 
-    if ( key[ALLEGRO_KEY_DOWN] )
+    if ( key[ALLEGRO_KEY_DOWN] == KEY_READY )
     {
         // Clear key from array
         key[ALLEGRO_KEY_DOWN] &= KEY_SEEN;
@@ -303,7 +356,7 @@ checkKeys (menu_t * menu, unsigned char key[ALLEGRO_KEY_MAX])
         }
 
     }
-    if ( key[ALLEGRO_KEY_LEFT] )
+    if ( key[ALLEGRO_KEY_LEFT] == KEY_READY )
     {
         // Clear key from array
         key[ALLEGRO_KEY_LEFT] &= KEY_SEEN;
@@ -317,7 +370,7 @@ checkKeys (menu_t * menu, unsigned char key[ALLEGRO_KEY_MAX])
 
     }
 
-    if ( key[ALLEGRO_KEY_RIGHT] )
+    if ( key[ALLEGRO_KEY_RIGHT] == KEY_READY )
     {
         // Clear key from array
         key[ALLEGRO_KEY_RIGHT] &= KEY_SEEN;
@@ -330,29 +383,42 @@ checkKeys (menu_t * menu, unsigned char key[ALLEGRO_KEY_MAX])
         }
     }
 
-    if ( key[ALLEGRO_KEY_ENTER] )
+    if ( key[ALLEGRO_KEY_ENTER] == KEY_READY )
     {
         // Clear key from array
         key[ALLEGRO_KEY_ENTER] &= KEY_SEEN;
 
-        switch ( menu -> txt_sel )
+        if ( menu -> action == NONE )
         {
-            case 0:
-                menu -> action = PLAY;
-                break;
+            switch ( menu -> txt_sel )
+            {
+                case 0:
+                    menu -> action = PLAY;
+                    break;
 
-            case 1:
-                break;
+                case 1:
+                    //menu -> action = OPTIONS;
+                    break;
 
-            case 2:
-                break;
+                case 2:
+                    menu -> action = ABOUT;
+                    break;
 
-            case 3:
-                menu -> action = EXIT;
-                break;
+                case 3:
+                    menu -> action = EXIT;
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
+            }
+        }
+
+        else if ( menu -> action == ABOUT )
+        {
+            // Clear events from queue to avoid catching a wrong one
+            al_flush_event_queue(menu -> evq);
+            // Perform menu actions
+            menu -> action = NONE;
         }
     }
 }
@@ -371,12 +437,12 @@ drawMainMenu (menu_t * menu)
                           0, 0, SCREEN_WIDTH, SCREEN_HEIGHT,
                           0);
 
-    selectText(text, menu);
+    selectInMenu(text, menu);
 
     // Draw text
     for ( i = 0; i < TXT_NUM; i++ )
     {
-        if ( i != menu->txt_sel )
+        if ( i != menu -> txt_sel )
         {
             al_draw_text(text, al_color_html(TXT_COLOR),
                          txt_pos[i][0], txt_pos[i][1],
@@ -390,6 +456,74 @@ drawMainMenu (menu_t * menu)
                          ALLEGRO_ALIGN_CENTRE, txt_str[i]);
         }
     }
+}
+
+static void
+drawAbout (menu_t * menu)
+{
+    int i;
+
+    ALLEGRO_BITMAP * logo;
+    ALLEGRO_FONT * txtFont = al_load_font(TXT_FONT_PATH, TXT_SIZE * 0.8, 0);
+    ALLEGRO_FONT * btnFont = al_load_font(TXT_FONT_PATH, TXT_SIZE, 0);
+
+    const char * buttonText = "Return";
+
+    const int txtPos[2] = {SCREEN_WIDTH / 2, 7 * SCREEN_HEIGHT / 9};
+
+    // Background
+    al_clear_to_color(al_color_html(BKGND_COLOR));
+
+    if ( menu -> bkgnd == NULL )
+    {
+        menu -> bkgnd = al_load_bitmap("res/images/main/background.png");
+
+        if ( menu -> bkgnd == NULL )
+        {
+            fputs("Error loading background.", stderr);
+            return;
+        }
+    }
+
+    al_draw_scaled_bitmap(menu -> bkgnd,
+                          0, 0, BKGND_WIDTH, BKGND_HEIGHT,
+                          0, 0, SCREEN_WIDTH, SCREEN_HEIGHT,
+                          0);
+
+    // Button
+    selectText(txtPos[0], txtPos[1],
+               al_get_text_width(btnFont, buttonText));
+
+    al_draw_text(btnFont, al_color_html(TXT_COLOR_SEL),
+                 txtPos[0], txtPos[1],
+                 ALLEGRO_ALIGN_CENTRE, buttonText);
+
+    // Logo
+    logo = al_load_bitmap("res/images/main/itba_logo.png");
+    if ( logo == NULL )
+    {
+        fputs("Error loading logo.", stderr);
+    }
+
+    else
+    {
+        al_draw_scaled_bitmap(logo,
+                              0, 0, LOGO_FILE_WIDTH, LOGO_FILE_HEIGHT,
+                              SCREEN_WIDTH / 2 - LOGO_WIDTH / 2,
+                              SCREEN_HEIGHT * 5 / 9 - LOGO_HEIGHT / 2,
+                              LOGO_WIDTH, LOGO_HEIGHT,
+                              0);
+    }
+
+    // Text
+    for ( i = 0; i < TXT_ABOUT_NUM; i++ )
+    {
+        al_draw_textf(txtFont, al_color_html(TXT_COLOR),
+                      txt_about_pos[i][0], txt_about_pos[i][1],
+                      ALLEGRO_ALIGN_CENTRE, txt_about_str[i]);
+    }
+
+    al_flip_display();
 }
 
 static void
@@ -423,6 +557,7 @@ drawExit (menu_t * menu)
                       txt_exit_pos[i][0], txt_exit_pos[i][1],
                       ALLEGRO_ALIGN_CENTRE, txt_exit_str[i]);
     }
+
     al_flip_display();
 
 }
@@ -479,25 +614,30 @@ manageEvents (menu_t * menu)
 }
 
 static void
-selectText (ALLEGRO_FONT * font, const menu_t * const menu)
+selectInMenu (const ALLEGRO_FONT * font, const menu_t * menu)
 {
     const int * pos = &(menu -> txt_sel);
 
-    int width = al_get_text_width(font, txt_str[*pos]);
+    selectText(txt_pos[*pos][0], txt_pos[*pos][1],
+               al_get_text_width(font, txt_str[*pos]));
+}
 
+static void
+selectText (const int tlx, const int tly, const int textWidth)
+{
     al_draw_filled_rounded_rectangle(\
-                                   txt_pos[*pos][0] - TXT_OFFSET - (width / 2),
-                                     txt_pos[*pos][1] - TXT_OFFSET, \
-                                   txt_pos[*pos][0] + TXT_OFFSET + (width / 2),
-                                     txt_pos[*pos][1] + TXT_OFFSET + TXT_SIZE,\
+                                   tlx - TXT_OFFSET - (textWidth / 2),
+                                     tly - TXT_OFFSET, \
+                                   tlx + TXT_OFFSET + (textWidth / 2),
+                                     tly + TXT_OFFSET + TXT_SIZE,\
                                  BTN_ROUNDNESS, BTN_ROUNDNESS,
                                      al_color_html(TXT_COLOR_SEL_BKGND));
 
     al_draw_rounded_rectangle(
-                              txt_pos[*pos][0] - TXT_OFFSET - (width / 2),
-                              txt_pos[*pos][1] - TXT_OFFSET,
-                              txt_pos[*pos][0] + TXT_OFFSET + (width / 2),
-                              txt_pos[*pos][1] + TXT_OFFSET + TXT_SIZE,
+                              tlx - TXT_OFFSET - (textWidth / 2),
+                              tly - TXT_OFFSET,
+                              tlx + TXT_OFFSET + (textWidth / 2),
+                              tly + TXT_OFFSET + TXT_SIZE,
                               BTN_ROUNDNESS, BTN_ROUNDNESS,
                               al_color_html(TXT_COLOR_SEL_BDR), BTN_THICKNESS);
 }

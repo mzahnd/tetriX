@@ -143,6 +143,8 @@ main (void)
 #ifdef RPI
     if ( rpi() == ERROR )
     {
+
+
         printf("Something went wrong on your RPI\n");
     }
     else

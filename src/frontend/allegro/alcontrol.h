@@ -47,6 +47,10 @@
 #    define SCREEN_WIDTH        800
 #    define SCREEN_HEIGHT       600
 
+// Key detection options
+#define KEY_SEEN            1
+#define KEY_RELEASED        2
+#define KEY_READY            ( (KEY_SEEN | KEY_RELEASED) & KEY_RELEASED)
 
 // === Enumerations, structures and typedefs ===
 typedef struct ALLEGRO_MGMT allegro_t;

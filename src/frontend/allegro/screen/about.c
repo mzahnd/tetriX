@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2019 Martín E. Zahnd
+ * Copyright (C) 2020 Martín E. Zahnd
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-/**
+/******************************************************************************
  * 
- * @file    menu.h
+ * @file    about.c
  * 
  * @brief   ;
  * 
@@ -26,29 +26,45 @@
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
  * 
- * @date    17/12/2019, 12:26
+ * @date    15/01/2020, 13:40
  * 
  * @copyright GNU General Public License v3
- */
-
-#ifndef MENU_H
-#    define MENU_H
+ *****************************************************************************/
 
 // === Libraries and header files ===
-// For allegro_t
-#include "../alcontrol.h"
+#include <stdio.h>
+#include <stdlib.h>
 
+// This file
+#include "about.h"
+
+/// @privatesection
 // === Constants and Macro definitions ===
 
 // === Enumerations, structures and typedefs ===
 
+typedef struct
+{
+    ALLEGRO_BITMAP * bkgnd;
+
+} about_t;
 // === Global variables ===
 
-// === ROM Constant variables ===
+// === Function prototypes for private functions with file level scope ===
+
+// === ROM Constant variables with file level scope ===
+
+// === Static variables and constant variables with file level scope ===
 
 // === Global function definitions ===
+/// @publicsection
 
 int
-alg_menu(allegro_t * alStru);
+alg_about (const allegro_t * alStru, const)
+{
+    about_t about;
 
-#endif /* MENU_H */
+    about.bkgnd = al_load_bitmap("res/images/main/background.png");
+}
+/// @privatesection
+// === Local function definitions ===

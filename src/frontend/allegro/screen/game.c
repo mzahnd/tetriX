@@ -63,25 +63,42 @@
 
 /// @privatesection
 // === Constants and Macro definitions ===
-#define KEY_SEEN            1
-#define KEY_RELEASED        2
-#define FPS                 60.0
 
+/**
+ * @def MS2S(t)
+ * @brief Convert MS to S
+ */
+#define MS2S(t)             ((t) / 1000.0)
+
+/**
+ * @def DRAWSTATS(s)
+ * @brief Call a function with prototype drawStats_(s)_f(&screenStats)
+ */
+#define DRAWSTATS(s)        drawStats_ ## s ## _f (screenStats)
+
+// Display settings
+#define FPS                 60.0
 #define BKGND_COLOR         "#000000"
 #define BKGND_WIDTH         1920
 #define BKGND_HEIGHT        1280
 
+// Board cell size
 #define CELL_WIDTH          25.0
 #define CELL_HEIGHT         CELL_WIDTH
+#define CELL_THICKNESS      2.0
 
-#define ROUND_X             2.0
-#define ROUND_Y             2.0
-
+// Boxes
 #define BOX_OFFSET          20.0
 #define BOX_IN_OFFSET       5.0
 #define BOX_BORDER_COLOR    "#F0F0F0"
 #define BOX_BKGND_COLOR     "#FFFFFF"
+#define BOX_THICKNESS       3.0
 
+// Box corners
+#define ROUND_X             2.0
+#define ROUND_Y             2.0
+
+// Pause box
 #define PAUSE_BKGND_COLOR   "#1E1E60"
 #define PAUSE_BORDER_COLOR  "#C5C5E1"
 #define PAUSE_TXT_COLOR     "#BA3020"
@@ -90,6 +107,7 @@
 #define PAUSE_TXT_FONT_PATH \
                           "res/fonts/pixel-operator/PixelOperatorSC.ttf"
 
+// Pause box - selected option
 #define SEL_BKGND_COLOR     "#1E1E60"
 #define SEL_BORDER_COLOR    "#C5C5E1"
 #define SEL_TXT_COLOR       "#FFFF00"
@@ -98,34 +116,35 @@
 #define SEL_TXT_FONT_PATH   \
                          "res/fonts/pixel-operator/PixelOperatorSC-Bold.ttf"
 
-
+// Text options
 #define TXT_SIZE            32
 #define TXT_SIZE_BOLD       32
 #define TXT_COLOR           "#FFFFFF"
-
-#define MS2S(t)             ((t) / 1000.0)
-
-#define BOX_THICKNESS       3.0
-#define CELL_THICKNESS      2.0
-
-#define KEY_READY            ( (KEY_SEEN | KEY_RELEASED) & KEY_RELEASED)
 
 #define TXT_FONT_PATH       \
                           "res/fonts/pixel-operator/PixelOperatorMono.ttf"
 #define TXT_FONT_BOLD_PATH  \
                           "res/fonts/pixel-operator/PixelOperatorMono-Bold.ttf"
+// Space between lines of text and boxes borders
 #define TXT_OFFSET          10
 
-#define DRAWSTATS(s)        drawStats_ ## s ## _f (&screenStats)
+#define NLEVELS             10
+#define NROWS               NLEVELS
 
 // === Enumerations, structures and typedefs ===
 
+// Game status
+
 enum game_status
 {
-    NEW = 0,
+    INITIAL,
+    CONFIG = 0,
+    NEW,
     PLAYING,
     PAUSED
 };
+
+// Used with array "words" to access each word
 
 enum wordsarr
 {
@@ -138,6 +157,66 @@ enum wordsarr
     GOVER,
 };
 
+enum rowsAndLevelSelected
+{
+    ROWS = 0,
+    LEVEL,
+    RPL
+};
+
+/**
+ * @brief Box options
+ * 
+ * Contains box width, height, thickness, font, size, colors and positions
+ */
+typedef struct
+{
+    // Box size
+    float width;
+    float height;
+
+    // Border
+    float thickness;
+
+    // Colors (should be written in hex. e.g. "#FF00AA")
+
+    struct
+    {
+        const char * border;
+        const char * bkgnd;
+    } color;
+
+    // Top left corner coordinates
+
+    struct
+    {
+        float x;
+        float y;
+    } corner;
+
+    // Text fonts, size and color
+
+    struct
+    {
+        ALLEGRO_FONT * bold;
+        ALLEGRO_FONT * regular;
+        // Bold font size
+        unsigned int bsize;
+        // Regular font size
+        unsigned int rsize;
+
+        // Font color
+        const char * color;
+    } text;
+
+} gbox_t;
+
+/**
+ * @brief General game information and status
+ * 
+ * Keeps the display, background and event queue pointers, as well as timers,
+ * the current game status and the backend logic.
+ */
 typedef struct
 {
     // Display
@@ -148,69 +227,84 @@ typedef struct
     // Event queue
     ALLEGRO_EVENT_QUEUE * evq;
 
+    // Timers
+
     struct
     {
+        // Piece
         ALLEGRO_TIMER * piece;
+        // Display refresh and general timer
         ALLEGRO_TIMER * main;
 
+        // Piece droping speed
         float piece_speed;
     } timer;
+
+    // Initial configurations
+
+    struct
+    {
+        bool ready;
+
+        // Option selected
+        unsigned char n[RPL];
+
+        // Row or level option selected
+        unsigned char rl;
+
+        gbox_t level;
+        gbox_t level_sel;
+
+        gbox_t rows;
+        gbox_t rows_sel;
+
+    } initial;
 
     // Selected option in the game
     int status;
 
+    // Quit game
     bool exit;
+
+    // Redraw display
     bool redraw;
+
+    // Restart game
     bool restart;
 
+    // Game Logic
     board_t logic;
 
 } game_t;
 
+/**
+ * @brief Pause box
+ * 
+ * Contains a gbox_t structure with its size, colors, positions and fonts;
+ * another one with the size, colors and position of the box created to select
+ * a label and the one one selected
+ */
 typedef struct
 {
-    float width;
-    float height;
-
-    float thickness;
-
-    struct
-    {
-        const char * border;
-        const char * bkgnd;
-    } color;
-
-    struct
-    {
-        float x;
-        float y;
-    } corner;
-
-    struct
-    {
-        ALLEGRO_FONT * bold;
-        ALLEGRO_FONT * regular;
-        unsigned int bsize;
-        unsigned int csize;
-        const char * color;
-    } text;
-
-} gbox_t;
-
-typedef struct
-{
+    // Pause menu
     gbox_t menuBox;
 
     struct
     {
+        // Selected option
         gbox_t box;
 
+        // Selected option
         int n;
     } selected;
 
+    // Number of options
     int nWords;
 } pause_t;
 
+/**
+ * @brief Board shown in the display
+ */
 typedef struct
 {
     const stats_t * stats;
@@ -221,6 +315,9 @@ typedef struct
     grid_t * r0c0;
 } screenBoard_t;
 
+/**
+ * @brief Stats shown in the display
+ */
 typedef struct
 {
     const stats_t * gStats;
@@ -248,13 +345,19 @@ static void
 clearKey (int keyName, unsigned char * keyArr);
 
 static void
+destroy (game_t * game);
+
+static void
+drawBlock (int x, int y, gbox_t * block);
+
+static void
 drawBox (gbox_t * box);
 
 static void
 drawGameBoard (screenBoard_t * board);
 
 static void
-drawBlock (int x, int y, gbox_t * block);
+drawInitial (game_t * game);
 
 static void
 drawStats_level_f (screenStats_t * stats);
@@ -281,7 +384,11 @@ static void
 drawPiece (float x, float y, int piece);
 
 static void
-destroy (game_t * game);
+gameManagement (game_t * game, screenBoard_t * screenBoard,
+                screenStats_t * screenStats, pause_t * pMenu);
+
+static void
+init_rowLevel (game_t * game);
 
 static void
 init_pause (pause_t * pstru);
@@ -353,10 +460,15 @@ alg_game (allegro_t * alStru)
     game.timer.piece_speed = 1000.0;
     game.timer.piece = NULL;
     game.timer.main = NULL;
-    game.status = NEW;
+    game.status = INITIAL;
     game.exit = false;
     game.redraw = true;
     game.restart = false;
+
+    game.initial.ready = false;
+    game.initial.n[LEVEL] = 0;
+    game.initial.n[ROWS] = 0;
+    game.initial.rl = LEVEL;
 
     // Init game logic
     board_init(&(game.logic));
@@ -367,6 +479,7 @@ alg_game (allegro_t * alStru)
         return AL_ERROR;
     }
 
+    init_rowLevel(&game);
     init_scrBoard(&screenBoard, &(game.logic));
     init_scrStats(&screenStats, &(game.logic));
     init_pause(&pMenu);
@@ -376,18 +489,6 @@ alg_game (allegro_t * alStru)
     game.timer.main = al_create_timer(1.0 / FPS);
 
     if ( !game.timer.main )
-    {
-        fputs("Failed to create timer.", stderr);
-        destroy(&game);
-        alg_destroy();
-        return AL_ERROR;
-    }
-
-    initTimer(screenStats.gStats);
-    game.timer.piece_speed = askTimeLimit();
-    game.timer.piece = al_create_timer(MS2S(game.timer.piece_speed));
-
-    if ( !game.timer.piece )
     {
         fputs("Failed to create timer.", stderr);
         destroy(&game);
@@ -416,74 +517,47 @@ alg_game (allegro_t * alStru)
     al_register_event_source(game.evq,
                              al_get_timer_event_source(game.timer.main));
 
-    // Piece timer
+    // Start events timers
+    al_start_timer(game.timer.main);
+
+    while ( game.initial.ready == false )
+    {
+        (game.redraw == true) ? \
+            (drawInitial(&game)) : \
+            (manageEvents(&game, NULL, &pMenu));
+    }
+
+    game.logic.set.startRows(game.initial.n[ROWS]);
+    game.logic.set.startLevel(game.initial.n[LEVEL]);
+
+    // Start a new game
+    game.status = NEW;
+
+    // == Pieces Timer ==
+    // Init
+    initTimer(screenStats.gStats);
+    game.timer.piece_speed = askTimeLimit();
+    game.timer.piece = al_create_timer(MS2S(game.timer.piece_speed));
+
+    if ( !game.timer.piece )
+    {
+        fputs("Failed to create timer.", stderr);
+        destroy(&game);
+        alg_destroy();
+        return AL_ERROR;
+    }
+
+    // Register event
     al_register_event_source(game.evq,
                              al_get_timer_event_source(game.timer.piece));
 
-    // Start timers
-    al_start_timer(game.timer.main);
+    // Start pieces timer
     al_start_timer(game.timer.piece);
 
-    int filled, lines[BOARD_HEIGHT];
     // Draw and display window
     while ( game.exit == false )
     {
-        // Draw game screen
-        drawScreen(&game);
-
-        // Draw board
-        drawGameBoard(&screenBoard);
-
-        // Draw Stats
-        DRAWSTATS(pieces);
-        DRAWSTATS(level);
-        DRAWSTATS(score);
-        DRAWSTATS(nextPiece);
-        DRAWSTATS(lines);
-
-        if ( game.status == PAUSED )
-        {
-            drawPause(&pMenu);
-        }
-
-        al_flip_display();
-
-        game.redraw = false;
-
-        if ( game.restart == true )
-        {
-            // Restart
-            restartGame(&game, &screenBoard, &screenStats);
-            pMenu.selected.n = 0;
-        }
-
-            // Check if a row has been filled
-        else if ( (filled = game.logic.ask.filledRows(lines)) > 0 )
-        {
-            int i;
-            for ( i = 0; i < filled; i++ )
-            {
-                game.logic.clear.line(lines, i);
-            }
-            game.redraw = true;
-
-            restartPiecesTimer(&game);
-        }
-
-            // Check End Game
-        else if ( game.logic.ask.endGame() )
-        {
-            al_stop_timer(game.timer.piece);
-
-            // End game presentation goes here
-            game.exit = true;
-        }
-
-        // Game goes on
-        while ( game.redraw == false && game.exit == false )
-        {
-            manageEvents(&game, &(game.logic), &pMenu);
-        }
+        gameManagement(&game, &screenBoard, &screenStats, &pMenu);
     }
 
     destroy(&game);
@@ -493,6 +567,71 @@ alg_game (allegro_t * alStru)
 
 /// @privatesection
 // === Local function definitions ===
+
+static void
+gameManagement (game_t * game, screenBoard_t * screenBoard,
+                screenStats_t * screenStats, pause_t * pMenu)
+{
+    // Check which line is filled
+    int filled, lines[BOARD_HEIGHT];
+
+    // Draw game screen
+    drawScreen(game);
+
+    // Draw board
+    drawGameBoard(screenBoard);
+
+    // Draw Stats
+    DRAWSTATS(pieces);
+    DRAWSTATS(level);
+    DRAWSTATS(score);
+    DRAWSTATS(nextPiece);
+    DRAWSTATS(lines);
+
+    if ( game -> status == PAUSED )
+    {
+        drawPause(pMenu);
+    }
+
+    al_flip_display();
+
+    game -> redraw = false;
+
+    if ( game -> restart == true )
+    {
+        // Restart
+        restartGame(game, screenBoard, screenStats);
+        pMenu -> selected.n = 0;
+    }
+
+        // Check if a row has been filled
+    else if ( (filled = game -> logic.ask.filledRows(lines)) > 0 )
+    {
+        int i;
+        for ( i = 0; i < filled; i++ )
+        {
+            game -> logic.clear.line(lines, i);
+        }
+        game -> redraw = true;
+
+        restartPiecesTimer(game);
+    }
+
+        // Check End Game
+    else if ( game -> logic.ask.endGame() )
+    {
+        al_stop_timer(game -> timer.piece);
+
+        // End game presentation goes here
+        game -> exit = true;
+    }
+
+    // Game goes on
+    while ( game -> redraw == false && game -> exit == false )
+    {
+        manageEvents(game, &(game -> logic), pMenu);
+    }
+}
 
 static void
 restartGame (game_t * game, screenBoard_t * board, screenStats_t * stats)
@@ -507,6 +646,9 @@ restartGame (game_t * game, screenBoard_t * board, screenStats_t * stats)
         fputs("Error initializing boardLogic.", stderr);
         game -> exit = true;
     }
+
+    game -> logic.set.startRows(game -> initial.n[ROWS]);
+    game -> logic.set.startLevel(game -> initial.n[LEVEL]);
 
     init_scrBoard(board, &(game -> logic));
     init_scrStats(stats, &(game -> logic));
@@ -529,8 +671,6 @@ checkKeys (unsigned char key[ALLEGRO_KEY_MAX],
 
     // Counter to make pieces less sensitive
     static unsigned char counter[ALLEGRO_KEY_MAX];
-    // Assure that the counter has been started
-    static bool key_init = false;
 
     // Keys used in "Play Mode"
     const unsigned char playKeys[] = {
@@ -545,11 +685,16 @@ checkKeys (unsigned char key[ALLEGRO_KEY_MAX],
         ALLEGRO_KEY_ENTER, ALLEGRO_KEY_Q
     };
 
+    // Keys used in "Initial Mode"
+    const unsigned char initialKeys[] = {
+        ALLEGRO_KEY_UP, ALLEGRO_KEY_DOWN,
+        ALLEGRO_KEY_ENTER, ALLEGRO_KEY_Q
+    };
+
     // Start the counter the first game running
-    if ( key_init == false )
+    if ( game -> status == NEW )
     {
         memset(counter, 0, sizeof (counter));
-        key_init = true;
     }
 
     // Update counter of a given key when necessary
@@ -574,6 +719,10 @@ checkKeys (unsigned char key[ALLEGRO_KEY_MAX],
 
         switch ( game -> status )
         {
+            case CONFIG:
+                game -> initial.ready = true;
+                break;
+
             case NEW:
             case PLAYING:
                 game -> status = PAUSED;
@@ -610,12 +759,98 @@ checkKeys (unsigned char key[ALLEGRO_KEY_MAX],
     {
         validKey(ALLEGRO_KEY_Q, key, counter, game);
 
+        // Avoid bug in initial screen
+        game -> initial.ready = true;
         game -> exit = true;
     }
 
     // Key management
     switch ( game -> status )
     {
+        case CONFIG:
+            if ( key[ALLEGRO_KEY_UP] == KEY_READY )
+            {
+                validKey(ALLEGRO_KEY_UP, key, counter, game);
+
+                (game -> initial.rl == 0) ? \
+            (game -> initial.rl)++ : (game -> initial.rl)--;
+
+            }
+
+            if ( key[ALLEGRO_KEY_DOWN] == KEY_READY )
+            {
+                validKey(ALLEGRO_KEY_DOWN, key, counter, game);
+
+                (game -> initial.rl == 0) ? \
+            (game -> initial.rl)++ : (game -> initial.rl)--;
+
+            }
+
+            if ( key[ALLEGRO_KEY_LEFT] == KEY_READY )
+            {
+                validKey(ALLEGRO_KEY_LEFT, key, counter, game);
+
+                switch ( game -> initial.rl )
+                {
+                    case ROWS:
+                        (game -> initial.n[ROWS] > 0) ? \
+                                (game -> initial.n[ROWS])-- : \
+                                (game -> initial.n[ROWS] = NROWS - 1);
+                        break;
+
+                    case LEVEL:
+                        (game -> initial.n[LEVEL] > 0) ? \
+                                (game -> initial.n[LEVEL])-- : \
+                                (game -> initial.n[LEVEL] = NLEVELS - 1);
+                        break;
+
+                    default:
+                        fputs("Game initial.n is bigger than 1.", stderr);
+                        break;
+                }
+
+            }
+
+            if ( key[ALLEGRO_KEY_RIGHT] == KEY_READY )
+            {
+                validKey(ALLEGRO_KEY_RIGHT, key, counter, game);
+
+                switch ( game -> initial.rl )
+                {
+                    case ROWS:
+                        (game -> initial.n[ROWS] < (NROWS - 1)) ? \
+                                (game -> initial.n[ROWS])++ : \
+                                (game -> initial.n[ROWS] = 0);
+                        break;
+
+                    case LEVEL:
+                        (game -> initial.n[LEVEL] < (NLEVELS - 1)) ? \
+                                (game -> initial.n[LEVEL])++ : \
+                                (game -> initial.n[LEVEL] = 0);
+                        break;
+
+                    default:
+                        fputs("Game initial.n is bigger than 1.", stderr);
+                        break;
+                }
+
+            }
+
+            // Clear unnecesary keys used only in "play mode"
+            /*     for ( i = 0; i < (sizeof (playKeys) / sizeof (char)); i++ )
+                 {
+                     for ( j = 0; (j < (sizeof (initialKeys) / sizeof (char))) &&
+                           (bothModes == false); j++ )
+                     {
+                         (playKeys[i] == initialKeys[j]) ? (bothModes = true) : 0;
+                     }
+
+                     (bothModes == false) ?
+                             clearKey(playKeys[i], key) : (bothModes = false);
+                 }*/
+
+            break;
+
             // Play mode
         case PLAYING:
             if ( key[ALLEGRO_KEY_UP] == KEY_READY )
@@ -710,7 +945,8 @@ checkKeys (unsigned char key[ALLEGRO_KEY_MAX],
                     (playKeys[i] == pauseKeys[j]) ? (bothModes = true) : 0;
                 }
 
-                (bothModes == false) ? clearKey(playKeys[i], key) : (bothModes = false);
+                (bothModes == false) ?
+                        clearKey(playKeys[i], key) : (bothModes = false);
             }
             break;
 
@@ -720,23 +956,193 @@ checkKeys (unsigned char key[ALLEGRO_KEY_MAX],
 }
 
 static void
-drawScreen (game_t * game)
+drawInitial (game_t * game)
 {
-    static int first_time = true;
+    int i;
+    int levelNumberSize = al_get_text_width(game->initial.level_sel.text.bold,
+                                            "0");
+    int rowsNumberSize = al_get_text_width(game->initial.rows_sel.text.bold,
+                                           "0");
 
     al_clear_to_color(al_color_html(BKGND_COLOR));
 
-    if ( first_time == true )
+    if ( game -> status == INITIAL )
+    {
+        game -> bkgnd = al_load_bitmap("res/images/game/initial.png");
+
+        if ( game -> bkgnd == NULL )
+        {
+            fputs("Error loading background.", stderr);
+        }
+
+        game -> status = CONFIG;
+    }
+
+    if ( game -> bkgnd != NULL )
+    {
+        al_draw_scaled_bitmap(game -> bkgnd,
+                              0, 0, BKGND_WIDTH, BKGND_HEIGHT,
+                              0, 0, SCREEN_WIDTH, SCREEN_HEIGHT,
+                              0);
+    }
+
+    al_draw_rounded_rectangle(game -> initial.level.corner.x,
+                              game -> initial.level.corner.y,
+                              game -> initial.level.corner.x + \
+                                                   game -> initial.level.width,
+                              game -> initial.level.corner.y + \
+                                                  game -> initial.level.height,
+                              ROUND_X, ROUND_Y,
+                              al_color_html(game-> initial.level.color.border),
+                              game -> initial.level.thickness);
+
+    al_draw_rounded_rectangle(game -> initial.rows.corner.x,
+                              game -> initial.rows.corner.y,
+                              game -> initial.rows.corner.x + \
+                                                   game -> initial.rows.width,
+                              game -> initial.rows.corner.y + \
+                                                  game -> initial.rows.height,
+                              ROUND_X, ROUND_Y,
+                              al_color_html(game -> initial.rows.color.border),
+                              game -> initial.rows.thickness);
+
+    al_draw_text(game -> initial.level.text.bold,
+                 al_color_html(game -> initial.level.text.color),
+                 SCREEN_WIDTH / 2,
+                 game -> initial.level.corner.y - TXT_OFFSET - TXT_SIZE_BOLD,
+                 ALLEGRO_ALIGN_CENTRE, "Initial Level");
+
+    al_draw_text(game -> initial.rows.text.bold,
+                 al_color_html(game -> initial.rows.text.color),
+                 SCREEN_WIDTH / 2,
+                 game -> initial.rows.corner.y - TXT_OFFSET - TXT_SIZE_BOLD,
+                 ALLEGRO_ALIGN_CENTRE, "Initial Rows");
+
+    for ( i = 0; i < NLEVELS; i++ )
+    {
+        if ( i == game -> initial.n[LEVEL] )
+        {
+            al_draw_textf(game -> initial.level_sel.text.bold,
+                          al_color_html(game -> initial.level_sel.text.color),
+                          game -> initial.level.corner.x + 2 * TXT_OFFSET + \
+                          levelNumberSize / 2 + \
+                          (game -> initial.level.width - \
+                            2 * TXT_OFFSET) / 10 * i,
+                          game -> initial.level.corner.y + \
+                          game -> initial.level.height / 2 - \
+                          game -> initial.level_sel.text.bsize / 2,
+                          ALLEGRO_ALIGN_CENTRE, "%d", i);
+
+            if ( game -> initial.rl == LEVEL )
+            {
+                al_draw_rectangle(game -> initial.level.corner.x + \
+                              i * (game -> initial.level.width - \
+                              2 * TXT_OFFSET) / 10 + TXT_OFFSET,
+                                  game -> initial.level.corner.y + \
+                              game -> initial.level.height / 2 - \
+                              game -> initial.level_sel.text.bsize / 2 - \
+                              TXT_OFFSET / 2,
+                                  game -> initial.level.corner.x + \
+                              i * (game -> initial.level.width - \
+                              2 * TXT_OFFSET) / 10 + 3 * TXT_OFFSET + \
+                              levelNumberSize,
+                                  game -> initial.level.corner.y + \
+                              game -> initial.level.height / 2 + \
+                              game -> initial.level_sel.text.bsize / 2 + \
+                              TXT_OFFSET / 2,
+                                  al_color_html( \
+                                       game -> initial.level_sel.color.border),
+                                  game -> initial.level_sel.thickness);
+            }
+        }
+
+        else
+        {
+            al_draw_textf(game -> initial.level.text.regular,
+                          al_color_html(game -> initial.level.text.color),
+                          game -> initial.level.corner.x + 2 * TXT_OFFSET + \
+                          levelNumberSize / 2 + \
+                          (game -> initial.level.width - 2 * TXT_OFFSET) / 10 * i,
+                          game -> initial.level.corner.y + \
+                          game -> initial.level.height / 2 - \
+                          game -> initial.level_sel.text.bsize / 2,
+                          ALLEGRO_ALIGN_CENTRE, "%d", i);
+        }
+    }
+
+    for ( i = 0; i < NROWS; i++ )
+    {
+        if ( i == game -> initial.n[ROWS] )
+        {
+            al_draw_textf(game -> initial.rows_sel.text.bold,
+                          al_color_html(game -> initial.rows_sel.text.color),
+                          game -> initial.rows.corner.x + 2 * TXT_OFFSET + \
+                          rowsNumberSize / 2 + \
+                          (game -> initial.rows.width - \
+                            2 * TXT_OFFSET) / 10 * i,
+                          game -> initial.rows.corner.y + \
+                          game -> initial.rows.height / 2 - \
+                          game -> initial.rows_sel.text.bsize / 2,
+                          ALLEGRO_ALIGN_CENTRE, "%d", i);
+
+            if ( game -> initial.rl == ROWS )
+            {
+                al_draw_rectangle(game -> initial.rows.corner.x + \
+                              i * (game -> initial.rows.width - \
+                              2 * TXT_OFFSET) / 10 + TXT_OFFSET,
+                                  game -> initial.rows.corner.y + \
+                              game -> initial.rows.height / 2 - \
+                              game -> initial.rows_sel.text.bsize / 2 - \
+                              TXT_OFFSET / 2,
+                                  game -> initial.rows.corner.x + \
+                              i * (game -> initial.rows.width - \
+                              2 * TXT_OFFSET) / 10 + 3 * TXT_OFFSET + \
+                              levelNumberSize,
+                                  game -> initial.rows.corner.y + \
+                              game -> initial.rows.height / 2 + \
+                              game -> initial.rows_sel.text.bsize / 2 + \
+                              TXT_OFFSET / 2,
+                                  al_color_html( \
+                                       game -> initial.rows_sel.color.border),
+                                  game -> initial.rows_sel.thickness);
+            }
+        }
+
+        else
+        {
+
+            al_draw_textf(game -> initial.rows.text.regular,
+                          al_color_html(game -> initial.rows.text.color),
+                          game -> initial.rows.corner.x + 2 * TXT_OFFSET + \
+                          rowsNumberSize / 2 + \
+                          (game -> initial.rows.width - \
+                            2 * TXT_OFFSET) / 10 * i,
+                          game -> initial.rows.corner.y + \
+                          game -> initial.rows.height / 2 - \
+                          game -> initial.rows_sel.text.bsize / 2,
+                          ALLEGRO_ALIGN_CENTRE, "%d", i);
+        }
+    }
+
+    game -> redraw = false;
+    al_flip_display();
+}
+
+static void
+drawScreen (game_t * game)
+{
+    al_clear_to_color(al_color_html(BKGND_COLOR));
+
+    if ( game -> status == NEW )
     {
         game -> bkgnd = al_load_bitmap("res/images/game/background.png");
 
         if ( game -> bkgnd == NULL )
         {
+
             fputs("Error loading background.", stderr);
             return;
         }
-
-        first_time = false;
     }
 
     al_draw_scaled_bitmap(game -> bkgnd,
@@ -799,6 +1205,7 @@ drawGameBoard (screenBoard_t * board)
             {
                 switch ( current )
                 {
+
                     case CELL_I:
                         drawBlock(x, y, &(board -> gridBox[TETROMINO_I]));
                         break;
@@ -846,6 +1253,7 @@ drawStats_pieces_f (screenStats_t * stats)
     // Information
     for ( i = TETROMINO_I; i < TETROMINOS; i++ )
     {
+
         coord[COORD_X] = stats -> piecesBox.corner.x + TXT_OFFSET;
         coord[COORD_Y] = stats->piecesBox.corner.y + \
                                      i * TXT_OFFSET + 2.5 * i * CELL_HEIGHT + \
@@ -884,6 +1292,7 @@ drawStats_pieces_f (screenStats_t * stats)
 static void
 drawStats_level_f (screenStats_t * stats)
 {
+
     char str[strlen(words[LVL]) + 7];
 
     strcpy(str, words[LVL]);
@@ -905,6 +1314,7 @@ drawStats_level_f (screenStats_t * stats)
 static void
 drawStats_score_f (screenStats_t * stats)
 {
+
     float fontHeight = al_get_font_line_height(stats->scoreBox.text.regular);
     float fontHeight_B = al_get_font_line_height(stats->scoreBox.text.bold);
     float coord[COORD_NUM] = {};
@@ -977,6 +1387,7 @@ drawStats_nextPiece_f (screenStats_t * stats)
 
     if ( stats->gStats->piece.next != TETROMINO_NONE )
     {
+
         coord[COORD_X] = (stats->nextPieceBox.width / 2) + \
                                stats -> nextPieceBox.corner.x - CELL_WIDTH * 2;
         coord[COORD_Y] = stats->nextPieceBox.corner.y + 2.5 * TXT_OFFSET + \
@@ -993,6 +1404,7 @@ drawStats_nextPiece_f (screenStats_t * stats)
 static void
 drawStats_lines_f (screenStats_t * stats)
 {
+
     float fontHeight_B = al_get_font_line_height(stats->linesBox.text.bold);
 
     stats -> linesBox.corner.x = stats -> scoreBox.corner.x;
@@ -1022,6 +1434,7 @@ drawStats_lines_f (screenStats_t * stats)
 static void
 drawBlock (int x, int y, gbox_t * block)
 {
+
     al_draw_filled_rounded_rectangle(block -> corner.x + x * CELL_WIDTH,
                                      block -> corner.y + y * CELL_HEIGHT,
                                      block -> corner.x + x * CELL_WIDTH + \
@@ -1047,6 +1460,7 @@ drawBox (gbox_t * box)
 {
     if ( strcmp(box -> color.bkgnd, "#FFFFFF") )
     {
+
         al_draw_filled_rounded_rectangle((box -> corner.x), (box -> corner.y),
                                          (box -> width + box -> corner.x),
                                          (box -> height + box -> corner.y),
@@ -1180,6 +1594,7 @@ drawPiece (float x, float y, int piece)
 
     for ( i = 0; i < BLOCKS; i++ )
     {
+
         al_draw_filled_rounded_rectangle(block[i][COORD_X],
                                          block[i][COORD_Y],
                                          block[i][COORD_X] + CELL_WIDTH,
@@ -1200,6 +1615,7 @@ drawPiece (float x, float y, int piece)
 static void
 destroy (game_t * game)
 {
+
     game -> logic.destroy();
     al_destroy_timer(game -> timer.main);
     al_destroy_event_queue(game -> evq);
@@ -1227,6 +1643,7 @@ init_scrBoard (screenBoard_t * board, board_t * logic)
     // Initialize Tetrominos
     for ( i = TETROMINO_I; i < TETROMINOS; i++ )
     {
+
         board -> gridBox[i].color.bkgnd = tetrominos_bkgnd[i];
         board -> gridBox[i].color.border = tetrominos_bkgnd[TETROMINOS];
 
@@ -1248,6 +1665,7 @@ static void
 init_scrStats (screenStats_t * stats, board_t * logic)
 {
     // Stats structure
+
     stats -> gStats = (stats_t*) logic -> ask.stats();
 
     // Level box
@@ -1306,10 +1724,10 @@ init_scrStats (screenStats_t * stats, board_t * logic)
             stats -> linesBox.text.color = \
             stats -> piecesBox.text.color = TXT_COLOR;
 
-    stats -> levelBox.text.csize = stats -> scoreBox.text.csize = \
-            stats -> nextPieceBox.text.csize = \
-            stats -> linesBox.text.csize = \
-            stats -> piecesBox.text.csize = TXT_SIZE;
+    stats -> levelBox.text.rsize = stats -> scoreBox.text.rsize = \
+            stats -> nextPieceBox.text.rsize = \
+            stats -> linesBox.text.rsize = \
+            stats -> piecesBox.text.rsize = TXT_SIZE;
 
     stats -> levelBox.text.bsize = stats -> scoreBox.text.bsize = \
             stats -> nextPieceBox.text.bsize = \
@@ -1320,7 +1738,7 @@ init_scrStats (screenStats_t * stats, board_t * logic)
             stats -> nextPieceBox.text.regular = \
             stats -> piecesBox.text.regular = \
             stats -> linesBox.text.regular = \
-            al_load_font(TXT_FONT_PATH, stats -> levelBox.text.csize, 0);
+            al_load_font(TXT_FONT_PATH, stats -> levelBox.text.rsize, 0);
 
     stats -> levelBox.text.bold = stats -> scoreBox.text.bold = \
             stats -> nextPieceBox.text.bold = \
@@ -1337,7 +1755,7 @@ manageEvents (game_t * game, board_t * boardLogic, pause_t * menu)
     static unsigned char key[ALLEGRO_KEY_MAX];
     static bool key_init = false;
 
-    if ( key_init == false )
+    if ( key_init == false || game -> status == NEW )
     {
         memset(key, 0, sizeof (key));
         key_init = true;
@@ -1371,6 +1789,7 @@ manageEvents (game_t * game, board_t * boardLogic, pause_t * menu)
             {
                 if ( game -> status == NEW )
                 {
+
                     game -> status = PLAYING;
                 }
 
@@ -1391,6 +1810,7 @@ validKey (int keyName,
           unsigned char * keyArr, unsigned char * counterArr,
           game_t * game)
 {
+
     clearKey(keyName, keyArr);
     counterArr[keyName]++;
     game -> redraw = true;
@@ -1399,12 +1819,14 @@ validKey (int keyName,
 static void
 clearKey (int keyName, unsigned char * keyArr)
 {
+
     keyArr[keyName] &= KEY_SEEN;
 }
 
 static void
 restartPiecesTimer (game_t * game)
 {
+
     game -> timer.piece_speed = askTimeLimit();
 
     // Restart pieces timer
@@ -1438,6 +1860,7 @@ drawPause (pause_t * pstru)
 
         else
         {
+
             al_draw_text(pstru -> menuBox.text.regular,
                          al_color_html(pstru -> menuBox.text.color),
                          pstru -> menuBox.corner.x + pstru->menuBox.width / 2,
@@ -1461,18 +1884,18 @@ init_pause (pause_t * pstru)
     pstru -> menuBox.color.bkgnd = PAUSE_BKGND_COLOR;
     pstru -> menuBox.color.border = PAUSE_BORDER_COLOR;
     pstru -> menuBox.text.color = PAUSE_TXT_COLOR;
-    pstru -> menuBox.text.csize = PAUSE_TXT_SIZE;
+    pstru -> menuBox.text.rsize = PAUSE_TXT_SIZE;
     pstru -> menuBox.text.regular = al_load_font(PAUSE_TXT_FONT_PATH,
-                                                 pstru -> menuBox.text.csize, 0);
+                                                 pstru -> menuBox.text.rsize, 0);
 
     pstru -> menuBox.thickness = PAUSE_BOX_THICKNESS;
 
     pstru -> selected.box.color.bkgnd = SEL_BKGND_COLOR;
     pstru -> selected.box.color.border = SEL_BORDER_COLOR;
     pstru -> selected.box.text.color = SEL_TXT_COLOR;
-    pstru -> selected.box.text.csize = SEL_TXT_SIZE;
+    pstru -> selected.box.text.rsize = SEL_TXT_SIZE;
     pstru -> selected.box.text.regular = al_load_font(SEL_TXT_FONT_PATH, \
-                                           pstru -> selected.box.text.csize, 0);
+                                           pstru -> selected.box.text.rsize, 0);
 
     pstru -> selected.box.thickness = SEL_BOX_THICKNESS;
 
@@ -1490,6 +1913,7 @@ init_pause (pause_t * pstru)
 
         if ( bWordSize < tmp )
         {
+
             bWordSize = tmp;
             biggerWord = pstru -> nWords;
         }
@@ -1501,9 +1925,9 @@ init_pause (pause_t * pstru)
                       fontHeight_Sel + (pstru -> nWords - 1) * fontHeight_nSel;
 
 
-    sWidth = al_get_text_width(pstru->selected.box.text.regular,
+    sWidth = al_get_text_width(pstru -> selected.box.text.regular,
                                menuWords[biggerWord]) + 2 * TXT_OFFSET;
-    nWidth = al_get_text_width(pstru->menuBox.text.regular,
+    nWidth = al_get_text_width(pstru -> menuBox.text.regular,
                                menuWords[biggerWord]) + 2 * TXT_OFFSET;
 
     (sWidth > nWidth) ? \
@@ -1513,4 +1937,75 @@ init_pause (pause_t * pstru)
                                                   (pstru -> menuBox.width / 2);
     pstru -> menuBox.corner.y = (SCREEN_HEIGHT / 2) - \
                                                  (pstru -> menuBox.height / 2);
+}
+
+static void
+init_rowLevel (game_t * game)
+{
+    int numberSize;
+
+    game -> initial.level.color.bkgnd = \
+    game -> initial.rows.color.bkgnd = BOX_BKGND_COLOR;
+
+    game -> initial.level_sel.color.bkgnd = \
+    game -> initial.rows_sel.color.bkgnd = SEL_BKGND_COLOR;
+
+    game -> initial.level.color.border = \
+    game -> initial.rows.color.border = BOX_BORDER_COLOR;
+
+    game -> initial.level_sel.color.border = \
+    game -> initial.rows_sel.color.border = SEL_BORDER_COLOR;
+
+    game -> initial.level.thickness = \
+    game -> initial.rows.thickness = BOX_THICKNESS;
+
+    game -> initial.level_sel.thickness = \
+    game -> initial.rows_sel.thickness = SEL_BOX_THICKNESS;
+
+    game -> initial.level.text.rsize = \
+    game -> initial.rows.text.rsize = \
+    game -> initial.level_sel.text.rsize = \
+    game -> initial.rows_sel.text.rsize = TXT_SIZE;
+
+
+    game -> initial.level.text.bsize = \
+    game -> initial.rows.text.bsize = \
+    game -> initial.level_sel.text.bsize = \
+    game -> initial.rows_sel.text.bsize = TXT_SIZE_BOLD;
+
+    game -> initial.level.text.regular = \
+    game -> initial.rows.text.regular = \
+    game -> initial.level_sel.text.regular = \
+    game -> initial.rows_sel.text.regular = al_load_font(TXT_FONT_PATH, \
+                                          game -> initial.level.text.rsize, 0);
+
+    game -> initial.level.text.bold = \
+    game -> initial.rows.text.bold = \
+    game -> initial.level_sel.text.bold = \
+    game -> initial.rows_sel.text.bold = al_load_font(TXT_FONT_BOLD_PATH, \
+                                          game -> initial.level.text.bsize, 0);
+
+    game -> initial.level.text.color = \
+    game -> initial.rows.text.color = TXT_COLOR;
+
+    game -> initial.level_sel.text.color = \
+    game -> initial.rows_sel.text.color = SEL_TXT_COLOR;
+
+    numberSize = al_get_text_width(game -> initial.level_sel.text.bold, "0");
+
+    game -> initial.level.height = game -> initial.rows.height = \
+     TXT_OFFSET * 2 + TXT_SIZE_BOLD * 2;
+
+    game -> initial.level.width = numberSize * NLEVELS + TXT_OFFSET * 22;
+
+    game -> initial.rows.width = numberSize * NROWS + TXT_OFFSET * 22;
+
+    game -> initial.level.corner.x = game -> initial.rows.corner.x = \
+    (SCREEN_WIDTH / 2) - (game -> initial.rows.width / 2);
+
+    game -> initial.level.corner.y = (SCREEN_HEIGHT / 3) - \
+                                            (game -> initial.level.height / 2);
+
+    game -> initial.rows.corner.y = (2 * SCREEN_HEIGHT / 3) - \
+                                            (game -> initial.level.height / 2);
 }

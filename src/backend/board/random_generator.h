@@ -41,6 +41,8 @@
 #    define RANDOM_GENERATOR_H
 
 // === Libraries and header files ===
+// For pieces, board_cell and coords enum
+#include "board.h"
 
 // === Constants and Macro definitions ===
 
@@ -61,5 +63,9 @@ init_random_generator (void);
 // Generates a NUM_PIECES size bag with a pseudo-random list of pieces.
 void
 random_generator (int * rnd_bag, int size);
+
+// Fills an array randomly to represent a row filled between 30% to 75%
+void
+random_row (grid_t * rowArray, int size);
 
 #endif /* RANDOM_GENERATOR_H */

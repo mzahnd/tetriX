@@ -49,9 +49,6 @@
 #    include <sys/random.h>
 #endif
 
-// For pieces, board_cell and coords enum
-#include "board.h"
-
 // This file
 #include "random_generator.h"
 
@@ -59,11 +56,14 @@
 // === Constants and Macro definitions ===
 
 // If modified, change test_random_gen.c and @details in random_generator()
-#define MAX_SZ      4
-#define MAX_I       12
+#define MAX_SZ          4
+#define MAX_I           12
+
+// Number of options in bool
+#define BOOLOPTIONS     2
 
 // Size of unsigned int
-#define INTSIZE     (sizeof(unsigned int))
+#define INTSIZE         (sizeof(unsigned int))
 
 // === Enumerations, structures and typedefs ===
 
@@ -187,6 +187,70 @@ random_generator (int * rnd_bag, int size)
     }
 }
 
+/**
+ * @brief Fills an array randomly to represent a row filled between 30% to 75%
+ * 
+ * Each array position is filled with a TETROMINO_X
+ * 
+ * @param rowArray Array representing a row
+ * @param size Array (row) size
+ * 
+ * @return Nothing
+ */
+void
+random_row (grid_t * rowArray, int size)
+{
+    // Min and max number of cells to fill in the row. Max is also randomized
+    // to avoid having almost always near 75% of the rows filled
+    const int min = 3 * size / 10;
+#ifndef TRUERANDOM
+    const int max = ((rand() % 45) * size / 100) + min;
+#else
+    const int max = ((myRand() % 45) * size / 100) + min;
+#endif
+
+    int i, filled = 0, cellsToFill[max];
+
+    // Clear array
+    for ( i = 0; i < size; i++ )
+    {
+        rowArray[i] = 0;
+        (i < max) ? (cellsToFill[i] = 0) : 0;
+    }
+
+    for ( i = 0; i < max; i++ )
+    {
+        int j;
+
+#ifndef TRUERANDOM
+        cellsToFill[i] = rand() % size;
+#else
+        cellsToFill[i] = myRand() % size;
+#endif
+
+        for ( j = 0; j < i; j++ )
+        {
+            (cellsToFill[j] == cellsToFill[i]) ? i-- : 0;
+        }
+    }
+
+    // Fill with pieces
+    while ( filled < min )
+    {
+
+        for ( i = 0; i < max; i++ )
+        {
+
+#ifndef TRUERANDOM
+            rowArray[ cellsToFill[i] ] = rand() % (TETROMINOS + 1);
+#else
+            rowArray[ cellsToFill[i] ] = myRand() % (TETROMINOS + 1);
+#endif
+            (rowArray[ cellsToFill[i] ] > 0) ? (filled++) : 0;
+
+        }
+    }
+}
 /// @privatesection
 // === Local function definitions ===
 

@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2019 Martín E. Zahnd
+ * Copyright (C) 2020 Martín E. Zahnd
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 
 /**
  * 
- * @file    menu.h
+ * @file    about.h
  * 
  * @brief   ;
  * 
@@ -26,13 +26,13 @@
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
  * 
- * @date    17/12/2019, 12:26
+ * @date    15/01/2020, 13:40
  * 
  * @copyright GNU General Public License v3
  */
 
-#ifndef MENU_H
-#    define MENU_H
+#ifndef ABOUT_H
+#    define ABOUT_H
 
 // === Libraries and header files ===
 // For allegro_t
@@ -47,8 +47,7 @@
 // === ROM Constant variables ===
 
 // === Global function definitions ===
-
 int
-alg_menu(allegro_t * alStru);
+alg_about (allegro_t * alStru);
 
-#endif /* MENU_H */
+#endif /* ABOUT_H */

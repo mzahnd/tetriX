@@ -151,6 +151,21 @@ enum coords
     COORD_NUM
 };
 
+/**
+ * @brief Game modes to be played
+ */
+enum gModes
+{
+    /// Normal mode
+    NORMAL,
+    
+    /// All keys are inverted
+    BACKWARDS,
+    
+    /// The game just goes crazy!
+    CRAZY
+};
+
 /// Type of every grid in the board.
 typedef int grid_t;
 
@@ -179,9 +194,6 @@ typedef struct GAMEBOARD
 
     struct
     {
-        /// How fast is the board being updated in Frames Per Gridcell
-        int (* FPG) (void);
-
         /// Get coordinate (0,0) of the board (top-left)
         grid_t * (* board) (void);
 
@@ -268,6 +280,36 @@ typedef struct GAMEBOARD
         void (* softDrop) (void);
     } piece;
 
+    struct
+    {
+        /**
+         * @brief Game mode to be played
+         * 
+         * @param mode From enum gModes
+         * 
+         * @return Nothing
+         */
+        void (* gameMode) (int mode);
+        
+        /**
+         * @brief Level in which the game starts
+         * 
+         * @param n Level number between 0 and 9
+         * 
+         * @return Nothing
+         */
+        void (* startLevel) (unsigned char n);
+
+        /**
+         * @brief Amount of rows to start in the board
+         * 
+         * @param n Number between 0 and 9
+         * 
+         * @return Nothing
+         */
+        void (* startRows) (unsigned char n);
+    } set;
+
     /**
      * @brief Update the board
      * 
@@ -290,6 +332,6 @@ typedef struct GAMEBOARD
 
 // Initialize a GAMEBOARD structure
 void
-board_init(void * gameBoardStruct);
+board_init (void * gameBoardStruct);
 
 #endif /* BOARD_H */

@@ -35,6 +35,7 @@
 #    define GAMESCREEN_H
 
 // === Libraries and header files ===
+// For allegro_t
 #include "../alcontrol.h"
 
 // === Constants and Macro definitions ===

@@ -36,7 +36,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-// To generate random pieces
+// To generate random pieces and rows
 #include "random_generator.h"
 
 // For PIECE
@@ -167,6 +167,9 @@ fillBag (void);
 static int
 filledRows (int lines[BOARD_HEIGHT]);
 
+// Game mode to be played
+void gameMode (int mode);
+
 // Initializes a new board.
 static int
 init (void);
@@ -190,6 +193,12 @@ shiftPiece (int direction);
 // Perform a soft drop of the piece
 static void
 softDropPiece (void);
+
+// Level in which the game starts
+void startLevel (unsigned char n);
+
+// Amount of rows to start in the board
+void startRows (unsigned char n);
 
 // Updates the board accoding the moving piece actions.
 static int
@@ -399,7 +408,6 @@ destroy (void)
     }
 
     // Clear function pointers
-    bStruct.public -> ask.FPG = NULL;
     bStruct.public -> ask.board = NULL;
     bStruct.public -> ask.filledRows = NULL;
     bStruct.public -> ask.endGame = NULL;
@@ -409,6 +417,10 @@ destroy (void)
     bStruct.public -> piece.rotate = NULL;
     bStruct.public -> piece.shift = NULL;
     bStruct.public -> piece.softDrop = NULL;
+
+    bStruct.public -> set.gameMode = NULL;
+    bStruct.public -> set.startLevel = NULL;
+    bStruct.public -> set.startRows = NULL;
 
     bStruct.public -> update = NULL;
 
@@ -529,6 +541,30 @@ filledRows (int lines[BOARD_HEIGHT])
 }
 
 /**
+ * @brief Game mode to be played
+ * 
+ * @param mode From enum gModes
+ * 
+ * @return Nothing
+ */
+void
+gameMode (int mode)
+{
+    switch ( mode )
+    {
+        case BACKWARDS:
+            break;
+
+        case CRAZY:
+            break;
+
+        case NORMAL:
+        default:
+            break;
+    }
+}
+
+/**
  * @brief Initializes a new board.
  * 
  * Should be called once at the beggning of a new game.
@@ -581,7 +617,6 @@ init (void)
     bStruct.public -> update = &updatePiece;
     bStruct.public -> destroy = &destroy;
 
-    //bStruct.public -> ask.FPG =;
     bStruct.public -> ask.board = &askBoard;
     bStruct.public -> ask.filledRows = &filledRows;
     bStruct.public -> ask.endGame = &endGame;
@@ -592,6 +627,11 @@ init (void)
     bStruct.public -> piece.rotate = &rotatePiece;
     bStruct.public -> piece.shift = &shiftPiece;
     bStruct.public -> piece.softDrop = &softDropPiece;
+
+    // Options to set for the current game
+    bStruct.public -> set.gameMode = &gameMode;
+    bStruct.public -> set.startLevel = &startLevel;
+    bStruct.public -> set.startRows = &startRows;
 
     //initTimer(&bStruct.stats);
 
@@ -728,6 +768,49 @@ softDropPiece (void)
 
         // Update stats
         updateStats(SOFT);
+    }
+}
+
+/**
+ * @brief Level in which the game starts
+ * 
+ * @param n Level number between 0 and 9
+ * 
+ * @return Nothing
+ */
+void
+startLevel (unsigned char n)
+{
+    (n <= 9) ? (bStruct.stats.level = n) : (bStruct.stats.level = 0);
+}
+
+/**
+ * @brief Amount of rows to start in the board
+ * 
+ * @param n Number between 0 and 9
+ * 
+ * @return Nothing
+ */
+void
+startRows (unsigned char n)
+{
+    if ( n > 0 && n <= 9 )
+    {
+        int i = 1, j;
+        int row[MBOARD_W];
+
+        while ( i <= n )
+        {
+            random_row(row, MBOARD_W);
+
+            // CELL(r,c)
+            for ( j = 0; j < MBOARD_W; j++ )
+            {
+                CELL(MBOARD_H - i, j) = row[j];
+            }
+
+            i++;
+        }
     }
 }
 
