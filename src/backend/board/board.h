@@ -39,6 +39,7 @@
 #    include <stdbool.h>
 
 // === Constants and Macro definitions ===
+
 /// @def BOARD_HEIGHT
 /// @brief Board Height
 #    ifdef RPI
@@ -280,6 +281,7 @@ typedef struct GAMEBOARD
         void (* softDrop) (void);
     } piece;
 
+    /// Optional game modifications that can be set before the first update
     struct
     {
         /**
@@ -289,7 +291,7 @@ typedef struct GAMEBOARD
          * 
          * @return Nothing
          */
-        void (* gameMode) (int mode);
+        //void (* gameMode) (int mode);
         
         /**
          * @brief Level in which the game starts

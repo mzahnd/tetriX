@@ -168,7 +168,7 @@ static int
 filledRows (int lines[BOARD_HEIGHT]);
 
 // Game mode to be played
-void gameMode (int mode);
+//void gameMode (int mode);
 
 // Initializes a new board.
 static int
@@ -418,7 +418,7 @@ destroy (void)
     bStruct.public -> piece.shift = NULL;
     bStruct.public -> piece.softDrop = NULL;
 
-    bStruct.public -> set.gameMode = NULL;
+    //bStruct.public -> set.gameMode = NULL;
     bStruct.public -> set.startLevel = NULL;
     bStruct.public -> set.startRows = NULL;
 
@@ -547,7 +547,7 @@ filledRows (int lines[BOARD_HEIGHT])
  * 
  * @return Nothing
  */
-void
+/*void
 gameMode (int mode)
 {
     switch ( mode )
@@ -562,7 +562,7 @@ gameMode (int mode)
         default:
             break;
     }
-}
+}*/
 
 /**
  * @brief Initializes a new board.
@@ -629,7 +629,7 @@ init (void)
     bStruct.public -> piece.softDrop = &softDropPiece;
 
     // Options to set for the current game
-    bStruct.public -> set.gameMode = &gameMode;
+    //bStruct.public -> set.gameMode = &gameMode;
     bStruct.public -> set.startLevel = &startLevel;
     bStruct.public -> set.startRows = &startRows;
 

@@ -19,9 +19,9 @@
  * 
  * @file    alcontrol.h
  * 
- * @brief   ;
+ * @brief   Initialize Allegro and manages the display, inputs and outputs.
  * 
- * @details ; 
+ * @details Everything related to the Allegro frontend of the game starts here
  *
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
@@ -35,29 +35,52 @@
 #    define ALCONTROL_H
 
 // === Libraries and header files ===
+// For bool, true and false
 #    include <stdbool.h>
 
+// For ALLEGRO_DISPLAY
 #    include <allegro5/allegro5.h>
-#    include <allegro5/allegro_audio.h>
 
 // === Constants and Macro definitions ===
+// Return values from functions
+/// Error return value
 #    define AL_ERROR    0
+/// OK return value
 #    define AL_OK       !AL_ERROR
 
+// Game display size
+/// Game display width
 #    define SCREEN_WIDTH        800
+/// Game display height
 #    define SCREEN_HEIGHT       600
 
 // Key detection options
-#define KEY_SEEN            1
-#define KEY_RELEASED        2
-#define KEY_READY            ( (KEY_SEEN | KEY_RELEASED) & KEY_RELEASED)
+/// A key has been pressed
+#    define KEY_SEEN            1
+/// The pressed key has been released
+#    define KEY_RELEASED        2
+/// A key has been pressed and released. Actions can be taked
+#    define KEY_READY           ( (KEY_SEEN | KEY_RELEASED) & KEY_RELEASED)
 
 // === Enumerations, structures and typedefs ===
+
+/**
+ * @typedef allegro_t
+ * @brief Higher game structure.
+ * 
+ * Contains an exit variable, the game displays and the audio management.
+ */
 typedef struct ALLEGRO_MGMT allegro_t;
 
+/**
+ * @struct ALLEGRO_MGMT
+ * @brief Higher game structure.
+ * 
+ * Contains an exit variable, the game displays and the audio management.
+ */
 struct ALLEGRO_MGMT
 {
-    /// True when user asked to exit the game
+    /// true when user asked to exit the game
     bool exit;
 
     /**
@@ -66,6 +89,9 @@ struct ALLEGRO_MGMT
     struct
     {
 
+        /**
+         * @brief Music control
+         */
         struct
         {
             /**
@@ -83,10 +109,18 @@ struct ALLEGRO_MGMT
             void (* stop) (void);
 
             /**
+             * @brief Music playing is enabled or not.
+             * @param None
+             * @return true: Playing is enabled
+             * @return false: Paying is disabled
+             */
+            bool (* enabled) (void);
+
+            /**
              * @brief Music playing status.
              * @param None
-             * @return True: Playing is enables
-             * @return False: Paying is disabled
+             * @return true: Music is being played
+             * @return false: Music is not being played
              */
             bool (* status) (void);
 
@@ -98,6 +132,9 @@ struct ALLEGRO_MGMT
             void (* invertStatus) (void);
         } music;
 
+        /**
+         * @brief FX control
+         */
         struct
         {
             /**
@@ -108,12 +145,19 @@ struct ALLEGRO_MGMT
             void (* play) (const char * path);
 
             /**
-             * @brief FX playing status.
-             * @param None
-             * @return True: Playing is enables
-             * @return False: Paying is disabled
+             * @brief Play FX in path
+             * @param path Path to the desired sound FX
+             * @return Nothing
              */
-            bool (* status) (void);
+            void (* playSecond) (const char * path);
+
+            /**
+             * @brief Music playing is enabled or not.
+             * @param None
+             * @return true: Playing is enabled
+             * @return false: Paying is disabled
+             */
+            bool (* enabled) (void);
 
             /**
              * @brief Invert FX playing status.
@@ -125,8 +169,12 @@ struct ALLEGRO_MGMT
 
     } samples;
 
+    /** 
+     * @brief Game displays
+     */
     struct
     {
+        /// Main display
         ALLEGRO_DISPLAY * display;
     } screen;
 
@@ -137,9 +185,11 @@ struct ALLEGRO_MGMT
 // === ROM Constant variables ===
 
 // === Global function definitions ===
+// Initialize Allegro GUI
 int
 allegro (void);
 
+// Destroy Allegro GUI
 void
 alg_destroy (void);
 

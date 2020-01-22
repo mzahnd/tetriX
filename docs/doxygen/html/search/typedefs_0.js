@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['board_5ft_168',['board_t',['../board_8h.html#aea9f99b90c751f90ae6dd2f35d49bb4e',1,'board.h']]]
+  ['allegro_5ft_328',['allegro_t',['../alcontrol_8h.html#a0080e1ee2d21a22d10a8e98288775e67',1,'alcontrol.h']]]
 ];

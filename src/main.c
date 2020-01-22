@@ -61,6 +61,10 @@
  * http://man7.org/linux/man-pages/man2/getrandom.2.html \n
  * https://github.com/liballeg/allegro_wiki/wiki/Allegro-Vivace%3A-Input \n
  * 
+ * \n Sound effects where taken from \n
+ * http://soundbible.com/2067-Blop.html \n
+ * https://freesound.org/people/korgchops/sounds/268694/ \n
+ * https://freesound.org/people/myfox14/sounds/382310/ \n
  * 
  * @author Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author Martín E. Zahnd                                <mzahnd@itba.edu.ar>
@@ -140,11 +144,10 @@ main (void)
     printG(&(ma[0][0]));
     disp_update();*/
 
+    // Game is being run with a Raspberry PI
 #ifdef RPI
     if ( rpi() == ERROR )
     {
-
-
         printf("Something went wrong on your RPI\n");
     }
     else
@@ -153,8 +156,9 @@ main (void)
     }
 #endif
 
+    // Game is being run with an Allegro GUI
 #ifdef ALLEGRO
-    if ( allegro() )
+    if ( !allegro() )
     {
         return (EXIT_FAILURE);
     }

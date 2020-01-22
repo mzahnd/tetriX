@@ -104,24 +104,30 @@ $(function() {
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">// === ROM Constant variables ===</span></div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">// === Global function definitions ===</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">// Initialize the timer functions.</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keywordtype">int</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<a class="code" href="board_timer_8h.html#acbe1653a1bb55ecf82f9eb2daddde0f0">initTimer</a> (<span class="keyword">struct</span> <a class="code" href="struct_s_t_a_t_s.html">STATS</a> * sts);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">// Tells if the time limit has been reached</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keywordtype">bool</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<a class="code" href="board_timer_8h.html#a2a7d312b386922eba37d4328bcac9df5">askTimer</a> (<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">// Reset timer</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<a class="code" href="board_timer_8h.html#a2982c9a6534d5b81a42f6181c2f9620f">startTimer</a> (<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* BOARDTIMER_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">// Tells if the time limit has been reached</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keywordtype">bool</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<a class="code" href="board_timer_8h.html#a2a7d312b386922eba37d4328bcac9df5">askTimer</a> (<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">// Returns the time in ms that a piece has to be static before updating</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keywordtype">int</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<a class="code" href="board_timer_8h.html#a35d397ca02a06e9ddc58a86feaf3874a">askTimeLimit</a> (<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">// Initialize the timer functions.</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keywordtype">int</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<a class="code" href="board_timer_8h.html#ad3ab414fae93233ca4028cde4bcbdf80">initTimer</a> (<span class="keyword">const</span> <a class="code" href="struct_s_t_a_t_s.html">stats_t</a> * sts);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">// Reset timer</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<a class="code" href="board_timer_8h.html#a2982c9a6534d5b81a42f6181c2f9620f">startTimer</a> (<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* BOARDTIMER_H */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="astruct_s_t_a_t_s_html"><div class="ttname"><a href="struct_s_t_a_t_s.html">STATS</a></div><div class="ttdoc">Holds current game statistics.</div><div class="ttdef"><b>Definition:</b> stats_mgmt.h:55</div></div>
-<div class="ttc" id="aboard_timer_8h_html_a2a7d312b386922eba37d4328bcac9df5"><div class="ttname"><a href="board_timer_8h.html#a2a7d312b386922eba37d4328bcac9df5">askTimer</a></div><div class="ttdeci">bool askTimer(void)</div><div class="ttdoc">Tells if the time limit has been reached.</div><div class="ttdef"><b>Definition:</b> boardTimer.c:150</div></div>
-<div class="ttc" id="aboard_timer_8h_html_a2982c9a6534d5b81a42f6181c2f9620f"><div class="ttname"><a href="board_timer_8h.html#a2982c9a6534d5b81a42f6181c2f9620f">startTimer</a></div><div class="ttdeci">void startTimer(void)</div><div class="ttdoc">Reset timer.</div><div class="ttdef"><b>Definition:</b> boardTimer.c:185</div></div>
+<div class="ttc" id="aboard_timer_8h_html_a2a7d312b386922eba37d4328bcac9df5"><div class="ttname"><a href="board_timer_8h.html#a2a7d312b386922eba37d4328bcac9df5">askTimer</a></div><div class="ttdeci">bool askTimer(void)</div><div class="ttdoc">Tells if the time limit has been reached.</div><div class="ttdef"><b>Definition:</b> boardTimer.c:115</div></div>
+<div class="ttc" id="aboard_timer_8h_html_a2982c9a6534d5b81a42f6181c2f9620f"><div class="ttname"><a href="board_timer_8h.html#a2982c9a6534d5b81a42f6181c2f9620f">startTimer</a></div><div class="ttdeci">void startTimer(void)</div><div class="ttdoc">Reset timer.</div><div class="ttdef"><b>Definition:</b> boardTimer.c:205</div></div>
 <div class="ttc" id="aboard_timer_8h_html"><div class="ttname"><a href="board_timer_8h.html">boardTimer.h</a></div><div class="ttdoc">;</div></div>
-<div class="ttc" id="aboard_timer_8h_html_acbe1653a1bb55ecf82f9eb2daddde0f0"><div class="ttname"><a href="board_timer_8h.html#acbe1653a1bb55ecf82f9eb2daddde0f0">initTimer</a></div><div class="ttdeci">int initTimer(struct STATS *sts)</div><div class="ttdoc">Initialize the timer functions.</div><div class="ttdef"><b>Definition:</b> boardTimer.c:120</div></div>
+<div class="ttc" id="aboard_timer_8h_html_a35d397ca02a06e9ddc58a86feaf3874a"><div class="ttname"><a href="board_timer_8h.html#a35d397ca02a06e9ddc58a86feaf3874a">askTimeLimit</a></div><div class="ttdeci">int askTimeLimit(void)</div><div class="ttdoc">Returns the time in ms that a piece has to be static before updating.</div><div class="ttdef"><b>Definition:</b> boardTimer.c:148</div></div>
+<div class="ttc" id="aboard_timer_8h_html_ad3ab414fae93233ca4028cde4bcbdf80"><div class="ttname"><a href="board_timer_8h.html#ad3ab414fae93233ca4028cde4bcbdf80">initTimer</a></div><div class="ttdeci">int initTimer(const stats_t *sts)</div><div class="ttdoc">Initialize the timer functions.</div><div class="ttdef"><b>Definition:</b> boardTimer.c:171</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

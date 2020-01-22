@@ -86,15 +86,11 @@ void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="st
 <tr class="separator:a2601a17a3e2edc404d8eab8e8b6d40c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd1ca5175fd44ca3a77fb51f20f14e77"><td class="memItemLeft" ><a id="abd1ca5175fd44ca3a77fb51f20f14e77"></a>
 struct {</td></tr>
-<tr class="memitem:ad3d2b58bbc1ae90cd04357f9ecaed7e3"><td class="memItemLeft" >
-&#160;&#160;&#160;int(*&#160;&#160;&#160;<a class="el" href="struct_g_a_m_e_b_o_a_r_d.html#ad3d2b58bbc1ae90cd04357f9ecaed7e3">FPG</a> )(void)</td></tr>
-<tr class="memdesc:ad3d2b58bbc1ae90cd04357f9ecaed7e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">How fast is the board being updated in Frames Per Gridcell. <br /></td></tr>
-<tr class="separator:ad3d2b58bbc1ae90cd04357f9ecaed7e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84e4ca4c0d39d9b25abaaf1b9834891d"><td class="memItemLeft" >
 &#160;&#160;&#160;<a class="el" href="board_8h.html#ad52f776081dcdce29aa7eff07d9513ef">grid_t</a> *(*&#160;&#160;&#160;<a class="el" href="struct_g_a_m_e_b_o_a_r_d.html#a84e4ca4c0d39d9b25abaaf1b9834891d">board</a> )(void)</td></tr>
 <tr class="memdesc:a84e4ca4c0d39d9b25abaaf1b9834891d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get coordinate (0,0) of the board (top-left) <br /></td></tr>
 <tr class="separator:a84e4ca4c0d39d9b25abaaf1b9834891d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14543271d4d3aaed1bf9fb0671811187"><td class="memItemLeft" >&#160;&#160;&#160;int(*&#160;&#160;&#160;<a class="el" href="struct_g_a_m_e_b_o_a_r_d.html#a14543271d4d3aaed1bf9fb0671811187">filledRows</a> )(int lines[<a class="el" href="board_8h.html#a94ed08e31d2f3a38d35f0cb89c762f04">BOARD_HEIGHT</a>])</td></tr>
+<tr class="memitem:a14543271d4d3aaed1bf9fb0671811187"><td class="memItemLeft" >&#160;&#160;&#160;int(*&#160;&#160;&#160;<a class="el" href="struct_g_a_m_e_b_o_a_r_d.html#a14543271d4d3aaed1bf9fb0671811187">filledRows</a> )(int lines[BOARD_HEIGHT])</td></tr>
 <tr class="memdesc:a14543271d4d3aaed1bf9fb0671811187"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many rows are complete and which are those.  <a href="struct_g_a_m_e_b_o_a_r_d_1_1_0d0.html#a14543271d4d3aaed1bf9fb0671811187">More...</a><br /></td></tr>
 <tr class="separator:a14543271d4d3aaed1bf9fb0671811187"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a165ec10fee1e6a7cc22dca444f1943ba"><td class="memItemLeft" >&#160;&#160;&#160;int(*&#160;&#160;&#160;<a class="el" href="struct_g_a_m_e_b_o_a_r_d.html#a165ec10fee1e6a7cc22dca444f1943ba">endGame</a> )(void)</td></tr>
@@ -108,7 +104,7 @@ struct {</td></tr>
 <tr class="separator:abd1ca5175fd44ca3a77fb51f20f14e77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bc8dd997881b9557695110c61d596ac"><td class="memItemLeft" ><a id="a7bc8dd997881b9557695110c61d596ac"></a>
 struct {</td></tr>
-<tr class="memitem:aa57283c6e542b6635c353acce43cecb8"><td class="memItemLeft" >&#160;&#160;&#160;void(*&#160;&#160;&#160;<a class="el" href="struct_g_a_m_e_b_o_a_r_d.html#aa57283c6e542b6635c353acce43cecb8">line</a> )(int lines[<a class="el" href="board_8h.html#a94ed08e31d2f3a38d35f0cb89c762f04">BOARD_HEIGHT</a>], int <br class="typebreak" />
+<tr class="memitem:aa57283c6e542b6635c353acce43cecb8"><td class="memItemLeft" >&#160;&#160;&#160;void(*&#160;&#160;&#160;<a class="el" href="struct_g_a_m_e_b_o_a_r_d.html#aa57283c6e542b6635c353acce43cecb8">line</a> )(int lines[BOARD_HEIGHT], int <br class="typebreak" />
 &#160;&#160;&#160;&#160;&#160;&#160;position)</td></tr>
 <tr class="memdesc:aa57283c6e542b6635c353acce43cecb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear a filled row.  <a href="struct_g_a_m_e_b_o_a_r_d_1_1_0d1.html#aa57283c6e542b6635c353acce43cecb8">More...</a><br /></td></tr>
 <tr class="separator:aa57283c6e542b6635c353acce43cecb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -129,6 +125,17 @@ struct {</td></tr>
 <tr class="memitem:af5ed5155aa10bfb9ca29242935680c84"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_g_a_m_e_b_o_a_r_d.html#af5ed5155aa10bfb9ca29242935680c84">piece</a></td></tr>
 <tr class="memdesc:af5ed5155aa10bfb9ca29242935680c84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manage the current piece. <br /></td></tr>
 <tr class="separator:af5ed5155aa10bfb9ca29242935680c84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab053119f199da6fc8d0f8ea6e037e68"><td class="memItemLeft" ><a id="aab053119f199da6fc8d0f8ea6e037e68"></a>
+struct {</td></tr>
+<tr class="memitem:a951b230619d33499d470c973bd7e0826"><td class="memItemLeft" >&#160;&#160;&#160;void(*&#160;&#160;&#160;<a class="el" href="struct_g_a_m_e_b_o_a_r_d.html#a951b230619d33499d470c973bd7e0826">startLevel</a> )(unsigned char n)</td></tr>
+<tr class="memdesc:a951b230619d33499d470c973bd7e0826"><td class="mdescLeft">&#160;</td><td class="mdescRight">Game mode to be played.  <a href="struct_g_a_m_e_b_o_a_r_d_1_1_0d3.html#a951b230619d33499d470c973bd7e0826">More...</a><br /></td></tr>
+<tr class="separator:a951b230619d33499d470c973bd7e0826"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2bc98de1dacb0586afe43248c565b81f"><td class="memItemLeft" >&#160;&#160;&#160;void(*&#160;&#160;&#160;<a class="el" href="struct_g_a_m_e_b_o_a_r_d.html#a2bc98de1dacb0586afe43248c565b81f">startRows</a> )(unsigned char n)</td></tr>
+<tr class="memdesc:a2bc98de1dacb0586afe43248c565b81f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Amount of rows to start in the board.  <a href="struct_g_a_m_e_b_o_a_r_d_1_1_0d3.html#a2bc98de1dacb0586afe43248c565b81f">More...</a><br /></td></tr>
+<tr class="separator:a2bc98de1dacb0586afe43248c565b81f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab053119f199da6fc8d0f8ea6e037e68"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_g_a_m_e_b_o_a_r_d.html#aab053119f199da6fc8d0f8ea6e037e68">set</a></td></tr>
+<tr class="memdesc:aab053119f199da6fc8d0f8ea6e037e68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optional game modifications that can be set before the first update. <br /></td></tr>
+<tr class="separator:aab053119f199da6fc8d0f8ea6e037e68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74222636e9a0ad2bcbcd3bed90fa0e88"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_g_a_m_e_b_o_a_r_d.html#a74222636e9a0ad2bcbcd3bed90fa0e88">update</a> )(void)</td></tr>
 <tr class="memdesc:a74222636e9a0ad2bcbcd3bed90fa0e88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the board.  <a href="struct_g_a_m_e_b_o_a_r_d.html#a74222636e9a0ad2bcbcd3bed90fa0e88">More...</a><br /></td></tr>
 <tr class="separator:a74222636e9a0ad2bcbcd3bed90fa0e88"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -164,7 +171,7 @@ False: 0 </dd></dl>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int(*  filledRows) (int lines[<a class="el" href="board_8h.html#a94ed08e31d2f3a38d35f0cb89c762f04">BOARD_HEIGHT</a>])</td>
+          <td class="memname">int(*  filledRows) (int lines[BOARD_HEIGHT])</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -204,7 +211,7 @@ False: 0 </dd></dl>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void(*  line) (int lines[<a class="el" href="board_8h.html#a94ed08e31d2f3a38d35f0cb89c762f04">BOARD_HEIGHT</a>], int position)</td>
+          <td class="memname">void(*  line) (int lines[BOARD_HEIGHT], int position)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -287,6 +294,60 @@ False: 0 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">None</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Nothing </dd></dl>
+
+</div>
+</div>
+<a id="a951b230619d33499d470c973bd7e0826"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a951b230619d33499d470c973bd7e0826">&#9670;&nbsp;</a></span>startLevel</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void(*  startLevel) (unsigned char n)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Game mode to be played. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mode</td><td>From enum gModes</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Nothing</dd></dl>
+<p>Level in which the game starts</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">n</td><td>Level number between 0 and 9</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Nothing </dd></dl>
+
+</div>
+</div>
+<a id="a2bc98de1dacb0586afe43248c565b81f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2bc98de1dacb0586afe43248c565b81f">&#9670;&nbsp;</a></span>startRows</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void(*  startRows) (unsigned char n)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Amount of rows to start in the board. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">n</td><td>Number between 0 and 9</td></tr>
   </table>
   </dd>
 </dl>

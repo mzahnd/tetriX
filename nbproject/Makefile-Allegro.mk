@@ -42,7 +42,10 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/backend/rw/rw_ops.o \
 	${OBJECTDIR}/src/backend/stats/stats_mgmt.o \
 	${OBJECTDIR}/src/frontend/allegro/alcontrol.o \
+	${OBJECTDIR}/src/frontend/allegro/keys.o \
 	${OBJECTDIR}/src/frontend/allegro/screen/game.o \
+	${OBJECTDIR}/src/frontend/allegro/screen/gamePause.o \
+	${OBJECTDIR}/src/frontend/allegro/screen/gameStats.o \
 	${OBJECTDIR}/src/frontend/allegro/screen/menu.o \
 	${OBJECTDIR}/src/main.o
 
@@ -122,10 +125,25 @@ ${OBJECTDIR}/src/frontend/allegro/alcontrol.o: src/frontend/allegro/alcontrol.c
 	${RM} "$@.d"
 	$(COMPILE.c) -g -Wall `pkg-config --cflags allegro-5` `pkg-config --cflags allegro_acodec-5` `pkg-config --cflags allegro_audio-5` `pkg-config --cflags allegro_color-5` `pkg-config --cflags allegro_dialog-5` `pkg-config --cflags allegro_font-5` `pkg-config --cflags allegro_image-5` `pkg-config --cflags allegro_main-5` `pkg-config --cflags allegro_memfile-5` `pkg-config --cflags allegro_physfs-5` `pkg-config --cflags allegro_primitives-5` `pkg-config --cflags allegro_ttf-5` `pkg-config --cflags allegro_video-5` -std=c11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/alcontrol.o src/frontend/allegro/alcontrol.c
 
+${OBJECTDIR}/src/frontend/allegro/keys.o: src/frontend/allegro/keys.c
+	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Wall `pkg-config --cflags allegro-5` `pkg-config --cflags allegro_acodec-5` `pkg-config --cflags allegro_audio-5` `pkg-config --cflags allegro_color-5` `pkg-config --cflags allegro_dialog-5` `pkg-config --cflags allegro_font-5` `pkg-config --cflags allegro_image-5` `pkg-config --cflags allegro_main-5` `pkg-config --cflags allegro_memfile-5` `pkg-config --cflags allegro_physfs-5` `pkg-config --cflags allegro_primitives-5` `pkg-config --cflags allegro_ttf-5` `pkg-config --cflags allegro_video-5` -std=c11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/keys.o src/frontend/allegro/keys.c
+
 ${OBJECTDIR}/src/frontend/allegro/screen/game.o: src/frontend/allegro/screen/game.c
 	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro/screen
 	${RM} "$@.d"
 	$(COMPILE.c) -g -Wall `pkg-config --cflags allegro-5` `pkg-config --cflags allegro_acodec-5` `pkg-config --cflags allegro_audio-5` `pkg-config --cflags allegro_color-5` `pkg-config --cflags allegro_dialog-5` `pkg-config --cflags allegro_font-5` `pkg-config --cflags allegro_image-5` `pkg-config --cflags allegro_main-5` `pkg-config --cflags allegro_memfile-5` `pkg-config --cflags allegro_physfs-5` `pkg-config --cflags allegro_primitives-5` `pkg-config --cflags allegro_ttf-5` `pkg-config --cflags allegro_video-5` -std=c11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/screen/game.o src/frontend/allegro/screen/game.c
+
+${OBJECTDIR}/src/frontend/allegro/screen/gamePause.o: src/frontend/allegro/screen/gamePause.c
+	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro/screen
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Wall `pkg-config --cflags allegro-5` `pkg-config --cflags allegro_acodec-5` `pkg-config --cflags allegro_audio-5` `pkg-config --cflags allegro_color-5` `pkg-config --cflags allegro_dialog-5` `pkg-config --cflags allegro_font-5` `pkg-config --cflags allegro_image-5` `pkg-config --cflags allegro_main-5` `pkg-config --cflags allegro_memfile-5` `pkg-config --cflags allegro_physfs-5` `pkg-config --cflags allegro_primitives-5` `pkg-config --cflags allegro_ttf-5` `pkg-config --cflags allegro_video-5` -std=c11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/screen/gamePause.o src/frontend/allegro/screen/gamePause.c
+
+${OBJECTDIR}/src/frontend/allegro/screen/gameStats.o: src/frontend/allegro/screen/gameStats.c
+	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro/screen
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Wall `pkg-config --cflags allegro-5` `pkg-config --cflags allegro_acodec-5` `pkg-config --cflags allegro_audio-5` `pkg-config --cflags allegro_color-5` `pkg-config --cflags allegro_dialog-5` `pkg-config --cflags allegro_font-5` `pkg-config --cflags allegro_image-5` `pkg-config --cflags allegro_main-5` `pkg-config --cflags allegro_memfile-5` `pkg-config --cflags allegro_physfs-5` `pkg-config --cflags allegro_primitives-5` `pkg-config --cflags allegro_ttf-5` `pkg-config --cflags allegro_video-5` -std=c11  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/screen/gameStats.o src/frontend/allegro/screen/gameStats.c
 
 ${OBJECTDIR}/src/frontend/allegro/screen/menu.o: src/frontend/allegro/screen/menu.c
 	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro/screen
@@ -276,6 +294,19 @@ ${OBJECTDIR}/src/frontend/allegro/alcontrol_nomain.o: ${OBJECTDIR}/src/frontend/
 	    ${CP} ${OBJECTDIR}/src/frontend/allegro/alcontrol.o ${OBJECTDIR}/src/frontend/allegro/alcontrol_nomain.o;\
 	fi
 
+${OBJECTDIR}/src/frontend/allegro/keys_nomain.o: ${OBJECTDIR}/src/frontend/allegro/keys.o src/frontend/allegro/keys.c 
+	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/frontend/allegro/keys.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.c) -g -Wall `pkg-config --cflags allegro-5` `pkg-config --cflags allegro_acodec-5` `pkg-config --cflags allegro_audio-5` `pkg-config --cflags allegro_color-5` `pkg-config --cflags allegro_dialog-5` `pkg-config --cflags allegro_font-5` `pkg-config --cflags allegro_image-5` `pkg-config --cflags allegro_main-5` `pkg-config --cflags allegro_memfile-5` `pkg-config --cflags allegro_physfs-5` `pkg-config --cflags allegro_primitives-5` `pkg-config --cflags allegro_ttf-5` `pkg-config --cflags allegro_video-5` -std=c11  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/keys_nomain.o src/frontend/allegro/keys.c;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/frontend/allegro/keys.o ${OBJECTDIR}/src/frontend/allegro/keys_nomain.o;\
+	fi
+
 ${OBJECTDIR}/src/frontend/allegro/screen/game_nomain.o: ${OBJECTDIR}/src/frontend/allegro/screen/game.o src/frontend/allegro/screen/game.c 
 	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro/screen
 	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/frontend/allegro/screen/game.o`; \
@@ -287,6 +318,32 @@ ${OBJECTDIR}/src/frontend/allegro/screen/game_nomain.o: ${OBJECTDIR}/src/fronten
 	    $(COMPILE.c) -g -Wall `pkg-config --cflags allegro-5` `pkg-config --cflags allegro_acodec-5` `pkg-config --cflags allegro_audio-5` `pkg-config --cflags allegro_color-5` `pkg-config --cflags allegro_dialog-5` `pkg-config --cflags allegro_font-5` `pkg-config --cflags allegro_image-5` `pkg-config --cflags allegro_main-5` `pkg-config --cflags allegro_memfile-5` `pkg-config --cflags allegro_physfs-5` `pkg-config --cflags allegro_primitives-5` `pkg-config --cflags allegro_ttf-5` `pkg-config --cflags allegro_video-5` -std=c11  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/screen/game_nomain.o src/frontend/allegro/screen/game.c;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/frontend/allegro/screen/game.o ${OBJECTDIR}/src/frontend/allegro/screen/game_nomain.o;\
+	fi
+
+${OBJECTDIR}/src/frontend/allegro/screen/gamePause_nomain.o: ${OBJECTDIR}/src/frontend/allegro/screen/gamePause.o src/frontend/allegro/screen/gamePause.c 
+	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro/screen
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/frontend/allegro/screen/gamePause.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.c) -g -Wall `pkg-config --cflags allegro-5` `pkg-config --cflags allegro_acodec-5` `pkg-config --cflags allegro_audio-5` `pkg-config --cflags allegro_color-5` `pkg-config --cflags allegro_dialog-5` `pkg-config --cflags allegro_font-5` `pkg-config --cflags allegro_image-5` `pkg-config --cflags allegro_main-5` `pkg-config --cflags allegro_memfile-5` `pkg-config --cflags allegro_physfs-5` `pkg-config --cflags allegro_primitives-5` `pkg-config --cflags allegro_ttf-5` `pkg-config --cflags allegro_video-5` -std=c11  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/screen/gamePause_nomain.o src/frontend/allegro/screen/gamePause.c;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/frontend/allegro/screen/gamePause.o ${OBJECTDIR}/src/frontend/allegro/screen/gamePause_nomain.o;\
+	fi
+
+${OBJECTDIR}/src/frontend/allegro/screen/gameStats_nomain.o: ${OBJECTDIR}/src/frontend/allegro/screen/gameStats.o src/frontend/allegro/screen/gameStats.c 
+	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro/screen
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/frontend/allegro/screen/gameStats.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.c) -g -Wall `pkg-config --cflags allegro-5` `pkg-config --cflags allegro_acodec-5` `pkg-config --cflags allegro_audio-5` `pkg-config --cflags allegro_color-5` `pkg-config --cflags allegro_dialog-5` `pkg-config --cflags allegro_font-5` `pkg-config --cflags allegro_image-5` `pkg-config --cflags allegro_main-5` `pkg-config --cflags allegro_memfile-5` `pkg-config --cflags allegro_physfs-5` `pkg-config --cflags allegro_primitives-5` `pkg-config --cflags allegro_ttf-5` `pkg-config --cflags allegro_video-5` -std=c11  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/screen/gameStats_nomain.o src/frontend/allegro/screen/gameStats.c;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/frontend/allegro/screen/gameStats.o ${OBJECTDIR}/src/frontend/allegro/screen/gameStats_nomain.o;\
 	fi
 
 ${OBJECTDIR}/src/frontend/allegro/screen/menu_nomain.o: ${OBJECTDIR}/src/frontend/allegro/screen/menu.o src/frontend/allegro/screen/menu.c 

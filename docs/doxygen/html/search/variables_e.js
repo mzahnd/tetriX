@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['update_167',['update',['../struct_g_a_m_e_b_o_a_r_d.html#a74222636e9a0ad2bcbcd3bed90fa0e88',1,'GAMEBOARD::update()'],['../struct_p_i_e_c_e.html#ab57c58460735773dd4ad9b16952dff31',1,'PIECE::update()'],['../struct_s_t_a_t_s.html#ad958dc194ac388f50c867a0234a246fc',1,'STATS::update()']]]
+  ['redraw_301',['redraw',['../structmenu__t.html#a2521de19582330d79e99fbd255d797ba',1,'menu_t']]],
+  ['regular_302',['regular',['../structgbox__t.html#aaef0c5e022c66a2e4c77c287269480be',1,'gbox_t']]],
+  ['rotate_303',['rotate',['../struct_g_a_m_e_b_o_a_r_d.html#a5e38bdb89055fcfbd6838a75400a42fe',1,'GAMEBOARD::rotate()'],['../struct_p_i_e_c_e.html#a5e38bdb89055fcfbd6838a75400a42fe',1,'PIECE::rotate()']]],
+  ['rsize_304',['rsize',['../structgbox__t.html#a7ca3083413bdda75049d093c45bbd1c6',1,'gbox_t']]]
 ];

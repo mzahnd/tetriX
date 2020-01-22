@@ -1,16 +1,16 @@
 var searchData=
 [
-  ['samples_82',['samples',['../struct_a_l_l_e_g_r_o___m_g_m_t.html#ada9cdbf1eeda4c5867f0569738aa85d9',1,'ALLEGRO_MGMT']]],
-  ['score_83',['score',['../struct_s_t_a_t_s.html#a97b3ff5226414cdeb9cb8e19cbd88d0c',1,'STATS']]],
-  ['shift_84',['shift',['../struct_g_a_m_e_b_o_a_r_d.html#aaba3c820f8f695d7e79c75ddc4f5ab51',1,'GAMEBOARD::shift()'],['../struct_p_i_e_c_e.html#aaba3c820f8f695d7e79c75ddc4f5ab51',1,'PIECE::shift()']]],
-  ['shiftingtypes_85',['shiftingTypes',['../board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54',1,'board.h']]],
-  ['softdrop_86',['softDrop',['../struct_g_a_m_e_b_o_a_r_d.html#acec6ad5c0cbf6b5187c313b14fed68ef',1,'GAMEBOARD::softDrop()'],['../struct_p_i_e_c_e.html#acec6ad5c0cbf6b5187c313b14fed68ef',1,'PIECE::softDrop()'],['../struct_s_t_a_t_s.html#acec6ad5c0cbf6b5187c313b14fed68ef',1,'STATS::softDrop()']]],
-  ['space_87',['SPACE',['../display_8h.html#a5ff6e798033f03e74730e99f01936f84',1,'display.h']]],
-  ['starttimer_88',['startTimer',['../board_timer_8h.html#a2982c9a6534d5b81a42f6181c2f9620f',1,'boardTimer.c']]],
-  ['stats_89',['STATS',['../struct_s_t_a_t_s.html',1,'STATS'],['../struct_g_a_m_e_b_o_a_r_d.html#a2db5c76a46a9a88da03c903a1e135835',1,'GAMEBOARD::stats()']]],
-  ['stats_5fmgmt_2eh_90',['stats_mgmt.h',['../stats__mgmt_8h.html',1,'']]],
-  ['stats_5ft_91',['stats_t',['../stats__mgmt_8h.html#a09d48e3f13e86d369d6aa6e8f777006e',1,'stats_mgmt.h']]],
-  ['status_92',['status',['../struct_a_l_l_e_g_r_o___m_g_m_t.html#abd3e7fde9bda277cfde0c72512e79ca7',1,'ALLEGRO_MGMT']]],
-  ['stop_93',['stop',['../struct_a_l_l_e_g_r_o___m_g_m_t.html#a798591d02b3927208acee82367edef74',1,'ALLEGRO_MGMT']]],
-  ['surf_94',['surf',['../joystick_8h.html#a7a3807facf093801fe3daf300804f175',1,'joystick.c']]]
+  ['pause_138',['pause',['../game_pause_8h.html#afd7d49e17b69bd6bf3d7a649856c1067',1,'gamePause.h']]],
+  ['pause_5ft_139',['pause_t',['../structpause__t.html',1,'']]],
+  ['piece_140',['PIECE',['../struct_p_i_e_c_e.html',1,'PIECE'],['../struct_g_a_m_e_b_o_a_r_d.html#af5ed5155aa10bfb9ca29242935680c84',1,'GAMEBOARD::piece()'],['../struct_s_t_a_t_s.html#a2cc521d617c8e6894ef59fcd485b6b67',1,'STATS::piece()']]],
+  ['piece_5factions_2eh_141',['piece_actions.h',['../piece__actions_8h.html',1,'']]],
+  ['piece_5finit_142',['piece_init',['../piece__actions_8h.html#a44c68c9370e56a84cdb6dbab273aefa3',1,'piece_actions.c']]],
+  ['piece_5ft_143',['piece_t',['../piece__actions_8h.html#a36ec2954d787981651c5bedf0d3261ae',1,'piece_actions.h']]],
+  ['piecesbox_144',['piecesBox',['../structscreen_stats__t.html#acbd7a83c045b638fcfede7d6ac103e10',1,'screenStats_t']]],
+  ['piecestype_145',['piecesType',['../board_8h.html#aa8acd4b6f8e39eb057cf562c3910c554',1,'board.h']]],
+  ['play_146',['play',['../struct_a_l_l_e_g_r_o___m_g_m_t.html#a387ecd934698d7eb04526b5d5adf69d4',1,'ALLEGRO_MGMT::play()'],['../menu_8h.html#a6f809259b805e28a03a346aaec20a64fa0352906d1ea1dfcd663c918f3a86755b',1,'PLAY():&#160;menu.h'],['../display_8h.html#a9f4e8630516f3da89537313b4c828759a0352906d1ea1dfcd663c918f3a86755b',1,'PLAY():&#160;display.h']]],
+  ['playsecond_147',['playSecond',['../struct_a_l_l_e_g_r_o___m_g_m_t.html#acd42c687f3e116250d2eef5f5a01a51f',1,'ALLEGRO_MGMT']]],
+  ['printg_148',['printG',['../display_8h.html#a8f45edf212c8595b8e9cf975eb45b235',1,'display.c']]],
+  ['printw_149',['printW',['../display_8h.html#a410d9a741e70114f461936f42edf7e8f',1,'display.c']]],
+  ['printwmove_150',['printWmove',['../display_8h.html#a558d379da947357daf3751b4e7663fee',1,'display.c']]]
 ];

@@ -1,12 +1,15 @@
 var searchData=
 [
-  ['piece_66',['PIECE',['../struct_p_i_e_c_e.html',1,'PIECE'],['../struct_g_a_m_e_b_o_a_r_d.html#af5ed5155aa10bfb9ca29242935680c84',1,'GAMEBOARD::piece()'],['../struct_s_t_a_t_s.html#a6b9403d86ee98a7920bf711048262338',1,'STATS::piece()']]],
-  ['piece_5factions_2eh_67',['piece_actions.h',['../piece__actions_8h.html',1,'']]],
-  ['piece_5finit_68',['piece_init',['../piece__actions_8h.html#a44c68c9370e56a84cdb6dbab273aefa3',1,'piece_actions.c']]],
-  ['piece_5ft_69',['piece_t',['../piece__actions_8h.html#a36ec2954d787981651c5bedf0d3261ae',1,'piece_actions.h']]],
-  ['piecestype_70',['piecesType',['../board_8h.html#aa8acd4b6f8e39eb057cf562c3910c554',1,'board.h']]],
-  ['play_71',['play',['../struct_a_l_l_e_g_r_o___m_g_m_t.html#a387ecd934698d7eb04526b5d5adf69d4',1,'ALLEGRO_MGMT::play()'],['../display_8h.html#a9f4e8630516f3da89537313b4c828759a0352906d1ea1dfcd663c918f3a86755b',1,'PLAY():&#160;display.h']]],
-  ['printg_72',['printG',['../display_8h.html#a8f45edf212c8595b8e9cf975eb45b235',1,'display.c']]],
-  ['printw_73',['printW',['../display_8h.html#a410d9a741e70114f461936f42edf7e8f',1,'display.c']]],
-  ['printwmove_74',['printWmove',['../display_8h.html#a558d379da947357daf3751b4e7663fee',1,'display.c']]]
+  ['n_120',['n',['../structpause__t.html#a76f11d9a0a47b94f72c2d0e77fb32240',1,'pause_t']]],
+  ['newpiece_121',['newPiece',['../struct_s_t_a_t_s.html#a37fb093b1710001278f5a69d99adf041',1,'STATS']]],
+  ['next_122',['next',['../struct_s_t_a_t_s.html#a142a1b51e133e50c0a72b175958ac412',1,'STATS']]],
+  ['nextpiece_123',['nextPiece',['../structpause__t.html#a3749f925719fc23bcb67319a48cd9361',1,'pause_t']]],
+  ['nextpiecebox_124',['nextPieceBox',['../structscreen_stats__t.html#ad8252217c1a4f4a146cd900bfd0a85c7',1,'screenStats_t']]],
+  ['nlevels_125',['NLEVELS',['../game_8h.html#a9acf4287226016eea5e934e8bd6d624b',1,'game.h']]],
+  ['none_126',['NONE',['../board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54ac157bdf0b85a40d2619cbc8bc1ae5fe2',1,'NONE():&#160;board.h'],['../menu_8h.html#a6f809259b805e28a03a346aaec20a64fac157bdf0b85a40d2619cbc8bc1ae5fe2',1,'NONE():&#160;menu.h']]],
+  ['normal_127',['NORMAL',['../board_8h.html#a86aca119f076fa13241d289ac265fc05a50d1448013c6f17125caee18aa418af7',1,'board.h']]],
+  ['np_128',['NP',['../game_pause_8h.html#a02eacfd40be9042ceb0f07547365203da4bab504a61d7f2923c2225dc896c91c6',1,'gamePause.h']]],
+  ['nrows_129',['NROWS',['../game_8h.html#ad1b201a53819ee0b206811f261d9dfce',1,'game.h']]],
+  ['number_130',['number',['../struct_s_t_a_t_s.html#a1ee19f851d41f22bc6079c2f01d31ce5',1,'STATS']]],
+  ['nwords_131',['nWords',['../structpause__t.html#a9267ed6e7a6cbd5bf2bc116d78603980',1,'pause_t']]]
 ];

@@ -24,9 +24,12 @@
         <logicalFolder name="f1" displayName="Allegro" projectFiles="true">
           <logicalFolder name="f1" displayName="Screens" projectFiles="true">
             <itemPath>src/frontend/allegro/screen/game.h</itemPath>
+            <itemPath>src/frontend/allegro/screen/gamePause.h</itemPath>
+            <itemPath>src/frontend/allegro/screen/gameStats.h</itemPath>
             <itemPath>src/frontend/allegro/screen/menu.h</itemPath>
           </logicalFolder>
           <itemPath>src/frontend/allegro/alcontrol.h</itemPath>
+          <itemPath>src/frontend/allegro/keys.h</itemPath>
         </logicalFolder>
         <logicalFolder name="f2" displayName="Raspberry Pi" projectFiles="true">
           <itemPath>src/frontend/rpi/display.h</itemPath>
@@ -74,9 +77,12 @@
         <logicalFolder name="f1" displayName="Allegro" projectFiles="true">
           <logicalFolder name="f1" displayName="Screens" projectFiles="true">
             <itemPath>src/frontend/allegro/screen/game.c</itemPath>
+            <itemPath>src/frontend/allegro/screen/gamePause.c</itemPath>
+            <itemPath>src/frontend/allegro/screen/gameStats.c</itemPath>
             <itemPath>src/frontend/allegro/screen/menu.c</itemPath>
           </logicalFolder>
           <itemPath>src/frontend/allegro/alcontrol.c</itemPath>
+          <itemPath>src/frontend/allegro/keys.c</itemPath>
         </logicalFolder>
         <logicalFolder name="f2" displayName="Raspberry Pi" projectFiles="true">
           <itemPath>src/frontend/rpi/display.c</itemPath>
@@ -213,6 +219,30 @@
       </item>
       <item path="src/frontend/allegro/alcontrol.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/frontend/allegro/keys.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/keys.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/gamePause.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/gamePause.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/gameStats.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/gameStats.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="src/frontend/allegro/screen/menu.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/frontend/rpi/display.c" ex="false" tool="0" flavor2="0">
@@ -341,9 +371,33 @@
       </item>
       <item path="src/frontend/allegro/alcontrol.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/frontend/allegro/keys.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/keys.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/frontend/allegro/screen/game.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/frontend/allegro/screen/game.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/gamePause.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/gamePause.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/gameStats.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/gameStats.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="src/frontend/allegro/screen/menu.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -484,9 +538,33 @@
       </item>
       <item path="src/frontend/allegro/alcontrol.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/frontend/allegro/keys.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/keys.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/frontend/allegro/screen/game.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/frontend/allegro/screen/game.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/gamePause.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/gamePause.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/gameStats.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/gameStats.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="src/frontend/allegro/screen/menu.c" ex="false" tool="0" flavor2="0">
       </item>

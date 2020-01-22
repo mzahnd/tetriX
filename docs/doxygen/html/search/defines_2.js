@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['get_5fcell_201',['GET_CELL',['../board_8h.html#afdbe53bda9ade301796b7017b69562a3',1,'board.h']]]
+  ['error_389',['ERROR',['../rpcontrol_8h.html#a8fe83ac76edc595f6b98cd4a4127aed5',1,'rpcontrol.h']]]
 ];

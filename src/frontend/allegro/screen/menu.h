@@ -19,9 +19,9 @@
  * 
  * @file    menu.h
  * 
- * @brief   ;
+ * @brief   Main menu when running with Allegro
  * 
- * @details ; 
+ * @details Displays the main menu to the user
  *
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
@@ -36,11 +36,43 @@
 
 // === Libraries and header files ===
 // For allegro_t
-#include "../alcontrol.h"
+#    include "../alcontrol.h"
 
 // === Constants and Macro definitions ===
 
 // === Enumerations, structures and typedefs ===
+
+/// Options displayed in Main Menu screen
+enum menu_options
+{
+    /// Invalid option
+    NONE = 0,
+    /// Play
+    PLAY,
+    /// About
+    ABOUT,
+    /// Exit game
+    EXIT
+};
+
+/**
+ * @brief Main Menu structure
+ * 
+ * Garants some basic control over the Main Menu screen. Meant to be used with
+ * mainMenuKeys().
+ */
+typedef struct
+{
+    /// Selected option in the menu ( 0 to menu_options-1 )
+    int txt_sel;
+
+    /// Action to perform (use menu options)
+    int action;
+
+    /// Main Menu screen has to be redrawn
+    bool redraw;
+    
+} menu_t;
 
 // === Global variables ===
 
@@ -48,7 +80,8 @@
 
 // === Global function definitions ===
 
+// Display game menu
 int
-alg_menu(allegro_t * alStru);
+alg_menu (allegro_t * alStru);
 
 #endif /* MENU_H */

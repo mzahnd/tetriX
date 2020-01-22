@@ -17,11 +17,11 @@
 
 /******************************************************************************
  * 
- * @file    gameScreen.c
+ * @file    game.c
  * 
- * @brief   ;
+ * @brief   Play the game using Allegro
  * 
- * @details ; 
+ * @details Runs the entire game using Allegro
  *
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
@@ -61,6 +61,11 @@
 // This file
 #include "game.h"
 
+#include "gameStats.h"
+
+#include "gamePause.h"
+
+
 /// @privatesection
 // === Constants and Macro definitions ===
 
@@ -78,7 +83,7 @@
 
 // Display settings
 #define FPS                 60.0
-#define BKGND_COLOR         "#000000"
+#define GAME_BKGND_COLOR    "#000000"
 #define BKGND_WIDTH         1920
 #define BKGND_HEIGHT        1280
 
@@ -87,129 +92,47 @@
 #define CELL_HEIGHT         CELL_WIDTH
 #define CELL_THICKNESS      2.0
 
-// Boxes
-#define BOX_OFFSET          20.0
-#define BOX_IN_OFFSET       5.0
-#define BOX_BORDER_COLOR    "#F0F0F0"
-#define BOX_BKGND_COLOR     "#FFFFFF"
-#define BOX_THICKNESS       3.0
-
-// Box corners
-#define ROUND_X             2.0
-#define ROUND_Y             2.0
-
-// Pause box
-#define PAUSE_BKGND_COLOR   "#1E1E60"
-#define PAUSE_BORDER_COLOR  "#C5C5E1"
-#define PAUSE_TXT_COLOR     "#BA3020"
-#define PAUSE_TXT_SIZE      48
-#define PAUSE_BOX_THICKNESS 5.0
-#define PAUSE_TXT_FONT_PATH \
-                          "res/fonts/pixel-operator/PixelOperatorSC.ttf"
-
-// Pause box - selected option
+// Selected option
 #define SEL_BKGND_COLOR     "#1E1E60"
 #define SEL_BORDER_COLOR    "#C5C5E1"
 #define SEL_TXT_COLOR       "#FFFF00"
-#define SEL_TXT_SIZE        52
 #define SEL_BOX_THICKNESS   5.0
-#define SEL_TXT_FONT_PATH   \
-                         "res/fonts/pixel-operator/PixelOperatorSC-Bold.ttf"
-
-// Text options
-#define TXT_SIZE            32
-#define TXT_SIZE_BOLD       32
-#define TXT_COLOR           "#FFFFFF"
-
-#define TXT_FONT_PATH       \
-                          "res/fonts/pixel-operator/PixelOperatorMono.ttf"
-#define TXT_FONT_BOLD_PATH  \
-                          "res/fonts/pixel-operator/PixelOperatorMono-Bold.ttf"
-// Space between lines of text and boxes borders
-#define TXT_OFFSET          10
 
 #define NLEVELS             10
 #define NROWS               NLEVELS
 
+#define FX_DROP             "res/audio/fx/blop.wav"
+#define FX_LINE             "res/audio/fx/line.wav"
+#define FX_GOVER            "res/audio/fx/gameover.wav"
 // === Enumerations, structures and typedefs ===
 
 // Game status
 
 enum game_status
 {
+    // Game is being loaded
     INITIAL,
+    // Configuration screen (number of rows and level)
     CONFIG = 0,
+    // New game
     NEW,
+    // User is playing
     PLAYING,
+    // Game is paused
     PAUSED
 };
 
-// Used with array "words" to access each word
-
-enum wordsarr
-{
-    STATS,
-    LVL,
-    ASCORE,
-    TSCORE,
-    NP,
-    LINESC,
-    GOVER,
-};
+// Meant to use in an array storing the number of initial rows and start level
 
 enum rowsAndLevelSelected
 {
+    // Number of rows
     ROWS = 0,
+    // Initial level
     LEVEL,
+    // Number of options
     RPL
 };
-
-/**
- * @brief Box options
- * 
- * Contains box width, height, thickness, font, size, colors and positions
- */
-typedef struct
-{
-    // Box size
-    float width;
-    float height;
-
-    // Border
-    float thickness;
-
-    // Colors (should be written in hex. e.g. "#FF00AA")
-
-    struct
-    {
-        const char * border;
-        const char * bkgnd;
-    } color;
-
-    // Top left corner coordinates
-
-    struct
-    {
-        float x;
-        float y;
-    } corner;
-
-    // Text fonts, size and color
-
-    struct
-    {
-        ALLEGRO_FONT * bold;
-        ALLEGRO_FONT * regular;
-        // Bold font size
-        unsigned int bsize;
-        // Regular font size
-        unsigned int rsize;
-
-        // Font color
-        const char * color;
-    } text;
-
-} gbox_t;
 
 /**
  * @brief General game information and status
@@ -219,6 +142,9 @@ typedef struct
  */
 typedef struct
 {
+    // Allegro structure with sound control and the original display
+    const allegro_t * alStru;
+
     // Display
     ALLEGRO_DISPLAY * display;
     // Background
@@ -278,31 +204,6 @@ typedef struct
 } game_t;
 
 /**
- * @brief Pause box
- * 
- * Contains a gbox_t structure with its size, colors, positions and fonts;
- * another one with the size, colors and position of the box created to select
- * a label and the one one selected
- */
-typedef struct
-{
-    // Pause menu
-    gbox_t menuBox;
-
-    struct
-    {
-        // Selected option
-        gbox_t box;
-
-        // Selected option
-        int n;
-    } selected;
-
-    // Number of options
-    int nWords;
-} pause_t;
-
-/**
  * @brief Board shown in the display
  */
 typedef struct
@@ -314,25 +215,6 @@ typedef struct
 
     grid_t * r0c0;
 } screenBoard_t;
-
-/**
- * @brief Stats shown in the display
- */
-typedef struct
-{
-    const stats_t * gStats;
-
-    gbox_t scoreBox;
-
-    gbox_t levelBox;
-
-    gbox_t linesBox;
-
-    gbox_t nextPieceBox;
-
-    gbox_t piecesBox;
-
-} screenStats_t;
 
 // === Global variables ===
 
@@ -351,37 +233,13 @@ static void
 drawBlock (int x, int y, gbox_t * block);
 
 static void
-drawBox (gbox_t * box);
-
-static void
 drawGameBoard (screenBoard_t * board);
 
 static void
 drawInitial (game_t * game);
 
 static void
-drawStats_level_f (screenStats_t * stats);
-
-static void
-drawStats_lines_f (screenStats_t * stats);
-
-static void
-drawStats_nextPiece_f (screenStats_t * stats);
-
-static void
-drawStats_pieces_f (screenStats_t * stats);
-
-static void
-drawStats_score_f (screenStats_t * stats);
-
-static void
 drawScreen (game_t * game);
-
-static void
-drawPause (pause_t * pstru);
-
-static void
-drawPiece (float x, float y, int piece);
 
 static void
 gameManagement (game_t * game, screenBoard_t * screenBoard,
@@ -391,16 +249,13 @@ static void
 init_rowLevel (game_t * game);
 
 static void
-init_pause (pause_t * pstru);
-
-static void
 init_scrBoard (screenBoard_t * board, board_t * logic);
 
 static void
-init_scrStats (screenStats_t * stats, board_t * logic);
+manageEvents (game_t * game, board_t * boardLogic, pause_t * menu);
 
 static void
-manageEvents (game_t * game, board_t * boardLogic, pause_t * menu);
+playFX (char * path, game_t * game);
 
 static void
 restartGame (game_t * game, screenBoard_t * board, screenStats_t * stats);
@@ -420,24 +275,24 @@ static const char * tetrominos_bkgnd[TETROMINOS + 1] = {
     "#F0F0F0"
 };
 
-static const char * words[] = {
-    "Statistics", "Level", "Actual Score",
-    "Top Score", "Next Piece", "Lines Cleared",
-    "GAME ENDED", NULL
-};
-
-static const char * menuWords[] = {
-    "Resume", "Restart", "Options", "Exit", NULL
-};
-
 // === Static variables and constant variables with file level scope ===
 
 // === Global function definitions ===
 /// @publicsection
 
+/**
+ * @brief Starts the game while running in Allegro mode
+ * 
+ * @param alStru Higher structure with the display information as well as the
+ * sound control
+ * 
+ * @return AL_OK if everything is fine
+ * @return AL_ERROR if something failed
+ */
 int
 alg_game (allegro_t * alStru)
 {
+    // Structures
     game_t game;
     screenBoard_t screenBoard;
     screenStats_t screenStats;
@@ -453,6 +308,9 @@ alg_game (allegro_t * alStru)
     {
         return AL_ERROR;
     }
+
+    // Initialize game structure variables
+    game.alStru = alStru;
 
     game.display = alStru -> screen.display;
     game.bkgnd = NULL;
@@ -479,10 +337,14 @@ alg_game (allegro_t * alStru)
         return AL_ERROR;
     }
 
+    // Initialize rows and levels
     init_rowLevel(&game);
+    // Initialize screen board
     init_scrBoard(&screenBoard, &(game.logic));
+    // Initialize screen stats
     init_scrStats(&screenStats, &(game.logic));
-    init_pause(&pMenu);
+    // Initialize pause menu
+    init_pause(&pMenu, alStru);
 
     // == Timers ==
     // Main timer
@@ -560,14 +422,58 @@ alg_game (allegro_t * alStru)
         gameManagement(&game, &screenBoard, &screenStats, &pMenu);
     }
 
+    // Destroy game structure and exit
     destroy(&game);
 
     return AL_OK;
 }
 
+/**
+ * @brief Draws a box using the given information in the structure
+ * 
+ * The box color.bkgnd property is able to be drawn without background if the
+ * BOX_NOBKGND macro is used
+ * 
+ * @param box Box structure with information to draw it
+ * 
+ * @return Nothing
+ */
+void
+drawBox (gbox_t * box)
+{
+    // If the background is set to anything different than white, draw the
+    // background
+    if ( strcmp(box -> color.bkgnd, BOX_NOBKGND) )
+    {
+
+        al_draw_filled_rounded_rectangle((box -> corner.x), (box -> corner.y),
+                                         (box -> width + box -> corner.x),
+                                         (box -> height + box -> corner.y),
+                                         BOX_ROUND_X, BOX_ROUND_Y,
+                                         al_color_html(box -> color.border));
+    }
+
+    al_draw_rounded_rectangle((box -> corner.x), (box -> corner.y),
+                              (box -> width + box -> corner.x),
+                              (box -> height + box -> corner.y),
+                              BOX_ROUND_X, BOX_ROUND_Y,
+                              al_color_html(box -> color.border),
+                              (box -> thickness));
+}
+
 /// @privatesection
 // === Local function definitions ===
 
+/**
+ * @brief Manages in game drawing and actions
+ * 
+ * @param game Current game structure
+ * @param screenBoard Screen board
+ * @param screenStats Stats to draw in screen 
+ * @param pMenu Pause menu structure
+ * 
+ * @return Nothing
+ */
 static void
 gameManagement (game_t * game, screenBoard_t * screenBoard,
                 screenStats_t * screenStats, pause_t * pMenu)
@@ -585,18 +491,37 @@ gameManagement (game_t * game, screenBoard_t * screenBoard,
     DRAWSTATS(pieces);
     DRAWSTATS(level);
     DRAWSTATS(score);
+
+    screenStats -> showNextPiece = pMenu -> get.nextPiece;
     DRAWSTATS(nextPiece);
+
     DRAWSTATS(lines);
 
+    // Game is paused
     if ( game -> status == PAUSED )
     {
-        drawPause(pMenu);
+        (pMenu -> draw.beingDrawn == MAINMENU) ?
+                (pMenu -> draw.main()) : (pMenu -> draw.options());
     }
 
-    al_flip_display();
+    // Play music
+    if ( game -> alStru -> samples.music.enabled() &&
+         !(game -> alStru -> samples.music.status()) )
+    {
+        game -> alStru -> samples.music.play();
+    }
 
+    else if ( !(game -> alStru -> samples.music.enabled()) &&
+              (game -> alStru -> samples.music.status()) )
+    {
+        game -> alStru -> samples.music.stop();
+    }
+
+    // Flip
+    al_flip_display();
     game -> redraw = false;
 
+    // Game should be restarted
     if ( game -> restart == true )
     {
         // Restart
@@ -608,19 +533,28 @@ gameManagement (game_t * game, screenBoard_t * screenBoard,
     else if ( (filled = game -> logic.ask.filledRows(lines)) > 0 )
     {
         int i;
+        // Remove line(s) from board
         for ( i = 0; i < filled; i++ )
         {
             game -> logic.clear.line(lines, i);
         }
         game -> redraw = true;
 
+        // Play a sound FX when a line has been cleared
+        playFX(FX_LINE, game);
+
+        // Restart pieces timer
         restartPiecesTimer(game);
     }
 
         // Check End Game
     else if ( game -> logic.ask.endGame() )
     {
+        // Stop timers
         al_stop_timer(game -> timer.piece);
+
+        // Play sound FX
+        playFX(FX_GOVER, game);
 
         // End game presentation goes here
         game -> exit = true;
@@ -633,9 +567,17 @@ gameManagement (game_t * game, screenBoard_t * screenBoard,
     }
 }
 
+/**
+ * @brief Restart the game and start a new one
+ * 
+ * @param game Old game structure (now current)
+ * @param board Screen board
+ * @param stats Screen stats
+ */
 static void
 restartGame (game_t * game, screenBoard_t * board, screenStats_t * stats)
 {
+    // Destroy old game logic
     game -> logic.destroy();
 
     // Init game logic
@@ -647,22 +589,36 @@ restartGame (game_t * game, screenBoard_t * board, screenStats_t * stats)
         game -> exit = true;
     }
 
+    // Use the same start rows and level as chosen before
     game -> logic.set.startRows(game -> initial.n[ROWS]);
     game -> logic.set.startLevel(game -> initial.n[LEVEL]);
 
+    // Init the new screen board and stats
     init_scrBoard(board, &(game -> logic));
     init_scrStats(stats, &(game -> logic));
 
+    // Redraw and reset status
     game -> redraw = true;
     game -> restart = false;
     game -> status = NEW;
 
+    // Restart pieces timer
     restartPiecesTimer(game);
 }
 
+/**
+ * @brief Check if a valid key has been pressed
+ * 
+ * @param key Array with the keys pressed
+ * @param game Current game structure
+ * @param logic Game logic
+ * @param menu Pause menu structure
+ * 
+ * @return Nothing
+ */
 static void
 checkKeys (unsigned char key[ALLEGRO_KEY_MAX],
-           game_t * game, board_t * logic, pause_t * menu)
+           game_t * game, board_t * logic, pause_t * pMenu)
 {
     // Counters
     int i, j;
@@ -681,12 +637,6 @@ checkKeys (unsigned char key[ALLEGRO_KEY_MAX],
 
     // Keys used in "Pause Mode"
     const unsigned char pauseKeys[] = {
-        ALLEGRO_KEY_UP, ALLEGRO_KEY_DOWN,
-        ALLEGRO_KEY_ENTER, ALLEGRO_KEY_Q
-    };
-
-    // Keys used in "Initial Mode"
-    const unsigned char initialKeys[] = {
         ALLEGRO_KEY_UP, ALLEGRO_KEY_DOWN,
         ALLEGRO_KEY_ENTER, ALLEGRO_KEY_Q
     };
@@ -719,36 +669,74 @@ checkKeys (unsigned char key[ALLEGRO_KEY_MAX],
 
         switch ( game -> status )
         {
+                // Config mode
             case CONFIG:
                 game -> initial.ready = true;
                 break;
 
+                // New or playing mode
             case NEW:
             case PLAYING:
                 game -> status = PAUSED;
 
                 break;
 
+                // Game paused
             case PAUSED:
-                switch ( menu -> selected.n )
+                // Main menu
+                if ( pMenu -> draw.beingDrawn == MAINMENU )
                 {
-                    case 0:
-                        game -> status = PLAYING;
-                        break;
+                    switch ( pMenu -> selected.n )
+                    {
+                        case RESUME:
+                            game -> status = PLAYING;
+                            break;
 
-                    case 1:
-                        game -> restart = true;
-                        break;
+                        case RESTART:
+                            game -> restart = true;
+                            break;
 
-                    case 2:
-                        break;
+                        case OPTIONS:
+                            pMenu -> draw.beingDrawn = OPTIONSMENU;
+                            pMenu -> selected.n = 0;
+                            break;
 
-                    case 3:
-                        game -> exit = true;
-                        break;
+                        case EXIT:
+                            game -> exit = true;
+                            break;
 
-                    default:
-                        break;
+                        default:
+                            break;
+                    }
+                }
+
+                    // Options menu
+                else if ( pMenu -> draw.beingDrawn == OPTIONSMENU )
+                {
+                    switch ( pMenu -> selected.n )
+                    {
+                        case MUSIC:
+                            game->alStru->samples.music.invertStatus();
+                            break;
+
+                        case FX:
+                            game->alStru->samples.fx.invertStatus();
+                            break;
+
+                        case NP:
+                            (pMenu -> get.nextPiece == true) ?
+                                    (pMenu -> get.nextPiece = false) :
+                                    (pMenu -> get.nextPiece = true);
+                            break;
+
+                        case OPRET:
+                            pMenu -> draw.beingDrawn = MAINMENU;
+                            pMenu -> selected.n = 0;
+                            break;
+
+                        default:
+                            break;
+                    }
                 }
 
         }
@@ -767,6 +755,7 @@ checkKeys (unsigned char key[ALLEGRO_KEY_MAX],
     // Key management
     switch ( game -> status )
     {
+            // Config mode
         case CONFIG:
             if ( key[ALLEGRO_KEY_UP] == KEY_READY )
             {
@@ -835,20 +824,6 @@ checkKeys (unsigned char key[ALLEGRO_KEY_MAX],
                 }
 
             }
-
-            // Clear unnecesary keys used only in "play mode"
-            /*     for ( i = 0; i < (sizeof (playKeys) / sizeof (char)); i++ )
-                 {
-                     for ( j = 0; (j < (sizeof (initialKeys) / sizeof (char))) &&
-                           (bothModes == false); j++ )
-                     {
-                         (playKeys[i] == initialKeys[j]) ? (bothModes = true) : 0;
-                     }
-
-                     (bothModes == false) ?
-                             clearKey(playKeys[i], key) : (bothModes = false);
-                 }*/
-
             break;
 
             // Play mode
@@ -867,6 +842,8 @@ checkKeys (unsigned char key[ALLEGRO_KEY_MAX],
 
                 // Move down one position in the game
                 logic -> piece.softDrop();
+
+                playFX(FX_DROP, game);
             }
 
             if ( key[ALLEGRO_KEY_LEFT] && (counter[ALLEGRO_KEY_LEFT] == 0) )
@@ -900,20 +877,6 @@ checkKeys (unsigned char key[ALLEGRO_KEY_MAX],
                 // Rotate piece left
                 logic -> piece.rotate(LEFT);
             }
-
-            // Clear unnecesary keys that are used only in "pause mode"
-
-            for ( i = 0; i < (sizeof (playKeys) / sizeof (char)); i++ )
-            {
-                for ( j = 0; (j < (sizeof (pauseKeys) / sizeof (char))) &&
-                      (bothModes == false); j++ )
-                {
-                    (playKeys[i] == pauseKeys[j]) ? (bothModes = true) : 0;
-                }
-
-                (bothModes == false) ? clearKey(playKeys[i], key) : (bothModes = false);
-            }
-
             break;
 
             // Pause mode
@@ -923,8 +886,9 @@ checkKeys (unsigned char key[ALLEGRO_KEY_MAX],
             {
                 validKey(ALLEGRO_KEY_UP, key, counter, game);
 
-                (menu -> selected.n == 0) ? \
-            (menu -> selected.n = menu -> nWords - 1) : (menu -> selected.n)--;
+                (pMenu -> selected.n == 0) ? \
+                (pMenu -> selected.n = pMenu -> get.nWords - 1) : \
+                (pMenu -> selected.n)--;
 
             }
 
@@ -932,8 +896,8 @@ checkKeys (unsigned char key[ALLEGRO_KEY_MAX],
             {
                 validKey(ALLEGRO_KEY_DOWN, key, counter, game);
 
-                (menu -> selected.n == menu -> nWords - 1) ? \
-                    (menu -> selected.n = 0) : (menu -> selected.n)++;
+                (pMenu -> selected.n == pMenu -> get.nWords - 1) ? \
+                    (pMenu -> selected.n = 0) : (pMenu -> selected.n)++;
             }
 
             // Clear unnecesary keys used only in "play mode"
@@ -955,6 +919,13 @@ checkKeys (unsigned char key[ALLEGRO_KEY_MAX],
     }
 }
 
+/**
+ * @brief Draw the initial game screen. Lets user pick an initial level and row
+ * 
+ * @param game Current game structure
+ * 
+ * @return Nothing
+ */
 static void
 drawInitial (game_t * game)
 {
@@ -964,7 +935,8 @@ drawInitial (game_t * game)
     int rowsNumberSize = al_get_text_width(game->initial.rows_sel.text.bold,
                                            "0");
 
-    al_clear_to_color(al_color_html(BKGND_COLOR));
+    // Background
+    al_clear_to_color(al_color_html(GAME_BKGND_COLOR));
 
     if ( game -> status == INITIAL )
     {
@@ -986,83 +958,91 @@ drawInitial (game_t * game)
                               0);
     }
 
+    // Boxes
+    // Level
     al_draw_rounded_rectangle(game -> initial.level.corner.x,
                               game -> initial.level.corner.y,
                               game -> initial.level.corner.x + \
                                                    game -> initial.level.width,
                               game -> initial.level.corner.y + \
                                                   game -> initial.level.height,
-                              ROUND_X, ROUND_Y,
+                              BOX_ROUND_X, BOX_ROUND_Y,
                               al_color_html(game-> initial.level.color.border),
                               game -> initial.level.thickness);
 
+    // Rows
     al_draw_rounded_rectangle(game -> initial.rows.corner.x,
                               game -> initial.rows.corner.y,
                               game -> initial.rows.corner.x + \
                                                    game -> initial.rows.width,
                               game -> initial.rows.corner.y + \
                                                   game -> initial.rows.height,
-                              ROUND_X, ROUND_Y,
+                              BOX_ROUND_X, BOX_ROUND_Y,
                               al_color_html(game -> initial.rows.color.border),
                               game -> initial.rows.thickness);
 
+    // Boxes heading
     al_draw_text(game -> initial.level.text.bold,
                  al_color_html(game -> initial.level.text.color),
                  SCREEN_WIDTH / 2,
-                 game -> initial.level.corner.y - TXT_OFFSET - TXT_SIZE_BOLD,
+                 game -> initial.level.corner.y - GAME_TXT_OFFSET - GAME_TXT_SIZE_BOLD,
                  ALLEGRO_ALIGN_CENTRE, "Initial Level");
 
     al_draw_text(game -> initial.rows.text.bold,
                  al_color_html(game -> initial.rows.text.color),
                  SCREEN_WIDTH / 2,
-                 game -> initial.rows.corner.y - TXT_OFFSET - TXT_SIZE_BOLD,
+                 game -> initial.rows.corner.y - GAME_TXT_OFFSET - GAME_TXT_SIZE_BOLD,
                  ALLEGRO_ALIGN_CENTRE, "Initial Rows");
 
+    // Draw numbers inside the level box
     for ( i = 0; i < NLEVELS; i++ )
     {
+        // Selected number
         if ( i == game -> initial.n[LEVEL] )
         {
             al_draw_textf(game -> initial.level_sel.text.bold,
                           al_color_html(game -> initial.level_sel.text.color),
-                          game -> initial.level.corner.x + 2 * TXT_OFFSET + \
+                          game -> initial.level.corner.x + 2 * GAME_TXT_OFFSET + \
                           levelNumberSize / 2 + \
                           (game -> initial.level.width - \
-                            2 * TXT_OFFSET) / 10 * i,
+                            2 * GAME_TXT_OFFSET) / 10 * i,
                           game -> initial.level.corner.y + \
                           game -> initial.level.height / 2 - \
                           game -> initial.level_sel.text.bsize / 2,
                           ALLEGRO_ALIGN_CENTRE, "%d", i);
 
+            // If the cursor is selecting it, also draw a box around the number
             if ( game -> initial.rl == LEVEL )
             {
                 al_draw_rectangle(game -> initial.level.corner.x + \
                               i * (game -> initial.level.width - \
-                              2 * TXT_OFFSET) / 10 + TXT_OFFSET,
+                              2 * GAME_TXT_OFFSET) / 10 + GAME_TXT_OFFSET,
                                   game -> initial.level.corner.y + \
                               game -> initial.level.height / 2 - \
                               game -> initial.level_sel.text.bsize / 2 - \
-                              TXT_OFFSET / 2,
+                              GAME_TXT_OFFSET / 2,
                                   game -> initial.level.corner.x + \
                               i * (game -> initial.level.width - \
-                              2 * TXT_OFFSET) / 10 + 3 * TXT_OFFSET + \
+                              2 * GAME_TXT_OFFSET) / 10 + 3 * GAME_TXT_OFFSET + \
                               levelNumberSize,
                                   game -> initial.level.corner.y + \
                               game -> initial.level.height / 2 + \
                               game -> initial.level_sel.text.bsize / 2 + \
-                              TXT_OFFSET / 2,
+                              GAME_TXT_OFFSET / 2,
                                   al_color_html( \
                                        game -> initial.level_sel.color.border),
                                   game -> initial.level_sel.thickness);
             }
         }
 
+            // Not selected number
         else
         {
             al_draw_textf(game -> initial.level.text.regular,
                           al_color_html(game -> initial.level.text.color),
-                          game -> initial.level.corner.x + 2 * TXT_OFFSET + \
+                          game -> initial.level.corner.x + 2 * GAME_TXT_OFFSET + \
                           levelNumberSize / 2 + \
-                          (game -> initial.level.width - 2 * TXT_OFFSET) / 10 * i,
+                          (game -> initial.level.width - 2 * GAME_TXT_OFFSET) / 10 * i,
                           game -> initial.level.corner.y + \
                           game -> initial.level.height / 2 - \
                           game -> initial.level_sel.text.bsize / 2,
@@ -1070,53 +1050,57 @@ drawInitial (game_t * game)
         }
     }
 
+    // Draw numbers inside the rows box
     for ( i = 0; i < NROWS; i++ )
     {
+        // Selected number
         if ( i == game -> initial.n[ROWS] )
         {
             al_draw_textf(game -> initial.rows_sel.text.bold,
                           al_color_html(game -> initial.rows_sel.text.color),
-                          game -> initial.rows.corner.x + 2 * TXT_OFFSET + \
+                          game -> initial.rows.corner.x + 2 * GAME_TXT_OFFSET + \
                           rowsNumberSize / 2 + \
                           (game -> initial.rows.width - \
-                            2 * TXT_OFFSET) / 10 * i,
+                            2 * GAME_TXT_OFFSET) / 10 * i,
                           game -> initial.rows.corner.y + \
                           game -> initial.rows.height / 2 - \
                           game -> initial.rows_sel.text.bsize / 2,
                           ALLEGRO_ALIGN_CENTRE, "%d", i);
 
+            // If the cursor is selecting it, also draw a box around the number
             if ( game -> initial.rl == ROWS )
             {
                 al_draw_rectangle(game -> initial.rows.corner.x + \
                               i * (game -> initial.rows.width - \
-                              2 * TXT_OFFSET) / 10 + TXT_OFFSET,
+                              2 * GAME_TXT_OFFSET) / 10 + GAME_TXT_OFFSET,
                                   game -> initial.rows.corner.y + \
                               game -> initial.rows.height / 2 - \
                               game -> initial.rows_sel.text.bsize / 2 - \
-                              TXT_OFFSET / 2,
+                              GAME_TXT_OFFSET / 2,
                                   game -> initial.rows.corner.x + \
                               i * (game -> initial.rows.width - \
-                              2 * TXT_OFFSET) / 10 + 3 * TXT_OFFSET + \
+                              2 * GAME_TXT_OFFSET) / 10 + 3 * GAME_TXT_OFFSET + \
                               levelNumberSize,
                                   game -> initial.rows.corner.y + \
                               game -> initial.rows.height / 2 + \
                               game -> initial.rows_sel.text.bsize / 2 + \
-                              TXT_OFFSET / 2,
+                              GAME_TXT_OFFSET / 2,
                                   al_color_html( \
                                        game -> initial.rows_sel.color.border),
                                   game -> initial.rows_sel.thickness);
             }
         }
 
+            // Not selected number
         else
         {
 
             al_draw_textf(game -> initial.rows.text.regular,
                           al_color_html(game -> initial.rows.text.color),
-                          game -> initial.rows.corner.x + 2 * TXT_OFFSET + \
+                          game -> initial.rows.corner.x + 2 * GAME_TXT_OFFSET + \
                           rowsNumberSize / 2 + \
                           (game -> initial.rows.width - \
-                            2 * TXT_OFFSET) / 10 * i,
+                            2 * GAME_TXT_OFFSET) / 10 * i,
                           game -> initial.rows.corner.y + \
                           game -> initial.rows.height / 2 - \
                           game -> initial.rows_sel.text.bsize / 2,
@@ -1124,14 +1108,25 @@ drawInitial (game_t * game)
         }
     }
 
+    // Redrawing is not necesary
     game -> redraw = false;
+
+    // Flip
     al_flip_display();
 }
 
+/**
+ * @brief Draw the game screen (without stats and the game board)
+ * 
+ * @param game Current game structure
+ * 
+ * @return Nothing
+ */
 static void
 drawScreen (game_t * game)
 {
-    al_clear_to_color(al_color_html(BKGND_COLOR));
+    // Draw background
+    al_clear_to_color(al_color_html(GAME_BKGND_COLOR));
 
     if ( game -> status == NEW )
     {
@@ -1151,19 +1146,31 @@ drawScreen (game_t * game)
                           0);
 }
 
+/**
+ * @brief Draw the current game board in the screen
+ * 
+ * @param board Structure with the box settings to draw
+ * 
+ * @return Nothing
+ */
 static void
 drawGameBoard (screenBoard_t * board)
 {
     int x, y;
     grid_t current;
 
+    // Draw board box
     drawBox(&(board -> boardBox));
 
+    // Draw pieces inside the board
     for ( y = 0; y < BOARD_HEIGHT; y++ )
     {
         for ( x = 0; x < BOARD_WIDTH; x++ )
         {
+            // Get current cell block type
             current = GET_CELL(y, x, board -> r0c0);
+
+            // Moving piece
             if ( current == CELL_MOVING )
             {
                 switch ( board -> stats -> piece.current )
@@ -1201,6 +1208,7 @@ drawGameBoard (screenBoard_t * board)
                 }
             }
 
+                // Fixed pieces
             else
             {
                 switch ( current )
@@ -1243,375 +1251,47 @@ drawGameBoard (screenBoard_t * board)
     }
 }
 
-static void
-drawStats_pieces_f (screenStats_t * stats)
-{
-    int i;
-    float coord[COORD_NUM] = {};
-
-    // == Draw pieces box ==
-    // Information
-    for ( i = TETROMINO_I; i < TETROMINOS; i++ )
-    {
-
-        coord[COORD_X] = stats -> piecesBox.corner.x + TXT_OFFSET;
-        coord[COORD_Y] = stats->piecesBox.corner.y + \
-                                     i * TXT_OFFSET + 2.5 * i * CELL_HEIGHT + \
-                  1.5 * al_get_font_line_height(stats->piecesBox.text.regular);
-
-        drawPiece(coord[COORD_X], coord[COORD_Y], i);
-
-        coord[COORD_X] += CELL_WIDTH * 4 + TXT_OFFSET;
-
-        al_draw_textf(stats->piecesBox.text.regular,
-                      al_color_html(stats -> piecesBox.text.color),
-                      coord[COORD_X],
-                      coord[COORD_Y] + 0.25 * CELL_HEIGHT,
-                      ALLEGRO_ALIGN_LEFT,
-                      "%06d", stats -> gStats -> piece.number[i]);
-    }
-
-    // Size
-    stats -> piecesBox.width = coord[COORD_X] + \
-                    al_get_text_width(stats->piecesBox.text.regular, "000000");
-    stats -> piecesBox.height = SCREEN_HEIGHT - BOX_OFFSET - \
-                                                   stats -> piecesBox.corner.y;
-
-    // Box title
-    al_draw_textf(stats->piecesBox.text.bold,
-                  al_color_html(stats -> piecesBox.text.color),
-                  stats -> piecesBox.corner.x + stats->piecesBox.width / 2,
-                  stats -> piecesBox.corner.y + TXT_OFFSET,
-                  ALLEGRO_ALIGN_CENTRE,
-                  words[STATS]);
-
-    // Draw box
-    drawBox(&(stats -> piecesBox));
-}
-
-static void
-drawStats_level_f (screenStats_t * stats)
-{
-
-    char str[strlen(words[LVL]) + 7];
-
-    strcpy(str, words[LVL]);
-    strcat(str, " %03d");
-
-    // Draw level information in its box
-    al_draw_textf(stats->levelBox.text.bold,
-                  al_color_html(stats -> levelBox.text.color),
-                  (stats->levelBox.width / 2) + stats -> levelBox.corner.x,
-                  (stats->levelBox.height / 2) - \
-                (al_get_font_line_height(stats->levelBox.text.regular) / 2) + \
-                  stats->levelBox.corner.y,
-                  ALLEGRO_ALIGN_CENTRE,
-                  str, stats -> gStats -> level);
-
-    drawBox(&(stats -> levelBox));
-}
-
-static void
-drawStats_score_f (screenStats_t * stats)
-{
-
-    float fontHeight = al_get_font_line_height(stats->scoreBox.text.regular);
-    float fontHeight_B = al_get_font_line_height(stats->scoreBox.text.bold);
-    float coord[COORD_NUM] = {};
-
-    // == Draw score box ==
-    // Actual score
-    coord[COORD_X] = (stats->scoreBox.width / 2) + stats -> scoreBox.corner.x;
-    coord[COORD_Y] = stats->scoreBox.corner.y + TXT_OFFSET;
-
-    al_draw_text(stats->scoreBox.text.bold,
-                 al_color_html(stats -> scoreBox.text.color),
-                 coord[COORD_X], coord[COORD_Y],
-                 ALLEGRO_ALIGN_CENTRE,
-                 words[ASCORE]);
-
-    coord[COORD_Y] += TXT_OFFSET + fontHeight_B;
-
-    al_draw_textf(stats->scoreBox.text.regular,
-                  al_color_html(stats -> scoreBox.text.color),
-                  coord[COORD_X], coord[COORD_Y],
-                  ALLEGRO_ALIGN_LEFT,
-                  "%06d", stats -> gStats -> score.actual);
-
-    // Top score
-    coord[COORD_Y] += TXT_OFFSET + fontHeight;
-
-    al_draw_text(stats->scoreBox.text.bold,
-                 al_color_html(stats -> scoreBox.text.color),
-                 coord[COORD_X], coord[COORD_Y],
-                 ALLEGRO_ALIGN_CENTRE,
-                 words[TSCORE]);
-
-    coord[COORD_Y] += TXT_OFFSET + fontHeight_B;
-
-    al_draw_textf(stats->scoreBox.text.regular,
-                  al_color_html(stats -> scoreBox.text.color),
-                  coord[COORD_X], coord[COORD_Y],
-                  ALLEGRO_ALIGN_LEFT,
-                  "%06d", stats -> gStats -> score.top);
-
-    // Size
-    stats -> scoreBox.height = coord[COORD_Y] + fontHeight;
-
-    // Draw box
-    drawBox(&(stats -> scoreBox));
-
-}
-
-static void
-drawStats_nextPiece_f (screenStats_t * stats)
-{
-    float fontHeight_B = al_get_font_line_height(stats->nextPieceBox.text.bold);
-    float coord[COORD_NUM] = {};
-
-    // == Next Piece box ==
-    stats -> nextPieceBox.corner.x = stats -> scoreBox.corner.x;
-    stats -> nextPieceBox.corner.y = stats -> scoreBox.height + 2 * BOX_OFFSET;
-
-    stats -> nextPieceBox.width = stats -> scoreBox.width;
-
-    coord[COORD_X] = stats->nextPieceBox.width / 2 + \
-                                                stats -> nextPieceBox.corner.x;
-    coord[COORD_Y] = stats->nextPieceBox.corner.y + TXT_OFFSET;
-    // Draw next piece information in its box
-    al_draw_text(stats->nextPieceBox.text.bold,
-                 al_color_html(stats -> nextPieceBox.text.color),
-                 coord[COORD_X], coord[COORD_Y],
-                 ALLEGRO_ALIGN_CENTRE,
-                 words[NP]);
-
-    if ( stats->gStats->piece.next != TETROMINO_NONE )
-    {
-
-        coord[COORD_X] = (stats->nextPieceBox.width / 2) + \
-                               stats -> nextPieceBox.corner.x - CELL_WIDTH * 2;
-        coord[COORD_Y] = stats->nextPieceBox.corner.y + 2.5 * TXT_OFFSET + \
-                            fontHeight_B;
-
-        drawPiece(coord[COORD_X], coord[COORD_Y], stats->gStats->piece.next);
-    }
-
-    stats -> nextPieceBox.height = 2 * CELL_HEIGHT + fontHeight_B + \
-                                                                4 * TXT_OFFSET;
-    drawBox(&(stats -> nextPieceBox));
-}
-
-static void
-drawStats_lines_f (screenStats_t * stats)
-{
-
-    float fontHeight_B = al_get_font_line_height(stats->linesBox.text.bold);
-
-    stats -> linesBox.corner.x = stats -> scoreBox.corner.x;
-    stats -> linesBox.corner.y = stats -> nextPieceBox.corner.y + \
-                                 stats -> nextPieceBox.height + BOX_OFFSET;
-
-    stats -> linesBox.width = stats -> scoreBox.width;
-    stats -> linesBox.height = 2 * fontHeight_B + 3 * TXT_OFFSET;
-
-    // Draw level information in its box
-    al_draw_text(stats -> linesBox.text.bold,
-                 al_color_html(stats -> linesBox.text.color),
-                 stats -> linesBox.width / 2 + stats -> linesBox.corner.x,
-                 stats -> linesBox.corner.y + TXT_OFFSET,
-                 ALLEGRO_ALIGN_CENTRE, words[LINESC]);
-
-    al_draw_textf(stats->linesBox.text.regular,
-                  al_color_html(stats -> linesBox.text.color),
-                  stats->linesBox.width / 2 + stats -> linesBox.corner.x,
-                  fontHeight_B + 2 * TXT_OFFSET + stats->linesBox.corner.y,
-                  ALLEGRO_ALIGN_CENTRE,
-                  "%03d", stats -> gStats -> lines.cleared);
-
-    drawBox(&(stats -> linesBox));
-}
-
+/**
+ * @brief Draw a single piece block in the given coordinates
+ * 
+ * @param x Top left X coordinate
+ * @param y Top left Y coordinate
+ * @param block Box with the block settings
+ * 
+ * @return Nothing
+ */
 static void
 drawBlock (int x, int y, gbox_t * block)
 {
-
+    // Draw background
     al_draw_filled_rounded_rectangle(block -> corner.x + x * CELL_WIDTH,
                                      block -> corner.y + y * CELL_HEIGHT,
                                      block -> corner.x + x * CELL_WIDTH + \
                                                             block -> width,
                                      block -> corner.y + y * CELL_HEIGHT + \
                                                             block -> height,
-                                     ROUND_X, ROUND_Y,
+                                     BOX_ROUND_X, BOX_ROUND_Y,
                                      al_color_html(block -> color.bkgnd));
 
+    // Draw border
     al_draw_rounded_rectangle(block -> corner.x + x * CELL_WIDTH,
                               block -> corner.y + y * CELL_HEIGHT,
                               block -> corner.x + x * CELL_WIDTH + \
                                                             block -> width,
                               block -> corner.y + y * CELL_HEIGHT + \
                                                             block -> height,
-                              ROUND_X, ROUND_Y,
+                              BOX_ROUND_X, BOX_ROUND_Y,
                               al_color_html(block -> color.border),
                               (block -> thickness));
 }
 
-static void
-drawBox (gbox_t * box)
-{
-    if ( strcmp(box -> color.bkgnd, "#FFFFFF") )
-    {
-
-        al_draw_filled_rounded_rectangle((box -> corner.x), (box -> corner.y),
-                                         (box -> width + box -> corner.x),
-                                         (box -> height + box -> corner.y),
-                                         ROUND_X, ROUND_Y,
-                                         al_color_html(box -> color.border));
-    }
-
-    al_draw_rounded_rectangle((box -> corner.x), (box -> corner.y),
-                              (box -> width + box -> corner.x),
-                              (box -> height + box -> corner.y),
-                              ROUND_X, ROUND_Y,
-                              al_color_html(box -> color.border),
-                              (box -> thickness));
-}
-
-static void
-drawPiece (float x, float y, int piece)
-{
-    // x , y are (0,0) -top left corner- of a 4x8 CELL_HEIGHT/2 rectangle
-    int i, j;
-    int block[BLOCKS][COORD_NUM] = {};
-    float pieceGrid[BLOCKS][2 * BLOCKS ][COORD_NUM] = {};
-    float modCoord[COORD_NUM] = {x, y};
-
-    for ( i = 0; i < BLOCKS; i++ )
-    {
-        for ( j = 0; j < (2 * BLOCKS); j++ )
-        {
-            pieceGrid[i][j][COORD_X] = modCoord[COORD_X];
-            pieceGrid[i][j][COORD_Y] = modCoord[COORD_Y];
-
-            modCoord[COORD_X] += (CELL_WIDTH / 2);
-        }
-        modCoord[COORD_X] = x;
-        modCoord[COORD_Y] += (CELL_HEIGHT / 2);
-    }
-
-    switch ( piece )
-    {
-        case TETROMINO_I:
-            for ( i = b1; i < BLOCKS; i++ )
-            {
-                block[i][COORD_X] = pieceGrid[1][i * 2][COORD_X];
-                block[i][COORD_Y] = pieceGrid[1][i * 2][COORD_Y];
-            }
-
-            break;
-
-        case TETROMINO_J:
-            j = 1;
-
-            block[b4][COORD_X] = pieceGrid[0][j][COORD_X];
-            block[b4][COORD_Y] = pieceGrid[0][j][COORD_Y];
-
-            for ( i = b1; i < b4; i++, j += 2 )
-            {
-                block[i][COORD_X] = pieceGrid[2][j][COORD_X];
-                block[i][COORD_Y] = pieceGrid[2][j][COORD_Y];
-            }
-            break;
-
-        case TETROMINO_L:
-            for ( i = b1, j = 1; i < b4; i++, j += 2 )
-            {
-                block[i][COORD_X] = pieceGrid[2][j][COORD_X];
-                block[i][COORD_Y] = pieceGrid[2][j][COORD_Y];
-            }
-
-            block[b4][COORD_X] = pieceGrid[0][j - 2][COORD_X];
-            block[b4][COORD_Y] = pieceGrid[0][j - 2][COORD_Y];
-            break;
-
-        case TETROMINO_O:
-            for ( i = b1, j = 2; i < (BLOCKS / 2); i++, j += 2 )
-            {
-                block[i][COORD_X] = pieceGrid[0][j][COORD_X];
-                block[i][COORD_Y] = pieceGrid[0][j][COORD_Y];
-            }
-
-            for ( i = (BLOCKS / 2), j = 2; i < BLOCKS; i++, j += 2 )
-            {
-                block[i][COORD_X] = pieceGrid[2][j][COORD_X];
-                block[i][COORD_Y] = pieceGrid[2][j][COORD_Y];
-            }
-
-            break;
-
-        case TETROMINO_S:
-            for ( i = b1, j = 3; i < (BLOCKS / 2); i++, j += 2 )
-            {
-                block[i][COORD_X] = pieceGrid[0][j][COORD_X];
-                block[i][COORD_Y] = pieceGrid[0][j][COORD_Y];
-            }
-
-            for ( i = (BLOCKS / 2), j = 1; i < BLOCKS; i++, j += 2 )
-            {
-                block[i][COORD_X] = pieceGrid[2][j][COORD_X];
-                block[i][COORD_Y] = pieceGrid[2][j][COORD_Y];
-            }
-
-            break;
-
-        case TETROMINO_T:
-            for ( i = b1, j = 1; i < b4; i++, j += 2 )
-            {
-                block[i][COORD_X] = pieceGrid[2][j][COORD_X];
-                block[i][COORD_Y] = pieceGrid[2][j][COORD_Y];
-            }
-
-            block[b4][COORD_X] = pieceGrid[0][j - 4][COORD_X];
-            block[b4][COORD_Y] = pieceGrid[0][j - 4][COORD_Y];
-            break;
-
-        case TETROMINO_Z:
-            for ( i = b1, j = 1; i < (BLOCKS / 2); i++, j += 2 )
-            {
-                block[i][COORD_X] = pieceGrid[0][j][COORD_X];
-                block[i][COORD_Y] = pieceGrid[0][j][COORD_Y];
-            }
-
-            for ( i = (BLOCKS / 2), j = 3; i < BLOCKS; i++, j += 2 )
-            {
-                block[i][COORD_X] = pieceGrid[2][j][COORD_X];
-                block[i][COORD_Y] = pieceGrid[2][j][COORD_Y];
-            }
-            break;
-
-        default:
-            break;
-    }
-
-    for ( i = 0; i < BLOCKS; i++ )
-    {
-
-        al_draw_filled_rounded_rectangle(block[i][COORD_X],
-                                         block[i][COORD_Y],
-                                         block[i][COORD_X] + CELL_WIDTH,
-                                         block[i][COORD_Y] + CELL_HEIGHT,
-                                         ROUND_X, ROUND_Y,
-                                         al_color_html(tetrominos_bkgnd[piece]));
-
-        al_draw_rounded_rectangle(block[i][COORD_X],
-                                  block[i][COORD_Y],
-                                  block[i][COORD_X] + CELL_WIDTH,
-                                  block[i][COORD_Y] + CELL_HEIGHT,
-                                  ROUND_X, ROUND_Y,
-                                  al_color_html(tetrominos_bkgnd[TETROMINOS]),
-                                  CELL_THICKNESS);
-    }
-}
-
+/**
+ * @brief Destroy current game structure
+ * 
+ * @param game Current game structure
+ * 
+ * @return Nothing
+ */
 static void
 destroy (game_t * game)
 {
@@ -1622,11 +1302,21 @@ destroy (game_t * game)
     al_destroy_bitmap(game -> bkgnd);
 }
 
+/**
+ * @brief Initialize the screen board (where the game board is printed)
+ * 
+ * @param board Screen Board structure where the board will be printed
+ * @param logic Current game logic
+ * 
+ * @return Nothing
+ */
 static void
 init_scrBoard (screenBoard_t * board, board_t * logic)
 {
+    // Counter
     int i;
 
+    // Box settings
     board -> boardBox.color.bkgnd = BOX_BKGND_COLOR;
     board -> boardBox.color.border = BOX_BORDER_COLOR;
 
@@ -1656,119 +1346,53 @@ init_scrBoard (screenBoard_t * board, board_t * logic)
         board -> gridBox[i].corner.y = board -> boardBox.corner.y;
     }
 
+    // Get top left coordinate of the board
     board -> r0c0 = logic -> ask.board();
 
+    // Get game stats
     board -> stats = (stats_t*) logic -> ask.stats();
 }
 
+/**
+ * @brief Manage all in-game events from here
+ * 
+ * This includes display, keyboard and timers events
+ * 
+ * @param game Current game structure
+ * @param boardLogic Backend logic
+ * @param pMenu Pause menu structure
+ */
 static void
-init_scrStats (screenStats_t * stats, board_t * logic)
+manageEvents (game_t * game, board_t * boardLogic, pause_t * pMenu)
 {
-    // Stats structure
-
-    stats -> gStats = (stats_t*) logic -> ask.stats();
-
-    // Level box
-    stats -> levelBox.height = TXT_SIZE + BOX_IN_OFFSET * 2;
-    stats -> levelBox.width = CELL_WIDTH * BOARD_WIDTH;
-
-    stats -> levelBox.corner.x = (SCREEN_WIDTH / 2) - \
-                                               ((stats -> levelBox.width) / 2);
-    stats -> levelBox.corner.y = BOX_OFFSET;
-
-    // Lines box
-    stats -> nextPieceBox.height = 0;
-    stats -> nextPieceBox.width = 0;
-
-    stats -> nextPieceBox.corner.x = 0;
-    stats -> nextPieceBox.corner.y = 0;
-
-    // Score box
-    stats -> scoreBox.corner.x = SCREEN_WIDTH / 2 + BOX_OFFSET + \
-                                                                5 * CELL_WIDTH;
-    stats -> scoreBox.corner.y = BOX_OFFSET;
-
-    stats -> scoreBox.height = 0;
-    stats -> scoreBox.width = SCREEN_WIDTH - BOX_OFFSET - \
-                                                    stats -> scoreBox.corner.x;
-
-    // Next Piece box
-    stats -> nextPieceBox.height = 0;
-    stats -> nextPieceBox.width = 0;
-
-    stats -> nextPieceBox.corner.x = 0;
-    stats -> nextPieceBox.corner.y = 0;
-
-    // Pieces box
-    stats -> piecesBox.corner.x = BOX_OFFSET;
-    stats -> piecesBox.corner.y = BOX_OFFSET;
-
-    // Common to all
-    stats -> levelBox.color.bkgnd = stats -> scoreBox.color.bkgnd = \
-            stats -> nextPieceBox.color.bkgnd = \
-            stats -> piecesBox.color.bkgnd = \
-            stats -> linesBox.color.bkgnd = BOX_BKGND_COLOR;
-
-    stats -> levelBox.color.border = stats -> scoreBox.color.border = \
-            stats -> nextPieceBox.color.border = \
-            stats -> linesBox.color.border = \
-            stats -> piecesBox.color.border = BOX_BORDER_COLOR;
-
-    stats -> levelBox.thickness = stats -> scoreBox.thickness = \
-            stats -> nextPieceBox.thickness = \
-            stats -> linesBox.thickness = \
-            stats -> piecesBox.thickness = BOX_THICKNESS;
-
-    stats -> levelBox.text.color = stats -> scoreBox.text.color = \
-            stats -> nextPieceBox.text.color = \
-            stats -> linesBox.text.color = \
-            stats -> piecesBox.text.color = TXT_COLOR;
-
-    stats -> levelBox.text.rsize = stats -> scoreBox.text.rsize = \
-            stats -> nextPieceBox.text.rsize = \
-            stats -> linesBox.text.rsize = \
-            stats -> piecesBox.text.rsize = TXT_SIZE;
-
-    stats -> levelBox.text.bsize = stats -> scoreBox.text.bsize = \
-            stats -> nextPieceBox.text.bsize = \
-            stats -> linesBox.text.bsize = \
-            stats -> piecesBox.text.bsize = TXT_SIZE_BOLD;
-
-    stats -> levelBox.text.regular = stats -> scoreBox.text.regular = \
-            stats -> nextPieceBox.text.regular = \
-            stats -> piecesBox.text.regular = \
-            stats -> linesBox.text.regular = \
-            al_load_font(TXT_FONT_PATH, stats -> levelBox.text.rsize, 0);
-
-    stats -> levelBox.text.bold = stats -> scoreBox.text.bold = \
-            stats -> nextPieceBox.text.bold = \
-            stats -> piecesBox.text.bold = \
-            stats -> linesBox.text.bold = \
-            al_load_font(TXT_FONT_BOLD_PATH, stats -> levelBox.text.bsize, 0);
-}
-
-static void
-manageEvents (game_t * game, board_t * boardLogic, pause_t * menu)
-{
+    // Current event
     ALLEGRO_EVENT event;
 
+    // Keys array
     static unsigned char key[ALLEGRO_KEY_MAX];
+
     static bool key_init = false;
 
+    // Clear keys when a new game starts or before selecting the initial rows 
+    // and level
     if ( key_init == false || game -> status == NEW )
     {
         memset(key, 0, sizeof (key));
         key_init = true;
     }
 
+    // Wait for next event
     al_wait_for_event(game -> evq, &event);
 
+    // Check events
     switch ( event.type )
     {
+            // Display
         case ALLEGRO_EVENT_DISPLAY_CLOSE:
             game -> exit = true;
             break;
 
+            // Keyboard
         case ALLEGRO_EVENT_KEY_DOWN:
             key[event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;
             break;
@@ -1777,24 +1401,33 @@ manageEvents (game_t * game, board_t * boardLogic, pause_t * menu)
             key[event.keyboard.keycode] &= KEY_RELEASED;
             break;
 
+            // Timers
         case ALLEGRO_EVENT_TIMER:
+
+            // Main timer
             if ( event.timer.source == game -> timer.main )
             {
-                checkKeys(key, game, boardLogic, menu);
+                checkKeys(key, game, boardLogic, pMenu);
 
             }
 
+                // Piece timer
             else if ( event.timer.source == game -> timer.piece &&
                       game -> status != PAUSED )
             {
+                // Set the game as playing before the first board update
                 if ( game -> status == NEW )
                 {
-
                     game -> status = PLAYING;
                 }
 
+                // Call for a board update
                 boardLogic -> update();
 
+                // Play a sound FX
+                playFX(FX_DROP, game);
+
+                // Redraw screen
                 game -> redraw = true;
             }
             break;
@@ -1805,28 +1438,53 @@ manageEvents (game_t * game, board_t * boardLogic, pause_t * menu)
 
 }
 
+/**
+ * @brief Set key as valid and then clear it
+ * 
+ * @param keyName Key to valid
+ * @param keyArr Array with all the keys
+ * @param counterArr Array with the key counter (to reduce sensitibility)
+ * @param game Current game structure
+ */
 static void
 validKey (int keyName,
           unsigned char * keyArr, unsigned char * counterArr,
           game_t * game)
 {
-
+    // Clear key
     clearKey(keyName, keyArr);
+    // Increase counter of this key
     counterArr[keyName]++;
+    // Redraw screen
     game -> redraw = true;
 }
 
+/**
+ * @brief Set a key as KEY_SEEN
+ * 
+ * @param keyName Key to clear
+ * @param keyArr Array with all the keys
+ * 
+ * @return Nothing
+ */
 static void
 clearKey (int keyName, unsigned char * keyArr)
 {
-
+    // And key with KEY_SEEN
     keyArr[keyName] &= KEY_SEEN;
 }
 
+/**
+ * @brief Restart current game pieces' timer
+ * 
+ * @param game Current game structure
+ * 
+ * @return Nothing
+ */
 static void
 restartPiecesTimer (game_t * game)
 {
-
+    // Get piece speed
     game -> timer.piece_speed = askTimeLimit();
 
     // Restart pieces timer
@@ -1837,169 +1495,94 @@ restartPiecesTimer (game_t * game)
     al_start_timer(game -> timer.piece);
 }
 
-static void
-drawPause (pause_t * pstru)
-{
-    int i;
-    float fontHeight_nSel = al_get_font_line_height(pstru->menuBox.text.regular);
-
-    drawBox(&(pstru -> menuBox));
-
-    for ( i = 0; i < pstru->nWords; i++ )
-    {
-        if ( (pstru->selected.n) == i )
-        {
-            al_draw_text(pstru -> selected.box.text.regular,
-                         al_color_html(pstru -> selected.box.text.color),
-                         pstru -> menuBox.corner.x + \
-                                                 pstru->menuBox.width / 2,
-                         pstru -> menuBox.corner.y + (1 + i) * TXT_OFFSET + \
-                    (i * fontHeight_nSel),
-                         ALLEGRO_ALIGN_CENTRE, menuWords[i]);
-        }
-
-        else
-        {
-
-            al_draw_text(pstru -> menuBox.text.regular,
-                         al_color_html(pstru -> menuBox.text.color),
-                         pstru -> menuBox.corner.x + pstru->menuBox.width / 2,
-                         pstru -> menuBox.corner.y + (1 + i) * TXT_OFFSET + \
-                    (i * fontHeight_nSel),
-                         ALLEGRO_ALIGN_CENTRE, menuWords[i]);
-        }
-    }
-}
-
-static void
-init_pause (pause_t * pstru)
-{
-    float fontHeight_Sel, fontHeight_nSel;
-
-    int sWidth = 0, nWidth = 0;
-
-    int biggerWord = 0, bWordSize = 0;
-    int tmp = 0;
-
-    pstru -> menuBox.color.bkgnd = PAUSE_BKGND_COLOR;
-    pstru -> menuBox.color.border = PAUSE_BORDER_COLOR;
-    pstru -> menuBox.text.color = PAUSE_TXT_COLOR;
-    pstru -> menuBox.text.rsize = PAUSE_TXT_SIZE;
-    pstru -> menuBox.text.regular = al_load_font(PAUSE_TXT_FONT_PATH,
-                                                 pstru -> menuBox.text.rsize, 0);
-
-    pstru -> menuBox.thickness = PAUSE_BOX_THICKNESS;
-
-    pstru -> selected.box.color.bkgnd = SEL_BKGND_COLOR;
-    pstru -> selected.box.color.border = SEL_BORDER_COLOR;
-    pstru -> selected.box.text.color = SEL_TXT_COLOR;
-    pstru -> selected.box.text.rsize = SEL_TXT_SIZE;
-    pstru -> selected.box.text.regular = al_load_font(SEL_TXT_FONT_PATH, \
-                                           pstru -> selected.box.text.rsize, 0);
-
-    pstru -> selected.box.thickness = SEL_BOX_THICKNESS;
-
-    pstru -> selected.n = 0;
-
-    // Calculate height and width of the box
-    fontHeight_Sel = al_get_font_line_height(pstru->selected.box.text.regular);
-    fontHeight_nSel = al_get_font_line_height(pstru->menuBox.text.regular);
-
-    pstru -> nWords = 0;
-    // Get the bigger word in the array as well as the number of words in it
-    while ( menuWords[pstru -> nWords] != NULL )
-    {
-        tmp = strlen(menuWords[pstru -> nWords]);
-
-        if ( bWordSize < tmp )
-        {
-
-            bWordSize = tmp;
-            biggerWord = pstru -> nWords;
-        }
-
-        (pstru -> nWords)++;
-    }
-
-    pstru -> menuBox.height = (1 + pstru -> nWords) * TXT_OFFSET + \
-                      fontHeight_Sel + (pstru -> nWords - 1) * fontHeight_nSel;
-
-
-    sWidth = al_get_text_width(pstru -> selected.box.text.regular,
-                               menuWords[biggerWord]) + 2 * TXT_OFFSET;
-    nWidth = al_get_text_width(pstru -> menuBox.text.regular,
-                               menuWords[biggerWord]) + 2 * TXT_OFFSET;
-
-    (sWidth > nWidth) ? \
-         (pstru -> menuBox.width = sWidth) : (pstru -> menuBox.width = nWidth);
-
-    pstru -> menuBox.corner.x = (SCREEN_WIDTH / 2) - \
-                                                  (pstru -> menuBox.width / 2);
-    pstru -> menuBox.corner.y = (SCREEN_HEIGHT / 2) - \
-                                                 (pstru -> menuBox.height / 2);
-}
-
+/**
+ * @brief Initialize the screen where initial rows and level are choosen
+ * 
+ * @param game Current game structure
+ * 
+ * @return Nothing
+ */
 static void
 init_rowLevel (game_t * game)
 {
     int numberSize;
 
+    // == Boxes ==
+    // = Background =
+    // Not selected
     game -> initial.level.color.bkgnd = \
     game -> initial.rows.color.bkgnd = BOX_BKGND_COLOR;
 
+    // Selected
     game -> initial.level_sel.color.bkgnd = \
     game -> initial.rows_sel.color.bkgnd = SEL_BKGND_COLOR;
 
+    // = Border =
+    // Not selected
     game -> initial.level.color.border = \
     game -> initial.rows.color.border = BOX_BORDER_COLOR;
 
+    // Selected
     game -> initial.level_sel.color.border = \
     game -> initial.rows_sel.color.border = SEL_BORDER_COLOR;
 
+    // Thickness (not selected)
     game -> initial.level.thickness = \
     game -> initial.rows.thickness = BOX_THICKNESS;
 
+    // Thickness (selected)
     game -> initial.level_sel.thickness = \
     game -> initial.rows_sel.thickness = SEL_BOX_THICKNESS;
 
+    // == Text ==
+    // = Regular size =
     game -> initial.level.text.rsize = \
     game -> initial.rows.text.rsize = \
     game -> initial.level_sel.text.rsize = \
-    game -> initial.rows_sel.text.rsize = TXT_SIZE;
+    game -> initial.rows_sel.text.rsize = GAME_TXT_SIZE;
 
-
+    // = Bold size =
     game -> initial.level.text.bsize = \
     game -> initial.rows.text.bsize = \
     game -> initial.level_sel.text.bsize = \
-    game -> initial.rows_sel.text.bsize = TXT_SIZE_BOLD;
+    game -> initial.rows_sel.text.bsize = GAME_TXT_SIZE_BOLD;
 
+    // = Regular font =
     game -> initial.level.text.regular = \
     game -> initial.rows.text.regular = \
     game -> initial.level_sel.text.regular = \
-    game -> initial.rows_sel.text.regular = al_load_font(TXT_FONT_PATH, \
+    game -> initial.rows_sel.text.regular = al_load_font(GAME_TXT_FONT_PATH, \
                                           game -> initial.level.text.rsize, 0);
 
+    // = Bold font =
     game -> initial.level.text.bold = \
     game -> initial.rows.text.bold = \
     game -> initial.level_sel.text.bold = \
-    game -> initial.rows_sel.text.bold = al_load_font(TXT_FONT_BOLD_PATH, \
+    game -> initial.rows_sel.text.bold = al_load_font(GAME_TXT_FONT_BOLD_PATH, \
                                           game -> initial.level.text.bsize, 0);
 
+    // = Color =
+    // Not selected
     game -> initial.level.text.color = \
-    game -> initial.rows.text.color = TXT_COLOR;
+    game -> initial.rows.text.color = GAME_TXT_COLOR;
 
+    // Selected
     game -> initial.level_sel.text.color = \
     game -> initial.rows_sel.text.color = SEL_TXT_COLOR;
 
+    // Width of a number
     numberSize = al_get_text_width(game -> initial.level_sel.text.bold, "0");
 
+    // Box height
     game -> initial.level.height = game -> initial.rows.height = \
-     TXT_OFFSET * 2 + TXT_SIZE_BOLD * 2;
+     GAME_TXT_OFFSET * 2 + GAME_TXT_SIZE_BOLD * 2;
 
-    game -> initial.level.width = numberSize * NLEVELS + TXT_OFFSET * 22;
+    // Box width
+    game -> initial.level.width = numberSize * NLEVELS + GAME_TXT_OFFSET * 22;
 
-    game -> initial.rows.width = numberSize * NROWS + TXT_OFFSET * 22;
+    game -> initial.rows.width = numberSize * NROWS + GAME_TXT_OFFSET * 22;
 
+    // X and Y coordinates
     game -> initial.level.corner.x = game -> initial.rows.corner.x = \
     (SCREEN_WIDTH / 2) - (game -> initial.rows.width / 2);
 
@@ -2008,4 +1591,21 @@ init_rowLevel (game_t * game)
 
     game -> initial.rows.corner.y = (2 * SCREEN_HEIGHT / 3) - \
                                             (game -> initial.level.height / 2);
+}
+
+/**
+ * @brief Play a sound FX
+ * 
+ * @param path Path to the sound FX to be played
+ * @param game Current game structure
+ * 
+ * @return Nothing
+ */
+static void
+playFX (char * path, game_t * game)
+{
+    if ( game -> alStru->samples.fx.enabled() )
+    {
+        game -> alStru ->samples.fx.play(path);
+    }
 }

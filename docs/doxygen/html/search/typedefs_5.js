@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['words_5ft_173',['words_t',['../display_8h.html#a6259fc4bd5e87d65fd3f91d691f89deb',1,'display.h']]]
+  ['stats_5ft_333',['stats_t',['../stats__mgmt_8h.html#a09d48e3f13e86d369d6aa6e8f777006e',1,'stats_mgmt.h']]]
 ];

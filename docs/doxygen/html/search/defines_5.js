@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['get_5fcell_963',['GET_CELL',['../board_8h.html#afdbe53bda9ade301796b7017b69562a3',1,'board.h']]]
+  ['nlevels_400',['NLEVELS',['../game_8h.html#a9acf4287226016eea5e934e8bd6d624b',1,'game.h']]],
+  ['nrows_401',['NROWS',['../game_8h.html#ad1b201a53819ee0b206811f261d9dfce',1,'game.h']]]
 ];

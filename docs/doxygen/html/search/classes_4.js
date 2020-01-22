@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['piece_499',['PIECE',['../struct_p_i_e_c_e.html',1,'']]]
+  ['screenstats_5ft_205',['screenStats_t',['../structscreen_stats__t.html',1,'']]],
+  ['stats_206',['STATS',['../struct_s_t_a_t_s.html',1,'']]]
 ];
