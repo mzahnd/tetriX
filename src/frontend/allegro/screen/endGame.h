@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2019 Martín E. Zahnd
+ * Copyright (C) 2020 Martín E. Zahnd
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,50 +17,26 @@
 
 /**
  * 
- * @file    game.h
+ * @file    endGame.h
  * 
- * @brief   Play the game using Allegro
+ * @brief   ;
  * 
- * @details Runs the entire game using Allegro
+ * @details ; 
  *
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
  * 
- * @date    17/12/2019, 11:29
+ * @date    24/01/2020, 12:22
  * 
  * @copyright GNU General Public License v3
  */
 
-#ifndef GAMESCREEN_H
-#    define GAMESCREEN_H
+#ifndef ENDGAME_H
+#    define ENDGAME_H
 
 // === Libraries and header files ===
-// For allegro_t
-#    include "../alcontrol.h"
 
 // === Constants and Macro definitions ===
-
-// Text options
-/// Game regular text size
-#    define GAME_TXT_SIZE       32
-/// Game bold text size
-#    define GAME_TXT_SIZE_BOLD  32
-/// Game text color
-#    define GAME_TXT_COLOR      "#FFFFFF"
-/// Game regular font path
-#    define GAME_TXT_FONT_PATH  \
-                          "res/fonts/pixel-operator/PixelOperatorMono.ttf"
-/// Game bold font path
-#    define GAME_TXT_FONT_BOLD_PATH  \
-                          "res/fonts/pixel-operator/PixelOperatorMono-Bold.ttf"
-
-/// Space between lines of text
-#    define GAME_TXT_OFFSET     10
-
-/// Number of start levels the user can pick (from 0 to NLEVLS - 1)
-#    define NLEVELS             10
-/// Number of start rows the user can pick (from 0 to NLEVLS - 1)
-#    define NROWS               NLEVELS
 
 // === Enumerations, structures and typedefs ===
 
@@ -70,8 +46,8 @@
 
 // === Global function definitions ===
 
-// Starts the game while running in Allegro mode
+// Draw End Game screen with the top scores list in it.
 int
-alg_game (allegro_t * alStru);
+alg_endGame (allegro_t * alStru, const stats_t * gameStats);
 
-#endif /* GAMESCREEN_H */
+#endif /* ENDGAME_H */

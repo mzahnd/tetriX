@@ -198,6 +198,14 @@ typedef struct GAMEBOARD
         /// Get coordinate (0,0) of the board (top-left)
         grid_t * (* board) (void);
 
+                /** 
+         * @brief Ask if game has to finish
+         * 
+         * @return True: 1
+         * @return False: 0
+         */
+        int (* endGame) (void);
+        
         /**
          * @brief How many rows are complete and which are those.
          * 
@@ -206,14 +214,14 @@ typedef struct GAMEBOARD
          * @return Number of filled rows
          */
         int (* filledRows) (int lines[BOARD_HEIGHT]);
-
-        /** 
-         * @brief Ask if game has to finish
+        
+        /**
+         * @brief Tells if there's a moving piece currently in the board
          * 
          * @return True: 1
          * @return False: 0
          */
-        int (* endGame) (void);
+        int (* movingPiece) (void);
 
         /**
          * @brief Get the current game stats.

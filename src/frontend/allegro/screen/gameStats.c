@@ -56,6 +56,9 @@
 // Game logic
 #include "../../../backend/stats/stats_mgmt.h"
 
+// For drawing boxes
+#include "../primitives.h"
+
 // This file
 #include "gameStats.h"
 
@@ -226,7 +229,8 @@ init_scrStats (screenStats_t * stats, board_t * logic)
             stats -> nextPieceBox.text.bold = \
             stats -> piecesBox.text.bold = \
             stats -> linesBox.text.bold = \
-            al_load_font(GAME_TXT_FONT_BOLD_PATH, stats -> levelBox.text.bsize, 0);
+            al_load_font(GAME_TXT_FONT_BOLD_PATH, \
+                         stats -> levelBox.text.bsize, 0);
 }
 
 /**
@@ -507,7 +511,7 @@ level (screenStats_t * stats)
                   ALLEGRO_ALIGN_CENTRE,
                   str, stats -> gStats -> level);
 
-    drawBox(&(stats -> levelBox));
+    primitive_drawBox(&(stats -> levelBox));
 }
 
 /**
@@ -546,7 +550,7 @@ lines (screenStats_t * stats)
                   ALLEGRO_ALIGN_CENTRE,
                   "%03d", stats -> gStats -> lines.cleared);
 
-    drawBox(&(stats -> linesBox));
+    primitive_drawBox(&(stats -> linesBox));
 }
 
 /**
@@ -595,7 +599,7 @@ nextPiece (screenStats_t * stats)
 
     stats -> nextPieceBox.height = 2 * CELL_HEIGHT + fontHeight_B + \
                                                            4 * GAME_TXT_OFFSET;
-    drawBox(&(stats -> nextPieceBox));
+    primitive_drawBox(&(stats -> nextPieceBox));
 }
 
 /**
@@ -620,7 +624,8 @@ pieces (screenStats_t * stats)
 
         coord[COORD_X] = stats -> piecesBox.corner.x + GAME_TXT_OFFSET;
         coord[COORD_Y] = stats->piecesBox.corner.y + \
-                                     i * GAME_TXT_OFFSET + 2.5 * i * CELL_HEIGHT + \
+                                     i * GAME_TXT_OFFSET + \
+                                     2.5 * i * CELL_HEIGHT + \
                   1.5 * al_get_font_line_height(stats->piecesBox.text.regular);
 
         drawPiece(coord[COORD_X], coord[COORD_Y], i);
@@ -650,7 +655,7 @@ pieces (screenStats_t * stats)
                   words[STATS]);
 
     // Draw box
-    drawBox(&(stats -> piecesBox));
+    primitive_drawBox(&(stats -> piecesBox));
 }
 
 /**
@@ -687,7 +692,7 @@ score (screenStats_t * stats)
                   al_color_html(stats -> scoreBox.text.color),
                   coord[COORD_X], coord[COORD_Y],
                   ALLEGRO_ALIGN_LEFT,
-                  "%06d", stats -> gStats -> score.actual);
+                  "%07d", stats -> gStats -> score.actual);
 
     // Top score
     coord[COORD_Y] += GAME_TXT_OFFSET + fontHeight;
@@ -704,12 +709,12 @@ score (screenStats_t * stats)
                   al_color_html(stats -> scoreBox.text.color),
                   coord[COORD_X], coord[COORD_Y],
                   ALLEGRO_ALIGN_LEFT,
-                  "%06d", stats -> gStats -> score.top);
+                  "%07d", stats -> gStats -> score.top);
 
     // Size
     stats -> scoreBox.height = coord[COORD_Y] + fontHeight;
 
     // Draw box
-    drawBox(&(stats -> scoreBox));
+    primitive_drawBox(&(stats -> scoreBox));
 
 }

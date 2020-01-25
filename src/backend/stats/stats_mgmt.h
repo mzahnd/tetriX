@@ -38,6 +38,9 @@
 // For TETROMINOS
 #    include "../board/board.h"
 
+// For rwScores_t
+#include "../rw/rw_ops.h"
+
 // === Constants and Macro definitions ===
 
 // === Enumerations, structures and typedefs ===
@@ -98,6 +101,9 @@ typedef struct STATS
         int actual;
     } score;
 
+    /// Access and edit the top scores list
+    rwScores_t * topScores;
+    
     /**
      * @brief Call when a soft drop has been performed
      * 

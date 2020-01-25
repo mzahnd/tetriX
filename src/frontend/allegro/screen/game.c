@@ -58,9 +58,16 @@
 #include "../../../backend/stats/stats_mgmt.h"
 #include "../../../backend/board/timer/boardTimer.h"
 
+// For drawing boxes
+#include "../primitives.h"
+
+// End Game screen
+#include "endGame.h"
+
 // This file
 #include "game.h"
 
+// Game stats
 #include "gameStats.h"
 
 #include "gamePause.h"
@@ -143,7 +150,7 @@ enum rowsAndLevelSelected
 typedef struct
 {
     // Allegro structure with sound control and the original display
-    const allegro_t * alStru;
+    allegro_t * alStru;
 
     // Display
     ALLEGRO_DISPLAY * display;
@@ -311,6 +318,8 @@ alg_game (allegro_t * alStru)
 
     // Initialize game structure variables
     game.alStru = alStru;
+    // Clear exit flag in case it hasn't been cleared before
+    game.alStru -> exit = false;
 
     game.display = alStru -> screen.display;
     game.bkgnd = NULL;
@@ -422,43 +431,17 @@ alg_game (allegro_t * alStru)
         gameManagement(&game, &screenBoard, &screenStats, &pMenu);
     }
 
+    // Stop music
+    if ( game.alStru -> samples.music.enabled() &&
+         game.alStru -> samples.music.status() )
+    {
+        (game.alStru -> samples.music.stop());
+    }
+
     // Destroy game structure and exit
     destroy(&game);
 
     return AL_OK;
-}
-
-/**
- * @brief Draws a box using the given information in the structure
- * 
- * The box color.bkgnd property is able to be drawn without background if the
- * BOX_NOBKGND macro is used
- * 
- * @param box Box structure with information to draw it
- * 
- * @return Nothing
- */
-void
-drawBox (gbox_t * box)
-{
-    // If the background is set to anything different than white, draw the
-    // background
-    if ( strcmp(box -> color.bkgnd, BOX_NOBKGND) )
-    {
-
-        al_draw_filled_rounded_rectangle((box -> corner.x), (box -> corner.y),
-                                         (box -> width + box -> corner.x),
-                                         (box -> height + box -> corner.y),
-                                         BOX_ROUND_X, BOX_ROUND_Y,
-                                         al_color_html(box -> color.border));
-    }
-
-    al_draw_rounded_rectangle((box -> corner.x), (box -> corner.y),
-                              (box -> width + box -> corner.x),
-                              (box -> height + box -> corner.y),
-                              BOX_ROUND_X, BOX_ROUND_Y,
-                              al_color_html(box -> color.border),
-                              (box -> thickness));
 }
 
 /// @privatesection
@@ -556,8 +539,22 @@ gameManagement (game_t * game, screenBoard_t * screenBoard,
         // Play sound FX
         playFX(FX_GOVER, game);
 
-        // End game presentation goes here
+        // Inform a game over to internal structure but not to allegro_t
+        // This way data from this game will be destroyed after showing the
+        // end game screen but player will be able to play again
+        game -> alStru -> exit = false;
         game -> exit = true;
+
+        // Stop music
+        if ( game -> alStru -> samples.music.enabled() &&
+             game -> alStru -> samples.music.status() )
+        {
+            (game -> alStru -> samples.music.stop());
+        }
+
+        // Print End Game screen
+        alg_endGame(game -> alStru, (stats_t *) game -> logic.ask.stats());
+
     }
 
     // Game goes on
@@ -702,6 +699,7 @@ checkKeys (unsigned char key[ALLEGRO_KEY_MAX],
                             break;
 
                         case EXIT:
+                            game -> alStru -> exit = true;
                             game -> exit = true;
                             break;
 
@@ -749,6 +747,8 @@ checkKeys (unsigned char key[ALLEGRO_KEY_MAX],
 
         // Avoid bug in initial screen
         game -> initial.ready = true;
+        game -> alStru -> exit = true;
+        // Exit game
         game -> exit = true;
     }
 
@@ -843,7 +843,8 @@ checkKeys (unsigned char key[ALLEGRO_KEY_MAX],
                 // Move down one position in the game
                 logic -> piece.softDrop();
 
-                playFX(FX_DROP, game);
+                (game -> logic.ask.movingPiece()) ?
+                        playFX(FX_DROP, game) : 0;
             }
 
             if ( key[ALLEGRO_KEY_LEFT] && (counter[ALLEGRO_KEY_LEFT] == 0) )
@@ -1160,7 +1161,7 @@ drawGameBoard (screenBoard_t * board)
     grid_t current;
 
     // Draw board box
-    drawBox(&(board -> boardBox));
+    primitive_drawBox(&(board -> boardBox));
 
     // Draw pieces inside the board
     for ( y = 0; y < BOARD_HEIGHT; y++ )
@@ -1425,7 +1426,8 @@ manageEvents (game_t * game, board_t * boardLogic, pause_t * pMenu)
                 boardLogic -> update();
 
                 // Play a sound FX
-                playFX(FX_DROP, game);
+                (game -> logic.ask.movingPiece()) ?
+                        playFX(FX_DROP, game) : 0;
 
                 // Redraw screen
                 game -> redraw = true;

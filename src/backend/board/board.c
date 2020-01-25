@@ -174,6 +174,10 @@ filledRows (int lines[BOARD_HEIGHT]);
 static int
 init (void);
 
+// Tells if there's a moving piece currently in the board
+static int
+movingPieceInBoard (void);
+
 // Rotate the piece in the given direction
 static void
 rotatePiece (int direction);
@@ -195,10 +199,12 @@ static void
 softDropPiece (void);
 
 // Level in which the game starts
-void startLevel (unsigned char n);
+static void
+startLevel (unsigned char n);
 
 // Amount of rows to start in the board
-void startRows (unsigned char n);
+static void
+startRows (unsigned char n);
 
 // Updates the board accoding the moving piece actions.
 static int
@@ -409,8 +415,9 @@ destroy (void)
 
     // Clear function pointers
     bStruct.public -> ask.board = NULL;
-    bStruct.public -> ask.filledRows = NULL;
     bStruct.public -> ask.endGame = NULL;
+    bStruct.public -> ask.filledRows = NULL;
+    bStruct.public -> ask.movingPiece = NULL;
 
     bStruct.public -> clear.line = NULL;
 
@@ -575,8 +582,8 @@ gameMode (int mode)
  * 
  * @param None
  * 
- * @return Success: 0
- * @return Fail: Non 0
+ * @return Success: EXIT_SUCCESS
+ * @return Fail: EXIT_FAILURE
  */
 static int
 init (void)
@@ -585,7 +592,7 @@ init (void)
 #ifndef TRUERANDOM
     if ( init_random_generator() )
     {
-        return 1;
+        return EXIT_FAILURE;
     }
 #endif
 
@@ -595,14 +602,36 @@ init (void)
     if ( bStruct.gboard == NULL )
     {
         fputs("Could not allocate memory for the board.", stderr);
-        return 1;
+        return EXIT_FAILURE;
     }
 
     if ( initStats(&bStruct.stats) )
     {
         fputs("Could initialize STATS.", stderr);
-        return 1;
+        return EXIT_FAILURE;
     }
+
+#ifdef DEBUG
+    // Print board
+    int row, col;
+    printf("Virgin board\n");
+    for ( row = 0; row < MBOARD_H; row++ )
+    {
+        for ( col = 0; col < MBOARD_W; col++ )
+        {
+            if ( CELL(row, col) == CELL_MOVING )
+            {
+                printf("%d ", CELL(row, col));
+            }
+            else
+            {
+                printf(" %d ", CELL(row, col));
+            }
+        }
+        putchar('\n');
+    }
+    putchar('\n');
+#endif
 
     bStruct.public -> ask.stats = &askStats;
 
@@ -618,8 +647,9 @@ init (void)
     bStruct.public -> destroy = &destroy;
 
     bStruct.public -> ask.board = &askBoard;
-    bStruct.public -> ask.filledRows = &filledRows;
     bStruct.public -> ask.endGame = &endGame;
+    bStruct.public -> ask.filledRows = &filledRows;
+    bStruct.public -> ask.movingPiece = &movingPieceInBoard;
 
     bStruct.public -> clear.line = &clearLine;
 
@@ -635,7 +665,35 @@ init (void)
 
     //initTimer(&bStruct.stats);
 
-    return 0;
+    return EXIT_SUCCESS;
+}
+
+/**
+ * @brief Tells if there's a moving piece currently in the visible board
+ * 
+ * @return True: 1
+ * @return False: 0
+ */
+static int
+movingPieceInBoard (void)
+{
+    // Answer and counters
+    int ans = 0, i, j;
+
+    if ( bStruct.piece.init == true &&
+         bStruct.stats.piece.current != TETROMINO_NONE )
+    {
+        //CELL(r,c)
+        for ( i = HIDDEN_ROWS; ans == 0 && i < MBOARD_H; i++ )
+        {
+            for ( j = 0; ans == 0 && j < BOARD_WIDTH; j++ )
+            {
+                (CELL(i, j) == CELL_MOVING) ? (ans = 1) : 0;
+            }
+        }
+    }
+
+    return ans;
 }
 
 /**
@@ -778,7 +836,7 @@ softDropPiece (void)
  * 
  * @return Nothing
  */
-void
+static void
 startLevel (unsigned char n)
 {
     (n <= 9) ? (bStruct.stats.level = n) : (bStruct.stats.level = 0);
@@ -791,7 +849,7 @@ startLevel (unsigned char n)
  * 
  * @return Nothing
  */
-void
+static void
 startRows (unsigned char n)
 {
     if ( n > 0 && n <= 9 )
@@ -823,7 +881,8 @@ startRows (unsigned char n)
  * @param cellType Blocks type of the piece. Could be CELL_MOVING or >= CELL_I
  * if the piece should be moving or fixed
  * 
- * @return Noting
+ * @return Success: EXIT_SUCCESS
+ * @return Failure: EXIT_FAILURE
  */
 static int
 updateBoard (int cellType)
@@ -844,7 +903,7 @@ updateBoard (int cellType)
         bStruct.piece.destroy();
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 /**

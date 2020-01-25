@@ -232,7 +232,7 @@ main ()
         return CU_get_error();
 
     /* Add a suite to the registry */
-    pSuite = CU_add_suite("test_random_gen", init_suite, clean_suite);
+    pSuite = CU_add_suite("test_piece_actions", init_suite, clean_suite);
     if ( NULL == pSuite )
     {
         CU_cleanup_registry();
@@ -244,7 +244,8 @@ main ()
          (NULL == CU_add_test(pSuite, "test2: Initializing a piece", test2)) ||
          (NULL == CU_add_test(pSuite, "test3: Gravity", test3)) ||
          (NULL == CU_add_test(pSuite, "test4: Shifting", test4)) ||
-         (NULL == CU_add_test(pSuite, "test5: Rotating", test5)) )
+         (NULL == CU_add_test(pSuite, "test5: Rotating", test5))
+         )
     {
         CU_cleanup_registry();
         return CU_get_error();
@@ -750,11 +751,6 @@ check_Gravity (int b1[COORD_NUM], int b2[COORD_NUM],
             // dropped leaving an extra space from the bottom
         else if ( i == H_BOARD - 1 && testPiece.type == TETROMINO_I )
         {
-            (b1[COORD_Y]) += 1;
-            (b2[COORD_Y]) += 1;
-            (b3[COORD_Y]) += 1;
-            (b4[COORD_Y]) += 1;
-
             check_onePieceMoving(b1, b2, b3, b4);
 
             cellType = testPiece.update();
@@ -915,12 +911,13 @@ onlyPiece_I (void (*test2Perform)(int b1[COORD_NUM], int b2[COORD_NUM],
      *     ---------------------
      *  1  |    |    |    |    |
      *     ---------------------
-     *  2  | b1 | b2 | b3 | b4 |
+     *  2  |    |    |    |    |
      *     ---------------------
-     *  3  |    |    |    |    |
+     *  3  | b1 | b2 | b3 | b4 |
      *     ---------------------
      *  4  |    |    |    |    |
      *     ---------------------
+
      */
 
     // Coordinates
@@ -929,10 +926,10 @@ onlyPiece_I (void (*test2Perform)(int b1[COORD_NUM], int b2[COORD_NUM],
     b3[COORD_X] = 5;
     b4[COORD_X] = 6;
 
-    b1[COORD_Y] = 2;
-    b2[COORD_Y] = 2;
-    b3[COORD_Y] = 2;
-    b4[COORD_Y] = 2;
+    b1[COORD_Y] = 3;
+    b2[COORD_Y] = 3;
+    b3[COORD_Y] = 3;
+    b4[COORD_Y] = 3;
 
     // Perform test
     (*test2Perform)(b1, b2, b3, b4);
@@ -1258,15 +1255,15 @@ check_rotationI (int b1[COORD_NUM], int b2[COORD_NUM],
     // Position 1 to 2
     testPiece.rotate(RIGHT);
 
-    (b1[COORD_X]) += 2;
-    (b2[COORD_X]) += 1;
-    (b3[COORD_X]) += 0;
-    (b4[COORD_X]) -= 1;
+    (b1[COORD_X]) += 1;
+    (b2[COORD_X]) += 0;
+    (b3[COORD_X]) -= 1;
+    (b4[COORD_X]) -= 2;
 
-    (b1[COORD_Y]) -= 1;
-    (b2[COORD_Y]) += 0;
-    (b3[COORD_Y]) += 1;
-    (b4[COORD_Y]) += 2;
+    (b1[COORD_Y]) -= 2;
+    (b2[COORD_Y]) -= 1;
+    (b3[COORD_Y]) += 0;
+    (b4[COORD_Y]) += 1;
 
     check_onePieceMoving(b1, b2, b3, b4);
 
@@ -1283,56 +1280,6 @@ check_rotationI (int b1[COORD_NUM], int b2[COORD_NUM],
     // Position 2 to 3
     testPiece.rotate(RIGHT);
 
-    (b1[COORD_X]) -= 2;
-    (b2[COORD_X]) -= 1;
-    (b3[COORD_X]) += 0;
-    (b4[COORD_X]) += 1;
-
-    (b1[COORD_Y]) += 2;
-    (b2[COORD_Y]) += 1;
-    (b3[COORD_Y]) += 0;
-    (b4[COORD_Y]) -= 1;
-
-    check_onePieceMoving(b1, b2, b3, b4);
-
-    // Drop it once
-    testPiece.update();
-
-    (b1[COORD_Y])++;
-    (b2[COORD_Y])++;
-    (b3[COORD_Y])++;
-    (b4[COORD_Y])++;
-
-    check_onePieceMoving(b1, b2, b3, b4);
-
-    // Position 3 to 4
-    testPiece.rotate(RIGHT);
-
-    (b1[COORD_X]) += 1;
-    (b2[COORD_X]) += 0;
-    (b3[COORD_X]) -= 1;
-    (b4[COORD_X]) -= 2;
-
-    (b1[COORD_Y]) -= 2;
-    (b2[COORD_Y]) -= 1;
-    (b3[COORD_Y]) += 0;
-    (b4[COORD_Y]) += 1;
-
-    check_onePieceMoving(b1, b2, b3, b4);
-
-    // Drop it once
-    testPiece.update();
-
-    (b1[COORD_Y])++;
-    (b2[COORD_Y])++;
-    (b3[COORD_Y])++;
-    (b4[COORD_Y])++;
-
-    check_onePieceMoving(b1, b2, b3, b4);
-
-    // Position 4 to 1
-    testPiece.rotate(RIGHT);
-
     (b1[COORD_X]) -= 1;
     (b2[COORD_X]) += 0;
     (b3[COORD_X]) += 1;
@@ -1355,13 +1302,13 @@ check_rotationI (int b1[COORD_NUM], int b2[COORD_NUM],
 
     check_onePieceMoving(b1, b2, b3, b4);
 
-    // Position 1 to 4
-    testPiece.rotate(LEFT);
+    // Position 3 to 4
+    testPiece.rotate(RIGHT);
 
-    (b1[COORD_X]) += 1;
-    (b2[COORD_X]) += 0;
-    (b3[COORD_X]) -= 1;
-    (b4[COORD_X]) -= 2;
+    (b1[COORD_X]) += 2;
+    (b2[COORD_X]) += 1;
+    (b3[COORD_X]) += 0;
+    (b4[COORD_X]) -= 1;
 
     (b1[COORD_Y]) -= 1;
     (b2[COORD_Y]) += 0;
@@ -1380,13 +1327,13 @@ check_rotationI (int b1[COORD_NUM], int b2[COORD_NUM],
 
     check_onePieceMoving(b1, b2, b3, b4);
 
-    // Position 4 to 3
-    testPiece.rotate(LEFT);
+    // Position 4 to 1
+    testPiece.rotate(RIGHT);
 
-    (b1[COORD_X]) -= 1;
-    (b2[COORD_X]) += 0;
-    (b3[COORD_X]) += 1;
-    (b4[COORD_X]) += 2;
+    (b1[COORD_X]) -= 2;
+    (b2[COORD_X]) -= 1;
+    (b3[COORD_X]) += 0;
+    (b4[COORD_X]) += 1;
 
     (b1[COORD_Y]) += 2;
     (b2[COORD_Y]) += 1;
@@ -1405,7 +1352,7 @@ check_rotationI (int b1[COORD_NUM], int b2[COORD_NUM],
 
     check_onePieceMoving(b1, b2, b3, b4);
 
-    // Position 3 to 2
+    // Position 1 to 4
     testPiece.rotate(LEFT);
 
     (b1[COORD_X]) += 2;
@@ -1430,7 +1377,7 @@ check_rotationI (int b1[COORD_NUM], int b2[COORD_NUM],
 
     check_onePieceMoving(b1, b2, b3, b4);
 
-    // Position 2 to 1
+    // Position 4 to 3
     testPiece.rotate(LEFT);
 
     (b1[COORD_X]) -= 2;
@@ -1454,6 +1401,57 @@ check_rotationI (int b1[COORD_NUM], int b2[COORD_NUM],
     (b4[COORD_Y])++;
 
     check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 3 to 2
+    testPiece.rotate(LEFT);
+
+    (b1[COORD_X]) += 1;
+    (b2[COORD_X]) += 0;
+    (b3[COORD_X]) -= 1;
+    (b4[COORD_X]) -= 2;
+
+    (b1[COORD_Y]) -= 1;
+    (b2[COORD_Y]) += 0;
+    (b3[COORD_Y]) += 1;
+    (b4[COORD_Y]) += 2;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Position 2 to 1
+    testPiece.rotate(LEFT);
+
+    (b1[COORD_X]) -= 1;
+    (b2[COORD_X]) += 0;
+    (b3[COORD_X]) += 1;
+    (b4[COORD_X]) += 2;
+
+    (b1[COORD_Y]) += 2;
+    (b2[COORD_Y]) += 1;
+    (b3[COORD_Y]) += 0;
+    (b4[COORD_Y]) -= 1;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
+    // Drop it once
+    testPiece.update();
+
+    (b1[COORD_Y])++;
+    (b2[COORD_Y])++;
+    (b3[COORD_Y])++;
+    (b4[COORD_Y])++;
+
+    check_onePieceMoving(b1, b2, b3, b4);
+
 }
 
 /**

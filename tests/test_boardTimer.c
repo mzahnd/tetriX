@@ -85,7 +85,7 @@ main ()
         return CU_get_error();
 
     /* Add a suite to the registry */
-    pSuite = CU_add_suite("test_random_gen", init_suite, clean_suite);
+    pSuite = CU_add_suite("test_boardTimer", init_suite, clean_suite);
     if ( NULL == pSuite )
     {
         CU_cleanup_registry();
@@ -135,15 +135,17 @@ clean_suite (void)
 void
 test1 (void)
 {
-    stats.level = 1;
+    CU_PASS("Test not in use.");
+    /*stats.level = 1;
 
-    testLevel(9, 100);
+    testLevel(9, 100);*/
 }
 
 void
 test2 (void)
 {
-    int i;
+    CU_PASS("Test not in use.");
+    /*int i;
 
     for ( i = 1; i < 20; i++ )
     {
@@ -156,7 +158,7 @@ test2 (void)
     testLevel(2, 100);
 
     stats.level = 21;
-    testLevel(2, 80);
+    testLevel(2, 80);*/
 }
 
 

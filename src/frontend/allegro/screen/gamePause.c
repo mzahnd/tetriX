@@ -51,8 +51,11 @@
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h> 
 
-// For gbox_t and macros
+// For macros
 #include "game.h"
+
+// For drawin boxes
+#include "../primitives.h"
 
 // This file
 #include "gamePause.h"
@@ -260,7 +263,7 @@ drawMain (void)
                           al_get_font_line_height(pMenu.menu.box.text.regular);
 
     // Draw the box
-    drawBox(&(pMenu.menu.box));
+    primitive_drawBox(&(pMenu.menu.box));
 
     // Change the public nWords variable
     pMenu.public -> get.nWords = pMenu.menu.nWords;
@@ -309,7 +312,7 @@ drawOptions (void)
                           al_get_font_line_height(pMenu.options.box.text.regular);
 
     // Draw the box
-    drawBox(&(pMenu.options.box));
+    primitive_drawBox(&(pMenu.options.box));
 
     // Change the public nWords variable
     pMenu.public -> get.nWords = pMenu.options.nWords;

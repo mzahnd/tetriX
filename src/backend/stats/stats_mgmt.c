@@ -64,6 +64,9 @@ typedef struct STATS_PRIVATE
 
     int newTop;
 
+    // Top score
+    rwScores_t scoreFile;
+
 } stats_private_t;
 
 // === Global variables ===
@@ -115,18 +118,20 @@ static stats_private_t gameStats;
  * 
  * @param stats STATS structure to initialize
  * 
- * @return Success: 0
- * @return Fail: Non-zero
+ * @return Success: EXIT_SUCCESS
+ * @return Fail: EXIT_FAILURE
  */
 int
 initStats (struct STATS * stats)
 {
+    // Counter
     int i;
+
 
     if ( stats == NULL )
     {
         fputs("Invalid STATS structures.", stderr);
-        return 1;
+        return EXIT_FAILURE;
     }
 
     gameStats.public = stats;
@@ -144,8 +149,30 @@ initStats (struct STATS * stats)
         gameStats.public -> piece.number[i] = 0;
     }
 
+    // Initialize rw operations and read top score
+    if ( init_rwOps(&gameStats.scoreFile) )
+    {
+        fputs("R/W Ops could not be initialized. Stats will run anyway.",
+              stderr);
+
+        gameStats.public -> score.top = 0;
+    }
+
+    else if ( gameStats.scoreFile.get.readTopScore(&gameStats.scoreFile) )
+    {
+        fputs("Top scores could not be readed. Stats will run anyway.",
+              stderr);
+
+        gameStats.public -> score.top = 0;
+    }
+
+    else
+    {
+        gameStats.public -> topScores = &gameStats.scoreFile;
+        gameStats.public -> score.top = gameStats.scoreFile.get._scores[0];
+    }
+
     gameStats.public -> score.actual = 0;
-    gameStats.public -> score.top = 0;
 
     gameStats.public -> softDrop = &softDrop;
     gameStats.public -> update = &updateStats;
@@ -163,7 +190,7 @@ initStats (struct STATS * stats)
     // Set as initialized
     gameStats.public -> init = true;
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 /// @privatesection
@@ -175,8 +202,8 @@ initStats (struct STATS * stats)
  * @param points How many points should be used in the calculation if the b2b 
  * is performed
  * 
- * @return Success: Zero
- * @return Fail: Non-zero
+ * @return Success: EXIT_SUCCESS
+ * @return Fail: EXIT_FAILURE
  * 
  * @note This function should be called <b>only</b> when a difficult action is
  * performed and checking a previous one is desired.
@@ -184,14 +211,14 @@ initStats (struct STATS * stats)
 static int
 back2Back (int points)
 {
-    int ans = 1;
+    int ans = EXIT_FAILURE;
 
     if ( gameStats.lastDifficult == true )
     {
         gameStats.public -> score.actual += \
                 (points * gameStats.public -> level * 3 / 2);
 
-        ans = 0;
+        ans = EXIT_SUCCESS;
     }
 
     // This function is always called when a difficult action is performed

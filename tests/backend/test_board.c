@@ -100,7 +100,7 @@ main ()
         return CU_get_error();
 
     /* Add a suite to the registry */
-    pSuite = CU_add_suite("test_random_gen", init_suite, clean_suite);
+    pSuite = CU_add_suite("test_board", init_suite, clean_suite);
     if ( NULL == pSuite )
     {
         CU_cleanup_registry();

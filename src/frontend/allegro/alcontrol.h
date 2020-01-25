@@ -82,7 +82,7 @@ struct ALLEGRO_MGMT
 {
     /// true when user asked to exit the game
     bool exit;
-
+    
     /**
      * @brief Audio samples managment
      */

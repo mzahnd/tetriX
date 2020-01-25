@@ -272,9 +272,6 @@ alg_menu (allegro_t * alStru)
     al_register_event_source(menu.evq,
                              al_get_timer_event_source(menu.timer.main));
 
-    // Play music
-    alStru -> samples.music.play();
-
     // Start timers
     al_start_timer(menu.timer.main);
 
@@ -292,7 +289,8 @@ alg_menu (allegro_t * alStru)
 
                 menu.public.redraw = false;
 
-                while ( menu.public.redraw == false && menu.public.action == NONE )
+                while ( menu.public.redraw == false &&
+                        menu.public.action == NONE )
                 {
                     manageEvents(&menu);
                 }
@@ -304,8 +302,20 @@ alg_menu (allegro_t * alStru)
 
                 // Clear events from queue to avoid catching a wrong one
                 al_flush_event_queue(menu.evq);
-                // Perform menu actions
-                menu.public.action = NONE;
+
+                if ( alStru -> exit == true )
+                {
+                    // Perform menu actions
+                    menu.public.action = NONE;
+
+                    // Restore option
+                    alStru -> exit = false;
+                }
+                else
+                {
+                    // Play again!
+                    menu.public.action = PLAY;
+                }
                 break;
 
                 // About screen

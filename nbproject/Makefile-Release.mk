@@ -43,6 +43,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/backend/stats/stats_mgmt.o \
 	${OBJECTDIR}/src/frontend/allegro/alcontrol.o \
 	${OBJECTDIR}/src/frontend/allegro/keys.o \
+	${OBJECTDIR}/src/frontend/allegro/primitives.o \
+	${OBJECTDIR}/src/frontend/allegro/screen/endGame.o \
 	${OBJECTDIR}/src/frontend/allegro/screen/game.o \
 	${OBJECTDIR}/src/frontend/allegro/screen/gamePause.o \
 	${OBJECTDIR}/src/frontend/allegro/screen/gameStats.o \
@@ -60,13 +62,15 @@ TESTFILES= \
 	${TESTDIR}/TestFiles/f3 \
 	${TESTDIR}/TestFiles/f4 \
 	${TESTDIR}/TestFiles/f2 \
-	${TESTDIR}/TestFiles/f1
+	${TESTDIR}/TestFiles/f1 \
+	${TESTDIR}/TestFiles/f5
 
 # Test Object Files
 TESTOBJECTFILES= \
 	${TESTDIR}/tests/backend/test_board.o \
 	${TESTDIR}/tests/backend/test_piece_actions.o \
 	${TESTDIR}/tests/backend/test_random_gen.o \
+	${TESTDIR}/tests/backend/test_rwops.o \
 	${TESTDIR}/tests/test_boardTimer.o
 
 # C Compiler Flags
@@ -133,6 +137,16 @@ ${OBJECTDIR}/src/frontend/allegro/keys.o: src/frontend/allegro/keys.c
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/keys.o src/frontend/allegro/keys.c
 
+${OBJECTDIR}/src/frontend/allegro/primitives.o: src/frontend/allegro/primitives.c
+	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/primitives.o src/frontend/allegro/primitives.c
+
+${OBJECTDIR}/src/frontend/allegro/screen/endGame.o: src/frontend/allegro/screen/endGame.c
+	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro/screen
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/screen/endGame.o src/frontend/allegro/screen/endGame.c
+
 ${OBJECTDIR}/src/frontend/allegro/screen/game.o: src/frontend/allegro/screen/game.c
 	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro/screen
 	${RM} "$@.d"
@@ -196,6 +210,10 @@ ${TESTDIR}/TestFiles/f1: ${TESTDIR}/tests/backend/test_random_gen.o ${OBJECTFILE
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.c} -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS}   -lcunit 
 
+${TESTDIR}/TestFiles/f5: ${TESTDIR}/tests/backend/test_rwops.o ${OBJECTFILES:%.o=%_nomain.o}
+	${MKDIR} -p ${TESTDIR}/TestFiles
+	${LINK.c} -o ${TESTDIR}/TestFiles/f5 $^ ${LDLIBSOPTIONS}   -lcunit 
+
 
 ${TESTDIR}/tests/backend/test_board.o: tests/backend/test_board.c 
 	${MKDIR} -p ${TESTDIR}/tests/backend
@@ -219,6 +237,12 @@ ${TESTDIR}/tests/backend/test_random_gen.o: tests/backend/test_random_gen.c
 	${MKDIR} -p ${TESTDIR}/tests/backend
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/backend/test_random_gen.o tests/backend/test_random_gen.c
+
+
+${TESTDIR}/tests/backend/test_rwops.o: tests/backend/test_rwops.c 
+	${MKDIR} -p ${TESTDIR}/tests/backend
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/backend/test_rwops.o tests/backend/test_rwops.c
 
 
 ${OBJECTDIR}/src/backend/board/board_nomain.o: ${OBJECTDIR}/src/backend/board/board.o src/backend/board/board.c 
@@ -323,6 +347,32 @@ ${OBJECTDIR}/src/frontend/allegro/keys_nomain.o: ${OBJECTDIR}/src/frontend/alleg
 	    $(COMPILE.c) -O2 -std=c11 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/keys_nomain.o src/frontend/allegro/keys.c;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/frontend/allegro/keys.o ${OBJECTDIR}/src/frontend/allegro/keys_nomain.o;\
+	fi
+
+${OBJECTDIR}/src/frontend/allegro/primitives_nomain.o: ${OBJECTDIR}/src/frontend/allegro/primitives.o src/frontend/allegro/primitives.c 
+	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/frontend/allegro/primitives.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.c) -O2 -std=c11 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/primitives_nomain.o src/frontend/allegro/primitives.c;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/frontend/allegro/primitives.o ${OBJECTDIR}/src/frontend/allegro/primitives_nomain.o;\
+	fi
+
+${OBJECTDIR}/src/frontend/allegro/screen/endGame_nomain.o: ${OBJECTDIR}/src/frontend/allegro/screen/endGame.o src/frontend/allegro/screen/endGame.c 
+	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro/screen
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/frontend/allegro/screen/endGame.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.c) -O2 -std=c11 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/screen/endGame_nomain.o src/frontend/allegro/screen/endGame.c;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/frontend/allegro/screen/endGame.o ${OBJECTDIR}/src/frontend/allegro/screen/endGame_nomain.o;\
 	fi
 
 ${OBJECTDIR}/src/frontend/allegro/screen/game_nomain.o: ${OBJECTDIR}/src/frontend/allegro/screen/game.o src/frontend/allegro/screen/game.c 
@@ -437,6 +487,7 @@ ${OBJECTDIR}/src/main_nomain.o: ${OBJECTDIR}/src/main.o src/main.c
 	    ${TESTDIR}/TestFiles/f4 || true; \
 	    ${TESTDIR}/TestFiles/f2 || true; \
 	    ${TESTDIR}/TestFiles/f1 || true; \
+	    ${TESTDIR}/TestFiles/f5 || true; \
 	else  \
 	    ./${TEST} || true; \
 	fi

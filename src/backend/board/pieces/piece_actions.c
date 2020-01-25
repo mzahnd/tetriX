@@ -160,10 +160,10 @@ const int pieceArr[TETROMINOS][ORIENTATION][BLOCKS][COORD_NUM] = {
      *		 0    1    2    3
      *     ---------------------
      *  0  |    |    |    |    |
+     *     ---------------------     
+     *  1  |    |    |    |    |
      *     ---------------------
-     *  1  | b1 | b2 | b3 | b4 |
-     *     ---------------------
-     *  2  |    |    |    |    |
+     *  2  | b1 | b2 | b3 | b4 |
      *     ---------------------
      *  3  |    |    |    |    |
      *     ---------------------
@@ -175,35 +175,13 @@ const int pieceArr[TETROMINOS][ORIENTATION][BLOCKS][COORD_NUM] = {
          * b1      b2      b3      b4
          */
         {
-            {0, 1},
-            {1, 1},
-            {2, 1},
-            {3, 1}
-        },
-        /*
-         * Position 2
-         *  {X, Y}
-         * b1      b2      b3      b4
-         */
-        {
-            {2, 0},
-            {2, 1},
-            {2, 2},
-            {2, 3}
-        },
-        /*
-         * Position 3
-         *  {X, Y}
-         * b1      b2      b3      b4
-         */
-        {
             {0, 2},
             {1, 2},
             {2, 2},
             {3, 2}
         },
         /*
-         * Position 4
+         * Position 2
          *  {X, Y}
          * b1      b2      b3      b4
          */
@@ -212,6 +190,28 @@ const int pieceArr[TETROMINOS][ORIENTATION][BLOCKS][COORD_NUM] = {
             {1, 1},
             {1, 2},
             {1, 3}
+        },
+        /*
+         * Position 3
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
+        {
+            {0, 1},
+            {1, 1},
+            {2, 1},
+            {3, 1}
+        },
+        /*
+         * Position 4
+         *  {X, Y}
+         * b1      b2      b3      b4
+         */
+        {
+            {2, 0},
+            {2, 1},
+            {2, 2},
+            {2, 3}
         }
     },
 
@@ -609,15 +609,15 @@ static piece_private_t currentPiece;
  * @param boardWidth Board Width
  * @param piece Piece to initialize
  * 
- * @return Success: 0
- * @return Fail: Non 0
+ * @return Success: EXIT_SUCCESS
+ * @return Fail: EXIT_FAILURE
  */
 int
 piece_init (struct PIECE * pstruct, struct GAMEBOARD * boardStr,
             grid_t * board, int boardHeight, int boardWidth,
             const int piece)
 {
-    int exitStatus = -1;
+    int exitStatus = EXIT_FAILURE;
 
     // Check that no pointer is NULL
     if ( pstruct == NULL )
@@ -675,7 +675,7 @@ piece_init (struct PIECE * pstruct, struct GAMEBOARD * boardStr,
         // Initialize the piece in the given position of the bag
         if ( !init(piece) )
         {
-            exitStatus = 0;
+            exitStatus = EXIT_SUCCESS;
             updatePublicCoordinates();
 
             // Set piece as initialized
@@ -755,13 +755,13 @@ destroy (void)
  * 
  * @param piece Piece to initialize. Use tetrominos enum in board.h
  * 
- * @return Success: 0
- * @return Fail: Non 0
+ * @return Success: EXIT_SUCCESS
+ * @return Fail: EXIT_FAILURE
  */
 static int
 init (const int piece)
 {
-    int exitStatus = 0;
+    int exitStatus = EXIT_SUCCESS;
 
     // No rotation
     currentPiece.orientation = 0;
@@ -928,7 +928,7 @@ init (const int piece)
 
             // Bad piece
         default:
-            exitStatus = -1;
+            exitStatus = EXIT_FAILURE;
             break;
     }
 
@@ -1247,8 +1247,8 @@ updatePublicCoordinates (void)
  * like rotating, shifting or dropping.
  * 
  * @return Error: -1
- * @return Success: 0
- * @return Fail: 1
+ * @return Success: EXIT_SUCCESS
+ * @return Fail: EXIT_FAILURE
  */
 static int
 verifyFixedPieces (void)
@@ -1287,7 +1287,7 @@ verifyFixedPieces (void)
     }
 
     // When all blocks of the TETROMINO have it's path clear, return 0
-    (count == BLOCKS) ? (ans = 0) : (ans = 1);
+    (count == BLOCKS) ? (ans = EXIT_SUCCESS) : (ans = EXIT_FAILURE);
 
     return ans;
 }

@@ -23,6 +23,7 @@
       <logicalFolder name="f2" displayName="Frontend" projectFiles="true">
         <logicalFolder name="f1" displayName="Allegro" projectFiles="true">
           <logicalFolder name="f1" displayName="Screens" projectFiles="true">
+            <itemPath>src/frontend/allegro/screen/endGame.h</itemPath>
             <itemPath>src/frontend/allegro/screen/game.h</itemPath>
             <itemPath>src/frontend/allegro/screen/gamePause.h</itemPath>
             <itemPath>src/frontend/allegro/screen/gameStats.h</itemPath>
@@ -30,6 +31,7 @@
           </logicalFolder>
           <itemPath>src/frontend/allegro/alcontrol.h</itemPath>
           <itemPath>src/frontend/allegro/keys.h</itemPath>
+          <itemPath>src/frontend/allegro/primitives.h</itemPath>
         </logicalFolder>
         <logicalFolder name="f2" displayName="Raspberry Pi" projectFiles="true">
           <itemPath>src/frontend/rpi/display.h</itemPath>
@@ -76,6 +78,7 @@
       <logicalFolder name="f2" displayName="Frontend" projectFiles="true">
         <logicalFolder name="f1" displayName="Allegro" projectFiles="true">
           <logicalFolder name="f1" displayName="Screens" projectFiles="true">
+            <itemPath>src/frontend/allegro/screen/endGame.c</itemPath>
             <itemPath>src/frontend/allegro/screen/game.c</itemPath>
             <itemPath>src/frontend/allegro/screen/gamePause.c</itemPath>
             <itemPath>src/frontend/allegro/screen/gameStats.c</itemPath>
@@ -83,6 +86,7 @@
           </logicalFolder>
           <itemPath>src/frontend/allegro/alcontrol.c</itemPath>
           <itemPath>src/frontend/allegro/keys.c</itemPath>
+          <itemPath>src/frontend/allegro/primitives.c</itemPath>
         </logicalFolder>
         <logicalFolder name="f2" displayName="Raspberry Pi" projectFiles="true">
           <itemPath>src/frontend/rpi/display.c</itemPath>
@@ -116,6 +120,12 @@
                      projectFiles="true"
                      kind="TEST">
         <itemPath>tests/backend/test_random_gen.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f5"
+                     displayName="Read and Write Ops"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>tests/backend/test_rwops.c</itemPath>
       </logicalFolder>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
@@ -178,6 +188,14 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f5">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f5</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <item path="res/audio/chau.wav" ex="false" tool="3" flavor2="0">
       </item>
       <item path="res/audio/tetris.wav" ex="false" tool="3" flavor2="0">
@@ -223,6 +241,20 @@
       </item>
       <item path="src/frontend/allegro/keys.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/frontend/allegro/primitives.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/primitives.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/endGame.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/endGame.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="src/frontend/allegro/screen/gamePause.c"
             ex="false"
             tool="0"
@@ -264,6 +296,8 @@
       <item path="tests/backend/test_piece_actions.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="tests/backend/test_random_gen.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="tests/backend/test_rwops.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="tests/test_boardTimer.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -316,6 +350,14 @@
       <folder path="TestFiles/f4">
         <linkerTool>
           <output>${TESTDIR}/TestFiles/f4</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f5">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f5</output>
           <linkerLibItems>
             <linkerOptionItem>-lcunit</linkerOptionItem>
           </linkerLibItems>
@@ -375,6 +417,20 @@
       </item>
       <item path="src/frontend/allegro/keys.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/frontend/allegro/primitives.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/primitives.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/endGame.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/endGame.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="src/frontend/allegro/screen/game.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/frontend/allegro/screen/game.h" ex="false" tool="3" flavor2="0">
@@ -422,6 +478,8 @@
       <item path="tests/backend/test_piece_actions.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="tests/backend/test_random_gen.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="tests/backend/test_rwops.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="tests/test_boardTimer.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -488,6 +546,14 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f5">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f5</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <item path="res/audio/chau.wav" ex="false" tool="3" flavor2="0">
       </item>
       <item path="res/audio/tetris.wav" ex="false" tool="3" flavor2="0">
@@ -542,6 +608,20 @@
       </item>
       <item path="src/frontend/allegro/keys.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/frontend/allegro/primitives.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/primitives.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/endGame.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/endGame.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="src/frontend/allegro/screen/game.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/frontend/allegro/screen/game.h" ex="false" tool="3" flavor2="0">
@@ -583,6 +663,8 @@
       <item path="tests/backend/test_piece_actions.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="tests/backend/test_random_gen.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="tests/backend/test_rwops.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="tests/test_boardTimer.c" ex="false" tool="0" flavor2="0">
       </item>
