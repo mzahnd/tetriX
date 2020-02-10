@@ -341,6 +341,14 @@ alg_endGame (allegro_t * alStru, const stats_t * gameStats)
         return AL_ERROR;
     }
 
+    if ( gameStats->_tsLoaded == false )
+    {
+        fputs("Top Scores file was not initialized. Exiting.\n", stderr);
+        endGameSt.exit = true;
+        alStru -> exit = true;
+        return AL_ERROR;
+    }
+
     // Copy alStru to the structure
     endGameSt.alStru = alStru;
     // Copy display pointer

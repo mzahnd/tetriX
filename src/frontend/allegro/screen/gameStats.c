@@ -647,12 +647,12 @@ pieces (screenStats_t * stats)
                                                    stats -> piecesBox.corner.y;
 
     // Box title
-    al_draw_textf(stats->piecesBox.text.bold,
-                  al_color_html(stats -> piecesBox.text.color),
-                  stats -> piecesBox.corner.x + stats->piecesBox.width / 2,
-                  stats -> piecesBox.corner.y + GAME_TXT_OFFSET,
-                  ALLEGRO_ALIGN_CENTRE,
-                  words[STATS]);
+    al_draw_text(stats->piecesBox.text.bold,
+                 al_color_html(stats -> piecesBox.text.color),
+                 stats -> piecesBox.corner.x + stats->piecesBox.width / 2,
+                 stats -> piecesBox.corner.y + GAME_TXT_OFFSET,
+                 ALLEGRO_ALIGN_CENTRE,
+                 words[STATS]);
 
     // Draw box
     primitive_drawBox(&(stats -> piecesBox));

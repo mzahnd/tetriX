@@ -64,7 +64,7 @@ typedef struct STATS
      * @note It is strongly recommended to check this parameter before calling
      * anything inside this structure.
      */
-    bool init;
+    bool _init;
 
     /// Current level
     int level;
@@ -101,6 +101,14 @@ typedef struct STATS
         int actual;
     } score;
 
+    /**
+     * @brief Set to true only when Top Scores file has been loaded properly.
+     * 
+     * If topScores is called while this variable is set to false, a NULL 
+     * pointer will be readed.
+     */
+    bool _tsLoaded;
+    
     /// Access and edit the top scores list
     rwScores_t * topScores;
     

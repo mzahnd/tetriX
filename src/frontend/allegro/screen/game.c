@@ -1391,6 +1391,7 @@ manageEvents (game_t * game, board_t * boardLogic, pause_t * pMenu)
             // Display
         case ALLEGRO_EVENT_DISPLAY_CLOSE:
             game -> exit = true;
+            game -> alStru -> exit = true;
             break;
 
             // Keyboard

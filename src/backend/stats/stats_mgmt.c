@@ -67,6 +67,8 @@ typedef struct STATS_PRIVATE
     // Top score
     rwScores_t scoreFile;
 
+    // Top score file loaded properly
+    bool tsLoaded;
 } stats_private_t;
 
 // === Global variables ===
@@ -137,12 +139,14 @@ initStats (struct STATS * stats)
     gameStats.public = stats;
 
     // Hold as uninitialized until done
-    gameStats.public -> init = false;
+    gameStats.public -> _init = false;
 
     gameStats.public -> level = 0;
     gameStats.public -> lines.cleared = 0;
     gameStats.public -> piece.next = TETROMINO_NONE;
     gameStats.public -> piece.current = TETROMINO_NONE;
+    gameStats.public -> _tsLoaded = false;
+    gameStats.public -> topScores = NULL;
 
     for ( i = 0; i < TETROMINOS; i++ )
     {
@@ -156,6 +160,7 @@ initStats (struct STATS * stats)
               stderr);
 
         gameStats.public -> score.top = 0;
+        gameStats.tsLoaded = false;
     }
 
     else if ( gameStats.scoreFile.get.readTopScore(&gameStats.scoreFile) )
@@ -164,12 +169,14 @@ initStats (struct STATS * stats)
               stderr);
 
         gameStats.public -> score.top = 0;
+        gameStats.tsLoaded = false;
     }
 
     else
     {
         gameStats.public -> topScores = &gameStats.scoreFile;
         gameStats.public -> score.top = gameStats.scoreFile.get._scores[0];
+        gameStats.tsLoaded = gameStats.public -> _tsLoaded = true;
     }
 
     gameStats.public -> score.actual = 0;
@@ -188,7 +195,7 @@ initStats (struct STATS * stats)
     gameStats.lastDifficult = false;
 
     // Set as initialized
-    gameStats.public -> init = true;
+    gameStats.public -> _init = true;
 
     return EXIT_SUCCESS;
 }
@@ -244,6 +251,7 @@ destroy (void)
     gameStats.lastPiece = TETROMINO_NONE;
     gameStats.newTop = false;
     gameStats.soft = 0;
+    gameStats.tsLoaded = gameStats.public -> _tsLoaded = false;
 
     // Clear public vars
     gameStats.public -> level = 0;

@@ -477,9 +477,9 @@ drawAbout (menu_private_t * menu)
     // Text
     for ( i = 0; i < TXT_ABOUT_NUM; i++ )
     {
-        al_draw_textf(txtFont, al_color_html(TXT_COLOR),
-                      txt_about_pos[i][0], txt_about_pos[i][1],
-                      ALLEGRO_ALIGN_CENTRE, txt_about_str[i]);
+        al_draw_text(txtFont, al_color_html(TXT_COLOR),
+                     txt_about_pos[i][0], txt_about_pos[i][1],
+                     ALLEGRO_ALIGN_CENTRE, txt_about_str[i]);
     }
 
     // Flip
@@ -523,9 +523,9 @@ drawExit (menu_private_t * menu)
     // Draw text
     for ( i = 0; i < TXT_EXIT_NUM; i++ )
     {
-        al_draw_textf(text, al_color_html(TXT_EXIT_COLOR),
-                      txt_exit_pos[i][0], txt_exit_pos[i][1],
-                      ALLEGRO_ALIGN_CENTRE, txt_exit_str[i]);
+        al_draw_text(text, al_color_html(TXT_EXIT_COLOR),
+                     txt_exit_pos[i][0], txt_exit_pos[i][1],
+                     ALLEGRO_ALIGN_CENTRE, txt_exit_str[i]);
     }
 
     // Flip

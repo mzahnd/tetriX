@@ -36,12 +36,21 @@
 #include <stdlib.h>
 #include <string.h> // For strncpy
 
+// For stat and mkdir
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+
+#include <errno.h>
+
 // This file
 #include "rw_ops.h"
 
 /// @privatesection
 // === Constants and Macro definitions ===
 
+// Top Score directory path
+#define TSDIR           "gamefiles/"
 // Top Score file path
 #define TSFILE          "gamefiles/topscore"
 
@@ -72,11 +81,23 @@ copyName (char * destination, const char * source);
 
 // Creates a dummy "Top Scores" file
 static int
-createDummy (FILE ** pFile);
+createDummy (FILE **** pFile);
 
 // Read the top score information from a file
 static int
 readTopScore (rwScores_t * self);
+
+// Wraps verifyDir() and verifyFile() in a single function.
+static int
+verifyDF (FILE ** pFile);
+
+// Verify if TSDIR directory exists. If not, create it.
+static int
+verifyDir (void);
+
+// Verify if TSFILE exists. If not, create it with createDummy()
+static int
+verifyFile (FILE *** pFile);
 
 // Writes a new score in the top
 static int
@@ -175,14 +196,14 @@ copyName (char * destination, const char * source)
  * @return Fail: EXIT_FAILURE
  */
 static int
-createDummy (FILE ** pFile)
+createDummy (FILE **** pFile)
 {
     // Counter and dummy score
     int i, score = DUMMYTOPSCORE;
 
     // Open file
-    *pFile = fopen(TSFILE, "w+");
-    if ( !*pFile )
+    ***pFile = fopen(TSFILE, "w+");
+    if ( !***pFile )
     {
         fputs("File could not be created.\n", stderr);
         return EXIT_FAILURE;
@@ -191,12 +212,12 @@ createDummy (FILE ** pFile)
     // Write dummy info in it
     for ( i = 0; i < NTOPSCORE; i++ )
     {
-        fprintf(*pFile, FILE_TXT_FORMAT, DUMMYNAME, score);
+        fprintf(***pFile, FILE_TXT_FORMAT, DUMMYNAME, score);
         score /= 2;
     }
 
     // Go back to the beggining of the file
-    rewind(*pFile);
+    rewind(***pFile);
 
     return EXIT_SUCCESS;
 }
@@ -235,7 +256,7 @@ readTopScore (rwScores_t * self)
     {
         fputs("Opening error. Creating file.\n", stderr);
 
-        if ( createDummy(&pFile) )
+        if ( verifyDF(&pFile) )
         {
             return EXIT_FAILURE;
         }
@@ -257,6 +278,131 @@ readTopScore (rwScores_t * self)
     fclose(pFile);
 
     return EXIT_SUCCESS;
+}
+
+/**
+ * @brief Wraps verifyDir() and verifyFile() in a single function.
+ * 
+ * @param pFile Pointer to object where the new file control information will 
+ * be stored.
+ * 
+ * @return Success: EXIT_SUCCESS
+ * @return Fail: EXIT_FAILURE
+ */
+static int
+verifyDF (FILE ** pFile)
+{
+    int ans = EXIT_SUCCESS;
+
+    // Verify directory
+    if ( verifyDir() == EXIT_FAILURE )
+    {
+        ans = EXIT_FAILURE;
+    }
+
+        // Verify file
+    else
+    {
+        ans = verifyFile(&pFile);
+    }
+
+    return ans;
+}
+
+/**
+ * @brief Verify if TSDIR directory exists. If not, create it.
+ * 
+ * @return Success: EXIT_SUCCESS
+ * @return Fail: EXIT_FAILURE
+ */
+static int
+verifyDir (void)
+{
+    int ans = EXIT_SUCCESS;
+
+    struct stat st = {0};
+
+    // Set new umask to ~777
+    mode_t n_umask = ~(S_IRWXU | S_IRWXG | S_IRWXO);
+    // Save original umask for later restoring
+    mode_t org_umask = umask(n_umask);
+
+    // Exists?
+    if ( stat(TSDIR, &st) == -1 )
+    {
+        // No, then create it
+        if ( errno == ENOENT )
+        {
+            // Create directory with 666 permisions
+            if ( mkdir(TSDIR,
+                       S_IRWXU | // User
+                       S_IRGRP | S_IWGRP | // Group
+                       S_IROTH | S_IWOTH) == -1 ) // Others
+            {
+                perror("Directory could not be created");
+                ans = EXIT_FAILURE;
+            }
+
+        }
+
+            // Check if errno was set with != ENOENT after calling stat()
+        else if ( errno == EEXIST )
+        {
+            ans = EXIT_SUCCESS;
+        }
+
+        else
+        {
+            perror("Directory could not be created");
+            ans = EXIT_FAILURE;
+        }
+    }
+
+    // Restore original umask
+    umask(org_umask);
+
+    // fprintf(stderr, "umask: %u", umask(org_umask));
+
+    return ans;
+}
+
+/**
+ * @brief Verify if TSFILE exists. If not, create it with createDummy()
+ * 
+ * @param pFile Pointer to object where the new file control information will 
+ * be stored.
+ * 
+ * @return Success: EXIT_SUCCESS
+ * @return Fail: EXIT_FAILURE
+ */
+static int
+verifyFile (FILE *** pFile)
+{
+    int ans = EXIT_SUCCESS;
+
+    struct stat st = {0};
+
+    // Exists?
+    if ( stat(TSFILE, &st) == -1 )
+    {
+        // No, then create it
+        if ( errno == ENOENT )
+        {
+            errno = 0;
+            if ( createDummy(&pFile) )
+            {
+                ans = EXIT_FAILURE;
+            }
+        }
+
+        if ( errno != 0 )
+        {
+            perror("File could not be created. ");
+            ans = EXIT_FAILURE;
+        }
+    }
+
+    return ans;
 }
 
 /**
