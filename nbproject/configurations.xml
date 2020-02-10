@@ -222,6 +222,11 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="src/backend/board/timer/boardTimer.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
       <item path="src/backend/board/timer/boardTimer.h"
             ex="false"
             tool="3"
@@ -235,39 +240,14 @@
       </item>
       <item path="src/backend/stats/stats_mgmt.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/frontend/allegro/alcontrol.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/frontend/allegro/keys.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="src/frontend/allegro/keys.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/frontend/allegro/primitives.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="src/frontend/allegro/primitives.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/frontend/allegro/screen/endGame.c"
-            ex="false"
-            tool="0"
-            flavor2="0">
-      </item>
       <item path="src/frontend/allegro/screen/endGame.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="src/frontend/allegro/screen/gamePause.c"
-            ex="false"
-            tool="0"
-            flavor2="0">
-      </item>
       <item path="src/frontend/allegro/screen/gamePause.h"
             ex="false"
             tool="3"
-            flavor2="0">
-      </item>
-      <item path="src/frontend/allegro/screen/gameStats.c"
-            ex="false"
-            tool="0"
             flavor2="0">
       </item>
       <item path="src/frontend/allegro/screen/gameStats.h"
@@ -493,7 +473,7 @@
       <compileType>
         <cTool>
           <standard>10</standard>
-          <commandLine>-D ALLEGRO -D TRUERANDOM</commandLine>
+          <commandLine>-D ALLEGRO</commandLine>
           <warningLevel>2</warningLevel>
         </cTool>
         <linkerTool>

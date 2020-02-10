@@ -77,8 +77,6 @@ typedef int letters_t [LROWS][LCOLS];
 typedef letters_t* (words_t[]);
 
 
-typedef int pie_t [LCOLS][LROWS];
-
 ///
 ///@brief Results for sameLetter();
 
@@ -99,7 +97,7 @@ enum order
     ///Options on SND.
     ON = 7, OFF,
     ///Options on MODE.
-    EASY = 10, HARD
+    EASY = 10, MEDIUM, HARD
 };
 
 // === Global variables ===
@@ -118,6 +116,20 @@ enum order
  */
 void
 initMenu(void);
+/**
+ * @brief Print letters on the board.
+ * 
+ * It prints the matrices of letters starting on the coordinate{x,y}
+ * the user decides.
+ * 
+ * @param Pointer to letters_t.
+ * @param Coordinate's X value.
+ * @param Coordinate's Y value.
+ * 
+ * @return Nothing
+ */
+void
+printL(letters_t * letter, int x, int y);
 
 /**
  * @brief Print a game matrix.

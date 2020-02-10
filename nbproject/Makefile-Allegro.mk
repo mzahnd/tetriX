@@ -71,7 +71,7 @@ TESTOBJECTFILES= \
 	${TESTDIR}/tests/test_boardTimer.o
 
 # C Compiler Flags
-CFLAGS=-D ALLEGRO -D TRUERANDOM
+CFLAGS=-D ALLEGRO
 
 # CC Compiler Flags
 CCFLAGS=

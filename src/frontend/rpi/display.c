@@ -56,6 +56,19 @@
 
 // === Global variables ===
 /**
+ * @brief Matrices 5x5 to represent characters.
+ * 
+ */
+///Char '.'
+letters_t dot = {
+    {0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0},
+    {1, 0, 0, 0, 0}
+};
+
+/**
  * @brief Matrices 5x5 to represent every letter.
  * 
  */
@@ -204,47 +217,74 @@ letters_t uu = {
     {1, 1, 1, 0, 0}
 };
 
-/*
-pie_t lll = {
-    {1, 1, 1, 1, 0},
-    {1, 1, 1, 1, 0},
-    {0, 0, 1, 1, 0},
-    {0, 0, 1, 1, 0},
-    {0, 0, 1, 1, 0}
-};
-
-pie_t sss = {
-    {0, 1, 1, 0, 0},
-    {0, 0, 1, 1, 0},
-    {1, 0, 0, 0, 1},
-    {1, 1, 0, 1, 1},
-    {0, 1, 0, 1, 0}
-};
-
-pie_t ccc = {
-    {1, 1, 1, 0, 0},
-    {1, 1, 1, 0, 0},
-    {1, 1, 1, 0, 0},
-    {0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0}
-};
-
-pie_t iii = {
-    {1, 1, 0, 0, 0},
-    {1, 1, 0, 0, 0},
-    {1, 1, 0, 0, 0},
-    {1, 1, 0, 0, 0},
-    {1, 1, 0, 0, 0}
-};
-
-pie_t yyy = {
-    {0, 1, 1, 1, 0},
-    {0, 0, 1, 0, 0},
-    {1, 0, 0, 0, 1},
-    {1, 1, 0, 1, 1},
-    {1, 0, 0, 0, 1}
-};
+/**
+ * @brief Matrices 5x5 to represent every number.
+ * 
  */
+///Number 1
+letters_t one = {
+    {0, 1, 0, 0, 0},
+    {1, 1, 0, 0, 0},
+    {0, 1, 0, 0, 0},
+    {0, 1, 0, 0, 0},
+    {0, 1, 0, 0, 0}
+};
+///Number 2
+letters_t two = {
+    {1, 1, 1, 0, 0},
+    {0, 0, 1, 0, 0},
+    {1, 1, 1, 0, 0},
+    {1, 0, 0, 0, 0},
+    {1, 1, 1, 0, 0}
+};
+///Number 3
+letters_t three = {
+    {1, 1, 1, 0, 0},
+    {0, 0, 1, 0, 0},
+    {1, 1, 1, 0, 0},
+    {0, 0, 1, 0, 0},
+    {1, 1, 1, 0, 0}
+};
+///Number 4
+letters_t four = {
+    {1, 0, 1, 0, 0},
+    {1, 0, 1, 0, 0},
+    {1, 1, 1, 0, 0},
+    {0, 0, 1, 0, 0},
+    {0, 0, 1, 0, 0}
+};
+///Number 6
+letters_t six = {
+    {1, 1, 1, 0, 0},
+    {1, 0, 0, 0, 0},
+    {1, 1, 1, 0, 0},
+    {1, 0, 1, 0, 0},
+    {1, 1, 1, 0, 0}
+};
+///Number 7
+letters_t seven = {
+    {1, 1, 1, 0, 0},
+    {0, 0, 1, 0, 0},
+    {0, 1, 1, 0, 0},
+    {0, 0, 1, 0, 0},
+    {0, 0, 1, 0, 0}
+};
+///Number 8
+letters_t eight = {
+    {1, 1, 1, 0, 0},
+    {1, 0, 1, 0, 0},
+    {1, 1, 1, 0, 0},
+    {1, 0, 1, 0, 0},
+    {1, 1, 1, 0, 0}
+};
+///Number 9
+letters_t nine = {
+    {1, 1, 1, 0, 0},
+    {1, 0, 1, 0, 0},
+    {1, 1, 1, 0, 0},
+    {0, 0, 1, 0, 0},
+    {1, 1, 1, 0, 0}
+};
 
 // === Function prototypes for private functions with file level scope ===
 
@@ -263,28 +303,11 @@ pie_t yyy = {
 int
 sameLetter(letters_t * letter1, letters_t * letter2);
 
-/**
- * @brief Print letters on the board.
- * 
- * It prints the matrices of letters starting on the coordinate{x,y}
- * the user decides.
- * 
- * @param Pointer to letters_t.
- * @param Coordinate's X value.
- * @param Coordinate's Y value.
- * 
- * @return Nothing
- */
-void
-printL(letters_t * letter, int x, int y);
-
 // === ROM Constant variables with file level scope ===
 
 // === Static variables and constant variables with file level scope ===
 
 // === Global function definitions ===
-
-
 
 
 /// @publicsection
@@ -331,16 +354,22 @@ printW(words_t word, int x, int y)
         {
             x += 2;
         }
-            ///If it is a shorter letter, it doesn't as much space as the others
+        ///If it is letter I, it doesn't has as much space as the others.
+        else if(sameLetter(word[k], &ii))
+        {
+            x -= 2;
+        }
+        ///If it is a shorter letter, it doesn't has much space as the others
         else if(((*(word[k]))[4][2] == 0)&&(!sameLetter(word[k], &pp)))
         {
             x -= 1;
         }
+
         ///It adds the space between letters.    
         x += SPACE;
     }
-    ///It returns with the value of the last point of the letter.(In case it is
-    ///a long word this number is bigger than the MAX)
+    ///It returns with the value of the last point of the last letter.
+    ///(In case it is a long word this number is bigger than the MAX)
     return x;
 }
 
@@ -351,7 +380,7 @@ printWmove(words_t word, int xo, int y)
     int x;
     ///Next is a flag to know if the last coordinate x of the last letter
     ///has an acceptable displacement.
-    int next;
+    int next=0;
     ///Jmove takes surf() value(so as to avoid calling the function 
     ///so many times)
     int jmove;
@@ -361,6 +390,12 @@ printWmove(words_t word, int xo, int y)
     {
         joy_update();
     }
+    
+    ///It prints the word and it make a pause then.
+    printW(word, xo, y);
+    disp_update();
+    ///It makes a little pause until it starts moving.
+    usleep(500000);
 
     jmove = surf();
 
@@ -372,8 +407,8 @@ printWmove(words_t word, int xo, int y)
         ///It clears the display every time there is a new printW.
         disp_n_clear(MAX, MAX / 2, 0, MAX / 2);
 
-        ///It gets the displacement after printing the word.(If it a long word,
-        ///X will be huge)
+        ///It gets the displacement after printing the word.(If it is a long,
+        ///word, X will be huge)
         x = printW(word, xo, y);
 
         ///If it is not as displaced to the left as it should
@@ -597,6 +632,7 @@ theEnd(void)
     int i, j, k = 0,n=0;
     dcoord_t point;
 
+    ///It turns on and off the leds four times.
     while(k <= 4)
     {
         for(i = 0; i < MAX; i++)
@@ -636,6 +672,7 @@ theEnd(void)
             n=0;
         }
         
+        ///It makes a little delay between every change.
         disp_update();
         usleep(1000000);
     }

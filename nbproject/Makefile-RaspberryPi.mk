@@ -38,13 +38,9 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/backend/board/board.o \
 	${OBJECTDIR}/src/backend/board/pieces/piece_actions.o \
 	${OBJECTDIR}/src/backend/board/random_generator.o \
+	${OBJECTDIR}/src/backend/board/timer/boardTimer.o \
 	${OBJECTDIR}/src/backend/rw/rw_ops.o \
 	${OBJECTDIR}/src/backend/stats/stats_mgmt.o \
-	${OBJECTDIR}/src/frontend/allegro/keys.o \
-	${OBJECTDIR}/src/frontend/allegro/primitives.o \
-	${OBJECTDIR}/src/frontend/allegro/screen/endGame.o \
-	${OBJECTDIR}/src/frontend/allegro/screen/gamePause.o \
-	${OBJECTDIR}/src/frontend/allegro/screen/gameStats.o \
 	${OBJECTDIR}/src/frontend/rpi/display.o \
 	${OBJECTDIR}/src/frontend/rpi/joystick.o \
 	${OBJECTDIR}/src/frontend/rpi/rpcontrol.o \
@@ -108,6 +104,11 @@ ${OBJECTDIR}/src/backend/board/random_generator.o: src/backend/board/random_gene
 	${RM} "$@.d"
 	$(COMPILE.c) -g -Wall -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/backend/board/random_generator.o src/backend/board/random_generator.c
 
+${OBJECTDIR}/src/backend/board/timer/boardTimer.o: src/backend/board/timer/boardTimer.c
+	${MKDIR} -p ${OBJECTDIR}/src/backend/board/timer
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Wall -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/backend/board/timer/boardTimer.o src/backend/board/timer/boardTimer.c
+
 ${OBJECTDIR}/src/backend/rw/rw_ops.o: src/backend/rw/rw_ops.c
 	${MKDIR} -p ${OBJECTDIR}/src/backend/rw
 	${RM} "$@.d"
@@ -117,31 +118,6 @@ ${OBJECTDIR}/src/backend/stats/stats_mgmt.o: src/backend/stats/stats_mgmt.c
 	${MKDIR} -p ${OBJECTDIR}/src/backend/stats
 	${RM} "$@.d"
 	$(COMPILE.c) -g -Wall -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/backend/stats/stats_mgmt.o src/backend/stats/stats_mgmt.c
-
-${OBJECTDIR}/src/frontend/allegro/keys.o: src/frontend/allegro/keys.c
-	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro
-	${RM} "$@.d"
-	$(COMPILE.c) -g -Wall -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/keys.o src/frontend/allegro/keys.c
-
-${OBJECTDIR}/src/frontend/allegro/primitives.o: src/frontend/allegro/primitives.c
-	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro
-	${RM} "$@.d"
-	$(COMPILE.c) -g -Wall -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/primitives.o src/frontend/allegro/primitives.c
-
-${OBJECTDIR}/src/frontend/allegro/screen/endGame.o: src/frontend/allegro/screen/endGame.c
-	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro/screen
-	${RM} "$@.d"
-	$(COMPILE.c) -g -Wall -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/screen/endGame.o src/frontend/allegro/screen/endGame.c
-
-${OBJECTDIR}/src/frontend/allegro/screen/gamePause.o: src/frontend/allegro/screen/gamePause.c
-	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro/screen
-	${RM} "$@.d"
-	$(COMPILE.c) -g -Wall -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/screen/gamePause.o src/frontend/allegro/screen/gamePause.c
-
-${OBJECTDIR}/src/frontend/allegro/screen/gameStats.o: src/frontend/allegro/screen/gameStats.c
-	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro/screen
-	${RM} "$@.d"
-	$(COMPILE.c) -g -Wall -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/screen/gameStats.o src/frontend/allegro/screen/gameStats.c
 
 ${OBJECTDIR}/src/frontend/rpi/display.o: src/frontend/rpi/display.c
 	${MKDIR} -p ${OBJECTDIR}/src/frontend/rpi
@@ -260,6 +236,19 @@ ${OBJECTDIR}/src/backend/board/random_generator_nomain.o: ${OBJECTDIR}/src/backe
 	    ${CP} ${OBJECTDIR}/src/backend/board/random_generator.o ${OBJECTDIR}/src/backend/board/random_generator_nomain.o;\
 	fi
 
+${OBJECTDIR}/src/backend/board/timer/boardTimer_nomain.o: ${OBJECTDIR}/src/backend/board/timer/boardTimer.o src/backend/board/timer/boardTimer.c 
+	${MKDIR} -p ${OBJECTDIR}/src/backend/board/timer
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/backend/board/timer/boardTimer.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.c) -g -Wall -std=c11 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/backend/board/timer/boardTimer_nomain.o src/backend/board/timer/boardTimer.c;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/backend/board/timer/boardTimer.o ${OBJECTDIR}/src/backend/board/timer/boardTimer_nomain.o;\
+	fi
+
 ${OBJECTDIR}/src/backend/rw/rw_ops_nomain.o: ${OBJECTDIR}/src/backend/rw/rw_ops.o src/backend/rw/rw_ops.c 
 	${MKDIR} -p ${OBJECTDIR}/src/backend/rw
 	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/backend/rw/rw_ops.o`; \
@@ -284,71 +273,6 @@ ${OBJECTDIR}/src/backend/stats/stats_mgmt_nomain.o: ${OBJECTDIR}/src/backend/sta
 	    $(COMPILE.c) -g -Wall -std=c11 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/backend/stats/stats_mgmt_nomain.o src/backend/stats/stats_mgmt.c;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/backend/stats/stats_mgmt.o ${OBJECTDIR}/src/backend/stats/stats_mgmt_nomain.o;\
-	fi
-
-${OBJECTDIR}/src/frontend/allegro/keys_nomain.o: ${OBJECTDIR}/src/frontend/allegro/keys.o src/frontend/allegro/keys.c 
-	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/frontend/allegro/keys.o`; \
-	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
-	then  \
-	    ${RM} "$@.d";\
-	    $(COMPILE.c) -g -Wall -std=c11 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/keys_nomain.o src/frontend/allegro/keys.c;\
-	else  \
-	    ${CP} ${OBJECTDIR}/src/frontend/allegro/keys.o ${OBJECTDIR}/src/frontend/allegro/keys_nomain.o;\
-	fi
-
-${OBJECTDIR}/src/frontend/allegro/primitives_nomain.o: ${OBJECTDIR}/src/frontend/allegro/primitives.o src/frontend/allegro/primitives.c 
-	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/frontend/allegro/primitives.o`; \
-	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
-	then  \
-	    ${RM} "$@.d";\
-	    $(COMPILE.c) -g -Wall -std=c11 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/primitives_nomain.o src/frontend/allegro/primitives.c;\
-	else  \
-	    ${CP} ${OBJECTDIR}/src/frontend/allegro/primitives.o ${OBJECTDIR}/src/frontend/allegro/primitives_nomain.o;\
-	fi
-
-${OBJECTDIR}/src/frontend/allegro/screen/endGame_nomain.o: ${OBJECTDIR}/src/frontend/allegro/screen/endGame.o src/frontend/allegro/screen/endGame.c 
-	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro/screen
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/frontend/allegro/screen/endGame.o`; \
-	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
-	then  \
-	    ${RM} "$@.d";\
-	    $(COMPILE.c) -g -Wall -std=c11 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/screen/endGame_nomain.o src/frontend/allegro/screen/endGame.c;\
-	else  \
-	    ${CP} ${OBJECTDIR}/src/frontend/allegro/screen/endGame.o ${OBJECTDIR}/src/frontend/allegro/screen/endGame_nomain.o;\
-	fi
-
-${OBJECTDIR}/src/frontend/allegro/screen/gamePause_nomain.o: ${OBJECTDIR}/src/frontend/allegro/screen/gamePause.o src/frontend/allegro/screen/gamePause.c 
-	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro/screen
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/frontend/allegro/screen/gamePause.o`; \
-	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
-	then  \
-	    ${RM} "$@.d";\
-	    $(COMPILE.c) -g -Wall -std=c11 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/screen/gamePause_nomain.o src/frontend/allegro/screen/gamePause.c;\
-	else  \
-	    ${CP} ${OBJECTDIR}/src/frontend/allegro/screen/gamePause.o ${OBJECTDIR}/src/frontend/allegro/screen/gamePause_nomain.o;\
-	fi
-
-${OBJECTDIR}/src/frontend/allegro/screen/gameStats_nomain.o: ${OBJECTDIR}/src/frontend/allegro/screen/gameStats.o src/frontend/allegro/screen/gameStats.c 
-	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro/screen
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/frontend/allegro/screen/gameStats.o`; \
-	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
-	then  \
-	    ${RM} "$@.d";\
-	    $(COMPILE.c) -g -Wall -std=c11 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/screen/gameStats_nomain.o src/frontend/allegro/screen/gameStats.c;\
-	else  \
-	    ${CP} ${OBJECTDIR}/src/frontend/allegro/screen/gameStats.o ${OBJECTDIR}/src/frontend/allegro/screen/gameStats_nomain.o;\
 	fi
 
 ${OBJECTDIR}/src/frontend/rpi/display_nomain.o: ${OBJECTDIR}/src/frontend/rpi/display.o src/frontend/rpi/display.c 
