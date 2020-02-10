@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['keys_2eh_215',['keys.h',['../keys_8h.html',1,'']]]
+  ['joystick_2eh_258',['joystick.h',['../joystick_8h.html',1,'']]]
 ];

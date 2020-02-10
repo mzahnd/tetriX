@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['stats_5ft_333',['stats_t',['../stats__mgmt_8h.html#a09d48e3f13e86d369d6aa6e8f777006e',1,'stats_mgmt.h']]]
+  ['rwscores_5ft_392',['rwScores_t',['../rw__ops_8h.html#aaff380f9e92a58e89fa749e04a1ad4aa',1,'rw_ops.h']]]
 ];

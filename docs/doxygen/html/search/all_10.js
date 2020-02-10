@@ -1,16 +1,20 @@
 var searchData=
 [
-  ['random_5fgenerator_151',['random_generator',['../random__generator_8h.html#afd4ea4b87811315d07e3b4d3666038a1',1,'random_generator.c']]],
-  ['random_5fgenerator_2eh_152',['random_generator.h',['../random__generator_8h.html',1,'']]],
-  ['random_5frow_153',['random_row',['../random__generator_8h.html#a13cbc7110ce88ce7d409711bf16f4214',1,'random_generator.c']]],
-  ['redraw_154',['redraw',['../structmenu__t.html#a2521de19582330d79e99fbd255d797ba',1,'menu_t']]],
-  ['regular_155',['regular',['../structgbox__t.html#aaef0c5e022c66a2e4c77c287269480be',1,'gbox_t']]],
-  ['restart_156',['RESTART',['../game_pause_8h.html#afd7d49e17b69bd6bf3d7a649856c1067a262553c759e1d1a9398bc406b1fadcb7',1,'gamePause.h']]],
-  ['resume_157',['RESUME',['../game_pause_8h.html#afd7d49e17b69bd6bf3d7a649856c1067a401283aaa98a76b506f2198465bd7009',1,'gamePause.h']]],
-  ['right_158',['RIGHT',['../board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54aec8379af7490bb9eaaf579cf17876f38',1,'board.h']]],
-  ['rotate_159',['rotate',['../struct_g_a_m_e_b_o_a_r_d.html#a5e38bdb89055fcfbd6838a75400a42fe',1,'GAMEBOARD::rotate()'],['../struct_p_i_e_c_e.html#a5e38bdb89055fcfbd6838a75400a42fe',1,'PIECE::rotate()']]],
-  ['rpcontrol_2eh_160',['rpcontrol.h',['../rpcontrol_8h.html',1,'']]],
-  ['rpi_161',['rpi',['../rpcontrol_8h.html#ac4eb95268bcc7d03c660ad642f6da760',1,'rpcontrol.c']]],
-  ['rsize_162',['rsize',['../structgbox__t.html#a7ca3083413bdda75049d093c45bbd1c6',1,'gbox_t']]],
-  ['rw_5fops_2eh_163',['rw_ops.h',['../rw__ops_8h.html',1,'']]]
+  ['pause_149',['pause',['../game_pause_8h.html#afd7d49e17b69bd6bf3d7a649856c1067',1,'gamePause.h']]],
+  ['pause_5ft_150',['pause_t',['../structpause__t.html',1,'']]],
+  ['piece_151',['PIECE',['../struct_p_i_e_c_e.html',1,'PIECE'],['../struct_g_a_m_e_b_o_a_r_d.html#ab1c736740dbc317d49e29218ddf3b827',1,'GAMEBOARD::piece()'],['../struct_s_t_a_t_s.html#aee1c9cf528b007e295e3fecdec82d113',1,'STATS::piece()']]],
+  ['piece_5factions_2eh_152',['piece_actions.h',['../piece__actions_8h.html',1,'']]],
+  ['piece_5finit_153',['piece_init',['../piece__actions_8h.html#a44c68c9370e56a84cdb6dbab273aefa3',1,'piece_actions.c']]],
+  ['piece_5ft_154',['piece_t',['../piece__actions_8h.html#aa6afc13028221e97878ab9af3e412dc8',1,'piece_actions.h']]],
+  ['piecesbox_155',['piecesBox',['../structscreen_stats__t.html#acbd7a83c045b638fcfede7d6ac103e10',1,'screenStats_t']]],
+  ['piecestype_156',['piecesType',['../board_8h.html#aa8acd4b6f8e39eb057cf562c3910c554',1,'board.h']]],
+  ['play_157',['play',['../struct_a_l_l_e_g_r_o___m_g_m_t.html#abcc00a350b4a324e7e6b85ac9a405619',1,'ALLEGRO_MGMT::play()'],['../menu_8h.html#a6f809259b805e28a03a346aaec20a64fa0352906d1ea1dfcd663c918f3a86755b',1,'PLAY():&#160;menu.h'],['../display_8h.html#a9f4e8630516f3da89537313b4c828759a0352906d1ea1dfcd663c918f3a86755b',1,'PLAY():&#160;display.h']]],
+  ['playsecond_158',['playSecond',['../struct_a_l_l_e_g_r_o___m_g_m_t.html#a093e51c0f357dbb3e43ed8a75bd10ded',1,'ALLEGRO_MGMT']]],
+  ['primitive_5fdrawbox_159',['primitive_drawBox',['../primitives_8h.html#a789eb83135696ba1fca337a89d128784',1,'primitives.c']]],
+  ['primitive_5fdrawtriangle_160',['primitive_drawTriangle',['../primitives_8h.html#a6d1d7328047c2f383d5da7b084735b00',1,'primitives.c']]],
+  ['primitives_2eh_161',['primitives.h',['../primitives_8h.html',1,'']]],
+  ['printg_162',['printG',['../display_8h.html#a8f45edf212c8595b8e9cf975eb45b235',1,'display.c']]],
+  ['printl_163',['printL',['../display_8h.html#a8830359ee890ad5aebf480f80bec4cb7',1,'display.c']]],
+  ['printw_164',['printW',['../display_8h.html#a410d9a741e70114f461936f42edf7e8f',1,'display.c']]],
+  ['printwmove_165',['printWmove',['../display_8h.html#a558d379da947357daf3751b4e7663fee',1,'display.c']]]
 ];

@@ -1,8 +1,13 @@
 var searchData=
 [
-  ['easy_68',['EASY',['../display_8h.html#a9f4e8630516f3da89537313b4c828759a26d394b5caf2853dbcef5884f0f068dd',1,'display.h']]],
-  ['enabled_69',['enabled',['../struct_a_l_l_e_g_r_o___m_g_m_t.html#a0e3c40f55f734b25ffcc09960683d307',1,'ALLEGRO_MGMT']]],
-  ['endgame_70',['endGame',['../struct_g_a_m_e_b_o_a_r_d.html#a165ec10fee1e6a7cc22dca444f1943ba',1,'GAMEBOARD']]],
-  ['error_71',['ERROR',['../rpcontrol_8h.html#a8fe83ac76edc595f6b98cd4a4127aed5',1,'rpcontrol.h']]],
-  ['exit_72',['exit',['../struct_a_l_l_e_g_r_o___m_g_m_t.html#add93a36b81b5f541d2f3237a7f363a7e',1,'ALLEGRO_MGMT::exit()'],['../game_pause_8h.html#afd7d49e17b69bd6bf3d7a649856c1067a7a10b5d68d31711288e1fe0fa17dbf4f',1,'EXIT():&#160;gamePause.h'],['../menu_8h.html#a6f809259b805e28a03a346aaec20a64fa7a10b5d68d31711288e1fe0fa17dbf4f',1,'EXIT():&#160;menu.h']]]
+  ['destroy_63',['destroy',['../struct_g_a_m_e_b_o_a_r_d.html#a69cd7e6c850c0ffe3c5c66ececf39648',1,'GAMEBOARD::destroy()'],['../struct_p_i_e_c_e.html#a69cd7e6c850c0ffe3c5c66ececf39648',1,'PIECE::destroy()'],['../struct_s_t_a_t_s.html#a69cd7e6c850c0ffe3c5c66ececf39648',1,'STATS::destroy()']]],
+  ['disp_5fn_5fclear_64',['disp_n_clear',['../display_8h.html#a352c62d92be7017b5ceaa0e217341500',1,'display.c']]],
+  ['display_65',['display',['../struct_a_l_l_e_g_r_o___m_g_m_t.html#af64cc6c8a47e5ddbf510b5aa92e062b9',1,'ALLEGRO_MGMT']]],
+  ['display_2eh_66',['display.h',['../display_8h.html',1,'']]],
+  ['draw_67',['draw',['../structpause__t.html#a19ace8eb9b667e65e308f04e19ffd1a7',1,'pause_t']]],
+  ['drawstats_5flevel_5ff_68',['drawStats_level_f',['../game_stats_8h.html#afd7b7fbd775832b0abc113fd548bcb22',1,'gameStats.c']]],
+  ['drawstats_5flines_5ff_69',['drawStats_lines_f',['../game_stats_8h.html#a5066e3711d94d27dfbafb2e8588a6483',1,'gameStats.c']]],
+  ['drawstats_5fnextpiece_5ff_70',['drawStats_nextPiece_f',['../game_stats_8h.html#adb3bdbba8c8a2b8b2fb417efed62dec7',1,'gameStats.c']]],
+  ['drawstats_5fpieces_5ff_71',['drawStats_pieces_f',['../game_stats_8h.html#ad2f2e005e505c545968a61c0f024a296',1,'gameStats.c']]],
+  ['drawstats_5fscore_5ff_72',['drawStats_score_f',['../game_stats_8h.html#ab7e6061c0645c0137730aa68789eed20',1,'gameStats.c']]]
 ];

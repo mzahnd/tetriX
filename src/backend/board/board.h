@@ -40,11 +40,13 @@
 
 // === Constants and Macro definitions ===
 
+#    ifdef RPI
 /// @def BOARD_HEIGHT
 /// @brief Board Height
-#    ifdef RPI
 #        define BOARD_HEIGHT    16
 #    elif ALLEGRO
+/// @def BOARD_HEIGHT
+/// @brief Board Height
 #        define BOARD_HEIGHT    20
 #    endif
 
@@ -84,14 +86,23 @@ enum block
  */
 enum piecesType
 {
+    /// No Tetromino selected / Invalid tetromino
     TETROMINO_NONE = -1,
+    /// Tetromino I
     TETROMINO_I = 0,
+    /// Tetromino J
     TETROMINO_J,
+    /// Tetromino L
     TETROMINO_L,
+    /// Tetromino O
     TETROMINO_O,
+    /// Tetromino S
     TETROMINO_S,
+    /// Tetromino T
     TETROMINO_T,
+    /// Tetromino Z
     TETROMINO_Z,
+    /// Number of tetrominos
     TETROMINOS
 };
 
@@ -108,10 +119,6 @@ enum shiftingTypes
     LEFT,
     /// Shift piece one position to the right
     RIGHT,
-    CENTER,
-    PRESSED,
-    UP,
-    DOWN
 };
 
 /**
@@ -159,10 +166,10 @@ enum gModes
 {
     /// Normal mode
     NORMAL,
-    
+
     /// All keys are inverted
     BACKWARDS,
-    
+
     /// The game just goes crazy!
     CRAZY
 };
@@ -198,14 +205,14 @@ typedef struct GAMEBOARD
         /// Get coordinate (0,0) of the board (top-left)
         grid_t * (* board) (void);
 
-                /** 
+        /** 
          * @brief Ask if game has to finish
          * 
          * @return True: 1
          * @return False: 0
          */
         int (* endGame) (void);
-        
+
         /**
          * @brief How many rows are complete and which are those.
          * 
@@ -214,7 +221,7 @@ typedef struct GAMEBOARD
          * @return Number of filled rows
          */
         int (* filledRows) (int lines[BOARD_HEIGHT]);
-        
+
         /**
          * @brief Tells if there's a moving piece currently in the board
          * 
@@ -290,6 +297,7 @@ typedef struct GAMEBOARD
     } piece;
 
     /// Optional game modifications that can be set before the first update
+
     struct
     {
         /**
@@ -300,7 +308,7 @@ typedef struct GAMEBOARD
          * @return Nothing
          */
         //void (* gameMode) (int mode);
-        
+
         /**
          * @brief Level in which the game starts
          * 

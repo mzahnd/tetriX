@@ -62,20 +62,35 @@
 
 // === Enumerations, structures and typedefs ===
 
+/**
+ * @brief Coordinates of a triangle and its ammount
+ */
 enum triangleCoords
 {
+    /// Top cornerof the triangle
     TRI_POINT = 0,
+    /// Base corner
     TRI_BASE1,
+    /// Base corner
     TRI_BASE2,
+    /// Number of corners
     TRIANGLE_COORDS
 };
 
+/**
+ * @brief Posible directions in which the triangle can be drawn
+ */
 enum triangle_directions
 {
+    /// TRI_POINT points to the top
     TRI_TOP = 0,
+    /// TRI_POINT points to the bottom
     TRI_BOTTOM,
+    /// TRI_LEFT points to the left
     TRI_LEFT,
+    /// TRI_RIGHT points to the right
     TRI_RIGHT,
+    /// Number of posible directions
     TRI_NDIRS
 };
 

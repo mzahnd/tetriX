@@ -40,11 +40,6 @@
  * This is meant to keep the documentation more clear and show the programmer 
  * only the important stuff.
  * 
- * @subsection bcks Backend sources
- * 
- * Blah
- * 
- * 
  * @subsection Sources
  * 
  * The game rules and options inspiration was taken from \n
@@ -60,6 +55,8 @@
  * https://stackoverflow.com/questions/2572366/how-to-use-dev-random-or-urandom-in-c \n
  * http://man7.org/linux/man-pages/man2/getrandom.2.html \n
  * https://github.com/liballeg/allegro_wiki/wiki/Allegro-Vivace%3A-Input \n
+ * https://stackoverflow.com/questions/7430248/creating-a-new-directory-in-c/7430262 \n
+ * https://stackoverflow.com/questions/8719867/linux-mkdir-function-cant-authorize-full-permission \n
  * 
  * \n Sound effects where taken from \n
  * http://soundbible.com/2067-Blop.html \n

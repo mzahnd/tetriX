@@ -1,4 +1,9 @@
 var searchData=
 [
-  ['update_324',['update',['../struct_g_a_m_e_b_o_a_r_d.html#a74222636e9a0ad2bcbcd3bed90fa0e88',1,'GAMEBOARD::update()'],['../struct_p_i_e_c_e.html#ab57c58460735773dd4ad9b16952dff31',1,'PIECE::update()'],['../struct_s_t_a_t_s.html#ad958dc194ac388f50c867a0234a246fc',1,'STATS::update()']]]
+  ['text_376',['text',['../structgbox__t.html#a24945ffd11cefbcaf2471a8bd4a7bc4a',1,'gbox_t']]],
+  ['thickness_377',['thickness',['../structgbox__t.html#a9bddad7a0f5d61aefe107acf47f09549',1,'gbox_t::thickness()'],['../structtriangle__t.html#a9bddad7a0f5d61aefe107acf47f09549',1,'triangle_t::thickness()']]],
+  ['top_378',['top',['../struct_s_t_a_t_s.html#af93f4f37fc2ad9c37af4a715423b110c',1,'STATS']]],
+  ['topscores_379',['topScores',['../struct_s_t_a_t_s.html#a3aecd061cf223f1986d8d901c3149398',1,'STATS']]],
+  ['txt_5fsel_380',['txt_sel',['../structmenu__t.html#afc0fbb939cfef04b8ce62c7eb15a28ab',1,'menu_t']]],
+  ['type_381',['type',['../struct_p_i_e_c_e.html#ac765329451135abec74c45e1897abf26',1,'PIECE']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['y_198',['y',['../structgbox__t.html#aa4f0d3eebc3c443f9be81bf48561a217',1,'gbox_t']]]
+  ['x_238',['x',['../structgbox__t.html#ad0da36b2558901e21e7a30f6c227a45e',1,'gbox_t::x()'],['../structtriangle__t.html#ad0da36b2558901e21e7a30f6c227a45e',1,'triangle_t::x()']]]
 ];

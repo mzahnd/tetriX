@@ -1,19 +1,5 @@
 var searchData=
 [
-  ['game_2eh_75',['game.h',['../game_8h.html',1,'']]],
-  ['game_5ftxt_5fcolor_76',['GAME_TXT_COLOR',['../game_8h.html#a528838c90828d470a32e197244a812b7',1,'game.h']]],
-  ['game_5ftxt_5ffont_5fbold_5fpath_77',['GAME_TXT_FONT_BOLD_PATH',['../game_8h.html#adb7c986c76c52aef61355d28c7234d08',1,'game.h']]],
-  ['game_5ftxt_5ffont_5fpath_78',['GAME_TXT_FONT_PATH',['../game_8h.html#acea2c99f632b08daa2f0210238276bf0',1,'game.h']]],
-  ['game_5ftxt_5foffset_79',['GAME_TXT_OFFSET',['../game_8h.html#a85c41e0017b49fabd6d41717b306e0a8',1,'game.h']]],
-  ['game_5ftxt_5fsize_80',['GAME_TXT_SIZE',['../game_8h.html#ad26784cbac88f292d0620446521b2a31',1,'game.h']]],
-  ['game_5ftxt_5fsize_5fbold_81',['GAME_TXT_SIZE_BOLD',['../game_8h.html#a62d05982d39658f0d00a20767d1e0374',1,'game.h']]],
-  ['gameboard_82',['GAMEBOARD',['../struct_g_a_m_e_b_o_a_r_d.html',1,'']]],
-  ['gamepause_2eh_83',['gamePause.h',['../game_pause_8h.html',1,'']]],
-  ['gamestats_2eh_84',['gameStats.h',['../game_stats_8h.html',1,'']]],
-  ['gbox_5ft_85',['gbox_t',['../structgbox__t.html',1,'']]],
-  ['get_86',['get',['../struct_p_i_e_c_e.html#aa8e7e5d4980a8bdbf7846492b28766dd',1,'PIECE::get()'],['../structpause__t.html#a6d5f00d0ae9004ff97877e9b72083e9f',1,'pause_t::get()']]],
-  ['get_5fcell_87',['GET_CELL',['../board_8h.html#afdbe53bda9ade301796b7017b69562a3',1,'board.h']]],
-  ['gmodes_88',['gModes',['../board_8h.html#a86aca119f076fa13241d289ac265fc05',1,'board.h']]],
-  ['grid_5ft_89',['grid_t',['../board_8h.html#ad52f776081dcdce29aa7eff07d9513ef',1,'board.h']]],
-  ['gstats_90',['gStats',['../structscreen_stats__t.html#afef68fc2cb803816721ef7fb1c4c2dce',1,'screenStats_t']]]
+  ['filledrows_79',['filledRows',['../struct_g_a_m_e_b_o_a_r_d.html#a9620a07d62f35a7483e72fe73354c932',1,'GAMEBOARD']]],
+  ['fx_80',['fx',['../struct_a_l_l_e_g_r_o___m_g_m_t.html#aa56390b5d8a7763900ea0cb760a5f575',1,'ALLEGRO_MGMT::fx()'],['../game_pause_8h.html#a02eacfd40be9042ceb0f07547365203da48b424735b6e21a4a4fe044feaee5a50',1,'FX():&#160;gamePause.h']]]
 ];

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['width_195',['width',['../structgbox__t.html#ae426f00e82704fa09578f5446e22d915',1,'gbox_t']]],
-  ['words_5ft_196',['words_t',['../display_8h.html#a6259fc4bd5e87d65fd3f91d691f89deb',1,'display.h']]]
+  ['update_234',['update',['../struct_g_a_m_e_b_o_a_r_d.html#ac40000f7d9b789f6d7254eeab45a32a0',1,'GAMEBOARD::update()'],['../struct_p_i_e_c_e.html#a417575ae73cb066aa841ed919eb57eaa',1,'PIECE::update()'],['../struct_s_t_a_t_s.html#af74c3be8050a3f9e7208336418c8cebb',1,'STATS::update()']]]
 ];

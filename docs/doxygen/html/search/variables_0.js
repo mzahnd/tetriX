@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['action_254',['action',['../structmenu__t.html#a9ba0f2f280a2a2e49c17508af48aad91',1,'menu_t']]],
-  ['actual_255',['actual',['../struct_s_t_a_t_s.html#ab45b5270856ae9a7c5869af590e53e18',1,'STATS']]],
-  ['ask_256',['ask',['../struct_g_a_m_e_b_o_a_r_d.html#abd1ca5175fd44ca3a77fb51f20f14e77',1,'GAMEBOARD']]]
+  ['_5finit_303',['_init',['../struct_s_t_a_t_s.html#a40756214f69d1c40ad70b64ae9fdc08d',1,'STATS']]],
+  ['_5fnames_304',['_names',['../struct_r_w_s_c_o_r_e_s.html#ad0795099872dd2f0d6aab5b4870acc9e',1,'RWSCORES']]],
+  ['_5fscores_305',['_scores',['../struct_r_w_s_c_o_r_e_s.html#a89aa0d0242931c4ff576febb89b14b3a',1,'RWSCORES']]],
+  ['_5ftsloaded_306',['_tsLoaded',['../struct_s_t_a_t_s.html#a0c1b7f73bd30011fb10a70ec55ca0839',1,'STATS']]]
 ];

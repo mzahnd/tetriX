@@ -1,10 +1,26 @@
 var searchData=
 [
-  ['tetrix_20documentation_187',['tetriX documentation',['../index.html',1,'']]],
-  ['text_188',['text',['../structgbox__t.html#a9000f2411604636bea30f95b761f0ad5',1,'gbox_t']]],
-  ['theend_189',['theEnd',['../display_8h.html#ab6862f6f3fd93a536b8ca665620a2d34',1,'display.c']]],
-  ['thickness_190',['thickness',['../structgbox__t.html#a9bddad7a0f5d61aefe107acf47f09549',1,'gbox_t']]],
-  ['top_191',['top',['../struct_s_t_a_t_s.html#af93f4f37fc2ad9c37af4a715423b110c',1,'STATS']]],
-  ['txt_5fsel_192',['txt_sel',['../structmenu__t.html#afc0fbb939cfef04b8ce62c7eb15a28ab',1,'menu_t']]],
-  ['type_193',['type',['../struct_p_i_e_c_e.html#ac765329451135abec74c45e1897abf26',1,'PIECE']]]
+  ['samples_182',['samples',['../struct_a_l_l_e_g_r_o___m_g_m_t.html#ae243a6ad190ef9e3a771a4cb08800361',1,'ALLEGRO_MGMT']]],
+  ['score_183',['score',['../struct_r_w_s_c_o_r_e_s.html#a9dffb288f0f2281a0b9abbd8efaa5a18',1,'RWSCORES::score()'],['../struct_s_t_a_t_s.html#a9c4f00aef659ca9198d79a368e16f74d',1,'STATS::score()']]],
+  ['scorebox_184',['scoreBox',['../structscreen_stats__t.html#a74d52eb554f9e0b756e2314cdea75b33',1,'screenStats_t']]],
+  ['screen_185',['screen',['../struct_a_l_l_e_g_r_o___m_g_m_t.html#aeb9157bcc855d24f625ef921ac83c735',1,'ALLEGRO_MGMT']]],
+  ['screen_5fheight_186',['SCREEN_HEIGHT',['../alcontrol_8h.html#a6974d08a74da681b3957b2fead2608b8',1,'alcontrol.h']]],
+  ['screen_5fwidth_187',['SCREEN_WIDTH',['../alcontrol_8h.html#a2cd109632a6dcccaa80b43561b1ab700',1,'alcontrol.h']]],
+  ['screenstats_5ft_188',['screenStats_t',['../structscreen_stats__t.html',1,'']]],
+  ['selected_189',['selected',['../structpause__t.html#a98d588dc7444faf7aa482cffa83f1bc3',1,'pause_t']]],
+  ['set_190',['set',['../struct_g_a_m_e_b_o_a_r_d.html#ad72613f9cbb7d519ce42560ee678f0c8',1,'GAMEBOARD']]],
+  ['shift_191',['shift',['../struct_g_a_m_e_b_o_a_r_d.html#a3166777258f1d6cf876b44603d78e4b0',1,'GAMEBOARD::shift()'],['../struct_p_i_e_c_e.html#a3166777258f1d6cf876b44603d78e4b0',1,'PIECE::shift()']]],
+  ['shiftingtypes_192',['shiftingTypes',['../board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54',1,'board.h']]],
+  ['shownextpiece_193',['showNextPiece',['../structscreen_stats__t.html#a547b78855546d69761ad5a94e24e35f3',1,'screenStats_t']]],
+  ['softdrop_194',['softDrop',['../struct_g_a_m_e_b_o_a_r_d.html#a19b2c4e28b33292773950a8fe27f05e1',1,'GAMEBOARD::softDrop()'],['../struct_p_i_e_c_e.html#a19b2c4e28b33292773950a8fe27f05e1',1,'PIECE::softDrop()'],['../struct_s_t_a_t_s.html#a19b2c4e28b33292773950a8fe27f05e1',1,'STATS::softDrop()']]],
+  ['space_195',['SPACE',['../display_8h.html#a5ff6e798033f03e74730e99f01936f84',1,'display.h']]],
+  ['startlevel_196',['startLevel',['../struct_g_a_m_e_b_o_a_r_d.html#a77f1fb7cb97e7f7dfe3870f43371257f',1,'GAMEBOARD']]],
+  ['startrows_197',['startRows',['../struct_g_a_m_e_b_o_a_r_d.html#adefe701563a1d449c504484265bb4f16',1,'GAMEBOARD']]],
+  ['starttimer_198',['startTimer',['../board_timer_8h.html#a2982c9a6534d5b81a42f6181c2f9620f',1,'boardTimer.c']]],
+  ['stats_199',['STATS',['../struct_s_t_a_t_s.html',1,'STATS'],['../struct_g_a_m_e_b_o_a_r_d.html#a8e07a6d96cfe14ab5bf0f09f18fa83e4',1,'GAMEBOARD::stats()']]],
+  ['stats_5fmgmt_2eh_200',['stats_mgmt.h',['../stats__mgmt_8h.html',1,'']]],
+  ['stats_5ft_201',['stats_t',['../stats__mgmt_8h.html#a6dbe0f57904cf85055b2205a632b2d50',1,'stats_mgmt.h']]],
+  ['status_202',['status',['../struct_a_l_l_e_g_r_o___m_g_m_t.html#a953b8cdd48f674ecc84f79f911e4861d',1,'ALLEGRO_MGMT']]],
+  ['stop_203',['stop',['../struct_a_l_l_e_g_r_o___m_g_m_t.html#ab036cf6700cf4136530250522cec4224',1,'ALLEGRO_MGMT']]],
+  ['surf_204',['surf',['../joystick_8h.html#a7a3807facf093801fe3daf300804f175',1,'joystick.c']]]
 ];

@@ -1,5 +1,8 @@
 var searchData=
 [
-  ['main_287',['main',['../structpause__t.html#ad9b13d43f8d617a4deeb1ad81ef24d71',1,'pause_t']]],
-  ['music_288',['music',['../struct_a_l_l_e_g_r_o___m_g_m_t.html#af3e2c61759663b57ca4064f7c839405b',1,'ALLEGRO_MGMT']]]
+  ['level_336',['level',['../struct_s_t_a_t_s.html#acf4d33ee4cff36f69b924471174dcb11',1,'STATS']]],
+  ['levelbox_337',['levelBox',['../structscreen_stats__t.html#ab9877d56b64544cd7d42f4e041df83f9',1,'screenStats_t']]],
+  ['line_338',['line',['../struct_g_a_m_e_b_o_a_r_d.html#ab911f8d482c44907b4c41926dbe1a8ea',1,'GAMEBOARD']]],
+  ['lines_339',['lines',['../struct_s_t_a_t_s.html#ad694116fca42961e1b965911d9c1b51c',1,'STATS']]],
+  ['linesbox_340',['linesBox',['../structscreen_stats__t.html#a3c300d5dd4e5fd5b287d4c7f6ccba290',1,'screenStats_t']]]
 ];
