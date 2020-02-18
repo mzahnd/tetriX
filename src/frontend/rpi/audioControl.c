@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2019 Martín E. Zahnd
+ * Copyright (C) 2020 Martín E. Zahnd
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 
 /******************************************************************************
  * 
- * @file    joystick.c
+ * @file    audioControl.c
  * 
  * @brief   ;
  * 
@@ -26,7 +26,7 @@
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
  * 
- * @date    10/12/2019, 17:31
+ * @date    18/02/2020, 14:26
  * 
  * @copyright GNU General Public License v3
  *****************************************************************************/
@@ -35,15 +35,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <pthread.h> //For audio
+//#include <SDL/SDL.h> //For audio
+
+
+#include "audiolib/libaudio.h"
+//#include "audiolib/SDL/Include/SDL.h"
+
 // This file
-#include "libs/joydrv.h"
-#include "joystick.h"
-
-#include "../../backend/board/board.h"
-
+#include "audioControl.h"
 
 /// @privatesection
 // === Constants and Macro definitions ===
+
+#define MUSIC_PATH      "./res/audio/tetris.wav"
 
 // === Enumerations, structures and typedefs ===
 
@@ -55,73 +60,68 @@
 
 // === Static variables and constant variables with file level scope ===
 
+
 // === Global function definitions ===
 /// @publicsection
 
-/**
- * @brief Analyze the joystick status.
- * 
- * It gives the user the Joystick and Joyswitch status.
- * 
- * @param None.
- * 
- * @return Joystick or Joyswitch status.
- */
 int
-surf(void)
+init_rpisound(void)
 {
-    int result;
-    
-    ///Initializes a variable and a structure with the value of the
-    ///joystick coordinates and if the switch was pressed or not.
-    jcoord_t coord;
-    jswitch_t mySwitch;
-    //joy_update();
-    coord=joy_get_coord();
-    mySwitch=joy_get_switch();
-    
-    /**
-     * Depending on the joystick and joyswitch position it returns with
-     * a result showing the state.
-     */
-    
-    ///If the switch is pressed.
-    if(mySwitch==J_PRESS)
-    {
-        result=PRESSED;
-    }
-    ///If the X coordinate  too big(to the right)
-    else if(coord.x>=DIRECTION_LIMIT)
-    {
-        result=RIGHT;
-    }
-    ///If the X coordinate too small(to the left)
-    else if(coord.x<=-DIRECTION_LIMIT)
-    {
-        result=LEFT;
-    }
-    ///If the Y coordinate too big(to the top)
-    else if(coord.y>=DIRECTION_LIMIT)
-    {
-        result=UP;
-    }
-    ///If the Y coordinate is too small(to the bottom)
-    else if(coord.y<=-DIRECTION_LIMIT)
-    {
-        result=DOWN;
-    }
-    ///If it is not in any directions.
-    else if((coord.x<=CENTER_LIMIT)&&(coord.x>=-CENTER_LIMIT))
-    {
-        result=CENTER;
-    }
-    ///It shouldn't happen because joystick will be always in one
-    ///direction or another but jut for precaution there is NOTHING state.
-    else
-    {
-        result=NONE;
-    }
-    return result;
+    return init_sound();
 }
+
+void
+playMusic(void)
+{
+    switch(player_status())
+    {
+        case NO_INIT:
+            init_rpisound();
+            break;
+
+        case READY:
+            set_file_to_play(MUSIC_PATH);
+            play_sound();
+            break;
+
+        default:
+            break;
+    }
+}
+
+void
+stopMusic(void)
+{
+    switch(player_status())
+    {
+        case PLAYING:
+            stop_sound();
+            break;
+
+        default:
+            break;
+    }
+}
+
+void
+playFX(const char * path)
+{
+    switch(player_status())
+    {
+        case NO_INIT:
+            init_rpisound();
+            break;
+
+        case READY:
+            set_file_to_play(path);
+            play_sound();
+
+            break;
+
+        default:
+            break;
+    }
+}
+
 /// @privatesection
 // === Local function definitions ===

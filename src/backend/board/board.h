@@ -114,11 +114,13 @@ enum piecesType
 enum shiftingTypes
 {
     /// Don't shift piece
-    NONE,
+    NONE = 0,
     /// Shift piece one position to the left
     LEFT,
     /// Shift piece one position to the right
     RIGHT,
+    /// Number of shifting types
+    NSHIFTING
 };
 
 /**
@@ -162,7 +164,7 @@ enum coords
 /**
  * @brief Game modes to be played
  */
-enum gModes
+/*enum gModes
 {
     /// Normal mode
     NORMAL,
@@ -172,7 +174,7 @@ enum gModes
 
     /// The game just goes crazy!
     CRAZY
-};
+};*/
 
 /// Type of every grid in the board.
 typedef int grid_t;

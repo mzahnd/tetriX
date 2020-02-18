@@ -84,7 +84,7 @@
 
 #ifdef RPI
 ///This definition allows the use of usleep()
-#    define __USE_MISC
+//#    define __USE_MISC
 #    include "frontend/rpi/rpcontrol.h"
 
 #endif

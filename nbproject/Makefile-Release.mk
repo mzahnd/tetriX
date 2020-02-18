@@ -49,6 +49,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/frontend/allegro/screen/gamePause.o \
 	${OBJECTDIR}/src/frontend/allegro/screen/gameStats.o \
 	${OBJECTDIR}/src/frontend/allegro/screen/menu.o \
+	${OBJECTDIR}/src/frontend/rpi/audioControl.o \
 	${OBJECTDIR}/src/frontend/rpi/display.o \
 	${OBJECTDIR}/src/frontend/rpi/joystick.o \
 	${OBJECTDIR}/src/frontend/rpi/rpcontrol.o \
@@ -166,6 +167,11 @@ ${OBJECTDIR}/src/frontend/allegro/screen/menu.o: src/frontend/allegro/screen/men
 	${MKDIR} -p ${OBJECTDIR}/src/frontend/allegro/screen
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/screen/menu.o src/frontend/allegro/screen/menu.c
+
+${OBJECTDIR}/src/frontend/rpi/audioControl.o: src/frontend/rpi/audioControl.c
+	${MKDIR} -p ${OBJECTDIR}/src/frontend/rpi
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/rpi/audioControl.o src/frontend/rpi/audioControl.c
 
 ${OBJECTDIR}/src/frontend/rpi/display.o: src/frontend/rpi/display.c
 	${MKDIR} -p ${OBJECTDIR}/src/frontend/rpi
@@ -425,6 +431,19 @@ ${OBJECTDIR}/src/frontend/allegro/screen/menu_nomain.o: ${OBJECTDIR}/src/fronten
 	    $(COMPILE.c) -O2 -std=c11 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/allegro/screen/menu_nomain.o src/frontend/allegro/screen/menu.c;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/frontend/allegro/screen/menu.o ${OBJECTDIR}/src/frontend/allegro/screen/menu_nomain.o;\
+	fi
+
+${OBJECTDIR}/src/frontend/rpi/audioControl_nomain.o: ${OBJECTDIR}/src/frontend/rpi/audioControl.o src/frontend/rpi/audioControl.c 
+	${MKDIR} -p ${OBJECTDIR}/src/frontend/rpi
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/frontend/rpi/audioControl.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.c) -O2 -std=c11 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/frontend/rpi/audioControl_nomain.o src/frontend/rpi/audioControl.c;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/frontend/rpi/audioControl.o ${OBJECTDIR}/src/frontend/rpi/audioControl_nomain.o;\
 	fi
 
 ${OBJECTDIR}/src/frontend/rpi/display_nomain.o: ${OBJECTDIR}/src/frontend/rpi/display.o src/frontend/rpi/display.c 

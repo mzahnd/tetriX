@@ -34,6 +34,7 @@
           <itemPath>src/frontend/allegro/primitives.h</itemPath>
         </logicalFolder>
         <logicalFolder name="f2" displayName="Raspberry Pi" projectFiles="true">
+          <itemPath>src/frontend/rpi/audioControl.h</itemPath>
           <itemPath>src/frontend/rpi/display.h</itemPath>
           <itemPath>src/frontend/rpi/joystick.h</itemPath>
           <itemPath>src/frontend/rpi/rpcontrol.h</itemPath>
@@ -89,6 +90,7 @@
           <itemPath>src/frontend/allegro/primitives.c</itemPath>
         </logicalFolder>
         <logicalFolder name="f2" displayName="Raspberry Pi" projectFiles="true">
+          <itemPath>src/frontend/rpi/audioControl.c</itemPath>
           <itemPath>src/frontend/rpi/display.c</itemPath>
           <itemPath>src/frontend/rpi/joystick.c</itemPath>
           <itemPath>src/frontend/rpi/rpcontrol.c</itemPath>
@@ -149,11 +151,21 @@
       <compileType>
         <cTool>
           <standard>10</standard>
+          <incDir>
+            <pElem>/usr/local/include</pElem>
+          </incDir>
           <commandLine>-D RPI</commandLine>
           <warningLevel>2</warningLevel>
         </cTool>
         <linkerTool>
-          <commandLine>src/frontend/rpi/libs/disdrv.o src/frontend/rpi/libs/joydrv.o src/frontend/rpi/libs/termlib.o src/frontend/rpi/audiolib/libaudio.so src/frontend/rpi/audiolib/SDL/libSDL1.so src/frontend/rpi/audiolib/SDL/libSDL-1.2.so.0 src/frontend/rpi/audiolib/SDL/libSDL-1.2.so.0.11.4</commandLine>
+          <linkerAddLib>
+            <pElem>/usr/local/lib/</pElem>
+          </linkerAddLib>
+          <linkerLibItems>
+            <linkerOptionItem>`pkg-config --libs sdl`</linkerOptionItem>
+            <linkerOptionItem>-I/usr/local/include</linkerOptionItem>
+          </linkerLibItems>
+          <commandLine>src/frontend/rpi/libs/disdrv.o src/frontend/rpi/libs/joydrv.o src/frontend/rpi/libs/termlib.o src/frontend/rpi/audiolib/libaudio.so</commandLine>
         </linkerTool>
       </compileType>
       <folder path="TestFiles/f1">
@@ -256,6 +268,10 @@
             flavor2="0">
       </item>
       <item path="src/frontend/allegro/screen/menu.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/rpi/audioControl.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/frontend/rpi/audioControl.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/frontend/rpi/display.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -438,6 +454,10 @@
       <item path="src/frontend/allegro/screen/menu.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/frontend/allegro/screen/menu.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/rpi/audioControl.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/frontend/rpi/audioControl.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/frontend/rpi/display.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -629,6 +649,10 @@
       <item path="src/frontend/allegro/screen/menu.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/frontend/allegro/screen/menu.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/rpi/audioControl.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/frontend/rpi/audioControl.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/frontend/rpi/display.c" ex="true" tool="0" flavor2="10">
       </item>

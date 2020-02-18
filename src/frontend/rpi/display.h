@@ -92,12 +92,12 @@ enum
  */
 enum order
 {
-    ///Principal menu.
+    ///Options on MAIN MENU.
     PLAY = 1, MODE, SCORE, SOUND, EXIT,
-    ///Options on SND.
-    ON = 7, OFF,
+    ///Options on SOUND.
+    ON = EXIT+2, OFF,
     ///Options on MODE.
-    EASY = 10, MEDIUM, HARD
+    EASY = OFF+2, MEDIUM, HARD
 };
 
 // === Global variables ===

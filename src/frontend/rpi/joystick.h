@@ -35,7 +35,8 @@
 #    define JOYSTICK_H
 
 // === Libraries and header files ===
-
+/// For using NSHIFTING from shiftingTypes enum
+#include "../../backend/board/board.h"
 // === Constants and Macro definitions ===
 
 ///@def DIRECTION LIMIT
@@ -48,6 +49,16 @@
 #    define CENTER_LIMIT 60
 
 // === Enumerations, structures and typedefs ===
+enum moves{
+    /// Joystick is centered
+    CENTER = NSHIFTING + 1,
+    /// Joystick is pressed
+    PRESSED,
+    /// Joystick was moved up
+    UP,
+    /// Joystick was moved down
+    DOWN
+};
 
 // === Global variables ===
 
@@ -55,16 +66,7 @@
 
 // === Global function definitions ===
 
-/**
- * @brief Analyze the joystick status.
- * 
- * It gives the user the Joystick and Joyswitch status.
- * 
- * @param None.
- * 
- * @return Joystick or Joyswitch status.
- */
-
+// Analyze the joystick status.
 int
 surf(void);
 

@@ -523,8 +523,8 @@ filledRows (int lines[BOARD_HEIGHT])
     // The whole board is readed looking for the lines
     for ( i = HIDDEN_ROWS, nFill = 0; i < MBOARD_H; i++ )
     {
-        // To make it faster, only the first and last column of each row are 
-        // checked
+        // To make it faster, only the first column of each row is checked at
+        // the beginning
         if ( CELL(i, 0) > CELL_CLEAR )
         {
             // And when both columns have a fixed block, the rest of the 

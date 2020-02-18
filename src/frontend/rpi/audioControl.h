@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2019 Martín E. Zahnd
+ * Copyright (C) 2020 Martín E. Zahnd
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 
 /**
  * 
- * @file    rpcontrol.h
+ * @file    audioControl.h
  * 
  * @brief   ;
  * 
@@ -26,25 +26,17 @@
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
  * 
- * @date    13/12/2019, 13:43
+ * @date    18/02/2020, 14:26
  * 
  * @copyright GNU General Public License v3
  */
 
-#ifndef RPCONTROL_H
-#    define RPCONTROL_H
+#ifndef AUDIOCONTROL_H
+#    define AUDIOCONTROL_H
 
 // === Libraries and header files ===
 
 // === Constants and Macro definitions ===
-
-///@def NO ERRROR
-///@brief No errors.
-#define NO_ERROR 0
-
-///@def ERROR
-///@brief Error value, it indicates that something went wrong.
-#define ERROR -1
 
 // === Enumerations, structures and typedefs ===
 
@@ -53,9 +45,8 @@
 // === ROM Constant variables ===
 
 // === Global function definitions ===
-
-// Run game on Raspberry PI.
-int
-rpi (void);
-
-#endif /* RPCONTROL_H */
+int init_rpisound(void);
+void playMusic(void);
+void stopMusic(void);
+void playFX(const char * path);
+#endif /* AUDIOCONTROL_H */

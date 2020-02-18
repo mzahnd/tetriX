@@ -17,7 +17,7 @@
 
 /**
  * 
- * @file    rpcontrol.h
+ * @file    graph.h
  * 
  * @brief   ;
  * 
@@ -26,36 +26,41 @@
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
  * 
- * @date    13/12/2019, 13:43
+ * @date    16/12/2019, 15:33
  * 
  * @copyright GNU General Public License v3
  */
 
-#ifndef RPCONTROL_H
-#    define RPCONTROL_H
+#ifndef GRAPH_H
+#    define GRAPH_H
 
 // === Libraries and header files ===
+#include <allegro5/allegro.h>
+#include <allegro5/allegro_image.h>
+#include <allegro5/allegro_primitives.h>
+#include "../../backend/board/board.h"
 
 // === Constants and Macro definitions ===
 
-///@def NO ERRROR
-///@brief No errors.
-#define NO_ERROR 0
-
-///@def ERROR
-///@brief Error value, it indicates that something went wrong.
-#define ERROR -1
-
 // === Enumerations, structures and typedefs ===
+
+typedef struct
+{
+    ALLEGRO_DISPLAY* display;
+    ALLEGRO_EVENT_QUEUE* queue;
+    ALLEGRO_TIMER* timer;
+    ALLEGRO_EVENT ev;
+    ALLEGRO_STATE state;
+    board_t board;
+}allegro_t;
 
 // === Global variables ===
 
 // === ROM Constant variables ===
 
 // === Global function definitions ===
-
-// Run game on Raspberry PI.
-int
-rpi (void);
-
-#endif /* RPCONTROL_H */
+int allegro();
+bool init_allegro();
+void dispatch_key (allegro_t *);
+void draw_board(board_t*);
+#endif /* GRAPH_H */

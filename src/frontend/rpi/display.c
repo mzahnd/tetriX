@@ -360,7 +360,8 @@ printW(words_t word, int x, int y)
             x -= 2;
         }
         ///If it is a shorter letter, it doesn't has much space as the others
-        else if(((*(word[k]))[4][2] == 0)&&(!sameLetter(word[k], &pp)))
+        else if(((*(word[k]))[4][2] == 0)&&(!sameLetter(word[k], &pp))
+                && (!sameLetter(word[k], &tt)))
         {
             x -= 1;
         }
@@ -390,6 +391,9 @@ printWmove(words_t word, int xo, int y)
     {
         joy_update();
     }
+    
+    ///It clears the screen.
+    disp_n_clear(MAX, MAX / 2, 0, MAX / 2);
     
     ///It prints the word and it make a pause then.
     printW(word, xo, y);
@@ -633,7 +637,7 @@ theEnd(void)
     dcoord_t point;
 
     ///It turns on and off the leds four times.
-    while(k <= 4)
+    while(k <= 2)
     {
         for(i = 0; i < MAX; i++)
         {
@@ -674,7 +678,7 @@ theEnd(void)
         
         ///It makes a little delay between every change.
         disp_update();
-        usleep(1000000);
+        usleep(500000);
     }
 
 }
