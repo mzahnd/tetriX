@@ -46,6 +46,12 @@ call_make()
    chmod +x ${PACKAGESCRIPT}${1}.bash
    ${PACKAGESCRIPT}${1}.bash
 
+   if [ ${1} == ${MAKERPI} ]
+   then
+        cp dist/Release_RaspberryPi/GNU-Linux/package/*.tar tetrix.tar
+   fi
+
+
    # Remove unnecessary dirs
    rm -R build
    rm -R dist
