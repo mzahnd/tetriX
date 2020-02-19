@@ -1,10 +1,4 @@
 var searchData=
 [
-  ['game_5ftxt_5fcolor_470',['GAME_TXT_COLOR',['../game_8h.html#a528838c90828d470a32e197244a812b7',1,'game.h']]],
-  ['game_5ftxt_5ffont_5fbold_5fpath_471',['GAME_TXT_FONT_BOLD_PATH',['../game_8h.html#adb7c986c76c52aef61355d28c7234d08',1,'game.h']]],
-  ['game_5ftxt_5ffont_5fpath_472',['GAME_TXT_FONT_PATH',['../game_8h.html#acea2c99f632b08daa2f0210238276bf0',1,'game.h']]],
-  ['game_5ftxt_5foffset_473',['GAME_TXT_OFFSET',['../game_8h.html#a85c41e0017b49fabd6d41717b306e0a8',1,'game.h']]],
-  ['game_5ftxt_5fsize_474',['GAME_TXT_SIZE',['../game_8h.html#ad26784cbac88f292d0620446521b2a31',1,'game.h']]],
-  ['game_5ftxt_5fsize_5fbold_475',['GAME_TXT_SIZE_BOLD',['../game_8h.html#a62d05982d39658f0d00a20767d1e0374',1,'game.h']]],
-  ['get_5fcell_476',['GET_CELL',['../board_8h.html#afdbe53bda9ade301796b7017b69562a3',1,'board.h']]]
+  ['direction_5flimit',['DIRECTION_LIMIT',['../joystick_8h.html#a49980706910240a1ec5cfc494bc900e7',1,'joystick.h']]]
 ];

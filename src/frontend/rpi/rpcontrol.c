@@ -19,9 +19,10 @@
  * 
  * @file    rpcontrol.c
  * 
- * @brief   ;
+ * @brief   Raspberry module. It works with audio, display and joystick 
+ *          control to show on raspberry pi the game(backend).
  * 
- * @details ; 
+ * @details It is the main file of raspberry control.
  *
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
@@ -38,18 +39,15 @@
 #include <stdbool.h> 
 #include <string.h> // For memcpy
 
-
 ///Frontend defines, enums and functions.
 #include "display.h"
 #include "joystick.h"
+#include "audioControl.h"
 
 ///RPI Libraries.
 #include "libs/disdrv.h"
 #include "libs/joydrv.h"
-
 #include "audiolib/libaudio.h"
-
-#include "audioControl.h"
 
 ///Backend defines, enums and functions.
 #include "../../backend/board/board.h"
@@ -62,7 +60,7 @@
 /// @privatesection
 // === Constants and Macro definitions ===
 
-///@def PAUSE LIMIT
+///@def PAUSE_LIMIT
 ///@brief Time that indicates the user wants to go to pause menu.
 #define PAUSE_LIMIT 20
 
@@ -90,9 +88,10 @@ enum gamestatus
  * from the game to the menu to change music, difficulty and check score.
  * 
  * @param A pointer to the gameboard.
+ * @param A pointer to the game stats.
  * @param The difficulty of the game.
  * 
- * @return 0 or 1 depending if the user lost or wanted to go to the menu.
+ * @return The game status(pause, menu, exit).
  */
 int
 play_tetris(board_t * gameboard,stats_t* gameStats, int dif);
@@ -119,8 +118,6 @@ printTetrix(void);
  */
 void
 printScore(words_t scorestring, int scorenumber);
-
-
 
 // === ROM Constant variables with file level scope ===
 
@@ -168,7 +165,7 @@ rpi(void)
     stats_t * gameStats = NULL;
     stats_t scoretable;
 
-    //Variable that makes a loop in the menu.
+    ///Game status.
     int gameplay = GM_MENU;
     ///Variable that takes joystick state.
     int joyc;
@@ -185,19 +182,18 @@ rpi(void)
                                 &on, &off, NULL,
                                 &easy, &medium, &hard, NULL};
 
-    ///Initializes the display, joystick and gameboard.
+    ///Initializes the display, audio, joystick and gameboard.
     disp_init();
     joy_init();
-
+/* 
+    init_sound();
+*/
     ///Clears the display.
     disp_clear();
-
-
-    ///Initializes the audio.
-    init_rpisound(); 
+/*
+    ///Turns on the music 
     playMusic();     
-
-    
+*/
     ///Starts the introduction animation.
     initMenu();
     disp_update();
@@ -218,7 +214,7 @@ rpi(void)
         joy_update();
     }
 
-    ///The menu control.
+    ///The menu, it includes pause menu.
     while(gameplay == GM_MENU || gameplay == GM_PAUSE)
     {
         ///It analyzes the joystick position.
@@ -237,8 +233,8 @@ rpi(void)
             k--;
         }
 
-            ///If the joyswitch is pressed it analyzes which one is the 
-            ///option chosen.
+        ///If the joyswitch is pressed it analyzes which one is the 
+        ///option chosen.
         else if(joyc == PRESSED)
         {
             switch(k)
@@ -246,7 +242,8 @@ rpi(void)
                     ///If it is play, it opens the play menu.
                 case PLAY:
                     disp_clear();
-
+                    
+                    ///It doesn't start until joyswitch is unpressed
                     while(surf() == PRESSED)
                     {
                         joy_update();
@@ -262,7 +259,7 @@ rpi(void)
                     }
                     ///It comes with the instruction of pausing the game 
                     ///or ending it.
-                    stopMusic();
+                    //stopMusic();
                     gameplay = play_tetris(&gameboard, gameStats, dif);
                     disp_clear();
                     break;
@@ -272,18 +269,18 @@ rpi(void)
                     break;
                     ///If it is on, it plays the music.
                 case ON:
-                    play_sound();
+                    //playMusic();
                     k = PLAY;
                     break;
                     ///If it is off, it pauses the music.
                 case OFF:
-                    pause_sound();
+                    //stopMusic();
                     k = PLAY;
                     break;
                     ///If it is exit, it finishes the loop.
                 case EXIT:
                     gameplay = GM_EXIT;
-                    stopMusic();
+                    //stopMusic();
                     break;
                     ///If it is mode, it goes to Easy/Hard.
                 case MODE:
@@ -341,6 +338,7 @@ rpi(void)
         {
             k++;
         }
+        
         ///It clears the menu but not the TeTrIs sign.
         disp_n_clear(MAX, MAX / 2, 0, 8);
 
@@ -359,6 +357,7 @@ rpi(void)
             printW(*(wordsArray[k]), 0, 9);
         }
 
+        ///It prints tetrix at the top.
         printTetrix();
         disp_update();
 
@@ -373,22 +372,23 @@ rpi(void)
         }
     }
 
+/*
     ///It initializes and plays a goodbye song.
-    playFX(FX_EXIT);    
+    //playFX(FX_EXIT);    
 
     ///It doesn't finish until the song stops.
     
     while(player_status() == PLAYING)
     {
-        theEnd();
-    };
-   
+           theEnd();     
+    }
+*/   
         
     ///It makes an animation saying goodbye(same as hello twice)
-    ///THIS IS HERE BECAUSE WE ARE HAVING TROUBLE WITH THE MUSIC.
-    //theEnd();
-
-
+    //THIS IS HERE BECAUSE WE ARE HAVING TROUBLE WITH THE MUSIC.
+    theEnd();
+    theEnd();
+    
     ///It turns off the display.
     disp_clear();
 
@@ -509,8 +509,9 @@ play_tetris(board_t * gameboard, stats_t * gameStats, int dif)
                 ///If there is one, it eliminates the line. 
                 lineoff(lines, lines[k]);
                 gameboard->clear.line(lines, k);
+                ///It changes delay time in case too many rows were cleared.
                 delay_time= askTimeLimit ();
-                playFX(FX_LINE);
+                //playFX(FX_LINE);
             }
         }
 
@@ -522,13 +523,17 @@ play_tetris(board_t * gameboard, stats_t * gameStats, int dif)
         usleep(delay_time*10);
     }
 
+    ///If the user lost.
     if(gameboard->ask.endGame())
     {
+        ///It creates a scorestring that wil be shown at the top of the display.
         words_t scorestring = {NULL};
         stats_t *gameStats = (stats_t *) gameboard->ask.stats();
 
+        ///It prints the actual score.
         printScore(scorestring, gameStats->score.actual);
         gameboard->destroy();
+        ///It goes to the menu as if it has to start again.
         gameplay = GM_MENU;
     }
 
@@ -571,7 +576,7 @@ printScore(words_t scorestring, int scorenumber)
     scorestring[k] = NULL;
 
     ///It creates a "score string" with every digit from the score.
-    while(k >= 0)
+    while(k > 0)
     {
         ///It starts from right to left.
         k--;

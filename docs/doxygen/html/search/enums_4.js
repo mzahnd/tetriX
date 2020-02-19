@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['options_401',['options',['../game_pause_8h.html#a02eacfd40be9042ceb0f07547365203d',1,'gamePause.h']]],
-  ['order_402',['order',['../display_8h.html#a9f4e8630516f3da89537313b4c828759',1,'display.h']]]
+  ['pause',['pause',['../game_pause_8h.html#afd7d49e17b69bd6bf3d7a649856c1067',1,'gamePause.h']]],
+  ['piecestype',['piecesType',['../board_8h.html#aa8acd4b6f8e39eb057cf562c3910c554',1,'board.h']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['coords_398',['coords',['../board_8h.html#adf44f03c6ae7b279f60019d07e59891c',1,'board.h']]]
+  ['coords',['coords',['../board_8h.html#adf44f03c6ae7b279f60019d07e59891c',1,'board.h']]]
 ];

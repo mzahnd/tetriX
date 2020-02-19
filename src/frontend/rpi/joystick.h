@@ -19,9 +19,9 @@
  * 
  * @file    joystick.h
  * 
- * @brief   ;
+ * @brief   Control module to analyze the user joystick movements.
  * 
- * @details ; 
+ * @details It has functions to control and read joystick movements.
  *
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
@@ -39,12 +39,12 @@
 #include "../../backend/board/board.h"
 // === Constants and Macro definitions ===
 
-///@def DIRECTION LIMIT
+///@def DIRECTION_LIMIT
 ///@brief Up to this number, it will be considered a 
 ///       right,left,top or bottom signal.
 #    define DIRECTION_LIMIT 100
 
-///@def CENTER LIMIT
+///@def CENTER_LIMIT
 ///@brief From 0 until this limit, it will be considered a center signal.
 #    define CENTER_LIMIT 60
 

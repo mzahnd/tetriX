@@ -19,9 +19,9 @@
  * 
  * @file    audioControl.h
  * 
- * @brief   ;
+ * @brief   Audio controller for RPI.
  * 
- * @details ; 
+ * @details It has all the functions and libraries used to play sound on RPI. 
  *
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
@@ -45,8 +45,38 @@
 // === ROM Constant variables ===
 
 // === Global function definitions ===
-int init_rpisound(void);
+
+/**
+ * @brief Plays RPI music.
+ * 
+ * It plays the music of the game.
+ * 
+ * @param None
+ * 
+ * @return Nothing
+ */
 void playMusic(void);
+
+/**
+ * @brief Stops the music.
+ * 
+ * It stops the music of the game
+ * 
+ * @param None
+ * 
+ * @return Nothing
+ */
 void stopMusic(void);
+
+/**
+ * @brief Plays the music effects.
+ * 
+ * It plays the music effects.
+ *
+ * @param Effect name.
+ * 
+ * @return Nothing
+ */
 void playFX(const char * path);
+
 #endif /* AUDIOCONTROL_H */

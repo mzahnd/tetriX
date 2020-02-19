@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['shiftingtypes_405',['shiftingTypes',['../board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54',1,'board.h']]]
+  ['triangle_5fdirections',['triangle_directions',['../primitives_8h.html#a93bfde84a99b455eb919622bb9959e10',1,'primitives.h']]],
+  ['trianglecoords',['triangleCoords',['../primitives_8h.html#a6f4cc7bb70fbf8b2075966abcfa45b24',1,'primitives.h']]]
 ];

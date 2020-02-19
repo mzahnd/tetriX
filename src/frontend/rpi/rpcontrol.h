@@ -19,9 +19,10 @@
  * 
  * @file    rpcontrol.h
  * 
- * @brief   ;
+ * @brief   Raspberry module. It works with audio, display and joystick 
+ *          control to show on raspberry pi the game(backend).
  * 
- * @details ; 
+ * @details It is the main file of raspberry control
  *
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
@@ -38,7 +39,7 @@
 
 // === Constants and Macro definitions ===
 
-///@def NO ERRROR
+///@def NO_ERRROR
 ///@brief No errors.
 #define NO_ERROR 0
 

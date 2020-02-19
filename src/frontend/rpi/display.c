@@ -19,9 +19,11 @@
  * 
  * @file    display.c
  * 
- * @brief   Global functions are explained in the Header File.
+ * @brief   Visual module to show on the display the gameboard, scores and menu.
  *          
- * @details ; 
+ * @details It has all the matrices of letters and numbers used for showing
+ *          the user the menu and scores. It also has animations and 
+ *          functions to show the gameboard.
  *
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
@@ -52,22 +54,31 @@
 /// @privatesection
 // === Constants and Macro definitions ===
 
+///@def SPACE
+///@brief Space between each letter printed on the board.
+#    define SPACE 4
+
+///@def LEFT_DISPLACEMENT
+///@brief Max displacement that a word can have from the left border
+///       of the display to the left(coordinate x value).
+#    define LEFT_DISPLACEMENT 14
+
+///@def RIGHT_DISPLACEMENT
+///@brief Max displacement that a word can have from the right border
+///       of the display to the right(coordinate x value).
+#    define RIGHT_DISPLACEMENT 2
+
 // === Enumerations, structures and typedefs ===
 
-// === Global variables ===
-/**
- * @brief Matrices 5x5 to represent characters.
- * 
- */
-///Char '.'
-letters_t dot = {
-    {0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0},
-    {1, 0, 0, 0, 0}
+///
+///@brief Results for sameLetter();
+enum
+{
+    NOT_SAME,
+    SAME
 };
 
+// === Global variables ===
 /**
  * @brief Matrices 5x5 to represent every letter.
  * 
@@ -302,6 +313,22 @@ letters_t nine = {
  */
 int
 sameLetter(letters_t * letter1, letters_t * letter2);
+
+/**
+ * @brief Print letters on the board.
+ * 
+ * It prints the matrices of letters starting on the coordinate{x,y}
+ * the user decides.
+ * 
+ * @param Pointer to letters_t.
+ * @param Coordinate's X value.
+ * @param Coordinate's Y value.
+ * 
+ * @return Nothing
+ */
+
+void
+printL(letters_t * letter, int x, int y);
 
 // === ROM Constant variables with file level scope ===
 
@@ -544,9 +571,79 @@ initMenu(void)
     printL(&ii, 11, 0);
     printL(&xx, 13, 2);
     //disp_update();
-
 }
 
+void
+lineoff(int line [BOARD_WIDTH], int y)
+{
+    int j;
+    dcoord_t point;
+
+    point.y = y;
+
+    ///It turns off every led of the line with a delay of 0.1 seconds.
+    for(j = 0; j < BOARD_WIDTH; j++)
+    {
+        point.x = (j + 3);
+        disp_write(point, D_OFF);
+        usleep(100000);
+        disp_update();
+    }
+    return;
+}
+
+void
+theEnd(void)
+{
+    int i, j, k = 0,n=0;
+    dcoord_t point;
+
+    ///It turns on and off the leds four times.
+    while(k <= 4)
+    {
+        for(i = 0; i < MAX; i++)
+        {
+            point.y = i;
+
+            for(j = 0; j < MAX; j++)
+            {
+                point.x = j;
+                
+                if(((i + j) % 2)&&n)
+                {
+                    disp_write(point, D_OFF);
+                }
+                else if(n)
+                {
+                    disp_write(point, D_ON);
+                }
+                else if((i + j) % 2)
+                {
+                    disp_write(point, D_ON);
+                }
+                else 
+                {
+                    disp_write(point, D_OFF);
+                }
+            }
+        }
+        k++;
+        
+        if(n==0)
+        {
+            n++;
+        }
+        else
+        {
+            n=0;
+        }
+        
+        ///It makes a little delay between every change.
+        disp_update();
+        usleep(500000);
+    }
+
+}
 
 /// @privatesection
 // === Local function definitions ===
@@ -611,74 +708,3 @@ sameLetter(letters_t * letter1, letters_t * letter2)
     return result;
 }
 
-void
-lineoff(int line [BOARD_WIDTH], int y)
-{
-    int j;
-    dcoord_t point;
-
-    point.y = y;
-
-    ///It turns off every led of the line with a delay of 0.1 seconds.
-    for(j = 0; j < BOARD_WIDTH; j++)
-    {
-        point.x = (j + 3);
-        disp_write(point, D_OFF);
-        usleep(100000);
-        disp_update();
-    }
-    return;
-}
-
-void
-theEnd(void)
-{
-    int i, j, k = 0,n=0;
-    dcoord_t point;
-
-    ///It turns on and off the leds four times.
-    while(k <= 2)
-    {
-        for(i = 0; i < MAX; i++)
-        {
-            point.y = i;
-
-            for(j = 0; j < MAX; j++)
-            {
-                point.x = j;
-                
-                if(((i + j) % 2)&&n)
-                {
-                    disp_write(point, D_OFF);
-                }
-                else if(n)
-                {
-                    disp_write(point, D_ON);
-                }
-                else if((i + j) % 2)
-                {
-                    disp_write(point, D_ON);
-                }
-                else 
-                {
-                    disp_write(point, D_OFF);
-                }
-            }
-        }
-        k++;
-        
-        if(n==0)
-        {
-            n++;
-        }
-        else
-        {
-            n=0;
-        }
-        
-        ///It makes a little delay between every change.
-        disp_update();
-        usleep(500000);
-    }
-
-}
