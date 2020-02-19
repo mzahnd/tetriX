@@ -304,7 +304,7 @@ rpi (void)
                          initStats(&scoretable) == EXIT_SUCCESS &&
                          scoretable._tsLoaded == true )
                     {
-                        printScore(scorestring, scoretable.score.top);
+                        printScore(*scorestring, scoretable.score.top);
                     }
                     else if ( gameplay == GM_PAUSE &&
                               gameStats != NULL &&
@@ -313,13 +313,13 @@ rpi (void)
                         board_t tmp;
                         memcpy(&tmp, &gameboard, sizeof (tmp));
 
-                        printScore(scorestring, gameStats->score.actual);
+                        printScore(*scorestring, gameStats->score.actual);
 
                         memcpy(&gameboard, &tmp, sizeof (tmp));
                     }
                     else
                     {
-                        printScore(scorestring, 99999999);
+                        printScore(*scorestring, 99999999);
                     }
                     break;
             }
@@ -588,4 +588,3 @@ printScore (words_t scorestring, int scorenumber)
     ///It prints the "score string"
     printWmove(scorestring, 0, 9);
 }
-

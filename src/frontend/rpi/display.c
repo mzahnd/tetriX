@@ -314,22 +314,6 @@ letters_t nine = {
 int
 sameLetter(letters_t * letter1, letters_t * letter2);
 
-/**
- * @brief Print letters on the board.
- * 
- * It prints the matrices of letters starting on the coordinate{x,y}
- * the user decides.
- * 
- * @param Pointer to letters_t.
- * @param Coordinate's X value.
- * @param Coordinate's Y value.
- * 
- * @return Nothing
- */
-
-void
-printL(letters_t * letter, int x, int y);
-
 // === ROM Constant variables with file level scope ===
 
 // === Static variables and constant variables with file level scope ===

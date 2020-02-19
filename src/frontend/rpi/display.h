@@ -96,6 +96,22 @@ void
 initMenu(void);
 
 /**
+ * @brief Print letters on the board.
+ * 
+ * It prints the matrices of letters starting on the coordinate{x,y}
+ * the user decides.
+ * 
+ * @param Pointer to letters_t.
+ * @param Coordinate's X value.
+ * @param Coordinate's Y value.
+ * 
+ * @return Nothing
+ */
+
+void
+printL(letters_t * letter, int x, int y);
+
+/**
  * @brief Print a game matrix.
  * 
  * It shows on the display the matrix where the game is developed.
