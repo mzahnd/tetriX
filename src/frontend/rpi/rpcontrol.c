@@ -434,6 +434,9 @@ play_tetris (board_t * gameboard, stats_t * gameStats, int dif)
         case HARD:
             mode = 0;
             break;
+        default:
+            mode = 20;
+            break;
     }
 
     //It is a loop until the game ends.

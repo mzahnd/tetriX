@@ -35,9 +35,9 @@ CND_PLATFORM_Release_RaspberryPi=GNU-Linux
 CND_ARTIFACT_DIR_Release_RaspberryPi=dist/Release_RaspberryPi/GNU-Linux
 CND_ARTIFACT_NAME_Release_RaspberryPi=tetrix
 CND_ARTIFACT_PATH_Release_RaspberryPi=dist/Release_RaspberryPi/GNU-Linux/tetrix
-CND_PACKAGE_DIR_Release_RaspberryPi=dist/Release_RaspberryPi/GNU-Linux/package
+CND_PACKAGE_DIR_Release_RaspberryPi=
 CND_PACKAGE_NAME_Release_RaspberryPi=tetrix.tar
-CND_PACKAGE_PATH_Release_RaspberryPi=dist/Release_RaspberryPi/GNU-Linux/package/tetrix.tar
+CND_PACKAGE_PATH_Release_RaspberryPi=tetrix.tar
 #
 # include compiler specific variables
 #
