@@ -19,9 +19,10 @@
  * 
  * @file    endGame.c
  * 
- * @brief   ;
+ * @brief   Draw a screen after the game has ended.
  * 
- * @details ; 
+ * @details Displays the top ten score table or an "arcade character selector"
+ * for entering a name whenever a new top score has been made.
  *
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
@@ -75,6 +76,7 @@
 #define ENDGAME_BKGND_COLOR     "#000000"
 #define BKGND_WIDTH             1920
 #define BKGND_HEIGHT            1280
+#define ENDGAME_BKGND           "res/images/game/endgame.png"
 
 #define NEWTOP_TXT_COLOR        "#FFFF00"
 
@@ -245,6 +247,7 @@ box_loadColors (gbox_t * box);
 static void
 box_loadFonts (gbox_t * box);
 
+// Verify if a pressed key is valid and perform its corresponding actions
 static void
 checkKeys (unsigned char key[ALLEGRO_KEY_MAX], endGame_t * stru, int screen);
 
@@ -276,9 +279,11 @@ init_insName (endGame_t * stru);
 static void
 load_bkgnd (endGame_t * stru);
 
+// Manage display events for both, "arcade input" and top score printing
 static void
 manageEvents (endGame_t * stru, int screen);
 
+// Initialize common settings for triangles
 static void
 triangle_initCommon (triangle_t * tri);
 
@@ -348,6 +353,10 @@ alg_endGame (allegro_t * alStru, const stats_t * gameStats)
         alStru -> exit = true;
         return AL_ERROR;
     }
+    else
+    {
+        endGameSt.exit = false;
+    }
 
     // Copy alStru to the structure
     endGameSt.alStru = alStru;
@@ -361,6 +370,8 @@ alg_endGame (allegro_t * alStru, const stats_t * gameStats)
     endGameSt.bkgnd = NULL;
     endGameSt.timer.main = NULL;
     endGameSt.evq = NULL;
+
+    endGameSt.redraw = true;
 
     endGameSt.subScreens.displayTop.selected = DT_BUTTON0;
 
@@ -512,6 +523,15 @@ box_loadFonts (gbox_t * box)
     box -> text.color = GAME_TXT_COLOR;
 }
 
+/**
+ * @brief Verify if a pressed key is valid and perform its corresponding action
+ * 
+ * @param key Key array with keys that have been pressed.
+ * @param stru Current endGame_t structure.
+ * @param screen Screen that's being printed.
+ * 
+ * @return Nothing
+ */
 static void
 checkKeys (unsigned char key[ALLEGRO_KEY_MAX], endGame_t * stru, int screen)
 {
@@ -881,6 +901,29 @@ draw_displayTop (endGame_t * stru)
 /**
  * @brief Draw INSNAME screen
  * 
+ * This will be printed by this function (insted of A, any character from 
+ * validCharacters[] can also be printed):
+ * 
+ *          /\             /\           /\
+ *         /  \           /  \         /  \
+ *        /    \         /    \       /    \
+ *        ------         ------       ------
+ *  
+ *     ------------- ------------- -------------
+ *     |           | |           | |           |
+ *     |     *     | |     *     | |     *     |
+ *     |    * *    | |    * *    | |    * *    |
+ *     |   *   *   | |   *   *   | |   *   *   |
+ *     |  * *** *  | |  * *** *  | |  * *** *  |
+ *     | *       * | | *       * | | *       * |
+ *     |           | |           | |           |
+ *     ------------- ------------- -------------
+ * 
+ *        ------         ------       ------
+ *        \    /         \    /       \    /
+ *         \  /           \  /         \  /
+ *          \/             \/           \/
+ * 
  * @param stru End Game screen structure
  * 
  * @return Nothing
@@ -1139,8 +1182,11 @@ init_insName (endGame_t * stru)
 
     for ( i = 0; i < NAMESIZE - 1; i++ )
     {
-        strncpy(&(stru -> subScreens.insName.playerName[i]),
-                validCharacters[0], 1);
+        memcpy(&(stru -> subScreens.insName.playerName[i]),
+               validCharacters[0],
+               1);
+        /*strncpy(&(stru -> subScreens.insName.playerName[i]),
+                validCharacters[0], 1);*/
         stru -> subScreens.insName.characters.selChar[i] = 0;
     }
     // Manually set NULL character at the end
@@ -1228,7 +1274,7 @@ load_bkgnd (endGame_t * stru)
     // Background
     al_clear_to_color(al_color_html(ENDGAME_BKGND_COLOR));
 
-    stru -> bkgnd = al_load_bitmap("res/images/game/endgame.png");
+    stru -> bkgnd = al_load_bitmap(ENDGAME_BKGND);
 
     if ( stru -> bkgnd == NULL )
     {
@@ -1243,6 +1289,14 @@ load_bkgnd (endGame_t * stru)
                           0);
 }
 
+/**
+ * @brief Manage display events for both, "arcade input" and top score printing
+ * 
+ * @param stru Current endGame_t structure.
+ * @param screen Screen that it's being printed.
+ * 
+ * @return Nothing
+ */
 static void
 manageEvents (endGame_t * stru, int screen)
 {
@@ -1308,6 +1362,13 @@ manageEvents (endGame_t * stru, int screen)
     }
 }
 
+/**
+ * @brief Initialize common settings for triangles.
+ * 
+ * @param tri Triangle to be initialized with common settings.
+ * 
+ * @return Nothing
+ */
 static void
 triangle_initCommon (triangle_t * tri)
 {

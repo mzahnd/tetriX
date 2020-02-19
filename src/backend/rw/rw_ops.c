@@ -19,9 +19,14 @@
  * 
  * @file    rw_ops.c
  * 
- * @brief   ;
+ * @brief   Read and Write operations performed by the game.
  * 
- * @details ; 
+ * @details Reads and writes the Top Score table inside gamefiles/topscore.
+ * Both, read and write operations verify if the directory and file already
+ * exists and creates both whenever necessary.
+
+ * It is printed a message in stderr when this happens, saying that the file
+ * could not be found and that it will be created.
  *
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
@@ -171,13 +176,13 @@ static void
 copyName (char * destination, const char * source)
 {
     // Copy string
-    strncpy(destination, source, NAMESIZE - 1);
+    memcpy(destination, source, NAMESIZE - 1);
     // Null character manually added
     /* 
      * Not needed since strncpy is used and all strings are initialized with
      * an EOS at the end
      */
-    //*(destination + NAMESIZE) = EOS;  
+    *(destination + NAMESIZE - 1) = EOS;
 }
 
 /**
@@ -218,6 +223,8 @@ createDummy (FILE **** pFile)
 
     // Go back to the beggining of the file
     rewind(***pFile);
+
+    fputs("File created successfully.\n", stderr);
 
     return EXIT_SUCCESS;
 }
@@ -397,7 +404,7 @@ verifyFile (FILE *** pFile)
 
         if ( errno != 0 )
         {
-            perror("File could not be created. ");
+            perror("File could not be created.");
             ans = EXIT_FAILURE;
         }
     }
@@ -422,7 +429,7 @@ static int
 writeNewScore (rwScores_t * self)
 {
     // Counter
-    int i, j;
+    int newScorePosition, j;
 
     // File to read
     FILE * pFile;
@@ -450,17 +457,20 @@ writeNewScore (rwScores_t * self)
             return EXIT_FAILURE;
         }
 
+        // Set the last character as '\0' to avoid an invalid string
+        self -> add.name[NAMESIZE - 1] = EOS;
+
         // Get the new score position in the list
-        i = 0;
-        while ( self -> add.score < self -> get._scores[i] )
+        newScorePosition = 0;
+        while ( self -> add.score < self -> get._scores[newScorePosition] )
         {
-            i++;
+            newScorePosition++;
         }
 
         // Move old scores one position down in the list (the lowest will be 
         // discarded
         j = NTOPSCORE - 1;
-        while ( j > i )
+        while ( j > newScorePosition )
         {
             // Score
             self -> get._scores[j] = self -> get._scores[j - 1];
@@ -473,27 +483,28 @@ writeNewScore (rwScores_t * self)
 
         // Add the new score
         // Score
-        self -> get._scores[i] = self -> add.score;
+        self -> get._scores[newScorePosition] = self -> add.score;
         // Name
         // When an empty string is passed, create a new one
-        if ( self -> get._names[i][0] == EOS )
+        if ( self -> get._names[newScorePosition][0] == EOS )
         {
-            for ( j = 0; j < NTOPSCORE; j++ )
+            for ( j = 0; j < NAMESIZE; j++ )
             {
-                self -> get._names[i][j] = DUMMYCHAR;
+                self -> get._names[newScorePosition][j] = DUMMYCHAR;
             }
             // Manually add NULL character at the end
-            self -> get._names[i][j] = EOS;
+            self -> get._names[newScorePosition][NAMESIZE - 1] = EOS;
         }
 
-        copyName(self -> get._names[i], self -> add.name);
+        // Copy to the structure
+        copyName(self -> get._names[newScorePosition], self -> add.name);
 
         // Write the file with the new scores
         rewind(pFile);
-        for ( i = 0; i < NTOPSCORE; i++ )
+        for ( newScorePosition = 0; newScorePosition < NTOPSCORE; newScorePosition++ )
         {
             fprintf(pFile, FILE_TXT_FORMAT,
-                    self -> get._names[i], self -> get._scores[i]);
+                    self -> get._names[newScorePosition], self -> get._scores[newScorePosition]);
         }
 
         // Close file

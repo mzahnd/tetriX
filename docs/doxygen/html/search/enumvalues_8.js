@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['on',['ON',['../display_8h.html#a9f4e8630516f3da89537313b4c828759a977d478dacaae531f95695750d1e9d03',1,'display.h']]],
-  ['opret',['OPRET',['../game_pause_8h.html#a02eacfd40be9042ceb0f07547365203da72a4dfd0019f9317bf5e882f4048dea9',1,'gamePause.h']]],
-  ['options',['OPTIONS',['../game_pause_8h.html#afd7d49e17b69bd6bf3d7a649856c1067a1b20f1b4adb6ff9778b284fb46f6f99d',1,'gamePause.h']]],
-  ['optionsmenu',['OPTIONSMENU',['../game_pause_8h.html#ae95003e7ddd484f943bbadfd40785323a1ca3abcb6d4f6ca6278ad021b39d9c3e',1,'gamePause.h']]]
+  ['none_447',['NONE',['../board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54ac157bdf0b85a40d2619cbc8bc1ae5fe2',1,'NONE():&#160;board.h'],['../menu_8h.html#a6f809259b805e28a03a346aaec20a64fac157bdf0b85a40d2619cbc8bc1ae5fe2',1,'NONE():&#160;menu.h']]],
+  ['np_448',['NP',['../game_pause_8h.html#a02eacfd40be9042ceb0f07547365203da4bab504a61d7f2923c2225dc896c91c6',1,'gamePause.h']]],
+  ['nshifting_449',['NSHIFTING',['../board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54a6bb6048d61bb6064b6aae890acdecd1b',1,'board.h']]]
 ];

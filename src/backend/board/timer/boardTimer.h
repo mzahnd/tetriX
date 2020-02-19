@@ -19,9 +19,13 @@
  * 
  * @file    boardTimer.h
  * 
- * @brief   ;
+ * @brief   Time between different board updates when playing.
  * 
- * @details ; 
+ * @details After initializing the timer, askTimeLimit() can be called to 
+ * know how much time should be ellapsed between two board updates. This can
+ * be handled with your own code or using askTimer(), which automatically calls
+ * askTimeLimit() and, using the system clock, calculates if that time has
+ * been ellapsed.
  *
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
@@ -32,7 +36,7 @@
  */
 
 #ifndef BOARDTIMER_H
-#    define BOARDTIMER_H
+#    define BOARDTIMER_H 1
 
 // === Libraries and header files ===
 // For STATS struct
@@ -60,7 +64,7 @@ askTimeLimit (void);
 int
 initTimer (const stats_t * sts);
 
-// Reset timer
+// (Re)Set timer
 void
 startTimer (void);
 #endif /* BOARDTIMER_H */

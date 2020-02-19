@@ -19,10 +19,8 @@
  * 
  * @file    stats_mgmt.h
  * 
- * @brief   ;
+ * @brief   In game stats are managed with the structure found in this file.
  * 
- * @details ; 
- *
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
  * 
@@ -32,14 +30,14 @@
  */
 
 #ifndef STATS_MGMT_H
-#    define STATS_MGMT_H
+#    define STATS_MGMT_H 1
 
 // === Libraries and header files ===
 // For TETROMINOS
 #    include "../board/board.h"
 
 // For rwScores_t
-#include "../rw/rw_ops.h"
+#    include "../rw/rw_ops.h"
 
 // === Constants and Macro definitions ===
 
@@ -108,10 +106,10 @@ typedef struct STATS
      * pointer will be readed.
      */
     bool _tsLoaded;
-    
+
     /// Access and edit the top scores list
     rwScores_t * topScores;
-    
+
     /**
      * @brief Call when a soft drop has been performed
      * 

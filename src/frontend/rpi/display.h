@@ -100,7 +100,7 @@ initMenu(void);
  * 
  * It shows on the display the matrix where the game is developed.
  * 
- * @param Game matrix.
+ * @param matrix Game matrix.
  * 
  * @return Nothing
  */
@@ -114,9 +114,9 @@ printG(int * matrix);
  * It prints words(made by letters) on the display with a space
  * between them.
  * 
- * @param The word(a pointer to letters' array).
- * @param Coordinate's X value.
- * @param Coordinate's Y value.
+ * @param word The word(a pointer to letters' array).
+ * @param x Coordinate's X value.
+ * @param y Coordinate's Y value.
  * 
  * @return Coordinate's X value of the last letter of the word(it could be
  *         bigger than the MAX value).
@@ -131,9 +131,9 @@ printW(words_t word, int x, int y);
  * It is similar to printW but this one can show bigger words displacing 
  * the letters from right to left.
  * 
- * @param Pointer to letters_t.
- * @param Coordinate's X value.
- * @param Coordinate's Y value.
+ * @param word Pointer to letters_t.
+ * @param x Coordinate's X value.
+ * @param y Coordinate's Y value.
  * 
  * @return Nothing
  */
@@ -147,10 +147,10 @@ printWmove(words_t word, int x, int y);
  * It makes a square (widthXheight) on the coordinate the user
  * gives it(the origin is on the top left corner).
  * 
- * @param Squares width.
- * @param Squares height.
- * @param Coordinate's X value.
- * @param Coordinate's Y value.
+ * @param width Squares width.
+ * @param height Squares height.
+ * @param x Coordinate's X value.
+ * @param y Coordinate's Y value.
  * 
  * @return Nothing
  */
@@ -162,8 +162,8 @@ disp_n_clear(int width, int height, int x, int y);
  * 
  * It shows an animation of a full line disappearing. 
  * 
- * @param An array with each line that must be cleared.
- * @param The number of the column to be cleared.
+ * @param line An array with each line that must be cleared.
+ * @param y The number of the column to be cleared.
  * 
  * @return Nothing
  */

@@ -19,9 +19,9 @@
  * 
  * @file    joystick.c
  * 
- * @brief   ;
+ * @brief   Control module to analyze the user joystick movements.
  * 
- * @details ; 
+ * @details It has functions to control and read joystick movements.
  *
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
@@ -68,58 +68,58 @@
  * @return Joystick or Joyswitch status.
  */
 int
-surf(void)
+surf (void)
 {
     int result;
-    
+
     ///Initializes a variable and a structure with the value of the
     ///joystick coordinates and if the switch was pressed or not.
     jcoord_t coord;
     jswitch_t mySwitch;
     //joy_update();
-    coord=joy_get_coord();
-    mySwitch=joy_get_switch();
-    
+    coord = joy_get_coord();
+    mySwitch = joy_get_switch();
+
     /**
      * Depending on the joystick and joyswitch position it returns with
      * a result showing the state.
      */
-    
+
     ///If the switch is pressed.
-    if(mySwitch==J_PRESS)
+    if ( mySwitch == J_PRESS )
     {
-        result=PRESSED;
+        result = PRESSED;
     }
-    ///If the X coordinate  too big(to the right)
-    else if(coord.x>=DIRECTION_LIMIT)
+        ///If the X coordinate  too big(to the right)
+    else if ( coord.x >= DIRECTION_LIMIT )
     {
-        result=RIGHT;
+        result = RIGHT;
     }
-    ///If the X coordinate too small(to the left)
-    else if(coord.x<=-DIRECTION_LIMIT)
+        ///If the X coordinate too small(to the left)
+    else if ( coord.x <= -DIRECTION_LIMIT )
     {
-        result=LEFT;
+        result = LEFT;
     }
-    ///If the Y coordinate too big(to the top)
-    else if(coord.y>=DIRECTION_LIMIT)
+        ///If the Y coordinate too big(to the top)
+    else if ( coord.y >= DIRECTION_LIMIT )
     {
-        result=UP;
+        result = UP;
     }
-    ///If the Y coordinate is too small(to the bottom)
-    else if(coord.y<=-DIRECTION_LIMIT)
+        ///If the Y coordinate is too small(to the bottom)
+    else if ( coord.y <= -DIRECTION_LIMIT )
     {
-        result=DOWN;
+        result = DOWN;
     }
-    ///If it is not in any directions.
-    else if((coord.x<=CENTER_LIMIT)&&(coord.x>=-CENTER_LIMIT))
+        ///If it is not in any directions.
+    else if ( (coord.x <= CENTER_LIMIT)&&(coord.x >= -CENTER_LIMIT) )
     {
-        result=CENTER;
+        result = CENTER;
     }
-    ///It shouldn't happen because joystick will be always in one
-    ///direction or another but jut for precaution there is NOTHING state.
+        ///It shouldn't happen because joystick will be always in one
+        ///direction or another but jut for precaution there is NOTHING state.
     else
     {
-        result=NONE;
+        result = NONE;
     }
     return result;
 }

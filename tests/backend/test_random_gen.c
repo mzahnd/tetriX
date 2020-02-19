@@ -62,8 +62,8 @@ int clean_suite (void);
 void test1 (void);
 void test2 (void);
 
-static void
-printArr (int arr[TETROMINOS]);
+/*static void
+printArr (int arr[TETROMINOS]);*/
 
 // === ROM Constant variables with file level scope ===
 
@@ -361,7 +361,7 @@ test2 ()
 
 // === Local function definitions ===
 
-static void
+/*static void
 printArr (int arr[TETROMINOS])
 {
     int i;
@@ -371,4 +371,4 @@ printArr (int arr[TETROMINOS])
         printf("%c ", arr[i]);
     }
     putchar('\n');
-}
+}*/

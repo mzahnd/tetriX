@@ -19,9 +19,10 @@
  * 
  * @file    primitives.c
  * 
- * @brief   ;
+ * @brief   Generate two kind of primitives: a box and a triangle.
  * 
- * @details ; 
+ * @details Triangles generated here have four orientations (defined in enum
+ * triangle_directions).
  *
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>

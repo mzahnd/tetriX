@@ -19,9 +19,10 @@
  * 
  * @file    primitives.h
  * 
- * @brief   ;
+ * @brief   Generate two kind of primitives: a box and a triangle.
  * 
- * @details ; 
+ * @details Triangles generated here have four orientations (defined in enum
+ * triangle_directions).
  *
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
@@ -32,7 +33,7 @@
  */
 
 #ifndef PRIMITIVES_H
-#    define PRIMITIVES_H
+#    define PRIMITIVES_H 1
 
 // === Libraries and header files ===
 // For ALLEGRO_FONT
@@ -150,7 +151,12 @@ typedef struct
 
 } gbox_t;
 
-
+/**
+ * @brief Triangle creator structure
+ * 
+ * Structure used to create a triangle. Must be initialized by the programmer
+ * as there are no predefined settings for it.
+ */
 typedef struct
 {
     // Triangle size

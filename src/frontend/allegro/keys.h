@@ -32,7 +32,7 @@
  */
 
 #ifndef KEYS_H
-#    define KEYS_H
+#    define KEYS_H 1
 
 // === Libraries and header files ===
 

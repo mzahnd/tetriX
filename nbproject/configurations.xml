@@ -105,12 +105,6 @@
       <logicalFolder name="f3" displayName="Board" projectFiles="true" kind="TEST">
         <itemPath>tests/backend/test_board.c</itemPath>
       </logicalFolder>
-      <logicalFolder name="f4"
-                     displayName="Board Timer"
-                     projectFiles="true"
-                     kind="TEST">
-        <itemPath>tests/test_boardTimer.c</itemPath>
-      </logicalFolder>
       <logicalFolder name="f2"
                      displayName="Piece Actions"
                      projectFiles="true"
@@ -154,7 +148,9 @@
           <incDir>
             <pElem>/usr/local/include</pElem>
           </incDir>
-          <commandLine>-D RPI</commandLine>
+          <preprocessorList>
+            <Elem>RPI</Elem>
+          </preprocessorList>
           <warningLevel>2</warningLevel>
         </cTool>
         <linkerTool>
@@ -192,14 +188,6 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
-      <folder path="TestFiles/f4">
-        <linkerTool>
-          <output>${TESTDIR}/TestFiles/f4</output>
-          <linkerLibItems>
-            <linkerOptionItem>-lcunit</linkerOptionItem>
-          </linkerLibItems>
-        </linkerTool>
-      </folder>
       <folder path="TestFiles/f5">
         <linkerTool>
           <output>${TESTDIR}/TestFiles/f5</output>
@@ -294,194 +282,6 @@
       <item path="tests/backend/test_random_gen.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="tests/backend/test_rwops.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="tests/test_boardTimer.c" ex="false" tool="0" flavor2="0">
-      </item>
-    </conf>
-    <conf name="Release" type="1">
-      <toolsSet>
-        <compilerSet>default</compilerSet>
-        <dependencyChecking>true</dependencyChecking>
-        <rebuildPropChanged>false</rebuildPropChanged>
-      </toolsSet>
-      <compileType>
-        <cTool>
-          <developmentMode>5</developmentMode>
-          <standard>10</standard>
-        </cTool>
-        <ccTool>
-          <developmentMode>5</developmentMode>
-        </ccTool>
-        <fortranCompilerTool>
-          <developmentMode>5</developmentMode>
-        </fortranCompilerTool>
-        <asmTool>
-          <developmentMode>5</developmentMode>
-        </asmTool>
-      </compileType>
-      <folder path="TestFiles/f1">
-        <linkerTool>
-          <output>${TESTDIR}/TestFiles/f1</output>
-          <linkerLibItems>
-            <linkerOptionItem>-lcunit</linkerOptionItem>
-          </linkerLibItems>
-        </linkerTool>
-      </folder>
-      <folder path="TestFiles/f2">
-        <linkerTool>
-          <output>${TESTDIR}/TestFiles/f2</output>
-          <linkerLibItems>
-            <linkerOptionItem>-lcunit</linkerOptionItem>
-          </linkerLibItems>
-        </linkerTool>
-      </folder>
-      <folder path="TestFiles/f3">
-        <linkerTool>
-          <output>${TESTDIR}/TestFiles/f3</output>
-          <linkerLibItems>
-            <linkerOptionItem>-lcunit</linkerOptionItem>
-          </linkerLibItems>
-        </linkerTool>
-      </folder>
-      <folder path="TestFiles/f4">
-        <linkerTool>
-          <output>${TESTDIR}/TestFiles/f4</output>
-          <linkerLibItems>
-            <linkerOptionItem>-lcunit</linkerOptionItem>
-          </linkerLibItems>
-        </linkerTool>
-      </folder>
-      <folder path="TestFiles/f5">
-        <linkerTool>
-          <output>${TESTDIR}/TestFiles/f5</output>
-          <linkerLibItems>
-            <linkerOptionItem>-lcunit</linkerOptionItem>
-          </linkerLibItems>
-        </linkerTool>
-      </folder>
-      <item path="res/audio/chau.wav" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="res/audio/tetris.wav" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/backend/board/board.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="src/backend/board/board.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/backend/board/pieces/piece_actions.c"
-            ex="false"
-            tool="0"
-            flavor2="0">
-      </item>
-      <item path="src/backend/board/pieces/piece_actions.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="src/backend/board/random_generator.c"
-            ex="false"
-            tool="0"
-            flavor2="0">
-      </item>
-      <item path="src/backend/board/random_generator.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="src/backend/board/timer/boardTimer.c"
-            ex="false"
-            tool="0"
-            flavor2="0">
-      </item>
-      <item path="src/backend/board/timer/boardTimer.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="src/backend/rw/rw_ops.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="src/backend/rw/rw_ops.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/backend/stats/stats_mgmt.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="src/backend/stats/stats_mgmt.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/frontend/allegro/alcontrol.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="src/frontend/allegro/alcontrol.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/frontend/allegro/keys.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="src/frontend/allegro/keys.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/frontend/allegro/primitives.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="src/frontend/allegro/primitives.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/frontend/allegro/screen/endGame.c"
-            ex="false"
-            tool="0"
-            flavor2="0">
-      </item>
-      <item path="src/frontend/allegro/screen/endGame.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="src/frontend/allegro/screen/game.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="src/frontend/allegro/screen/game.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/frontend/allegro/screen/gamePause.c"
-            ex="false"
-            tool="0"
-            flavor2="0">
-      </item>
-      <item path="src/frontend/allegro/screen/gamePause.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="src/frontend/allegro/screen/gameStats.c"
-            ex="false"
-            tool="0"
-            flavor2="0">
-      </item>
-      <item path="src/frontend/allegro/screen/gameStats.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="src/frontend/allegro/screen/menu.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="src/frontend/allegro/screen/menu.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/frontend/rpi/audioControl.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="src/frontend/rpi/audioControl.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/frontend/rpi/display.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="src/frontend/rpi/display.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/frontend/rpi/joystick.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="src/frontend/rpi/joystick.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/frontend/rpi/rpcontrol.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="src/frontend/rpi/rpcontrol.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/main.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="tests/backend/test_board.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="tests/backend/test_piece_actions.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="tests/backend/test_random_gen.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="tests/backend/test_rwops.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="tests/test_boardTimer.c" ex="false" tool="0" flavor2="0">
       </item>
     </conf>
     <conf name="Allegro" type="1">
@@ -493,7 +293,9 @@
       <compileType>
         <cTool>
           <standard>10</standard>
-          <commandLine>-D ALLEGRO</commandLine>
+          <preprocessorList>
+            <Elem>ALLEGRO</Elem>
+          </preprocessorList>
           <warningLevel>2</warningLevel>
         </cTool>
         <linkerTool>
@@ -533,14 +335,6 @@
       <folder path="TestFiles/f3">
         <linkerTool>
           <output>${TESTDIR}/TestFiles/f3</output>
-          <linkerLibItems>
-            <linkerOptionItem>-lcunit</linkerOptionItem>
-          </linkerLibItems>
-        </linkerTool>
-      </folder>
-      <folder path="TestFiles/f4">
-        <linkerTool>
-          <output>${TESTDIR}/TestFiles/f4</output>
           <linkerLibItems>
             <linkerOptionItem>-lcunit</linkerOptionItem>
           </linkerLibItems>
@@ -650,10 +444,6 @@
       </item>
       <item path="src/frontend/allegro/screen/menu.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/frontend/rpi/audioControl.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="src/frontend/rpi/audioControl.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="src/frontend/rpi/display.c" ex="true" tool="0" flavor2="10">
       </item>
       <item path="src/frontend/rpi/joystick.c" ex="true" tool="0" flavor2="10">
@@ -670,7 +460,633 @@
       </item>
       <item path="tests/backend/test_rwops.c" ex="false" tool="0" flavor2="0">
       </item>
-      <item path="tests/test_boardTimer.c" ex="false" tool="0" flavor2="0">
+    </conf>
+    <conf name="Release_Allegro" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+          <standard>10</standard>
+          <commandLine>-O3</commandLine>
+          <preprocessorList>
+            <Elem>ALLEGRO</Elem>
+          </preprocessorList>
+          <warningLevel>2</warningLevel>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+        <linkerTool>
+          <linkerLibItems>
+            <linkerOptionItem>`pkg-config --libs allegro-5`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_acodec-5`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_audio-5`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_color-5`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_dialog-5`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_font-5`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_image-5`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_main-5`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_memfile-5`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_physfs-5`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_primitives-5`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_ttf-5`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs allegro_video-5`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
+      <packaging>
+        <packType>Tar</packType>
+        <output>tetrix.tar</output>
+        <packFileList>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/fonts/pixel-operator/PixelOperatorMonoHB.ttf"
+                            from="res/fonts/pixel-operator/PixelOperatorMonoHB.ttf"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/fonts/pixel-operator/PixelOperatorHB8.ttf"
+                            from="res/fonts/pixel-operator/PixelOperatorHB8.ttf"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/fonts/pixel-operator/PixelOperatorMono.ttf"
+                            from="res/fonts/pixel-operator/PixelOperatorMono.ttf"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/fonts/pixel-operator/PixelOperator-Bold.ttf"
+                            from="res/fonts/pixel-operator/PixelOperator-Bold.ttf"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/fonts/pixel-operator/PixelOperatorSC.ttf"
+                            from="res/fonts/pixel-operator/PixelOperatorSC.ttf"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/fonts/pixel-operator/PixelOperator.ttf"
+                            from="res/fonts/pixel-operator/PixelOperator.ttf"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/fonts/pixel-operator/PixelOperatorHBSC.ttf"
+                            from="res/fonts/pixel-operator/PixelOperatorHBSC.ttf"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/fonts/pixel-operator/PixelOperatorMono-Bold.ttf"
+                            from="res/fonts/pixel-operator/PixelOperatorMono-Bold.ttf"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/fonts/pixel-operator/.uuid"
+                            from="res/fonts/pixel-operator/.uuid"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/fonts/pixel-operator/LICENSE.txt"
+                            from="res/fonts/pixel-operator/LICENSE.txt"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/fonts/pixel-operator/PixelOperatorMonoHB8.ttf"
+                            from="res/fonts/pixel-operator/PixelOperatorMonoHB8.ttf"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/fonts/pixel-operator/PixelOperator8-Bold.ttf"
+                            from="res/fonts/pixel-operator/PixelOperator8-Bold.ttf"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/fonts/pixel-operator/PixelOperatorMono8-Bold.ttf"
+                            from="res/fonts/pixel-operator/PixelOperatorMono8-Bold.ttf"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/fonts/pixel-operator/PixelOperatorSC-Bold.ttf"
+                            from="res/fonts/pixel-operator/PixelOperatorSC-Bold.ttf"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/fonts/pixel-operator/PixelOperatorMono8.ttf"
+                            from="res/fonts/pixel-operator/PixelOperatorMono8.ttf"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/fonts/pixel-operator/PixelOperatorHB.ttf"
+                            from="res/fonts/pixel-operator/PixelOperatorHB.ttf"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/fonts/pixel-operator/PixelOperator8.ttf"
+                            from="res/fonts/pixel-operator/PixelOperator8.ttf"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/fonts/liberation_serif/AUTHORS"
+                            from="res/fonts/liberation_serif/AUTHORS"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/fonts/liberation_serif/LiberationSerif-Italic.ttf"
+                            from="res/fonts/liberation_serif/LiberationSerif-Italic.ttf"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/fonts/liberation_serif/LiberationSerif-Regular.ttf"
+                            from="res/fonts/liberation_serif/LiberationSerif-Regular.ttf"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/fonts/liberation_serif/License.txt"
+                            from="res/fonts/liberation_serif/License.txt"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/fonts/liberation_serif/COPYING"
+                            from="res/fonts/liberation_serif/COPYING"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/fonts/liberation_serif/LiberationSerif-BoldItalic.ttf"
+                            from="res/fonts/liberation_serif/LiberationSerif-BoldItalic.ttf"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/fonts/liberation_serif/LiberationSerif-Bold.ttf"
+                            from="res/fonts/liberation_serif/LiberationSerif-Bold.ttf"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/images/main/itba_logo.png"
+                            from="res/images/main/itba_logo.png"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/images/main/background.png"
+                            from="res/images/main/background.png"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/images/game/endgame.png"
+                            from="res/images/game/endgame.png"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/images/game/initial.png"
+                            from="res/images/game/initial.png"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/images/game/background.png"
+                            from="res/images/game/background.png"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/audio/tetris.wav"
+                            from="res/audio/tetris.wav"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/audio/fx/line.wav"
+                            from="res/audio/fx/line.wav"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/audio/fx/chau.wav"
+                            from="res/audio/fx/chau.wav"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/audio/fx/blop.wav"
+                            from="res/audio/fx/blop.wav"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/audio/fx/gameover.wav"
+                            from="res/audio/fx/gameover.wav"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
+                            from="${OUTPUT_PATH}"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
+        </packFileList>
+      </packaging>
+      <folder path="TestFiles/f1">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f1</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f2">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f2</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f3">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f3</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f5">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f5</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <item path="res/audio/chau.wav" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="res/audio/tetris.wav" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/backend/board/board.c" ex="false" tool="0" flavor2="10">
+      </item>
+      <item path="src/backend/board/board.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/backend/board/pieces/piece_actions.c"
+            ex="false"
+            tool="0"
+            flavor2="10">
+      </item>
+      <item path="src/backend/board/pieces/piece_actions.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/backend/board/random_generator.c"
+            ex="false"
+            tool="0"
+            flavor2="10">
+      </item>
+      <item path="src/backend/board/random_generator.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/backend/board/timer/boardTimer.c"
+            ex="false"
+            tool="0"
+            flavor2="10">
+      </item>
+      <item path="src/backend/board/timer/boardTimer.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/backend/rw/rw_ops.c" ex="false" tool="0" flavor2="10">
+      </item>
+      <item path="src/backend/rw/rw_ops.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/backend/stats/stats_mgmt.c" ex="false" tool="0" flavor2="10">
+      </item>
+      <item path="src/backend/stats/stats_mgmt.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/alcontrol.c" ex="false" tool="0" flavor2="10">
+      </item>
+      <item path="src/frontend/allegro/alcontrol.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/keys.c" ex="false" tool="0" flavor2="10">
+      </item>
+      <item path="src/frontend/allegro/keys.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/primitives.c" ex="false" tool="0" flavor2="10">
+      </item>
+      <item path="src/frontend/allegro/primitives.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/endGame.c"
+            ex="false"
+            tool="0"
+            flavor2="10">
+      </item>
+      <item path="src/frontend/allegro/screen/endGame.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/game.c"
+            ex="false"
+            tool="0"
+            flavor2="10">
+      </item>
+      <item path="src/frontend/allegro/screen/game.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/gamePause.c"
+            ex="false"
+            tool="0"
+            flavor2="10">
+      </item>
+      <item path="src/frontend/allegro/screen/gamePause.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/gameStats.c"
+            ex="false"
+            tool="0"
+            flavor2="10">
+      </item>
+      <item path="src/frontend/allegro/screen/gameStats.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/menu.c"
+            ex="false"
+            tool="0"
+            flavor2="10">
+      </item>
+      <item path="src/frontend/allegro/screen/menu.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/rpi/audioControl.c" ex="true" tool="0" flavor2="10">
+      </item>
+      <item path="src/frontend/rpi/display.c" ex="true" tool="0" flavor2="10">
+      </item>
+      <item path="src/frontend/rpi/joystick.c" ex="true" tool="0" flavor2="10">
+      </item>
+      <item path="src/frontend/rpi/rpcontrol.c" ex="true" tool="0" flavor2="10">
+      </item>
+      <item path="src/main.c" ex="false" tool="0" flavor2="10">
+      </item>
+      <item path="tests/backend/test_board.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="tests/backend/test_piece_actions.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="tests/backend/test_random_gen.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="tests/backend/test_rwops.c" ex="false" tool="0" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Release_RaspberryPi" type="1">
+      <toolsSet>
+        <compilerSet>GNU|GNU</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+          <standard>10</standard>
+          <incDir>
+            <pElem>/usr/local/include</pElem>
+          </incDir>
+          <commandLine>-Os</commandLine>
+          <preprocessorList>
+            <Elem>RPI</Elem>
+          </preprocessorList>
+          <warningLevel>2</warningLevel>
+        </cTool>
+        <linkerTool>
+          <linkerAddLib>
+            <pElem>/usr/local/lib/</pElem>
+          </linkerAddLib>
+          <linkerLibItems>
+            <linkerOptionItem>`pkg-config --libs sdl`</linkerOptionItem>
+            <linkerOptionItem>-I/usr/local/include</linkerOptionItem>
+          </linkerLibItems>
+          <commandLine>src/frontend/rpi/libs/disdrv.o src/frontend/rpi/libs/joydrv.o src/frontend/rpi/libs/termlib.o src/frontend/rpi/audiolib/libaudio.so</commandLine>
+        </linkerTool>
+      </compileType>
+      <packaging>
+        <packType>Tar</packType>
+        <packFileList>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/audio/tetris.wav"
+                            from="res/audio/tetris.wav"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/audio/fx/line.wav"
+                            from="res/audio/fx/line.wav"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/audio/fx/chau.wav"
+                            from="res/audio/fx/chau.wav"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/audio/fx/blop.wav"
+                            from="res/audio/fx/blop.wav"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}res/audio/fx/gameover.wav"
+                            from="res/audio/fx/gameover.wav"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
+                            from="${OUTPUT_PATH}"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
+        </packFileList>
+      </packaging>
+      <folder path="TestFiles/f1">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f1</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f2">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f2</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f3">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f3</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f5">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f5</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <item path="res/audio/chau.wav" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="res/audio/tetris.wav" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/backend/board/board.c" ex="false" tool="0" flavor2="10">
+      </item>
+      <item path="src/backend/board/pieces/piece_actions.c"
+            ex="false"
+            tool="0"
+            flavor2="10">
+      </item>
+      <item path="src/backend/board/pieces/piece_actions.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/backend/board/random_generator.c"
+            ex="false"
+            tool="0"
+            flavor2="10">
+      </item>
+      <item path="src/backend/board/random_generator.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/backend/board/timer/boardTimer.c"
+            ex="false"
+            tool="0"
+            flavor2="10">
+      </item>
+      <item path="src/backend/board/timer/boardTimer.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/backend/rw/rw_ops.c" ex="false" tool="0" flavor2="10">
+      </item>
+      <item path="src/backend/rw/rw_ops.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/backend/stats/stats_mgmt.c" ex="false" tool="0" flavor2="10">
+      </item>
+      <item path="src/backend/stats/stats_mgmt.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/alcontrol.c" ex="true" tool="0" flavor2="10">
+      </item>
+      <item path="src/frontend/allegro/keys.c" ex="true" tool="0" flavor2="10">
+      </item>
+      <item path="src/frontend/allegro/primitives.c" ex="true" tool="0" flavor2="10">
+      </item>
+      <item path="src/frontend/allegro/screen/endGame.c"
+            ex="true"
+            tool="0"
+            flavor2="10">
+      </item>
+      <item path="src/frontend/allegro/screen/endGame.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/game.c" ex="true" tool="0" flavor2="10">
+      </item>
+      <item path="src/frontend/allegro/screen/gamePause.c"
+            ex="true"
+            tool="0"
+            flavor2="10">
+      </item>
+      <item path="src/frontend/allegro/screen/gamePause.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/gameStats.c"
+            ex="true"
+            tool="0"
+            flavor2="10">
+      </item>
+      <item path="src/frontend/allegro/screen/gameStats.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/frontend/allegro/screen/menu.c" ex="true" tool="0" flavor2="10">
+      </item>
+      <item path="src/frontend/allegro/screen/menu.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/rpi/audioControl.c" ex="false" tool="0" flavor2="10">
+      </item>
+      <item path="src/frontend/rpi/audioControl.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/rpi/display.c" ex="false" tool="0" flavor2="10">
+      </item>
+      <item path="src/frontend/rpi/display.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/rpi/joystick.c" ex="false" tool="0" flavor2="10">
+      </item>
+      <item path="src/frontend/rpi/joystick.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/frontend/rpi/rpcontrol.c" ex="false" tool="0" flavor2="10">
+      </item>
+      <item path="src/frontend/rpi/rpcontrol.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/main.c" ex="false" tool="0" flavor2="10">
+      </item>
+      <item path="tests/backend/test_board.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="tests/backend/test_piece_actions.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="tests/backend/test_random_gen.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="tests/backend/test_rwops.c" ex="false" tool="0" flavor2="0">
       </item>
     </conf>
   </confs>

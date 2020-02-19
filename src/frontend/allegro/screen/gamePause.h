@@ -33,7 +33,7 @@
  */
 
 #ifndef GAMEPAUSE_H
-#    define GAMEPAUSE_H
+#    define GAMEPAUSE_H 1
 
 // === Libraries and header files ===
 

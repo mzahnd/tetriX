@@ -26,6 +26,14 @@
  * taken from tetris.wiki webpage:
  *  - No more than 4 S or Z pieces togheter.
  *  - No more than 12 pieces between two different I pieces.
+ * 
+ * There are two compilation options for this functions, the normal one, which
+ * uses rand() and another which uses getrandom() from library sys/random.h 
+ * (not found in every linux system as it's a relatively new function).
+ * 
+ * The later one securely reads data from /dev/urandom and uses it for 
+ * generating random intigers. To enable this function, add the argument 
+ * -D TRUERANDOM at compilation time.
  *
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
@@ -38,7 +46,7 @@
  */
 
 #ifndef RANDOM_GENERATOR_H
-#    define RANDOM_GENERATOR_H
+#    define RANDOM_GENERATOR_H 1
 
 // === Libraries and header files ===
 // For pieces, board_cell and coords enum

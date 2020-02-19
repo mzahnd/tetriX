@@ -73,7 +73,7 @@ void stopMusic(void);
  * 
  * It plays the music effects.
  *
- * @param Effect name.
+ * @param path Effect sound path.
  * 
  * @return Nothing
  */

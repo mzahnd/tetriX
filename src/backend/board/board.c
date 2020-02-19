@@ -19,9 +19,21 @@
  * 
  * @file    board.c
  * 
- * @brief   ;
+ * @brief   Game logic.
  * 
- * @details ; 
+ * @details The whole game logic can (and should be) controlled from here.
+ * 
+ * Board creation and reading, stats reading (uses stats_mgmt.h), line clearing
+ * and pieces shifting and rotation are controlled using this file.
+ * 
+ * Macros for getting what is in a particular grid, as well as the different
+ * types of tetrominos available and their code when are fixed and the board 
+ * size are also defined here.
+ * 
+ * At the beggining of a new game board_init() must be called with a pointer to
+ * the structure board_t that will be used during the whole game. After 
+ * ending the game (or displaying the top score), the board_t must be destroyed
+ * to avoid unexpected behaviour.
  *
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
@@ -89,9 +101,13 @@
 
 // === Enumerations, structures and typedefs ===
 
+/// Update stats because a ... was performed or there is a new piece
+
 enum statsUpdates
 {
+    /// Soft drop
     SOFT,
+    /// New piece
     NPIECE
 };
 

@@ -19,9 +19,14 @@
  * 
  * @file    rw_ops.h
  * 
- * @brief   ;
+ * @brief   Read and Write operations performed by the game.
  * 
- * @details ; 
+ * @details Reads and writes the Top Score table inside gamefiles/topscore.
+ * Both, read and write operations verify if the directory and file already
+ * exists and creates both whenever necessary.
+
+ * It is printed a message in stderr when this happens, saying that the file
+ * could not be found and that it will be created.
  *
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
@@ -32,7 +37,7 @@
  */
 
 #ifndef RW_OPS_H
-#    define RW_OPS_H
+#    define RW_OPS_H 1
 
 // === Libraries and header files ===
 

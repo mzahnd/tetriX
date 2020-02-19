@@ -3,7 +3,7 @@
     <type>org.netbeans.modules.cnd.makeproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
-            <name>tetriCs</name>
+            <name>tetriX</name>
             <c-extensions>c</c-extensions>
             <cpp-extensions/>
             <header-extensions>h</header-extensions>
@@ -18,11 +18,15 @@
                     <type>1</type>
                 </confElem>
                 <confElem>
-                    <name>Release</name>
+                    <name>Allegro</name>
                     <type>1</type>
                 </confElem>
                 <confElem>
-                    <name>Allegro</name>
+                    <name>Release_Allegro</name>
+                    <type>1</type>
+                </confElem>
+                <confElem>
+                    <name>Release_RaspberryPi</name>
                     <type>1</type>
                 </confElem>
             </confList>

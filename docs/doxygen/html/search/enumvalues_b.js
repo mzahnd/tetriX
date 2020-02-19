@@ -1,21 +1,6 @@
 var searchData=
 [
-  ['tetromino_5fi',['TETROMINO_I',['../board_8h.html#aa8acd4b6f8e39eb057cf562c3910c554af3e1f4e6b99d68ccea9748b7d39c84c6',1,'board.h']]],
-  ['tetromino_5fj',['TETROMINO_J',['../board_8h.html#aa8acd4b6f8e39eb057cf562c3910c554aa9479221a0de212fb34d6fcb58bddee5',1,'board.h']]],
-  ['tetromino_5fl',['TETROMINO_L',['../board_8h.html#aa8acd4b6f8e39eb057cf562c3910c554a6bce3394eb71630981fe78e516d3402b',1,'board.h']]],
-  ['tetromino_5fnone',['TETROMINO_NONE',['../board_8h.html#aa8acd4b6f8e39eb057cf562c3910c554a5259fa63da15d00b6af4ae70f9ae1ef9',1,'board.h']]],
-  ['tetromino_5fo',['TETROMINO_O',['../board_8h.html#aa8acd4b6f8e39eb057cf562c3910c554a7cbd24a0836042547a1e217be6a296f5',1,'board.h']]],
-  ['tetromino_5fs',['TETROMINO_S',['../board_8h.html#aa8acd4b6f8e39eb057cf562c3910c554a40c13a0d8d430e0029d80704523cdfbc',1,'board.h']]],
-  ['tetromino_5ft',['TETROMINO_T',['../board_8h.html#aa8acd4b6f8e39eb057cf562c3910c554a1f743bc6575e1aba01eff9b727e6ca95',1,'board.h']]],
-  ['tetromino_5fz',['TETROMINO_Z',['../board_8h.html#aa8acd4b6f8e39eb057cf562c3910c554a6250cbe8701a25a4149cd8a7aa1195a2',1,'board.h']]],
-  ['tetrominos',['TETROMINOS',['../board_8h.html#aa8acd4b6f8e39eb057cf562c3910c554a31e300ebfc120f1f26800392e97f53fd',1,'board.h']]],
-  ['tri_5fbase1',['TRI_BASE1',['../primitives_8h.html#a6f4cc7bb70fbf8b2075966abcfa45b24ac6c7d6e130e1517ba152b85b1906950e',1,'primitives.h']]],
-  ['tri_5fbase2',['TRI_BASE2',['../primitives_8h.html#a6f4cc7bb70fbf8b2075966abcfa45b24a53b95edae9cd5382aab099e139ad0ab5',1,'primitives.h']]],
-  ['tri_5fbottom',['TRI_BOTTOM',['../primitives_8h.html#a93bfde84a99b455eb919622bb9959e10a430c9a61fb2656ea94e3a7a9b6115362',1,'primitives.h']]],
-  ['tri_5fleft',['TRI_LEFT',['../primitives_8h.html#a93bfde84a99b455eb919622bb9959e10a851b129dda0dc8f0c7e3f95d4bff4fc5',1,'primitives.h']]],
-  ['tri_5fndirs',['TRI_NDIRS',['../primitives_8h.html#a93bfde84a99b455eb919622bb9959e10a7513b951205b087819919bfdc3b25e74',1,'primitives.h']]],
-  ['tri_5fpoint',['TRI_POINT',['../primitives_8h.html#a6f4cc7bb70fbf8b2075966abcfa45b24a78f5c3e2d3ed75edf9910d50c04fd2d5',1,'primitives.h']]],
-  ['tri_5fright',['TRI_RIGHT',['../primitives_8h.html#a93bfde84a99b455eb919622bb9959e10a62939cec246f753ddead77d62a153dcf',1,'primitives.h']]],
-  ['tri_5ftop',['TRI_TOP',['../primitives_8h.html#a93bfde84a99b455eb919622bb9959e10abcb92684ea752277883e57d07f5757f8',1,'primitives.h']]],
-  ['triangle_5fcoords',['TRIANGLE_COORDS',['../primitives_8h.html#a6f4cc7bb70fbf8b2075966abcfa45b24a299782c4e113ccc9334bd5b6194f0ed5',1,'primitives.h']]]
+  ['restart_456',['RESTART',['../game_pause_8h.html#afd7d49e17b69bd6bf3d7a649856c1067a262553c759e1d1a9398bc406b1fadcb7',1,'gamePause.h']]],
+  ['resume_457',['RESUME',['../game_pause_8h.html#afd7d49e17b69bd6bf3d7a649856c1067a401283aaa98a76b506f2198465bd7009',1,'gamePause.h']]],
+  ['right_458',['RIGHT',['../board_8h.html#aeb17937ca06d418b5bc07c95e02c5a54aec8379af7490bb9eaaf579cf17876f38',1,'board.h']]]
 ];

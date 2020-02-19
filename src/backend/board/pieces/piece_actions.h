@@ -37,7 +37,7 @@
  */
 
 #ifndef PIECE_ACTIONS_H
-#    define PIECE_ACTIONS_H
+#    define PIECE_ACTIONS_H 1
 
 // === Libraries and header files ===
 /// For bool, true and false

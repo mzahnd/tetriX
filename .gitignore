@@ -3,3 +3,10 @@
 /src_bckp/
 vgcore.*
 /nbproject/private/
+/gamefiles/
+*.tar
+/docs/doxygen/html/audio_control_8h_source.html
+/docs/doxygen/html/main_8c.html
+/docs/doxygen/html/search/enumvalues_c.js
+/docs/doxygen/html/audio_control_8h.html
+/docs/doxygen/html/search/enumvalues_c.html

@@ -33,7 +33,7 @@
  */
 
 #ifndef GAMESTATS_H
-#    define GAMESTATS_H
+#    define GAMESTATS_H 1
 
 // === Libraries and header files ===
 // For stats_t

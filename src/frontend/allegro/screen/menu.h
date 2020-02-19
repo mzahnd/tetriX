@@ -32,7 +32,7 @@
  */
 
 #ifndef MENU_H
-#    define MENU_H
+#    define MENU_H 1
 
 // === Libraries and header files ===
 // For allegro_t

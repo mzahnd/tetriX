@@ -19,10 +19,8 @@
  * 
  * @file    stats_mgmt.c
  * 
- * @brief   ;
+ * @brief   In game stats are managed with the structure found in this file.
  * 
- * @details ; 
- *
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
  * 
@@ -42,29 +40,48 @@
 /// @privatesection
 // === Constants and Macro definitions ===
 
+/// Single line cleared
 #define SINGLE              1
+/// Score for clearing a single line
 #define SINGLE_P          100
+
+/// Two lines cleared
 #define DOUBLE              2
+/// Score for clearing two lines
 #define DOUBLE_P          300
+
+/// Three lines cleared
 #define TRIPLE              3
+/// Score for clearing a three lines
 #define TRIPLE_P          500
+
+/// Four lines cleared
 #define TETRIS              4
+/// Score for clearing a four lines
 #define TETRIS_P          800
 // === Enumerations, structures and typedefs ===
 
+/**
+ * @brief Private structure for stats_t
+ */
 typedef struct STATS_PRIVATE
 {
+    /// Public stats_t
     stats_t * public;
 
+    /// Last piece copy from public
     int lastPiece;
 
+    /// The last clearing was a difficult one (i.e. back2back)
     int lastDifficult;
 
+    /// Soft drop performed
     int soft;
 
+    /// There is a new top score!
     int newTop;
 
-    // Top score
+    // Top score file r/w operations
     rwScores_t scoreFile;
 
     // Top score file loaded properly

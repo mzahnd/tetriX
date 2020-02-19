@@ -94,6 +94,9 @@
 #define BKGND_WIDTH         1920
 #define BKGND_HEIGHT        1280
 
+#define INITIAL_BKGND       "res/images/game/initial.png"
+#define GAME_BKGND          "res/images/game/background.png"
+
 // Board cell size
 #define CELL_WIDTH          25.0
 #define CELL_HEIGHT         CELL_WIDTH
@@ -941,7 +944,7 @@ drawInitial (game_t * game)
 
     if ( game -> status == INITIAL )
     {
-        game -> bkgnd = al_load_bitmap("res/images/game/initial.png");
+        game -> bkgnd = al_load_bitmap(INITIAL_BKGND);
 
         if ( game -> bkgnd == NULL )
         {
@@ -1131,7 +1134,7 @@ drawScreen (game_t * game)
 
     if ( game -> status == NEW )
     {
-        game -> bkgnd = al_load_bitmap("res/images/game/background.png");
+        game -> bkgnd = al_load_bitmap(GAME_BKGND);
 
         if ( game -> bkgnd == NULL )
         {

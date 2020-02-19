@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['tetrix_20documentation',['tetriX documentation',['../index.html',1,'']]]
+  ['tetrix_513',['tetriX',['../index.html',1,'']]]
 ];

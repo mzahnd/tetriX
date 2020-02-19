@@ -32,7 +32,7 @@
  */
 
 #ifndef GAMESCREEN_H
-#    define GAMESCREEN_H
+#    define GAMESCREEN_H 1
 
 // === Libraries and header files ===
 // For allegro_t

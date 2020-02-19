@@ -39,7 +39,7 @@
 
 // === Constants and Macro definitions ===
 
-///@def NO_ERRROR
+///@def NO_ERROR
 ///@brief No errors.
 #define NO_ERROR 0
 

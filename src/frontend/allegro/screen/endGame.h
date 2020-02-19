@@ -19,9 +19,10 @@
  * 
  * @file    endGame.h
  * 
- * @brief   ;
+ * @brief   Draw a screen after the game has ended.
  * 
- * @details ; 
+ * @details Displays the top ten score table or an "arcade character selector"
+ * for entering a name whenever a new top score has been made.
  *
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
@@ -32,7 +33,7 @@
  */
 
 #ifndef ENDGAME_H
-#    define ENDGAME_H
+#    define ENDGAME_H 1
 
 // === Libraries and header files ===
 

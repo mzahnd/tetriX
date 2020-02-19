@@ -19,9 +19,21 @@
  * 
  * @file    board.h
  * 
- * @brief   ;
+ * @brief   Game logic.
  * 
- * @details ; 
+ * @details The whole game logic can (and should be) controlled from here.
+ * 
+ * Board creation and reading, stats reading (uses stats_mgmt.h), line clearing
+ * and pieces shifting and rotation are controlled using this file.
+ * 
+ * Macros for getting what is in a particular grid, as well as the different
+ * types of tetrominos available and their code when are fixed and the board 
+ * size are also defined here.
+ * 
+ * At the beggining of a new game board_init() must be called with a pointer to
+ * the structure board_t that will be used during the whole game. After 
+ * ending the game (or displaying the top score), the board_t must be destroyed
+ * to avoid unexpected behaviour.
  *
  * @author  Gino Minnucci                               <gminnucci@itba.edu.ar>
  * @author  Martín E. Zahnd                                <mzahnd@itba.edu.ar>
@@ -32,7 +44,7 @@
  */
 
 #ifndef BOARD_H
-#    define BOARD_H
+#    define BOARD_H 1
 
 // === Libraries and header files ===
 /// For bool, true and false
@@ -52,13 +64,13 @@
 
 /// @def BOARD_WIDTH
 /// @brief Board Width
-#    define BOARD_WIDTH     10
+#    define BOARD_WIDTH         10
 
 /**
  * @def ORIENTATION
  * @brief How many different orientations a piece can have
  */
-#    define ORIENTATION     4
+#    define ORIENTATION         4
 
 /**
  * @def GET_CELL(r,c)
@@ -78,6 +90,7 @@ enum block
     b2,
     b3,
     b4,
+    /// Number of blocks in a tetromino
     BLOCKS
 };
 

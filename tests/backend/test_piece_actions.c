@@ -86,7 +86,7 @@ static int conf_onePiece (void);
 // Set all the cells in the board to CELL_CLEAR.
 static void clearBoard (void);
 // Print the board as it is.
-static void printBoard (void);
+/*static void printBoard (void);*/
 
 // Check if there is only a moving piece on the given coordinates
 static void
@@ -578,7 +578,7 @@ clearBoard (void)
  * 
  * @return Nothing
  */
-static void
+/*static void
 printBoard (void)
 {
     int i, j;
@@ -602,7 +602,7 @@ printBoard (void)
         putchar('\n');
     }
     putchar('\n');
-}
+}*/
 
 /**
  * @brief Check if there is only a moving piece on the given coordinates
@@ -815,8 +815,11 @@ check_Shift (int b1[COORD_NUM], int b2[COORD_NUM],
         case TETROMINO_Z:
             limit_r = W_BOARD / 2 - 2;
             limit_l = W_BOARD - 3;
+            break;
 
         default:
+            limit_l = 0;
+            limit_r = 0;
             break;
     }
 

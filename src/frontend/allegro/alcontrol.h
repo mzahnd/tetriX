@@ -32,7 +32,7 @@
  */
 
 #ifndef ALCONTROL_H
-#    define ALCONTROL_H
+#    define ALCONTROL_H 1
 
 // === Libraries and header files ===
 // For bool, true and false

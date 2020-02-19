@@ -321,7 +321,7 @@ drawOptions (void)
     for ( i = 0; i < pMenu.options.nWords; i++ )
     {
         // ON / OFF text should be drawn. Uses onoff enum
-        int onOff;
+        int onOff = OFF;
 
         switch ( i )
         {

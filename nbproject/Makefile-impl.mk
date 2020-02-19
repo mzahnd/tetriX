@@ -24,14 +24,14 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=tetriCs
+PROJECTNAME=tetriX
 
 # Active Configuration
 DEFAULTCONF=RaspberryPi
 CONF=${DEFAULTCONF}
 
 # All Configurations
-ALLCONFS=RaspberryPi Release Allegro 
+ALLCONFS=RaspberryPi Allegro Release_Allegro Release_RaspberryPi 
 
 
 # build
