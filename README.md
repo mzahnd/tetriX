@@ -13,10 +13,11 @@ ___
 For building to run in Linux using Allegro, enter to your terminal inside the project directory and run
 
 ```console
-bash -x nbproject/Package-Release_Allegro.bash
+chmod +x install.sh
+./install.sh
 ```
 
-After that, a new file called tetrix.tar will be created. Uncompress it wherever you want and execute from the new "tetrix" directory
+After that, the game will be compiled and a new file called tetrix.tar will be created. Uncompress it wherever you want and execute from the new "tetrix" directory
 ```console
 bin/tetrix 
 ```
@@ -26,10 +27,11 @@ bin/tetrix
 For building to run in a Raspberry Pi using the led Matrix, enter to your terminal inside the project directory and run
 
 ```console
-bash -x nbproject/Package-Release_RaspberryPi.bash
+chmod +x install.sh
+./install.sh
 ```
 
-After that, a new file called tetrix.tar will be created. Uncompress it wherever you want and execute from the new "tetrix" directory
+After that, the game will be compiled and a new file called tetrix.tar will be created. Uncompress it wherever you want and execute from the new "tetrix" directory
 ```console
 bin/tetrix 
 ```

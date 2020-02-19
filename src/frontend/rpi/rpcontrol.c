@@ -94,7 +94,7 @@ enum gamestatus
  * @return The game status(pause, menu, exit).
  */
 int
-play_tetris(board_t * gameboard,stats_t* gameStats, int dif);
+play_tetris (board_t * gameboard, stats_t* gameStats, int dif);
 
 /**
  * @brief Prints the word "TeTrIx" at the top of the display.
@@ -104,7 +104,7 @@ play_tetris(board_t * gameboard,stats_t* gameStats, int dif);
  * @return Nothing
  */
 void
-printTetrix(void);
+printTetrix (void);
 
 /**
  * @brief Prints the score.
@@ -117,7 +117,7 @@ printTetrix(void);
  * @return Nothing
  */
 void
-printScore(words_t scorestring, int scorenumber);
+printScore (words_t scorestring, int scorenumber);
 
 // === ROM Constant variables with file level scope ===
 
@@ -138,7 +138,7 @@ printScore(words_t scorestring, int scorenumber);
  * @return ERROR=-1
  */
 int
-rpi(void)
+rpi (void)
 {
     extern letters_t tt, ee, rr, ii, ss, pp, ll, aa, yy;
     extern letters_t mm, oo, dd, cc, nn, ff, xx, hh, uu;
@@ -156,7 +156,7 @@ rpi(void)
     words_t hard = {&hh, &aa, &rr, &dd, NULL};
 
     ///Array of pointer to numbers.
-    words_t scorestring = {NULL};
+    words_t * scorestring = {NULL};
 
     ///Creates the gameboard
     board_t gameboard;
@@ -179,27 +179,27 @@ rpi(void)
      */
     int k = PLAY;
     words_t * (wordsArray[]) = {NULL, &play, &mode, &score, &sound, &exit, NULL,
-                                &on, &off, NULL,
-                                &easy, &medium, &hard, NULL};
+        &on, &off, NULL,
+        &easy, &medium, &hard, NULL};
 
     ///Initializes the display, audio, joystick and gameboard.
     disp_init();
     joy_init();
-/* 
-    init_sound();
-*/
+    /* 
+        init_sound();
+     */
     ///Clears the display.
     disp_clear();
-/*
-    ///Turns on the music 
-    playMusic();     
-*/
+    /*
+        ///Turns on the music 
+        playMusic();     
+     */
     ///Starts the introduction animation.
     initMenu();
     disp_update();
 
     ///Until the joyswitch is pressed, it doesn't show the menu.
-    while(surf() != PRESSED)
+    while ( surf() != PRESSED )
     {
         joy_update();
     }
@@ -209,13 +209,13 @@ rpi(void)
     disp_update();
 
     ///Until the joyswitch is unpressed, it doesn't get into the menu.
-    while(surf() == PRESSED)
+    while ( surf() == PRESSED )
     {
         joy_update();
     }
 
     ///The menu, it includes pause menu.
-    while(gameplay == GM_MENU || gameplay == GM_PAUSE)
+    while ( gameplay == GM_MENU || gameplay == GM_PAUSE )
     {
         ///It analyzes the joystick position.
         joy_update();
@@ -223,35 +223,35 @@ rpi(void)
 
         ///If the user goes right or left, it increase or decrease
         ///the counter that goes threw the array of words.
-        if(joyc == RIGHT)
+        if ( joyc == RIGHT )
         {
             k++;
         }
 
-        else if(joyc == LEFT)
+        else if ( joyc == LEFT )
         {
             k--;
         }
 
-        ///If the joyswitch is pressed it analyzes which one is the 
-        ///option chosen.
-        else if(joyc == PRESSED)
+            ///If the joyswitch is pressed it analyzes which one is the 
+            ///option chosen.
+        else if ( joyc == PRESSED )
         {
-            switch(k)
+            switch ( k )
             {
                     ///If it is play, it opens the play menu.
                 case PLAY:
                     disp_clear();
-                    
+
                     ///It doesn't start until joyswitch is unpressed
-                    while(surf() == PRESSED)
+                    while ( surf() == PRESSED )
                     {
                         joy_update();
                     }
-                    
+
                     ///If it is the first time playing, it starts the 
                     ///stats, timer and gameboard.
-                    if(gameplay == GM_MENU)
+                    if ( gameplay == GM_MENU )
                     {
                         board_init(&gameboard);
                         gameStats = (stats_t *) gameboard.ask.stats();
@@ -300,15 +300,15 @@ rpi(void)
                     k = PLAY;
                     break;
                 case SCORE:
-                    if(gameplay == GM_MENU &&
-                       initStats(&scoretable) == EXIT_SUCCESS &&
-                       scoretable._tsLoaded == true)
+                    if ( gameplay == GM_MENU &&
+                         initStats(&scoretable) == EXIT_SUCCESS &&
+                         scoretable._tsLoaded == true )
                     {
                         printScore(scorestring, scoretable.score.top);
                     }
-                    else if(gameplay == GM_PAUSE &&
-                            gameStats != NULL &&
-                            gameStats -> _init == true)
+                    else if ( gameplay == GM_PAUSE &&
+                              gameStats != NULL &&
+                              gameStats -> _init == true )
                     {
                         board_t tmp;
                         memcpy(&tmp, &gameboard, sizeof (tmp));
@@ -330,25 +330,25 @@ rpi(void)
          * on the array. If it is pointing a NULL, it goes back(or forward)
          * so as to comeback to the last word. 
          */
-        if((wordsArray[k] == NULL)&&(surf() == RIGHT))
+        if ( (wordsArray[k] == NULL)&&(surf() == RIGHT) )
         {
             k--;
         }
-        else if((wordsArray[k] == NULL)&&(surf() == LEFT))
+        else if ( (wordsArray[k] == NULL)&&(surf() == LEFT) )
         {
             k++;
         }
-        
+
         ///It clears the menu but not the TeTrIs sign.
         disp_n_clear(MAX, MAX / 2, 0, 8);
 
         ///It prints the word chosen, if it is too long, it prints words that 
         ///move from right to left.
-        if(k == SOUND)
+        if ( k == SOUND )
         {
             printWmove(*(wordsArray[k]), 0, 9);
         }
-        else if(k == MEDIUM)
+        else if ( k == MEDIUM )
         {
             printWmove(*(wordsArray[k]), 0, 9);
         }
@@ -366,29 +366,29 @@ rpi(void)
          * This is done so as to make the user go to right or left every
          * time he wants to change the menu option.
          */
-        while(surf() != CENTER && k != SOUND && k != MEDIUM)
+        while ( surf() != CENTER && k != SOUND && k != MEDIUM )
         {
             joy_update();
         }
     }
 
-/*
-    ///It initializes and plays a goodbye song.
-    //playFX(FX_EXIT);    
+    /*
+        ///It initializes and plays a goodbye song.
+        //playFX(FX_EXIT);    
 
-    ///It doesn't finish until the song stops.
+        ///It doesn't finish until the song stops.
     
-    while(player_status() == PLAYING)
-    {
-           theEnd();     
-    }
-*/   
-        
+        while(player_status() == PLAYING)
+        {
+               theEnd();     
+        }
+     */
+
     ///It makes an animation saying goodbye(same as hello twice)
     //THIS IS HERE BECAUSE WE ARE HAVING TROUBLE WITH THE MUSIC.
     theEnd();
     theEnd();
-    
+
     ///It turns off the display.
     disp_clear();
 
@@ -398,7 +398,7 @@ rpi(void)
 // === Local function definitions ===
 
 int
-play_tetris(board_t * gameboard, stats_t * gameStats, int dif)
+play_tetris (board_t * gameboard, stats_t * gameStats, int dif)
 {
     ///It takes joystick positition.
     int jmovement;
@@ -413,7 +413,7 @@ play_tetris(board_t * gameboard, stats_t * gameStats, int dif)
     ///An array used for checking completed lines.
     int lines[BOARD_HEIGHT];
     ///Game timing.
-    int delay_time = askTimeLimit ();
+    int delay_time = askTimeLimit();
 
     ///It creates a gameboard.
     grid_t * board = gameboard->ask.board();
@@ -423,7 +423,7 @@ play_tetris(board_t * gameboard, stats_t * gameStats, int dif)
     disp_update();
 
     ///Depending on the difficulty the user chose it makes differents delays.
-    switch(dif)
+    switch ( dif )
     {
         case EASY:
             mode = 20;
@@ -437,7 +437,7 @@ play_tetris(board_t * gameboard, stats_t * gameStats, int dif)
     }
 
     //It is a loop until the game ends.
-    while(!(gameboard->ask.endGame()) && gameplay == GM_PLAYING)
+    while ( !(gameboard->ask.endGame()) && gameplay == GM_PLAYING )
     {
         //It asks for the user instruction(joystick movement)
         joy_update();
@@ -445,31 +445,31 @@ play_tetris(board_t * gameboard, stats_t * gameStats, int dif)
 
         ///If the user pressed the switch too much time, it goes to pause menu.
         ///ending the playing loop.
-        if(pauseflag > PAUSE_LIMIT)
+        if ( pauseflag > PAUSE_LIMIT )
         {
             gameplay = GM_PAUSE;
         }
             ///If the user didn't move the piece, it does an update and resets the
             ///"time counter".
-        else if(timeflag > mode)
+        else if ( timeflag > mode )
         {
             timeflag = 0;
             gameboard->update();
         }
             ///If the user goes to the right, it makes a right switch.     
-        else if(jmovement == RIGHT)
+        else if ( jmovement == RIGHT )
         {
             gameboard->piece.shift(RIGHT);
         }
             ///If the user goes to the left, it makes a left switch.
-        else if(jmovement == LEFT)
+        else if ( jmovement == LEFT )
         {
             gameboard->piece.shift(LEFT);
         }
             ///If the user goes up for the first time, it makes a left rotation
             ///and adds one to the pause flag(this make the piece stop rotating too
             ///much)
-        else if(jmovement == UP && pauseflag == 0)
+        else if ( jmovement == UP && pauseflag == 0 )
         {
             gameboard->piece.rotate(LEFT);
             pauseflag++;
@@ -477,40 +477,40 @@ play_tetris(board_t * gameboard, stats_t * gameStats, int dif)
             ///If the user pressed the switch bottom for the first time, it makes a
             ///right rotation and adds one to the pause flag to avoid the piece to 
             ///rotate too much.
-        else if(jmovement == PRESSED && pauseflag == 0)
+        else if ( jmovement == PRESSED && pauseflag == 0 )
         {
             gameboard->piece.rotate(RIGHT);
             pauseflag++;
         }
             ///If the user goes down, it makes a soft drop.
-        else if(jmovement == DOWN)
+        else if ( jmovement == DOWN )
         {
             gameboard->piece.softDrop();
         }
             ///If the user didn't move, it adds one to the time counter and it
             ///resets pause flag(so as the user can rotate the piece again).
-        else if(jmovement == CENTER)
+        else if ( jmovement == CENTER )
         {
             pauseflag = 0;
             timeflag++;
         }
             ///If the pressed bottom is still pressed, it adds one to the pauseflag.
-        else if(jmovement == PRESSED && pauseflag != 0)
+        else if ( jmovement == PRESSED && pauseflag != 0 )
         {
             pauseflag++;
         }
 
         ///It analises if there is any filled row.
         n = gameboard->ask.filledRows(lines);
-        if(n != 0)
+        if ( n != 0 )
         {
-            for(k = 0; k < n; k++)
+            for ( k = 0; k < n; k++ )
             {
                 ///If there is one, it eliminates the line. 
                 lineoff(lines, lines[k]);
                 gameboard->clear.line(lines, k);
                 ///It changes delay time in case too many rows were cleared.
-                delay_time= askTimeLimit ();
+                delay_time = askTimeLimit();
                 //playFX(FX_LINE);
             }
         }
@@ -520,11 +520,11 @@ play_tetris(board_t * gameboard, stats_t * gameStats, int dif)
         disp_update();
 
         ///It makes a little delay for a better playability.
-        usleep(delay_time*10);
+        usleep(delay_time * 10);
     }
 
     ///If the user lost.
-    if(gameboard->ask.endGame())
+    if ( gameboard->ask.endGame() )
     {
         ///It creates a scorestring that wil be shown at the top of the display.
         words_t scorestring = {NULL};
@@ -541,7 +541,7 @@ play_tetris(board_t * gameboard, stats_t * gameStats, int dif)
 }
 
 void
-printTetrix(void)
+printTetrix (void)
 {
     extern letters_t tt, ee, rr, ii, xx;
 
@@ -554,12 +554,12 @@ printTetrix(void)
 }
 
 void
-printScore(words_t scorestring, int scorenumber)
+printScore (words_t scorestring, int scorenumber)
 {
     ///It make an array with each number on a 5x5 matrix format.
     extern letters_t one, two, three, four, six, seven, eight, nine, oo, ss;
     words_t numbersArray = {&oo, &one, &two, &three, &four, &ss,
-                            &six, &seven, &eight, &nine, NULL};
+        &six, &seven, &eight, &nine, NULL};
 
     ///It takes score on another variable to avoid loosing it.
     int number = scorenumber;
@@ -567,7 +567,7 @@ printScore(words_t scorestring, int scorenumber)
     int k;
 
     ///It divides the number in 10 so as to get the amount of digits.
-    for(k = 0; number != 0; k++)
+    for ( k = 0; number != 0; k++ )
     {
         number /= 10;
     }
@@ -576,7 +576,7 @@ printScore(words_t scorestring, int scorenumber)
     scorestring[k] = NULL;
 
     ///It creates a "score string" with every digit from the score.
-    while(k > 0)
+    while ( k > 0 )
     {
         ///It starts from right to left.
         k--;
