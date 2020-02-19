@@ -67,32 +67,48 @@ $(function() {
 <div class="title">tetriX </div>  </div>
 </div><!--header-->
 <div class="contents">
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#autotoc_md1">Building instructions</a><ul><li class="level2"><a href="#autotoc_md2">Allegro</a></li>
+<li class="level2"><a href="#autotoc_md3">Raspberry Pi</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md4">Release information</a></li>
+<li class="level1"><a href="#autotoc_md5">Source code organization</a></li>
+<li class="level1"><a href="#autotoc_md6">Sources</a><ul><li class="level2"><a href="#autotoc_md7">The inspiration for the game rules and options was taken from</a></li>
+<li class="level2"><a href="#autotoc_md8">Some inspiration for ideas / pieces of code was taken from</a></li>
+<li class="level2"><a href="#autotoc_md9">Sound effects where taken from</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md10">Authors</a></li>
+<li class="level1"><a href="#autotoc_md11">Copyright</a></li>
+</ul>
+</div>
 <div class="textblock"><p><em>tetriX</em> is a Tetris game written in C, meant to be runned on any Linux distribution or in a Raspberry Pi with a matrix display + joystick module attached.</p>
 <p><br  />
 </p>
-<h1><a class="anchor" id="autotoc_md0"></a>
+<h1><a class="anchor" id="autotoc_md1"></a>
 Building instructions</h1>
 <hr  />
-<h2><a class="anchor" id="autotoc_md1"></a>
+<h2><a class="anchor" id="autotoc_md2"></a>
 Allegro</h2>
 <p>For building to run in Linux using Allegro, enter to your terminal inside the project directory and run</p>
 <div class="fragment"><div class="line">bash -x nbproject/Package-Release_Allegro.bash</div>
 </div><!-- fragment --><p>After that, a new file called tetrix.tar will be created. Uncompress it wherever you want and execute from the new "tetrix" directory </p><div class="fragment"><div class="line">bin/tetrix </div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md2"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md3"></a>
 Raspberry Pi</h2>
 <p>For building to run in a Raspberry Pi using the led Matrix, enter to your terminal inside the project directory and run</p>
 <div class="fragment"><div class="line">bash -x nbproject/Package-Release_RaspberryPi.bash</div>
 </div><!-- fragment --><p>After that, a new file called tetrix.tar will be created. Uncompress it wherever you want and execute from the new "tetrix" directory </p><div class="fragment"><div class="line">bin/tetrix </div>
 </div><!-- fragment --><p><br  />
 </p>
-<h1><a class="anchor" id="autotoc_md3"></a>
+<h1><a class="anchor" id="autotoc_md4"></a>
 Release information</h1>
 <hr  />
 <p> Release date: 2019-02-19</p>
 <p>Current version: 0.0.1</p>
 <p><br  />
 </p>
-<h1><a class="anchor" id="autotoc_md4"></a>
+<h1><a class="anchor" id="autotoc_md5"></a>
 Source code organization</h1>
 <hr  />
 <p>The project source code is located inside the <code>src</code> folder and it is clearly devided in <code>backend</code> and <code>frontend</code> related sources. Also, the whole backend is tested using CUnit test framework and its tests are located in <code>tests</code> folder, which is in the project parent directory.</p>
@@ -102,21 +118,33 @@ Source code organization</h1>
 </blockquote>
 <p><br  />
 </p>
-<h1><a class="anchor" id="autotoc_md5"></a>
+<h1><a class="anchor" id="autotoc_md6"></a>
 Sources</h1>
 <hr  />
-<h2><a class="anchor" id="autotoc_md6"></a>
-The inspiration for the game rules and options was taken from</h2>
-<p><a href="https://tetris.wiki/Tetris_Guideline">Tetris Wiki: Tetris Guideline</a> <a href="https://tetris.wiki/Nintendo_Rotation_System">Tetris Wiki: Nintendo Rotation System</a> <a href="https://tetris.wiki/Random_Generator">Tetris Wiki: Random Generator</a> <a href="https://tetris.wiki/Tetris_(NES,_Nintendo)">Tetris Wiki: Tetris (NES, Nintendo)</a> <a href="https://www.playemulator.com/nes-online/classic-tetris/">Nintendo (NES) Version of the Tetris</a></p>
 <h2><a class="anchor" id="autotoc_md7"></a>
-Some inspiration for ideas / pieces of code was taken from</h2>
-<p><a href="https://stackoverflow.com/a/351745">stackoverflow: How would one write object-oriented code in C?</a> <a href="https://www.dyclassroom.com/c/c-pointers-and-two-dimensional-array">C - Pointers and Two Dimensional Array: Address mapping</a> <a href="https://stackoverflow.com/a/2572373">stackoverflow: How to use /dev/random or urandom in C?</a> <a href="http://man7.org/linux/man-pages/man2/getrandom.2.html">Linux Programmer's Manual: GETRANDOM</a> <a href="https://github.com/liballeg/allegro_wiki/wiki/Allegro-Vivace%3A-Input">Allegro Vivace: Input</a> <a href="https://stackoverflow.com/a/7430262">stackoverflow: Creating a new directory in C</a> <a href="https://stackoverflow.com/a/8719916">stackoverflow: linux mkdir function can't authorize full permission</a></p>
+The inspiration for the game rules and options was taken from</h2>
+<p><a href="https://tetris.wiki/Tetris_Guideline">Tetris Wiki: Tetris Guideline</a></p>
+<p><a href="https://tetris.wiki/Nintendo_Rotation_System">Tetris Wiki: Nintendo Rotation System</a></p>
+<p><a href="https://tetris.wiki/Random_Generator">Tetris Wiki: Random Generator</a></p>
+<p><a href="https://tetris.wiki/Tetris_(NES,_Nintendo)">Tetris Wiki: Tetris (NES, Nintendo)</a></p>
+<p><a href="https://www.playemulator.com/nes-online/classic-tetris/">Nintendo (NES) Version of the Tetris</a></p>
 <h2><a class="anchor" id="autotoc_md8"></a>
+Some inspiration for ideas / pieces of code was taken from</h2>
+<p><a href="https://stackoverflow.com/a/351745">stackoverflow: How would one write object-oriented code in C?</a></p>
+<p><a href="https://www.dyclassroom.com/c/c-pointers-and-two-dimensional-array">C - Pointers and Two Dimensional Array: Address mapping</a></p>
+<p><a href="https://stackoverflow.com/a/2572373">stackoverflow: How to use /dev/random or urandom in C?</a></p>
+<p><a href="http://man7.org/linux/man-pages/man2/getrandom.2.html">Linux Programmer's Manual: GETRANDOM</a></p>
+<p><a href="https://github.com/liballeg/allegro_wiki/wiki/Allegro-Vivace%3A-Input">Allegro Vivace: Input</a></p>
+<p><a href="https://stackoverflow.com/a/7430262">stackoverflow: Creating a new directory in C</a></p>
+<p><a href="https://stackoverflow.com/a/8719916">stackoverflow: linux mkdir function can't authorize full permission</a></p>
+<h2><a class="anchor" id="autotoc_md9"></a>
 Sound effects where taken from</h2>
-<p><a href="http://soundbible.com/2067-Blop.html">Blop Sound</a> <a href="https://freesound.org/people/korgchops/sounds/268694/">Game Bleeps 3</a> <a href="https://freesound.org/people/myfox14/sounds/382310/">Game Over Arcade</a></p>
+<p><a href="http://soundbible.com/2067-Blop.html">Blop Sound</a></p>
+<p><a href="https://freesound.org/people/korgchops/sounds/268694/">Game Bleeps 3</a></p>
+<p><a href="https://freesound.org/people/myfox14/sounds/382310/">Game Over Arcade</a></p>
 <p><br  />
 </p>
-<h1><a class="anchor" id="autotoc_md9"></a>
+<h1><a class="anchor" id="autotoc_md10"></a>
 Authors</h1>
 <hr  />
 <p> Gino Minnucci</p>
@@ -125,7 +153,7 @@ Authors</h1>
 <p><a href="#" onclick="location.href='mai'+'lto:'+'mza'+'hn'+'d@i'+'tb'+'a.e'+'du'+'.ar'; return false;">mzahn<span style="display: none;">.nosp@m.</span>d@it<span style="display: none;">.nosp@m.</span>ba.ed<span style="display: none;">.nosp@m.</span>u.ar</a></p>
 <p><br  />
 </p>
-<h1><a class="anchor" id="autotoc_md10"></a>
+<h1><a class="anchor" id="autotoc_md11"></a>
 Copyright</h1>
 <hr  />
 <p>GNU General Public License v3 </p>

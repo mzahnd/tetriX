@@ -1,5 +1,7 @@
-# tetriX    {#mainpage}
+# tetriX
 _tetriX_ is a Tetris game written in C, meant to be runned on any Linux distribution or in a Raspberry Pi with a matrix display + joystick module attached.
+
+[TOC]
 
 <br>
 
@@ -60,23 +62,37 @@ ___
 
 ### The inspiration for the game rules and options was taken from
 [Tetris Wiki: Tetris Guideline](https://tetris.wiki/Tetris_Guideline)
+
 [Tetris Wiki: Nintendo Rotation System](https://tetris.wiki/Nintendo_Rotation_System)
+
 [Tetris Wiki: Random Generator](https://tetris.wiki/Random_Generator)
+
 [Tetris Wiki: Tetris (NES, Nintendo)](https://tetris.wiki/Tetris_(NES,_Nintendo))
+
 [Nintendo (NES) Version of the Tetris](https://www.playemulator.com/nes-online/classic-tetris/)
+
 
 ### Some inspiration for ideas / pieces of code was taken from
 [stackoverflow: How would one write object-oriented code in C?](https://stackoverflow.com/a/351745)
+
 [C - Pointers and Two Dimensional Array: Address mapping](https://www.dyclassroom.com/c/c-pointers-and-two-dimensional-array)
+
 [stackoverflow: How to use /dev/random or urandom in C?](https://stackoverflow.com/a/2572373)
+
 [Linux Programmer's Manual: GETRANDOM](http://man7.org/linux/man-pages/man2/getrandom.2.html)
+
 [Allegro Vivace: Input](https://github.com/liballeg/allegro_wiki/wiki/Allegro-Vivace%3A-Input)
+
 [stackoverflow: Creating a new directory in C](https://stackoverflow.com/a/7430262)
+
 [stackoverflow: linux mkdir function can't authorize full permission](https://stackoverflow.com/a/8719916)
+
 
 ### Sound effects where taken from
 [Blop Sound](http://soundbible.com/2067-Blop.html)
+
 [Game Bleeps 3](https://freesound.org/people/korgchops/sounds/268694/)
+
 [Game Over Arcade](https://freesound.org/people/myfox14/sounds/382310/)
 
 <br>
